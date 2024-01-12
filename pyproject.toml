@@ -1,0 +1,70 @@
+[tool.poetry]
+name = "Kraftjar"
+version = "0.1.0"
+description = ""
+authors = ["Maryna <mgrabchak1109@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+flask = "^2.2.3"
+flask-migrate = "^4.0.4"
+flask-wtf = "^1.1.1"
+flask-mail = "^0.9.1"
+flask-login = "^0.6.2"
+python-dotenv = "^1.0.0"
+click = "^8.1.3"
+email-validator = "^1.3.1"
+psycopg2-binary = "^2.9.5"
+pydantic = "^2.4.2"
+alchemical = "^0.7.1"
+fastapi = "^0.103.1"
+uvicorn = "^0.23.2"
+python-jose = "^3.3.0"
+python-multipart = "^0.0.6"
+pydantic-settings = "^2.0.3"
+
+
+[tool.poetry.group.dev.dependencies]
+faker = "^18.3.1"
+httpx = "^0.25.0"
+types-flask-migrate = "^4.0.0.6"
+types-python-jose = "^3.3.4.8"
+ruff = "^0.1.8"
+mypy = "^1.8.0"
+pytest = "^7.4.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore:.*cgi.*:DeprecationWarning",
+    'ignore:.*werkzeug\.urls\.url.*:DeprecationWarning',
+    'ignore:.*flask\.Markup.*:DeprecationWarning',
+]
+testpaths = ["test_flask", "test_api"]
+
+[tool.mypy]
+ignore_missing_imports = true
+check_untyped_defs = true
+files = ["api/**/*.py", "app/**/*.py", "test_api/**/*.py", "test_flask/**/*.py"]
+
+[tool.ruff]
+exclude = [
+    "__pypackages__",
+    "__pycache__",
+    ".eggs",
+    ".git",
+    ".github",
+    ".pytest_cache",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".venv",
+    "build",
+    "dist",
+    "node_modules",
+    "migrations",
+]
+line-length = 120
+indent-width = 4

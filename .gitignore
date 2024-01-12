@@ -1,0 +1,11 @@
+# ignore directories
+__pycache__/
+env/
+.venv/
+.pytest_cache/
+node_modules/
+
+# ignore files
+.env
+*.pyc
+/*.sqlite3

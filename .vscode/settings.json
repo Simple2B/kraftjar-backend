@@ -1,0 +1,32 @@
+{
+  "python.terminal.activateEnvironment": true,
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/.venv/*/**": true
+  },
+  "cSpell.words": [
+    "dotenv",
+    "fastapi",
+    "flowbite",
+    "jsonify",
+    "kraftjar",
+    "pydantic",
+    "pytest",
+    "sqlalchemy",
+    "tailwindcss",
+    "werkzeug",
+    "wsgi",
+    "wtforms",
+    "zrosty"
+  ],
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  "taipyStudio.config.mainPythonFile": "wsgi.py",
+  "mypy.dmypyExecutable": "${workspaceFolder}/.venv/bin/dmypy",
+  "mypy.runUsingActiveInterpreter": true
+}
