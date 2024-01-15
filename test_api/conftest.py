@@ -1,5 +1,6 @@
 from typing import Generator
 import pytest
+from fastapi import status
 from dotenv import load_dotenv
 
 load_dotenv("test_api/test.env")
@@ -24,7 +25,9 @@ def db(test_data: TestData) -> Generator[orm.Session, None, None]:
         db.Model.metadata.create_all(bind=session.bind)
         for test_user in test_data.test_users:
             user = m.User(
-                username=test_user.username,
+                first_name=test_user.first_name,
+                last_name=test_user.last_name,
+                phone=test_user.phone,
                 email=test_user.email,
                 password=test_user.password,
             )
@@ -64,11 +67,11 @@ def headers(
     response = client.post(
         "/api/auth/login",
         data={
-            "username": user.username,
+            "username": user.email,
             "password": user.password,
         },
     )
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     token = s.Token.model_validate(response.json())
 
     yield dict(Authorization=f"Bearer {token.access_token}")

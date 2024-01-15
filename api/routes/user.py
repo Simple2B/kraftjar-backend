@@ -1,11 +1,9 @@
-from fastapi import Depends, APIRouter, status
+from fastapi import APIRouter, Depends, status
 
 import app.models as m
 import app.schema as s
-from app.logger import log
-
 from api.dependency import get_current_user
-
+from app.logger import log
 
 user_router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -16,5 +14,5 @@ def get_current_user_profile(
 ):
     """Returns the current user profile"""
 
-    log(log.INFO, f"User {current_user.username} requested his profile")
+    log(log.INFO, f"User {current_user.first_name} - {current_user.id} requested his profile")
     return current_user

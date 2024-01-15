@@ -1,7 +1,10 @@
 import pytest
+from fastapi import status
 from fastapi.testclient import TestClient
+
 from app import schema as s
 from config import config
+
 from .test_data import TestData
 
 CFG = config("testing")
@@ -9,13 +12,12 @@ CFG = config("testing")
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_auth(db, client: TestClient, test_data: TestData):
-    TEST_USERNAME = test_data.test_users[0].username
-    TEST_PASSWORD = test_data.test_users[0].password
-    res = client.post("api/auth/token", json={"username": TEST_USERNAME, "password": TEST_PASSWORD})
-    assert res.status_code == 200
-    token = s.Token.model_validate(res.json())
+    user_auth = s.Auth(identificator=test_data.test_users[0].email, password=test_data.test_users[0].password)
+    response = client.post("/api/auth/token", json=user_auth.model_dump())
+    assert response.status_code == status.HTTP_200_OK
+    token = s.Token.model_validate(response.json())
     assert token.access_token
     assert token.token_type == "bearer"
     header = dict(Authorization=f"Bearer {token.access_token}")
     res = client.get("api/users/me", headers=header)
-    assert res.status_code == 200
+    assert res.status_code == status.HTTP_200_OK

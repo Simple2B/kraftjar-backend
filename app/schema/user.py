@@ -3,7 +3,9 @@ from pydantic import BaseModel, ConfigDict
 
 class User(BaseModel):
     id: int
-    username: str
+    first_name: str
+    last_name: str
+    phone: str
     email: str
     activated: bool = True
 

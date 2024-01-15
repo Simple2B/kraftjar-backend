@@ -33,7 +33,7 @@ def init(app: Flask):
             print(f"User with e-mail: [{app.config['ADMIN_EMAIL']}] already exists")
             return
         m.User(
-            username=app.config["ADMIN_USERNAME"],
+            first_name=app.config["ADMIN_USERNAME"],
             email=app.config["ADMIN_EMAIL"],
             password=app.config["ADMIN_PASSWORD"],
             activated=True,

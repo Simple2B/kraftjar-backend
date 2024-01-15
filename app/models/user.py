@@ -65,8 +65,7 @@ class User(db.Model, UserMixin, ModelMixin):
         if not session:
             session = db.session
         query = cls.select().where(
-            (sa.func.lower(cls.username) == sa.func.lower(user_id))
-            | (sa.func.lower(cls.email) == sa.func.lower(user_id))
+            (sa.func.lower(cls.phone) == sa.func.lower(user_id)) | (sa.func.lower(cls.email) == sa.func.lower(user_id))
         )
         assert session
         user = session.scalar(query)
@@ -77,7 +76,7 @@ class User(db.Model, UserMixin, ModelMixin):
         return None
 
     def __repr__(self):
-        return f"<{self.id}: {self.username},{self.email}>"
+        return f"<{self.id}: {self.first_name},{self.email}>"
 
     @property
     def json(self):

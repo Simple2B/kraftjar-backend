@@ -4,7 +4,10 @@ from pydantic import BaseModel
 class TestUser(BaseModel):
     __test__ = False
 
-    username: str
+    first_name: str
+    last_name: str
+
+    phone: str
     email: str
     password: str
 
