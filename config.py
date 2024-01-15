@@ -46,6 +46,10 @@ class BaseConfig(BaseSettings):
     JWT_SECRET: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
+    # Business logic
+    MINIMUM_RATE: int = 1
+    MAXIMUM_RATE: int = 5
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.

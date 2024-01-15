@@ -7,11 +7,13 @@
     "**/.venv/*/**": true
   },
   "cSpell.words": [
+    "diia",
     "dotenv",
     "fastapi",
     "flowbite",
     "jsonify",
     "kraftjar",
+    "onupdate",
     "pydantic",
     "pytest",
     "sqlalchemy",

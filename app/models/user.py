@@ -1,50 +1,50 @@
-from typing import Self
 from datetime import datetime
+from typing import Self
 from uuid import uuid4
 
-from flask_login import UserMixin, AnonymousUserMixin
 import sqlalchemy as sa
+from flask_login import AnonymousUserMixin, UserMixin
 from sqlalchemy import orm
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
-from app.database import db
-from .utils import ModelMixin
-from app.logger import log
 from app import schema as s
+from app.database import db
+from app.logger import log
 
-
-def gen_password_reset_id() -> str:
-    return str(uuid4())
+from .utils import ModelMixin
 
 
 class User(db.Model, UserMixin, ModelMixin):
     __tablename__ = "users"
 
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
-    username: orm.Mapped[str] = orm.mapped_column(
-        sa.String(64),
-        unique=True,
-        nullable=False,
-    )
+    uuid: orm.Mapped[str] = orm.mapped_column(sa.String(36), default=lambda: str(uuid4()))
+
+    first_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
+    last_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
+
     email: orm.Mapped[str] = orm.mapped_column(
         sa.String(128),
-        unique=True,
-        nullable=False,
     )
+
+    phone: orm.Mapped[str] = orm.mapped_column(sa.String(32), unique=True, nullable=False)
+
+    google_id: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")
+    apple_id: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")
+    diia_id: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")
+
     password_hash: orm.Mapped[str] = orm.mapped_column(sa.String(256), default="")
-    activated: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
     created_at: orm.Mapped[datetime] = orm.mapped_column(
         sa.DateTime,
         default=datetime.utcnow,
     )
-    unique_id: orm.Mapped[str] = orm.mapped_column(
-        sa.String(36),
-        default=gen_password_reset_id,
+
+    updated_at: orm.Mapped[sa.DateTime] = orm.mapped_column(
+        sa.DateTime,
+        default=sa.func.now(),
+        onupdate=sa.func.now(),
     )
-    reset_password_uid: orm.Mapped[str] = orm.mapped_column(
-        sa.String(64),
-        default=gen_password_reset_id,
-    )
+
     is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, server_default=sa.false())
 
     @property
@@ -75,11 +75,6 @@ class User(db.Model, UserMixin, ModelMixin):
         elif check_password_hash(user.password, password):
             return user
         return None
-
-    def reset_password(self):
-        self.password_hash = ""
-        self.reset_password_uid = gen_password_reset_id()
-        self.save()
 
     def __repr__(self):
         return f"<{self.id}: {self.username},{self.email}>"
