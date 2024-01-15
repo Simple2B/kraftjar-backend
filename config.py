@@ -65,7 +65,7 @@ class DevelopmentConfig(BaseConfig):
     """Development configuration."""
 
     DEBUG: bool = True
-    ALCHEMICAL_DATABASE_URL: str = "sqlite:///" + os.path.join(BASE_DIR, "database-dev.sqlite3")
+    ALCHEMICAL_DATABASE_URL: str
 
 
 class TestingConfig(BaseConfig):
@@ -79,9 +79,7 @@ class TestingConfig(BaseConfig):
 class ProductionConfig(BaseConfig):
     """Production configuration."""
 
-    ALCHEMICAL_DATABASE_URL: str = os.environ.get(
-        "DATABASE_URL", "sqlite:///" + os.path.join(BASE_DIR, "database.sqlite3")
-    )
+    ALCHEMICAL_DATABASE_URL: str
     WTF_CSRF_ENABLED: bool = True
 
 
