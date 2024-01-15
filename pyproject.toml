@@ -49,6 +49,7 @@ testpaths = ["test_flask", "test_api"]
 ignore_missing_imports = true
 check_untyped_defs = true
 files = ["api/**/*.py", "app/**/*.py", "test_api/**/*.py", "test_flask/**/*.py"]
+exclude = ["migrations/env.py", "migrations/version/*.py"]
 
 [tool.ruff]
 exclude = [
