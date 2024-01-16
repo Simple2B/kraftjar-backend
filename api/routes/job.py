@@ -44,14 +44,33 @@ def create_job(
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
-    pass
+    job: m.Job = m.Job(
+        **job.model_dump(),
+        owner_id=current_user.id,
+    )
+    db.add(job)
+    db.commit()
+    log(log.INFO, "Created job [%s] for user [%s]", job.title, job.owner_id)
+    return job
 
 
 @job_router.put("/{job_id}", status_code=status.HTTP_200_OK, response_model=s.JobOut)
-def update_job(
+def put_job(
     job_id: int,
-    job: s.JobIn,
+    job_data: s.JobPut,
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
-    pass
+    job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.id == job_id))
+    if not job:
+        log(log.ERROR, "Job [%s] not found", job_id)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
+    if job.owner_id != current_user.id:
+        log(log.ERROR, "User [%s] does not own job [%s]", current_user.id, job_id)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User does not own job")
+    job_data = {key: value for key, value in job_data.model_dump().items() if value is not None}
+
+    db.execute(sa.update(m.Job).where(m.Job.id == job_id).values(**job_data))
+    db.commit()
+    log(log.INFO, "Updated job [%s]", job_id)
+    return job

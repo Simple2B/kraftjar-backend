@@ -46,3 +46,16 @@ class JobIn(BaseModel):
     model_config = ConfigDict(
         from_attributes=True,
     )
+
+
+class JobPut(BaseModel):
+    title: str | None = None
+    description: str | None = None
+    address_id: int | None = None
+    location_id: int | None = None
+    time: str | None = None
+    is_public: bool | None = None
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
