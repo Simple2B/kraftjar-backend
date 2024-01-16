@@ -26,7 +26,8 @@ def create_services(db: Session, count: int = SERVICES_COUNT):
     if not professions:
         log(log.ERROR, "No professions found")
         create_professions(db)
-        professions: Sequence[int] = db.scalars(select(m.Profession.id)).all()
+        created_professions: Sequence[int] = db.scalars(select(m.Profession.id)).all()
+        professions = created_professions
 
     services: Sequence[m.Service] = [
         m.Service(

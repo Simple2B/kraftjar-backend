@@ -22,13 +22,15 @@ def create_job(db: Session, user_id: int):
     if not addresses:
         log(log.ERROR, "No addresses found")
         create_addresses(db)
-        addresses: Sequence[int] = db.scalars(select(m.Address.id)).all()
+        new_addresses: Sequence[int] = db.scalars(select(m.Address.id)).all()
+        addresses = new_addresses
 
     services: Sequence[int] = db.scalars(select(m.Service.id)).all()
     if not services:
         log(log.ERROR, "No services found")
         create_services(db)
-        services: Sequence[int] = db.scalars(select(m.Service.id)).all()
+        new_services: Sequence[int] = db.scalars(select(m.Service.id)).all()
+        services = new_services
 
     locations: Sequence[int] = db.scalars(select(m.Location.id)).all()
 

@@ -1,3 +1,5 @@
+from typing import Sequence, cast
+
 import sqlalchemy as sa
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -17,7 +19,7 @@ def get_job(
     db: Session = Depends(get_db),
     current_user: m.User | None = Depends(get_user),
 ):
-    job: m.Job = db.scalar(sa.select(m.Job).where(m.Job.id == job_id))
+    job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.id == job_id))
     if not job:
         log(log.ERROR, "Job [%s] not found", job_id)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
@@ -32,8 +34,8 @@ def get_jobs(
     query = sa.select(m.Job)
     if current_user:
         query = query.where(m.Job.user_id == current_user.id)
-    jobs: list[m.Job] = db.scalars(query).all()
-    return s.JobOutList(jobs=jobs)
+    jobs: Sequence[m.Job] = db.scalars(query).all()
+    return s.JobOutList(jobs=cast(list, jobs))
 
 
 @job_router.post("/", status_code=status.HTTP_201_CREATED, response_model=s.JobOut)
