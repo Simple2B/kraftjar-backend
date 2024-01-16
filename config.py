@@ -47,6 +47,8 @@ class BaseConfig(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
     # Business logic
+    GOOGLE_DEFAULT_PASSWORD: str
+
     MINIMUM_RATE: int = 1
     MAXIMUM_RATE: int = 5
 

@@ -10,3 +10,5 @@ from .location import Location
 from .profession import Profession
 from .rates import Rate
 from .service import Service
+from .user_locations import user_locations, UserLocation
+from .user_professions import user_professions, UserProfession
