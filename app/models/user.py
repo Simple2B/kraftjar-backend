@@ -75,6 +75,14 @@ class User(db.Model, UserMixin, ModelMixin):
             return user
         return None
 
+    @property
+    def is_auth_by_google(self):
+        return bool(self.google_id)
+
+    @property
+    def is_auth_by_apple(self):
+        return bool(self.apple_id)
+
     def __repr__(self):
         return f"<{self.id}: {self.first_name},{self.email}>"
 
