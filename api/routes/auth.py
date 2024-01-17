@@ -49,12 +49,51 @@ def google_auth(
     user = db.scalar(sa.select(m.User).where(m.User.email == data.email))
     if not user:
         first_name = data.first_name if data.first_name else data.display_name
+        # data contains photo_url, but we don't use it
+        user = m.User(
+            first_name=first_name if first_name else data.email.split("@")[0],
+            email=data.email,
+            password=CFG.ACCOUNT_DEFAULT_PASSWORD,
+            phone=data.phone,
+            google_id=data.uid,
+        )
+
+        db.add(user)
+        db.flush()
+        if data.locations:
+            for location_id in data.locations:
+                location = db.scalar(sa.select(m.Location).where(m.Location.id == location_id))
+                if not location:
+                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Location not found")
+                db.add(m.UserLocation(user_id=user.id, location_id=location.id))
+        if data.professions:
+            for profession_id in data.professions:
+                profession = db.scalar(sa.select(m.Profession).where(m.Profession.id == profession_id))
+                if not profession:
+                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profession not found")
+                db.add(m.UserProfession(user_id=user.id, profession_id=profession.id))
+
+        db.commit()
+
+    return s.Token(access_token=create_access_token(user.id))
+
+
+@router.post("/apple", status_code=status.HTTP_200_OK, response_model=s.Token)
+def apple_auth(
+    data: s.AppleAuth,
+    db: Session = Depends(get_db),
+):
+    """Logs in a user with Apple"""
+
+    user = db.scalar(sa.select(m.User).where(m.User.email == data.email))
+    if not user:
+        first_name = data.first_name if data.first_name else data.display_name
 
         user = m.User(
             first_name=first_name if first_name else data.email.split("@")[0],
             email=data.email,
-            password=CFG.GOOGLE_DEFAULT_PASSWORD,
-            phone=data.phone if data.phone else None,
+            password=CFG.ACCOUNT_DEFAULT_PASSWORD,
+            phone=data.phone,
             google_id=data.uid,
         )
 

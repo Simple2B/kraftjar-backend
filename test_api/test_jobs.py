@@ -43,10 +43,10 @@ def test_jobs(client: TestClient, headers: dict[str, str], test_data: TestData, 
     len_after = len(db.scalars(select(m.Job)).all())
     assert len_after == len_before + 1
 
-    job_data = s.JobPut(
+    job_put_data = s.JobPut(
         title="Test Job",
     )
-    response = client.put(f"/api/jobs/{job.id}", json=job_data.model_dump(), headers=headers)
+    response = client.put(f"/api/jobs/{job.id}", json=job_put_data.model_dump(), headers=headers)
     assert response.status_code == status.HTTP_200_OK
     new_job = s.JobOut.model_validate(response.json())
-    assert new_job.title == job_data.title and new_job.description == job.description
+    assert new_job.title == job_put_data.title and new_job.description == job.description

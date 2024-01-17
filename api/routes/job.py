@@ -1,4 +1,4 @@
-from typing import Sequence, cast
+from typing import Sequence, cast, Any
 
 import sqlalchemy as sa
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -44,13 +44,13 @@ def create_job(
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
-    job: m.Job = m.Job(
+    new_job: m.Job = m.Job(
         **job.model_dump(),
         owner_id=current_user.id,
     )
-    db.add(job)
+    db.add(new_job)
     db.commit()
-    log(log.INFO, "Created job [%s] for user [%s]", job.title, job.owner_id)
+    log(log.INFO, "Created job [%s] for user [%s]", new_job.title, new_job.owner_id)
     return job
 
 
@@ -69,9 +69,9 @@ def put_job(
         log(log.ERROR, "User [%s] does not own job [%s]", current_user.id, job_id)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User does not own job")
 
-    job_data: dict[str, any] = {key: value for key, value in job_data.model_dump().items() if value is not None}
+    data_filtered: dict[str, Any] = {key: value for key, value in job_data.model_dump().items() if value is not None}
 
-    db.execute(sa.update(m.Job).where(m.Job.id == job_id).values(**job_data))
+    db.execute(sa.update(m.Job).where(m.Job.id == job_id).values(**data_filtered))
     db.commit()
     log(log.INFO, "Updated job [%s]", job_id)
     return job
