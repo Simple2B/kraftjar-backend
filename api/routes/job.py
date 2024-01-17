@@ -68,7 +68,8 @@ def put_job(
     if job.owner_id != current_user.id:
         log(log.ERROR, "User [%s] does not own job [%s]", current_user.id, job_id)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User does not own job")
-    job_data = {key: value for key, value in job_data.model_dump().items() if value is not None}
+
+    job_data: dict[str, any] = {key: value for key, value in job_data.model_dump().items() if value is not None}
 
     db.execute(sa.update(m.Job).where(m.Job.id == job_id).values(**job_data))
     db.commit()

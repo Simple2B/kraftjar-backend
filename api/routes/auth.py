@@ -60,18 +60,18 @@ def google_auth(
 
         db.add(user)
         db.flush()
-
-        for location_id in data.locations:
-            location = db.scalar(sa.select(m.Location).where(m.Location.id == location_id))
-            if not location:
-                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Location not found")
-            m.UserLocation(user_id=user.id, location_id=location.id)
-
-        for profession_id in data.professions:
-            profession = db.scalar(sa.select(m.Profession).where(m.Profession.id == profession_id))
-            if not profession:
-                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profession not found")
-            db.add(m.UserProfession(user_id=user.id, profession_id=profession.id))
+        if data.locations:
+            for location_id in data.locations:
+                location = db.scalar(sa.select(m.Location).where(m.Location.id == location_id))
+                if not location:
+                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Location not found")
+                db.add(m.UserLocation(user_id=user.id, location_id=location.id))
+        if data.professions:
+            for profession_id in data.professions:
+                profession = db.scalar(sa.select(m.Profession).where(m.Profession.id == profession_id))
+                if not profession:
+                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profession not found")
+                db.add(m.UserProfession(user_id=user.id, profession_id=profession.id))
 
         db.commit()
 
