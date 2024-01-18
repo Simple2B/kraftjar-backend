@@ -24,8 +24,8 @@ def create_applications(db: Session, count: int = APPLICATIONS_COUNT):
     types: list = list(m.ApplicationType)
     jobs: Sequence[m.Job] = db.scalars(select(m.Job).where(m.Job.status == m.JobStatus.PENDING)).all()
     for job in jobs:
-        users: Sequence[int] = db.scalars(select(m.User.id).where(m.User.id != job.owner_id)).all()
-        users = set(random.choices(users, k=count))
+        db_users: Sequence[int] = db.scalars(select(m.User.id).where(m.User.id != job.owner_id)).all()
+        users: set[int] = set(random.choices(db_users, k=count))
 
         for user in users:
             appl: m.Application = m.Application(
@@ -52,8 +52,8 @@ def create_applications_for_job(db: Session, job_id: int, count: int = APPLICATI
         log(log.ERROR, "Job [%s] not found", job_id)
         raise ValueError(f"Job [{job_id}] not found")
 
-    users: Sequence[int] = db.scalars(select(m.User.id).where(m.User.id != job_owner_id)).all()
-    users = set(random.choices(users, k=count))
+    db_users: Sequence[int] = db.scalars(select(m.User.id).where(m.User.id != job_owner_id)).all()
+    users: set[int] = set(random.choices(db_users, k=count))
 
     for user in users:
         appl: m.Application = m.Application(

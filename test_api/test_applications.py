@@ -1,5 +1,3 @@
-from typing import Generator
-
 import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
@@ -31,7 +29,7 @@ def test_applications(client: TestClient, test_data: TestData, db: Session, head
 
     second_user: int = 2
     job: m.Job = create_job(db, second_user, is_pending=True)
-    application_data: s.ApplicationIn = s.ApplicationIn(job_id=job.id, type=m.ApplicationType.APPLY.value, worker_id=1)
+    application_data: s.ApplicationIn = s.ApplicationIn(job_id=job.id, type=m.ApplicationType.APPLY, worker_id=1)
     len_before: int = len(applications.data)
 
     response = client.post("/api/applications", json=application_data.model_dump(mode="json"), headers=headers[0])
@@ -42,7 +40,7 @@ def test_applications(client: TestClient, test_data: TestData, db: Session, head
 
     response = client.get("/api/applications", headers=headers[0])
     assert response.status_code == status.HTTP_200_OK
-    applications: s.ApplicationOutList = s.ApplicationOutList.model_validate(response.json())
+    applications = s.ApplicationOutList.model_validate(response.json())
     assert applications
     len_after: int = len(applications.data)
     assert len_after == len_before + 1

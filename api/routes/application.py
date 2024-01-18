@@ -89,7 +89,7 @@ def update_application(
     if not application:
         log(log.ERROR, "Application [%s] not found", application_id)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Application not found")
-    job_owner_id: m.User | None = db.scalar(sa.select(m.Job.owner_id).where(m.Job.id == application.job_id))
+    job_owner_id: int | None = db.scalar(sa.select(m.Job.owner_id).where(m.Job.id == application.job_id))
     if not job_owner_id:
         log(log.ERROR, "Job [%s] not found", application.job_id)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")

@@ -61,9 +61,9 @@ def test_data() -> Generator[TestData, None, None]:
 def headers(
     client: TestClient,
     test_data: TestData,
-) -> list[dict[str, str]]:
+) -> Generator[list[dict[str, str]], None, None]:
     """Returns an authorized test client for the API"""
-    users: list[s.Token] = list()
+    users: list[dict[str, str]] = list()
 
     for user in test_data.test_users:
         response = client.post(
