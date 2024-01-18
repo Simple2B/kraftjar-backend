@@ -58,26 +58,23 @@ def test_data() -> Generator[TestData, None, None]:
 
 
 @pytest.fixture
-def headers_gen(
+def headers(
     client: TestClient,
     test_data: TestData,
-) -> Generator[dict[str, str], None, None]:
+) -> list[dict[str, str]]:
     """Returns an authorized test client for the API"""
+    users: list[s.Token] = list()
 
-    def generator():
-        count = 0
-        while True:
-            user = test_data.test_users[count % len(test_data.test_users)]
-            response = client.post(
-                "/api/auth/login",
-                data={
-                    "username": user.email,
-                    "password": user.password,
-                },
-            )
-            assert response.status_code == status.HTTP_200_OK
-            token = s.Token.model_validate(response.json())
-            count += 1
-            yield dict(Authorization=f"Bearer {token.access_token}")
+    for user in test_data.test_users:
+        response = client.post(
+            "/api/auth/login",
+            data={
+                "username": user.email,
+                "password": user.password,
+            },
+        )
+        assert response.status_code == status.HTTP_200_OK
+        token = s.Token.model_validate(response.json())
+        users.append(dict(Authorization=f"Bearer {token.access_token}"))
 
-    yield generator()
+    yield users

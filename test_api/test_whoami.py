@@ -20,13 +20,12 @@ def test_who_am_i(
     client: TestClient,
     db: Session,
     test_data: TestData,
-    headers_gen: Generator[dict[str, str], None, None],
+    headers: list[dict[str, str]],
     faker,
 ):
-    headers = next(headers_gen)
     user: m.User | None = db.scalar(select(m.User))
     assert user
-    response = client.get("api/whoami/user", headers=headers)
+    response = client.get("api/whoami/user", headers=headers[0])
     assert response.status_code == status.HTTP_200_OK
     resp_obj: s.WhoAmI = s.WhoAmI.model_validate(response.json())
     assert resp_obj.uuid == user.uuid

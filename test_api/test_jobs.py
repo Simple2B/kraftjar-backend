@@ -17,8 +17,7 @@ CFG = config()
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_jobs(client: TestClient, headers_gen: Generator[dict[str, str], None, None], test_data: TestData, db: Session):
-    headers = next(headers_gen)
+def test_jobs(client: TestClient, headers: list[dict[str, str]], test_data: TestData, db: Session):
     create_jobs(db)
     response = client.get("/api/jobs")
     assert response.status_code == status.HTTP_200_OK
@@ -39,7 +38,7 @@ def test_jobs(client: TestClient, headers_gen: Generator[dict[str, str], None, N
         is_public=True,
     )
     len_before = len(jobs.jobs)
-    response = client.post("/api/jobs", json=job_data.model_dump(), headers=headers)
+    response = client.post("/api/jobs", json=job_data.model_dump(), headers=headers[0])
     assert response.status_code == status.HTTP_201_CREATED
     job = s.JobOut.model_validate(response.json())
     assert job.title == job_data.title and job.location_id == job_data.location_id
@@ -49,7 +48,13 @@ def test_jobs(client: TestClient, headers_gen: Generator[dict[str, str], None, N
     job_put_data = s.JobPut(
         title="Test Job",
     )
-    response = client.put(f"/api/jobs/{job.id}", json=job_put_data.model_dump(), headers=headers)
+    response = client.put(f"/api/jobs/{job.id}", json=job_put_data.model_dump(), headers=headers[0])
     assert response.status_code == status.HTTP_200_OK
     new_job = s.JobOut.model_validate(response.json())
     assert new_job.title == job_put_data.title and new_job.description == job.description
+
+    job_put_data = s.JobPut(
+        title="Test Job",
+    )
+    response = client.put(f"/api/jobs/{job.id}", json=job_put_data.model_dump(), headers=headers[1])
+    assert response.status_code == status.HTTP_403_FORBIDDEN
