@@ -1,3 +1,5 @@
+from typing import Generator
+
 import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
@@ -18,9 +20,10 @@ def test_who_am_i(
     client: TestClient,
     db: Session,
     test_data: TestData,
-    headers: dict[str, str],
+    headers_gen: Generator[dict[str, str], None, None],
     faker,
 ):
+    headers = next(headers_gen)
     user: m.User | None = db.scalar(select(m.User))
     assert user
     response = client.get("api/whoami/user", headers=headers)

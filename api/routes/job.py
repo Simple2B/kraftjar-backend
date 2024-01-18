@@ -51,7 +51,7 @@ def create_job(
     db.add(new_job)
     db.commit()
     log(log.INFO, "Created job [%s] for user [%s]", new_job.title, new_job.owner_id)
-    return job
+    return new_job
 
 
 @job_router.put("/{job_id}", status_code=status.HTTP_200_OK, response_model=s.JobOut)

@@ -1,10 +1,9 @@
 from typing import Annotated
 
+import sqlalchemy as sa
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import SQLAlchemyError
-import sqlalchemy as sa
 
 import app.models as m
 from api.dependency import get_db
@@ -60,18 +59,16 @@ def google_auth(
 
         db.add(user)
         db.flush()
-        if data.locations:
-            for location_id in data.locations:
-                location = db.scalar(sa.select(m.Location).where(m.Location.id == location_id))
-                if not location:
-                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Location not found")
-                db.add(m.UserLocation(user_id=user.id, location_id=location.id))
-        if data.professions:
-            for profession_id in data.professions:
-                profession = db.scalar(sa.select(m.Profession).where(m.Profession.id == profession_id))
-                if not profession:
-                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profession not found")
-                db.add(m.UserProfession(user_id=user.id, profession_id=profession.id))
+        for location_id in data.locations:
+            location = db.scalar(sa.select(m.Location).where(m.Location.id == location_id))
+            if not location:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Location not found")
+            db.add(m.UserLocation(user_id=user.id, location_id=location.id))
+        for profession_id in data.professions:
+            profession = db.scalar(sa.select(m.Profession).where(m.Profession.id == profession_id))
+            if not profession:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profession not found")
+            db.add(m.UserProfession(user_id=user.id, profession_id=profession.id))
 
         db.commit()
 
@@ -99,18 +96,16 @@ def apple_auth(
 
         db.add(user)
         db.flush()
-        if data.locations:
-            for location_id in data.locations:
-                location = db.scalar(sa.select(m.Location).where(m.Location.id == location_id))
-                if not location:
-                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Location not found")
-                db.add(m.UserLocation(user_id=user.id, location_id=location.id))
-        if data.professions:
-            for profession_id in data.professions:
-                profession = db.scalar(sa.select(m.Profession).where(m.Profession.id == profession_id))
-                if not profession:
-                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profession not found")
-                db.add(m.UserProfession(user_id=user.id, profession_id=profession.id))
+        for location_id in data.locations:
+            location = db.scalar(sa.select(m.Location).where(m.Location.id == location_id))
+            if not location:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Location not found")
+            db.add(m.UserLocation(user_id=user.id, location_id=location.id))
+        for profession_id in data.professions:
+            profession = db.scalar(sa.select(m.Profession).where(m.Profession.id == profession_id))
+            if not profession:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profession not found")
+            db.add(m.UserProfession(user_id=user.id, profession_id=profession.id))
 
         db.commit()
 

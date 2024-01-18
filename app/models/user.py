@@ -7,7 +7,6 @@ from flask_login import AnonymousUserMixin, UserMixin
 from sqlalchemy import orm
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from app import schema as s
 from app.database import db
 from app.logger import log
 
@@ -85,11 +84,6 @@ class User(db.Model, UserMixin, ModelMixin):
 
     def __repr__(self):
         return f"<{self.id}: {self.first_name},{self.email}>"
-
-    @property
-    def json(self):
-        u = s.User.model_validate(self)
-        return u.model_dump_json()
 
 
 class AnonymousUser(AnonymousUserMixin):

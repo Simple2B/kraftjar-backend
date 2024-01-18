@@ -11,7 +11,7 @@ from config import config
 
 from .test_data import TestData
 
-CFG = config("testing")
+CFG = config()
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")

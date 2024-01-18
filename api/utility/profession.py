@@ -16,6 +16,7 @@ def create_professions(db: Session, count: int = PROFESSIONS_COUNT):
 
     Args:
         db (Session): Database session
+        count (int, optional): Number of professions to create. Defaults to PROFESSIONS_COUNT.
     """
     professions: Sequence[m.Profession] = [m.Profession(name=faker.word()) for _ in range(count)]
     db.add_all(professions)

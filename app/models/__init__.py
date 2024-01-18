@@ -1,7 +1,7 @@
 # ruff: noqa
 from .user import User, AnonymousUser
 from .address import Address
-from .application import Application
+from .application import Application, ApplicationStatus, ApplicationType
 from .files import File
 from .job_files import job_files, JobFile
 from .job_services import job_services, JobService

@@ -21,8 +21,8 @@ class BaseAuth(BaseModel):
     uid: str | None = None
     display_name: str | None = None
     phone: str
-    locations: list[int] | None = None
-    professions: list[int] | None = None
+    locations: list[int] | None = []
+    professions: list[int] | None = []
 
     model_config = ConfigDict(
         from_attributes=True,

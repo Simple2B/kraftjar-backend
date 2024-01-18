@@ -20,6 +20,7 @@ def create_services(db: Session, count: int = SERVICES_COUNT):
 
     Args:
         db (Session): Database session
+        count (int, optional): Number of services to create. Defaults to SERVICES_COUNT.
     """
     professions: Sequence[int] = db.scalars(select(m.Profession.id)).all()
 

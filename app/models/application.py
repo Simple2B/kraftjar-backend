@@ -15,6 +15,12 @@ class ApplicationType(enum.Enum):
     APPLY = "apply"
 
 
+class ApplicationStatus(enum.Enum):
+    PENDING = "pending"
+    ACCEPTED = "accepted"
+    REJECTED = "rejected"
+
+
 class Application(db.Model, ModelMixin):
     __tablename__ = "applications"
 
@@ -25,6 +31,9 @@ class Application(db.Model, ModelMixin):
     job_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("jobs.id"))
 
     type: orm.Mapped[ApplicationType] = orm.mapped_column(sa.Enum(ApplicationType))
+    status: orm.Mapped[ApplicationStatus] = orm.mapped_column(
+        sa.Enum(ApplicationStatus), default=ApplicationStatus.PENDING
+    )
 
     created_at: orm.Mapped[datetime] = orm.mapped_column(
         sa.DateTime,

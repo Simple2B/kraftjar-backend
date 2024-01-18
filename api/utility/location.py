@@ -16,6 +16,7 @@ def create_locations(db: Session, count: int = LOCATIONS_COUNT):
 
     Args:
         db (Session): Database session
+        count (int, optional): Number of locations to create. Defaults to LOCATIONS_COUNT.w
     """
     locations: Sequence[m.Location] = [m.Location(name=faker.city()) for _ in range(count)]
     db.add_all(locations)
