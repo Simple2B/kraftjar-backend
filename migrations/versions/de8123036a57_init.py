@@ -1,8 +1,8 @@
 """init
 
-Revision ID: 4ffa96659874
+Revision ID: de8123036a57
 Revises: 
-Create Date: 2024-01-15 16:12:30.597205
+Create Date: 2024-01-18 12:56:07.643442
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4ffa96659874'
+revision = 'de8123036a57'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -60,7 +60,7 @@ def upgrade():
     sa.Column('password_hash', sa.String(length=256), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
-    sa.Column('is_deleted', sa.Boolean(), server_default=sa.text('0'), nullable=False),
+    sa.Column('is_deleted', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_users')),
     sa.UniqueConstraint('phone', name=op.f('uq_users_phone'))
     )
@@ -89,6 +89,20 @@ def upgrade():
     sa.ForeignKeyConstraint(['profession_id'], ['professions.id'], name=op.f('fk_services_profession_id_professions')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_services'))
     )
+    op.create_table('user_locations',
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('location_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['location_id'], ['locations.id'], name=op.f('fk_user_locations_location_id_locations')),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], name=op.f('fk_user_locations_user_id_users')),
+    sa.PrimaryKeyConstraint('user_id', 'location_id', name=op.f('pk_user_locations'))
+    )
+    op.create_table('user_professions',
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('profession_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['profession_id'], ['professions.id'], name=op.f('fk_user_professions_profession_id_professions')),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], name=op.f('fk_user_professions_user_id_users')),
+    sa.PrimaryKeyConstraint('user_id', 'profession_id', name=op.f('pk_user_professions'))
+    )
     op.create_table('jobs',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('uuid', sa.String(length=36), nullable=False),
@@ -116,6 +130,7 @@ def upgrade():
     sa.Column('worker_id', sa.Integer(), nullable=False),
     sa.Column('job_id', sa.Integer(), nullable=False),
     sa.Column('type', sa.Enum('INVITE', 'APPLY', name='applicationtype'), nullable=False),
+    sa.Column('status', sa.Enum('PENDING', 'ACCEPTED', 'REJECTED', name='applicationstatus'), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.Column('is_deleted', sa.Boolean(), nullable=False),
@@ -163,6 +178,8 @@ def downgrade():
     op.drop_table('job_files')
     op.drop_table('applications')
     op.drop_table('jobs')
+    op.drop_table('user_professions')
+    op.drop_table('user_locations')
     op.drop_table('services')
     op.drop_table('addresses')
     op.drop_table('users')

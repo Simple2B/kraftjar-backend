@@ -44,7 +44,7 @@ class User(db.Model, UserMixin, ModelMixin):
         onupdate=sa.func.now(),
     )
 
-    is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, server_default=sa.false())
+    is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
 
     @property
     def password(self):
