@@ -6,6 +6,7 @@ from .auth import router as auth_router
 from .job import job_router
 from .whoami import whoami_router
 from .application import application_router
+from .location import location_router
 
 # from .notify import notification_test_router
 
@@ -17,6 +18,7 @@ router.include_router(auth_router)
 router.include_router(job_router)
 router.include_router(whoami_router)
 router.include_router(application_router)
+router.include_router(location_router)
 
 
 @router.get("/list-endpoints/")

@@ -5,3 +5,5 @@ from .token import Token, TokenData, Auth
 from .job import JobOut, JobOutList, JobIn, JobPut
 from .application import ApplicationOut, ApplicationIn, ApplicationPut, ApplicationOutList
 from .whoami import WhoAmI
+from .profession import Profession, ProfessionList
+from .location import Location, LocationList
