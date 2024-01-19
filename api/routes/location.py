@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-import app.model as m
+import app.models as m
 import app.schema as s
 from app.database import get_db
 from app.logger import log

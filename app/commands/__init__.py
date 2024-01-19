@@ -28,14 +28,13 @@ def init(app: Flask):
     @app.cli.command("create-admin")
     def create_admin():
         """Create super admin account"""
-        query = m.User.select().where(m.User.email == app.config["ADMIN_EMAIL"])
+        query = m.Admin.select().where(m.Admin.email == app.config["ADMIN_EMAIL"])
         if db.session.execute(query).first():
             print(f"User with e-mail: [{app.config['ADMIN_EMAIL']}] already exists")
             return
-        m.User(
-            first_name=app.config["ADMIN_USERNAME"],
+        m.Admin(
+            username=app.config["ADMIN_USERNAME"],
             email=app.config["ADMIN_EMAIL"],
             password=app.config["ADMIN_PASSWORD"],
-            activated=True,
         ).save()
         print("admin created")

@@ -52,7 +52,6 @@ def google_auth(
         user = m.User(
             first_name=first_name if first_name else data.email.split("@")[0],
             email=data.email,
-            password=CFG.ACCOUNT_DEFAULT_PASSWORD,
             phone=data.phone,
             google_id=data.uid,
         )
@@ -89,7 +88,6 @@ def apple_auth(
         user = m.User(
             first_name=first_name if first_name else data.email.split("@")[0],
             email=data.email,
-            password=CFG.ACCOUNT_DEFAULT_PASSWORD,
             phone=data.phone,
             google_id=data.uid,
         )

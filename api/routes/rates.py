@@ -5,7 +5,6 @@ import app.models as m
 import app.schema as s
 from api.dependency import get_current_user
 from app.database import get_db
-from app.logger import log
 
 rate_router = APIRouter(prefix="/rates", tags=["rates"])
 
