@@ -47,7 +47,7 @@ class BaseConfig(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
     # Business logic
-    ACCOUNT_DEFAULT_PASSWORD: str
+    ACCOUNT_DEFAULT_PASSWORD: str = "12345678"
 
     MINIMUM_RATE: int = 1
     MAXIMUM_RATE: int = 5
