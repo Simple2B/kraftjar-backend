@@ -17,7 +17,7 @@ def gen_test_items(num_objects: int) -> Generator[tuple[str, str], None, None]:
 
     DOMAINS = ("com", "com.br", "net", "net.br", "org", "org.br", "gov", "gov.br")
 
-    i = db.session.query(func.max(m.User.id)).scalar()
+    i = db.session.query(func.max(m.Admin.id)).scalar()
 
     for _ in range(num_objects):
         i += 1
@@ -38,7 +38,7 @@ def gen_test_items(num_objects: int) -> Generator[tuple[str, str], None, None]:
 
 def populate(count: int = NUM_TEST_USERS):
     for username, email in gen_test_items(count):
-        m.User(
+        m.Admin(
             username=username,
             email=email,
         ).save(False)

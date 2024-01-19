@@ -45,7 +45,7 @@ def test_register(client):
         assert "toast-success" in response.data.decode()
         assert "toast-danger" not in response.data.decode()
 
-        user = db.session.query(m.User).filter_by(email=TEST_EMAIL).first()
+        user = db.session.query(m.Admin).filter_by(email=TEST_EMAIL).first()
         assert user
 
         assert len(outbox) == 1
@@ -62,7 +62,7 @@ def test_register(client):
         response = client.get(url)
         assert response.status_code == 302
         response.location == url_for("main.index")
-        user_db = db.session.scalar(m.User.select().where(m.User.email == TEST_EMAIL))
+        user_db = db.session.scalar(m.Admin.select().where(m.Admin.email == TEST_EMAIL))
         assert user_db
         assert user_db.activated
 
@@ -77,7 +77,7 @@ def test_forgot(client):
     )
     assert b"No registered user with this e-mail" in response.data
 
-    user = m.User(
+    user = m.Admin(
         username="sam",
         email=TEST_EMAIL,
         password="password",
@@ -93,7 +93,7 @@ def test_forgot(client):
         )
 
         assert b"Password reset successful. For set new password please check your e-mail." in response.data
-        user_db: m.User = db.session.scalar(m.User.select().where(m.User.email == TEST_EMAIL))
+        user_db: m.Admin = db.session.scalar(m.Admin.select().where(m.Admin.email == TEST_EMAIL))
         assert user_db
 
         assert len(outbox) == 1

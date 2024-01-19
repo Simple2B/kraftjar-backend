@@ -16,7 +16,7 @@ auth_blueprint = Blueprint("auth", __name__)
 def register():
     form = f.RegistrationForm()
     if form.validate_on_submit():
-        user = m.User(
+        user = m.Admin(
             username=form.username.data,
             email=form.email.data,
             password=form.password.data,
@@ -55,7 +55,7 @@ def register():
 def login():
     form = f.LoginForm(request.form)
     if form.validate_on_submit():
-        user = m.User.authenticate(form.user_id.data, form.password.data)
+        user = m.Admin.authenticate(form.user_id.data, form.password.data)
         log(log.INFO, "Form submitted. User: [%s]", user)
         if user:
             login_user(user)
@@ -86,8 +86,8 @@ def activate(reset_password_uid):
 
         return redirect(url_for("main.index"))
 
-    query = m.User.select().where(m.User.unique_id == reset_password_uid)
-    user: m.User | None = db.session.scalar(query)
+    query = m.Admin.select().where(m.Admin.unique_id == reset_password_uid)
+    user: m.Admin | None = db.session.scalar(query)
 
     if not user:
         log(log.INFO, "User not found")
@@ -105,8 +105,8 @@ def activate(reset_password_uid):
 def forgot_pass():
     form = f.ForgotForm(request.form)
     if form.validate_on_submit():
-        query = m.User.select().where(m.User.email == form.email.data)
-        user: m.User = db.session.scalar(query)
+        query = m.Admin.select().where(m.Admin.email == form.email.data)
+        user: m.Admin = db.session.scalar(query)
         # create e-mail message
         msg = Message(
             subject="Reset password",
@@ -140,8 +140,8 @@ def password_recovery(reset_password_uid):
     if current_user.is_authenticated:
         return redirect(url_for("main.index"))
 
-    query = m.User.select().where(m.User.unique_id == reset_password_uid)
-    user: m.User = db.session.scalar(query)
+    query = m.Admin.select().where(m.Admin.unique_id == reset_password_uid)
+    user: m.Admin = db.session.scalar(query)
 
     if not user:
         flash("Incorrect reset password link", "danger")

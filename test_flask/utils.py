@@ -1,4 +1,4 @@
-from app.models import User
+from app.models import Admin
 
 TEST_ADMIN_NAME = "bob"
 TEST_ADMIN_EMAIL = "bob@test.com"
@@ -6,7 +6,7 @@ TEST_ADMIN_PASSWORD = "password"
 
 
 def register(username=TEST_ADMIN_NAME, email=TEST_ADMIN_EMAIL, password=TEST_ADMIN_PASSWORD):
-    user = User(username=username, email=email)
+    user = Admin(username=username, email=email)
     user.password = password
     user.save()
     return user.id

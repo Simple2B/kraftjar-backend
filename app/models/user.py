@@ -3,7 +3,6 @@ from typing import Self
 from uuid import uuid4
 
 import sqlalchemy as sa
-from flask_login import AnonymousUserMixin, UserMixin
 from sqlalchemy import orm
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -13,7 +12,7 @@ from app.logger import log
 from .utils import ModelMixin
 
 
-class User(db.Model, UserMixin, ModelMixin):
+class User(db.Model, ModelMixin):
     __tablename__ = "users"
 
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
@@ -40,8 +39,8 @@ class User(db.Model, UserMixin, ModelMixin):
 
     updated_at: orm.Mapped[sa.DateTime] = orm.mapped_column(
         sa.DateTime,
-        default=sa.func.now(),
-        onupdate=sa.func.now(),
+        default=sa.func.now,
+        onupdate=sa.func.now,
     )
 
     is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
@@ -84,7 +83,3 @@ class User(db.Model, UserMixin, ModelMixin):
 
     def __repr__(self):
         return f"<{self.id}: {self.first_name},{self.email}>"
-
-
-class AnonymousUser(AnonymousUserMixin):
-    pass

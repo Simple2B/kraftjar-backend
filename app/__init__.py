@@ -49,7 +49,7 @@ def create_app(environment="development"):
     # Set up flask login.
     @login_manager.user_loader
     def get_user(id: int):
-        query = m.User.select().where(m.User.id == int(id))
+        query = m.Admin.select().where(m.Admin.id == int(id))
         return db.session.scalar(query)
 
     login_manager.login_view = "auth.login"
