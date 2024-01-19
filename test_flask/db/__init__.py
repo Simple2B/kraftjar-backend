@@ -1,9 +1,10 @@
 from typing import Generator
+
 from faker import Faker
 from sqlalchemy import func
+
 from app import db
 from app import models as m
-
 
 faker = Faker()
 
@@ -38,10 +39,6 @@ def gen_test_items(num_objects: int) -> Generator[tuple[str, str], None, None]:
 
 def populate(count: int = NUM_TEST_USERS):
     for username, email in gen_test_items(count):
-        m.Admin(
-            username=username,
-            email=email,
-            password_hash="*"
-        ).save(False)
+        m.Admin(username=username, email=email, password_hash="*").save(False)
 
     db.session.commit()
