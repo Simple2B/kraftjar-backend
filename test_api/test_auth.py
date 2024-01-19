@@ -18,7 +18,7 @@ CFG = config()
 def test_auth(db: Session, client: TestClient, test_data: TestData):
     create_locations(db)
     create_professions(db)
-    user_auth = s.Auth(identificator=test_data.test_users[0].email, password=test_data.test_users[0].password)
+    user_auth = s.Auth(identificator=test_data.test_users[0].phone, password=test_data.test_users[0].password)
     response = client.post("/api/auth/token", json=user_auth.model_dump())
     assert response.status_code == status.HTTP_200_OK
     token = s.Token.model_validate(response.json())

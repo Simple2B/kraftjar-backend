@@ -12,7 +12,6 @@ interface IUser {
   id: number;
   username: string;
   email: string;
-  activated: boolean;
 }
 
 const $modalElement: HTMLElement = document.querySelector('#editUserModal');
@@ -101,8 +100,6 @@ function editUser(user: IUser) {
   input.value = '*******';
   input = document.querySelector('#user-edit-password_confirmation');
   input.value = '*******';
-  input = document.querySelector('#user-edit-activated');
-  input.checked = user.activated;
   input = document.querySelector('#user-edit-next_url');
   input.value = window.location.href;
   modal.show();

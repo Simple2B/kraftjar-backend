@@ -21,29 +21,20 @@ class User(db.Model, ModelMixin):
     first_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
     last_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
 
-    email: orm.Mapped[str] = orm.mapped_column(
-        sa.String(128),
-    )
+    email: orm.Mapped[str] = orm.mapped_column(sa.String(128))
 
-    phone: orm.Mapped[str] = orm.mapped_column(sa.String(32), unique=True, nullable=False)
+    phone: orm.Mapped[str] = orm.mapped_column(sa.String(32), unique=True)
 
     google_id: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")
     apple_id: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")
     diia_id: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")
 
-    password_hash: orm.Mapped[str] = orm.mapped_column(sa.String(256), default="")
-    created_at: orm.Mapped[datetime] = orm.mapped_column(
-        sa.DateTime,
-        default=datetime.utcnow,
-    )
+    password_hash: orm.Mapped[str | None] = orm.mapped_column(sa.String(256))
+    created_at: orm.Mapped[datetime] = orm.mapped_column(default=datetime.utcnow)
 
-    updated_at: orm.Mapped[sa.DateTime] = orm.mapped_column(
-        sa.DateTime,
-        default=sa.func.now,
-        onupdate=sa.func.now,
-    )
+    updated_at: orm.Mapped[datetime] = orm.mapped_column(default=sa.func.now(), onupdate=sa.func.now())
 
-    is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
+    is_deleted: orm.Mapped[bool] = orm.mapped_column(default=False)
 
     @property
     def password(self):
@@ -56,20 +47,16 @@ class User(db.Model, ModelMixin):
     @classmethod
     def authenticate(
         cls,
-        user_id,
-        password,
-        session: orm.Session | None = None,
+        phone: str,
+        password: str,
+        session: orm.Session,
     ) -> Self | None:
-        if not session:
-            session = db.session
-        query = cls.select().where(
-            (sa.func.lower(cls.phone) == sa.func.lower(user_id)) | (sa.func.lower(cls.email) == sa.func.lower(user_id))
-        )
-        assert session
+        assert phone and password, "phone and password must be provided"
+        query = cls.select().where((sa.func.lower(cls.phone) == sa.func.lower(phone)))
         user = session.scalar(query)
         if not user:
-            log(log.WARNING, "user:[%s] not found", user_id)
-        elif check_password_hash(user.password, password):
+            log(log.WARNING, "user:[%s] not found", phone)
+        elif check_password_hash(user.password_hash, password):
             return user
         return None
 

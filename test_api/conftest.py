@@ -69,7 +69,7 @@ def headers(
         response = client.post(
             "/api/auth/login",
             data={
-                "username": user.email,
+                "username": user.phone,
                 "password": user.password,
             },
         )

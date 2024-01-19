@@ -54,6 +54,7 @@ def populate(client: FlaskClient):
         m.Admin(
             username=f"user{i+1}",
             email=f"user{i+1}@mail.com",
+            password_hash="*",
         ).save(False)
     db.session.commit()
     yield client

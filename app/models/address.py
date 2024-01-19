@@ -30,8 +30,8 @@ class Address(db.Model, ModelMixin):
 
     updated_at: orm.Mapped[sa.DateTime] = orm.mapped_column(
         sa.DateTime,
-        default=sa.func.now,
-        onupdate=sa.func.now,
+        default=sa.func.now(),
+        onupdate=sa.func.now(),
     )
     is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
 

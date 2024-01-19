@@ -59,7 +59,6 @@ def save():
             return redirect(url_for("user.get_all"))
         u.username = form.username.data
         u.email = form.email.data
-        u.activated = form.activated.data
         if form.password.data.strip("*\n "):
             u.password = form.password.data
         u.save()
@@ -82,7 +81,6 @@ def create():
             username=form.username.data,
             email=form.email.data,
             password=form.password.data,
-            activated=form.activated.data,
         )
         log(log.INFO, "Form submitted. User: [%s]", user)
         flash("User added!", "success")

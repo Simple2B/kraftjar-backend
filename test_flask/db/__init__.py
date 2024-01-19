@@ -41,6 +41,7 @@ def populate(count: int = NUM_TEST_USERS):
         m.Admin(
             username=username,
             email=email,
+            password_hash="*"
         ).save(False)
 
     db.session.commit()

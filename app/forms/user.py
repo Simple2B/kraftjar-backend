@@ -4,7 +4,6 @@ from wtforms import (
     PasswordField,
     SubmitField,
     ValidationError,
-    BooleanField,
 )
 from wtforms.validators import DataRequired, Email, Length, EqualTo
 
@@ -16,7 +15,6 @@ class UserForm(FlaskForm):
     next_url = StringField("next_url")
     user_id = StringField("user_id", [DataRequired()])
     email = StringField("email", [DataRequired(), Email()])
-    activated = BooleanField("activated")
     username = StringField("Username", [DataRequired()])
     password = PasswordField("Password", validators=[DataRequired(), Length(6, 30)])
     password_confirmation = PasswordField(
@@ -41,7 +39,6 @@ class UserForm(FlaskForm):
 
 class NewUserForm(FlaskForm):
     email = StringField("email", [DataRequired(), Email()])
-    activated = BooleanField("activated")
     username = StringField("Username", [DataRequired()])
     password = PasswordField("Password", validators=[DataRequired(), Length(6, 30)])
     password_confirmation = PasswordField(

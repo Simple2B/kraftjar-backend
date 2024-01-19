@@ -21,38 +21,12 @@ class Admin(db.Model, UserMixin, ModelMixin):
     __tablename__ = "admins"
 
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
-    username: orm.Mapped[str] = orm.mapped_column(
-        sa.String(64),
-        unique=True,
-        nullable=False,
-    )
-    email: orm.Mapped[str] = orm.mapped_column(
-        sa.String(128),
-        unique=True,
-        nullable=False,
-    )
-    password_hash: orm.Mapped[str] = orm.mapped_column(sa.String(256), default="")
-    activated: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
-    created_at: orm.Mapped[datetime] = orm.mapped_column(
-        sa.DateTime,
-        default=datetime.utcnow,
-    )
-    unique_id: orm.Mapped[str] = orm.mapped_column(
-        sa.String(36),
-        default=gen_password_reset_id,
-    )
-    reset_password_uid: orm.Mapped[str] = orm.mapped_column(
-        sa.String(64),
-        default=gen_password_reset_id,
-    )
-
-    updated_at: orm.Mapped[datetime] = orm.mapped_column(
-        sa.DateTime,
-        default=sa.func.now,
-        onupdate=sa.func.now,
-    )
-
-    is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, server_default=sa.false())
+    username: orm.Mapped[str] = orm.mapped_column(sa.String(64), unique=True)
+    email: orm.Mapped[str] = orm.mapped_column(sa.String(128), unique=True)
+    password_hash: orm.Mapped[str] = orm.mapped_column(sa.String(256))
+    created_at: orm.Mapped[datetime] = orm.mapped_column(default=sa.func.now())
+    updated_at: orm.Mapped[datetime] = orm.mapped_column(default=sa.func.now(), onupdate=sa.func.now())
+    is_deleted: orm.Mapped[bool] = orm.mapped_column(default=sa.false())
 
     @property
     def password(self):
