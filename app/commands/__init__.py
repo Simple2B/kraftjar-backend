@@ -38,3 +38,11 @@ def init(app: Flask):
             password=app.config["ADMIN_PASSWORD"],
         ).save()
         print("admin created")
+
+    @app.cli.command("create-users")
+    def create_users():
+        """Create users"""
+        from api.utility import create_users
+
+        create_users(db)
+        print("users created")

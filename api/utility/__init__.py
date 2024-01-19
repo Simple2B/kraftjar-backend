@@ -5,3 +5,4 @@ from .location import create_locations
 from .profession import create_professions
 from .service import create_services
 from .applications import create_applications, create_applications_for_job
+from .user import create_users

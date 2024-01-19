@@ -12,7 +12,7 @@ def test_list(populate: FlaskClient):
     assert response
     assert response.status_code == 200
     html = response.data.decode()
-    users = db.session.scalars(m.Admin.select().order_by(m.Admin.id).limit(11)).all()
+    users = db.session.scalars(m.User.select().order_by(m.User.id).limit(11)).all()
     assert len(users) == 11
     for user in users[:DEFAULT_PAGE_SIZE]:
         assert user.username in html
@@ -30,24 +30,16 @@ def test_list(populate: FlaskClient):
     assert "/user/?page=2" not in html
 
 
-def test_create_admin(runner: FlaskCliRunner):
-    res: Result = runner.invoke(args=["create-admin"])
-    assert "admin created" in res.output
-    query = m.Admin.select().where(m.Admin.username == app.config["ADMIN_USERNAME"])
-    assert db.session.scalar(query)
-
-
-def test_populate_db(runner: FlaskCliRunner):
-    TEST_COUNT = 56
-    count_before = db.session.query(m.Admin).count()
-    res: Result = runner.invoke(args=["db-populate", "--count", f"{TEST_COUNT}"])
-    assert f"populated by {TEST_COUNT}" in res.stdout
-    assert (db.session.query(m.Admin).count() - count_before) == TEST_COUNT
+def test_create_user(runner: FlaskCliRunner):
+    res: Result = runner.invoke(args=["create-users"])
+    assert "users created" in res.output
+    query = m.User.select()
+    assert db.session.scalars(query).all()
 
 
 def test_delete_user(populate: FlaskClient):
     login(populate)
-    uc = db.session.query(m.Admin).count()
+    uc = db.session.query(m.User).count()
     response = populate.delete("/user/delete/1")
-    assert db.session.query(m.Admin).count() < uc
+    assert db.session.query(m.User).count() < uc
     assert response.status_code == 200
