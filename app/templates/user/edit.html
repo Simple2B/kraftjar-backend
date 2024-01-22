@@ -15,24 +15,35 @@
       <div class="p-6 space-y-6">
         <div class="grid grid-cols-6 gap-6">
           <div class="col-span-6 sm:col-span-3">
-            <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" >Name</label >
-            <input type="text" name="username" id="user-edit-username" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Name" required />
+            <label for="fisrt-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" > First Name </label >
+            <input type="text" name="first_name" id="user-edit-first-name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Name" required />
           </div>
           <div class="col-span-6 sm:col-span-3">
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" >Email</label >
+            <label for="last-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" > Last Name </label >
+            <input type="text" name="last_name" id="user-edit-last-name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Name" required />
+          </div>
+
+          <div class="col-span-6 sm:col-span-3">
+            <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" > Phone </label >
+            <input type="text" name="phone" id="user-edit-phone" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Name" required />
+          </div>
+
+          <div class="col-span-6 sm:col-span-3">
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" > Email </label >
             <input type="email" name="email" id="user-edit-email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="example@company.com" required />
           </div>
-          <!-- <div class="col-span-6 sm:col-span-3">
-            <label for="activated" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" >Activated</label >
-            <input type="checkbox" name="activated" id="user-edit-activated" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-          </div> -->
+
           <div class="col-span-6 sm:col-span-3">
-            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" >Current Password</label >
+            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" > Current Password </label >
             <input type="password" name="password" id="user-edit-password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="••••••••" />
           </div>
           <div class="col-span-6 sm:col-span-3">
-            <label for="password_confirmation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" >New Password</label >
+            <label for="password_confirmation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" > New Password </label >
             <input type="password" name="password_confirmation" id="user-edit-password_confirmation" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="••••••••" />
+          </div>
+          <div class="col-span-6 sm:col-span-3">
+            <label for="deleted" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" > Is Deleted </label >
+            <input type="checkbox" name="is_deleted" id="user-edit-is-deleted" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-2 p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
           </div>
         </div>
       </div>

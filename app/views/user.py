@@ -57,11 +57,16 @@ def save():
             log(log.ERROR, "Not found user by id : [%s]", form.user_id.data)
             flash("Cannot save user data", "danger")
             return redirect(url_for("user.get_all"))
-        u.username = form.username.data
+        u.first_name = form.first_name.data
+        u.last_name = form.last_name.data
+        u.phone = form.phone.data
+        # form.is_deleted.data is always False
+        u.is_deleted = form.is_deleted.data
         u.email = form.email.data
         if form.password.data.strip("*\n "):
             u.password = form.password.data
         u.save()
+        log(log.INFO, "User [%s] updated", u)
         if form.next_url.data:
             return redirect(form.next_url.data)
         return redirect(url_for("user.get_all"))
@@ -81,7 +86,7 @@ def delete(id: int):
         flash("There is no such user", "danger")
         return "no user", 404
 
-    db.session.delete(u)
+    u.is_deleted = True
     db.session.commit()
     log(log.INFO, "User deleted. User: [%s]", u)
     flash("User deleted!", "success")

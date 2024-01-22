@@ -7,6 +7,7 @@ class User(BaseModel):
     last_name: str
     phone: str
     email: str
+    is_deleted: bool
 
     model_config = ConfigDict(
         from_attributes=True,

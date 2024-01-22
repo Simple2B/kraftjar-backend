@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
-from app import models as m
+from app.models.application import ApplicationStatus, ApplicationType
 
 
 class ApplicationOut(BaseModel):
@@ -10,8 +10,8 @@ class ApplicationOut(BaseModel):
 
     worker_id: int
     job_id: int
-    type: m.ApplicationType
-    status: m.ApplicationStatus
+    type: ApplicationType
+    status: ApplicationStatus
 
     created_at: datetime
     is_deleted: bool
@@ -30,7 +30,7 @@ class ApplicationOutList(BaseModel):
 
 
 class ApplicationIn(BaseModel):
-    type: m.ApplicationType
+    type: ApplicationType
     job_id: int
     worker_id: int
 
@@ -40,7 +40,7 @@ class ApplicationIn(BaseModel):
 
 
 class ApplicationPut(BaseModel):
-    status: m.ApplicationStatus | None = None
+    status: ApplicationStatus | None = None
 
     model_config = ConfigDict(
         from_attributes=True,

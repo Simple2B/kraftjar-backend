@@ -10,8 +10,11 @@ import type {ModalOptions, ModalInterface} from 'flowbite';
 
 interface IUser {
   id: number;
-  username: string;
+  first_name: string;
+  last_name: string;
   email: string;
+  phone: string;
+  is_deleted: boolean;
 }
 
 const $modalElement: HTMLElement = document.querySelector('#editUserModal');
@@ -90,16 +93,22 @@ deleteButtons.forEach(e => {
 });
 
 function editUser(user: IUser) {
-  let input: HTMLInputElement = document.querySelector('#user-edit-username');
-  input.value = user.username;
+  let input: HTMLInputElement = document.querySelector('#user-edit-first-name');
+  input.value = user.first_name;
+  input = document.querySelector('#user-edit-last-name');
+  input.value = user.last_name;
   input = document.querySelector('#user-edit-id');
   input.value = user.id.toString();
+  input = document.querySelector('#user-edit-phone');
+  input.value = user.phone;
   input = document.querySelector('#user-edit-email');
   input.value = user.email;
   input = document.querySelector('#user-edit-password');
   input.value = '*******';
   input = document.querySelector('#user-edit-password_confirmation');
   input.value = '*******';
+  input = document.querySelector('#user-edit-is-deleted');
+  input.checked = user.is_deleted;
   input = document.querySelector('#user-edit-next_url');
   input.value = window.location.href;
   modal.show();
