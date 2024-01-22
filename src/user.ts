@@ -48,13 +48,6 @@ $buttonElements.forEach(e =>
   }),
 );
 
-// closing add edit modal
-const $buttonClose = document.querySelector('#modalCloseButton');
-if ($buttonClose) {
-  $buttonClose.addEventListener('click', () => {
-    modal.hide();
-  });
-}
 
 // closing add user modal
 const addModalCloseBtn = document.querySelector('#modalAddCloseButton');

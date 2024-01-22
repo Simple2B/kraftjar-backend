@@ -48,3 +48,5 @@ def init(app: Flask):
 
             create_users(db)
             print("users created")
+
+    # @app.cli.command("register-user")
