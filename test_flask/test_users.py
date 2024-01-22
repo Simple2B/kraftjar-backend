@@ -37,6 +37,7 @@ def test_create_user(runner: FlaskCliRunner):
     assert "users created" in res.output
     query = m.User.select()
     assert db.session.scalars(query).all()
+    assert len(db.session.scalars(query).all())
 
 
 def test_delete_user(populate: FlaskClient):

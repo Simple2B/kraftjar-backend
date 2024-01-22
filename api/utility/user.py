@@ -40,20 +40,20 @@ def create_users(db: Session, count: int = USER_COUNT):
         created_professions: Sequence[int] = db.scalars(select(m.Profession.id)).all()
         professions = created_professions
 
-    for i in range(count):
-        db.add(
-            m.User(
-                first_name=faker.first_name(),
-                last_name=faker.last_name(),
-                email=faker.email(),
-                phone=i,
-            )
+    for i in range(1, count):
+        user = m.User(
+            first_name=faker.first_name(),
+            last_name=faker.last_name(),
+            email=faker.email(),
+            phone=faker.phone_number(),
         )
+        db.add(user)
+        db.flush()
         user_locations = set(random.choices(locations, k=3))
         for location in user_locations:
             db.add(
                 m.UserLocation(
-                    user_id=i,
+                    user_id=user.id,
                     location_id=location,
                 )
             )
@@ -62,7 +62,7 @@ def create_users(db: Session, count: int = USER_COUNT):
         for profession in user_professions:
             db.add(
                 m.UserProfession(
-                    user_id=i,
+                    user_id=user.id,
                     profession_id=profession,
                 )
             )
