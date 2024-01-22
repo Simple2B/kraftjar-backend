@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 import app.models as m
 from api.dependency import get_db
-from api.oauth2 import create_access_token
+from api.controllers.oauth2 import create_access_token
 from app import schema as s
 from api import controllers as c
 from app.logger import log

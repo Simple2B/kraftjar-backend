@@ -3,6 +3,7 @@
     {
       "first_name": "first1",
       "last_name": "last1",
+      "full_name": "first1 last1",
       "email": "testemail1@gmail.com",
       "phone": "06661230701",
       "password": "1234"
@@ -10,6 +11,7 @@
     {
       "first_name": "first2",
       "last_name": "last2",
+      "full_name": "first2 last2",
       "email": "testemail2@gmail.com",
       "phone": "06661230702",
       "password": "1234"
@@ -17,6 +19,7 @@
     {
       "first_name": "first3",
       "last_name": "last3",
+      "full_name": "first3 last3",
       "email": "testemail3@gmail.com",
       "phone": "06661230703",
       "password": "1234"

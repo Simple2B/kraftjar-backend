@@ -16,9 +16,8 @@ CFG = config()
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_auth(db: Session, client: TestClient, test_data: TestData):
-    create_locations(db)
-    create_professions(db)
-    user_auth = s.Auth(phone=test_data.test_users[0].phone, password=test_data.test_users[0].password)
+    USER = test_data.test_users[0]
+    user_auth = s.Auth(phone=USER.phone, password=USER.password)
     response = client.post("/api/auth/token", json=user_auth.model_dump())
     assert response.status_code == status.HTTP_200_OK
     token = s.Token.model_validate(response.json())
