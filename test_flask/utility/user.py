@@ -6,11 +6,10 @@ from faker import Faker
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from api.utility.location import create_locations
+from api.utility.profession import create_professions
 from app import models as m
 from app.logger import log
-
-from .profession import create_professions
-from .location import create_locations
 
 faker: Faker = Faker()
 
@@ -28,19 +27,19 @@ def create_users(db: Session, count: int = USER_COUNT):
         db = cast(Alchemical, db).session
     locations: Sequence[int] = db.scalars(select(m.Location.id)).all()
     if not locations:
-        log(log.ERROR, "No locations found")
+        log(log.WARNING, "No locations found")
         create_locations(db)
         created_locations: Sequence[int] = db.scalars(select(m.Location.id)).all()
         locations = created_locations
 
     professions: Sequence[int] = db.scalars(select(m.Profession.id)).all()
     if not professions:
-        log(log.ERROR, "No professions found")
+        log(log.WARNING, "No professions found")
         create_professions(db)
         created_professions: Sequence[int] = db.scalars(select(m.Profession.id)).all()
         professions = created_professions
 
-    for i in range(1, count):
+    for i in range(1, count + 1):
         user = m.User(
             first_name=faker.first_name(),
             last_name=faker.last_name(),

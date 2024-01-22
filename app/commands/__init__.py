@@ -39,10 +39,12 @@ def init(app: Flask):
         ).save()
         print("admin created")
 
-    @app.cli.command("create-users")
-    def create_users():
-        """Create users"""
-        from api.utility import create_users
+    if app.config["ENV"] != "production":
 
-        create_users(db)
-        print("users created")
+        @app.cli.command("create-users")
+        def create_users():
+            """Create users"""
+            from test_flask.utility import create_users
+
+            create_users(db)
+            print("users created")

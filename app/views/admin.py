@@ -99,7 +99,7 @@ def delete(id: int):
         flash("There is no such user", "danger")
         return "no user", 404
 
-    db.session.delete(u)
+    u.is_deleted = True
     db.session.commit()
     log(log.INFO, "User deleted. User: [%s]", u)
     flash("User deleted!", "success")
