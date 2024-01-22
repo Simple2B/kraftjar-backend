@@ -10,8 +10,3 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     user_id: int
     exp: datetime
-
-
-class Auth(BaseModel):
-    identificator: str
-    password: str

@@ -21,6 +21,8 @@ services:
     environment:
       APP_ENV: production
       ALCHEMICAL_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-passwd}@db:5432/db
+    env_file:
+      - .env
     depends_on:
       - db
     labels:
@@ -37,6 +39,8 @@ services:
       APP_ENV: production
       IS_API: "true"
       ALCHEMICAL_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-passwd}@db:5432/db
+    env_file:
+      - .env
     depends_on:
       - db
     labels:

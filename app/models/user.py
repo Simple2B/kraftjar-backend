@@ -20,16 +20,17 @@ class User(db.Model, ModelMixin):
 
     first_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
     last_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
+    fullname: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")  # fill in registration form
 
-    email: orm.Mapped[str] = orm.mapped_column(sa.String(128))
+    email: orm.Mapped[str] = orm.mapped_column(sa.String(128))  # fill in registration form
 
-    phone: orm.Mapped[str] = orm.mapped_column(sa.String(32), unique=True)
+    phone: orm.Mapped[str] = orm.mapped_column(sa.String(32), unique=True)  # fill in registration form
 
     google_id: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")
     apple_id: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")
     diia_id: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")
 
-    password_hash: orm.Mapped[str | None] = orm.mapped_column(sa.String(256))
+    password_hash: orm.Mapped[str | None] = orm.mapped_column(sa.String(256))  # fill in registration form
     created_at: orm.Mapped[datetime] = orm.mapped_column(default=datetime.utcnow)
 
     updated_at: orm.Mapped[datetime] = orm.mapped_column(default=sa.func.now(), onupdate=sa.func.now())
