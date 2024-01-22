@@ -31,7 +31,7 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db=Depends
 @router.post("/token", status_code=status.HTTP_200_OK, response_model=s.Token)
 def get_token(auth_data: s.Auth, db=Depends(get_db)):
     """Logs in a user"""
-    user = m.User.authenticate(auth_data.identificator, auth_data.password, session=db)
+    user = m.User.authenticate(auth_data.phone, auth_data.password, session=db)
     if not user:
         log(log.ERROR, "User [%s] wrong identificator or password", auth_data.identificator)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid credentials")

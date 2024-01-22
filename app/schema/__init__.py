@@ -5,7 +5,7 @@ from .job import JobIn, JobOut, JobOutList, JobPut
 from .location import Location, LocationList
 from .pagination import Pagination
 from .profession import Profession, ProfessionList
-from .token import Auth, Token, TokenData
-from .user import AppleAuth, GoogleAuth, User
+from .token import Auth, Token, TokenData, AppleAuth, GoogleAuth
+from .user import User
 from .whoami import WhoAmI
 from .rate import RateIn, RateOut, RateOutList

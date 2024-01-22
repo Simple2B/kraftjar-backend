@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, AnyHttpUrl
 
 
 class Token(BaseModel):
@@ -12,6 +12,25 @@ class TokenData(BaseModel):
     exp: datetime
 
 
-class Auth(BaseModel):
-    identificator: str
-    password: str
+class BaseAuth(BaseModel):
+    email: str
+    first_name: str | None = None
+    last_name: str | None = None
+    uid: str
+    display_name: str | None = None
+
+    phone: str | None = None
+    locations: list[int] = []
+    professions: list[int] = []
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class GoogleAuth(BaseAuth):
+    photo_url: AnyHttpUrl | str | None = None
+
+
+class AppleAuth(BaseAuth):
+    pass
