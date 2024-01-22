@@ -12,6 +12,7 @@ interface IUser {
   id: number;
   username: string;
   email: string;
+  is_deleted: boolean;
 }
 
 const $modalElement: HTMLElement = document.querySelector('#editUserModal');
@@ -102,5 +103,7 @@ function editUser(user: IUser) {
   input.value = '*******';
   input = document.querySelector('#user-edit-next_url');
   input.value = window.location.href;
+  input = document.querySelector('#user-edit-is-deleted');
+  input.checked = user.is_deleted;
   modal.show();
 }

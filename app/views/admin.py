@@ -1,19 +1,19 @@
+import sqlalchemy as sa
 from flask import (
     Blueprint,
-    render_template,
-    request,
     flash,
     redirect,
+    render_template,
+    request,
     url_for,
 )
 from flask_login import login_required
-import sqlalchemy as sa
-from app.controllers import create_pagination
 
-from app import models as m, db
+from app import db
 from app import forms as f
+from app import models as m
+from app.controllers import create_pagination
 from app.logger import log
-
 
 bp = Blueprint("admin", __name__, url_prefix="/admin")
 
@@ -51,7 +51,7 @@ def get_all():
 @bp.route("/save", methods=["POST"])
 @login_required
 def save():
-    form = f.UserForm()
+    form = f.AdminForm()
     if form.validate_on_submit():
         query = m.Admin.select().where(m.Admin.id == int(form.user_id.data))
         u: m.Admin | None = db.session.scalar(query)
@@ -77,7 +77,7 @@ def save():
 @bp.route("/create", methods=["POST"])
 @login_required
 def create():
-    form = f.NewUserForm()
+    form = f.NewAdminForm()
     if form.validate_on_submit():
         user = m.Admin(
             username=form.username.data,

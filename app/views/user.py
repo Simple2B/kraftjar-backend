@@ -1,19 +1,19 @@
+import sqlalchemy as sa
 from flask import (
     Blueprint,
-    render_template,
-    request,
     flash,
     redirect,
+    render_template,
+    request,
     url_for,
 )
 from flask_login import login_required
-import sqlalchemy as sa
-from app.controllers import create_pagination
 
-from app import models as m, db
+from app import db
 from app import forms as f
+from app import models as m
+from app.controllers import create_pagination
 from app.logger import log
-
 
 user_route = Blueprint("user", __name__, url_prefix="/user")
 
