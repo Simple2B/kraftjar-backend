@@ -23,6 +23,7 @@ COPY --chown=app:app pyproject.toml .
 COPY --chown=app:app poetry.toml .
 
 RUN poetry install --no-dev --no-interaction --no-ansi
+ENV PATH="/home/app/.venv/bin:${PATH}"
 # add gunicorn
 RUN poetry add gunicorn
 
