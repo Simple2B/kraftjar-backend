@@ -1,6 +1,7 @@
 import random
-from typing import Sequence
+from typing import Sequence, cast
 
+from alchemical.flask import Alchemical
 from faker import Faker
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -24,15 +25,15 @@ def create_users(db: Session, count: int = USER_COUNT):
         count (int, optional): Number of users to create. Defaults to USER_COUNT.
     """
     if type(db) != Session:
-        db = db.session
-    locations: Sequence[m.Location] = db.scalars(select(m.Location.id)).all()
+        db = cast(Alchemical, db).session
+    locations: Sequence[int] = db.scalars(select(m.Location.id)).all()
     if not locations:
         log(log.ERROR, "No locations found")
         create_locations(db)
         created_locations: Sequence[int] = db.scalars(select(m.Location.id)).all()
         locations = created_locations
 
-    professions: Sequence[m.Profession] = db.scalars(select(m.Profession.id)).all()
+    professions: Sequence[int] = db.scalars(select(m.Profession.id)).all()
     if not professions:
         log(log.ERROR, "No professions found")
         create_professions(db)
