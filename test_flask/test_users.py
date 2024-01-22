@@ -43,7 +43,6 @@ def test_create_user(runner: FlaskCliRunner):
 def test_delete_user(populate: FlaskClient):
     login(populate)
     create_users(db)
-    uc = db.session.query(m.User).count()
     response = populate.delete("/user/delete/1")
     assert response.status_code == 200
-    assert db.session.query(m.User).count() < uc
+    assert db.session.scalar(m.User.select().where(m.User.id == 1)).is_deleted
