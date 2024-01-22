@@ -1,10 +1,10 @@
 # Registration data schema
 
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, EmailStr
 
 
 class RegistrationIn(BaseModel):
-    email: EmailStr = Field(..., example="user@kraftjar.net")
-    password: str = Field(..., example="********")
-    fullname: str = Field(..., example="Svjatyj Mykolay")
-    phone: str = Field(..., example="+380 67 123 4567")
+    email: EmailStr
+    password: str
+    fullname: str
+    phone: str

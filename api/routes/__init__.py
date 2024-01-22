@@ -1,4 +1,3 @@
-# flake8: noqa F401
 from fastapi import APIRouter, Request
 
 from .user import user_router

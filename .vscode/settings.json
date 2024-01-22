@@ -32,5 +32,6 @@
   },
   "taipyStudio.config.mainPythonFile": "wsgi.py",
   "mypy.dmypyExecutable": "${workspaceFolder}/.venv/bin/dmypy",
-  "mypy.runUsingActiveInterpreter": true
+  "mypy.runUsingActiveInterpreter": true,
+  "taipyStudio.gUI.elementsFilePaths": []
 }
