@@ -1,5 +1,6 @@
-from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
+from sqlalchemy.orm import Session
+
 from app import schema as s
 
 

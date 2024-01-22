@@ -38,3 +38,15 @@ def init(app: Flask):
             password=app.config["ADMIN_PASSWORD"],
         ).save()
         print("admin created")
+
+    if app.config["ENV"] != "production":
+
+        @app.cli.command("create-users")
+        def create_users():
+            """Create users"""
+            from test_flask.utility import create_users
+
+            create_users(db)
+            print("users created")
+
+    # @app.cli.command("register-user")

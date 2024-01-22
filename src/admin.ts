@@ -10,10 +10,8 @@ import type {ModalOptions, ModalInterface} from 'flowbite';
 
 interface IUser {
   id: number;
-  first_name: string;
-  last_name: string;
+  username: string;
   email: string;
-  phone: string;
   is_deleted: boolean;
 }
 
@@ -75,7 +73,7 @@ deleteButtons.forEach(e => {
   e.addEventListener('click', async () => {
     if (confirm('Are sure?')) {
       let id = e.getAttribute('data-user-id');
-      const response = await fetch(`/user/delete/${id}`, {
+      const response = await fetch(`/admin/delete/${id}`, {
         method: 'DELETE',
       });
       if (response.status == 200) {
@@ -86,23 +84,19 @@ deleteButtons.forEach(e => {
 });
 
 function editUser(user: IUser) {
-  let input: HTMLInputElement = document.querySelector('#user-edit-first-name');
-  input.value = user.first_name;
-  input = document.querySelector('#user-edit-last-name');
-  input.value = user.last_name;
+  let input: HTMLInputElement = document.querySelector('#user-edit-username');
+  input.value = user.username;
   input = document.querySelector('#user-edit-id');
   input.value = user.id.toString();
-  input = document.querySelector('#user-edit-phone');
-  input.value = user.phone;
   input = document.querySelector('#user-edit-email');
   input.value = user.email;
   input = document.querySelector('#user-edit-password');
   input.value = '*******';
   input = document.querySelector('#user-edit-password_confirmation');
   input.value = '*******';
-  input = document.querySelector('#user-edit-is-deleted');
-  input.checked = user.is_deleted;
   input = document.querySelector('#user-edit-next_url');
   input.value = window.location.href;
+  input = document.querySelector('#user-edit-is-deleted');
+  input.checked = user.is_deleted;
   modal.show();
 }

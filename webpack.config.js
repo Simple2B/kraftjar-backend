@@ -36,7 +36,20 @@ const userConfig = {
   },
 };
 
-const configs = [baseConfig, userConfig].map(conf =>
+
+const adminConfig = {
+  entry: {
+    main: './src/admin.ts',
+  },
+  output: {
+    path: path.resolve(__dirname, './app/static'),
+    filename: 'js/admin.js', // <--- Will be compiled to this single file
+  },
+};
+
+
+
+const configs = [baseConfig, userConfig, adminConfig].map(conf =>
   merge(defaultConfig, conf),
 );
 

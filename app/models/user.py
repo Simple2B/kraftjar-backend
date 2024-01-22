@@ -8,6 +8,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.database import db
 from app.logger import log
+from app.schema.user import User as u
 
 from .utils import ModelMixin
 
@@ -71,3 +72,9 @@ class User(db.Model, ModelMixin):
 
     def __repr__(self):
         return f"<{self.id}: {self.first_name},{self.email}>"
+
+    # uses for editing user
+    @property
+    def json(self):
+        user = u.model_validate(self)
+        return user.model_dump_json()
