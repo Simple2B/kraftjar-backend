@@ -44,7 +44,6 @@ def google_auth(
     db: Session = Depends(get_db),
 ):
     """Logs in a user with Google"""
-
     user = db.scalar(sa.select(m.User).where(m.User.email == data.email))
     if not user:
         first_name = data.first_name if data.first_name else data.display_name
@@ -80,7 +79,6 @@ def apple_auth(
     db: Session = Depends(get_db),
 ):
     """Logs in a user with Apple"""
-
     user = db.scalar(sa.select(m.User).where(m.User.email == data.email))
     if not user:
         first_name = data.first_name if data.first_name else data.display_name

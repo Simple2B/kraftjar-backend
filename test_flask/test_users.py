@@ -3,12 +3,12 @@ from flask.testing import FlaskClient, FlaskCliRunner
 from click.testing import Result
 from app import models as m, db
 from test_flask.utils import login
+from api.utility import create_users
 
 
-def test_list(populate: FlaskClient):
-    login(populate)
+def test_list(client: FlaskClient):
     DEFAULT_PAGE_SIZE = app.config["DEFAULT_PAGE_SIZE"]
-    response = populate.get("/user/")
+    response = client.get("/user/")
     assert response
     assert response.status_code == 200
     html = response.data.decode()
@@ -18,8 +18,8 @@ def test_list(populate: FlaskClient):
         assert user.username in html
     assert users[10].username not in html
 
-    populate.application.config["PAGE_LINKS_NUMBER"] = 6
-    response = populate.get("/user/?page=6")
+    client.application.config["PAGE_LINKS_NUMBER"] = 6
+    response = client.get("/user/?page=6")
     assert response
     assert response.status_code == 200
     html = response.data.decode()
