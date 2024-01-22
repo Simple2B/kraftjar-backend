@@ -1,12 +1,6 @@
-from typing import Annotated
+from fastapi import APIRouter, Depends, status
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy.orm import Session
-
-import app.models as m
 from api.dependency import get_db
-from api.controllers.oauth2 import create_access_token
 from app import schema as s
 from api import controllers as c
 from app.logger import log

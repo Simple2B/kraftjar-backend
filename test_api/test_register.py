@@ -1,11 +1,8 @@
 import pytest
-import sqlalchemy as sa
 from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from api.utility import create_locations, create_professions
-from app import models as m
 from app import schema as s
 from config import config
 
