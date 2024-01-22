@@ -47,7 +47,6 @@ def test_populate_db(runner: FlaskCliRunner):
 
 def test_delete_user(populate: FlaskClient):
     login(populate)
-    uc = db.session.query(m.Admin).count()
     response = populate.delete("/admin/delete/1")
-    assert db.session.query(m.Admin).count() < uc
     assert response.status_code == 200
+    assert db.session.scalar(m.Admin.select().where(m.Admin.id == 1)).is_deleted
