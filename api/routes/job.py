@@ -29,6 +29,7 @@ def get_job(
 @job_router.get("/", status_code=status.HTTP_200_OK, response_model=s.JobOutList)
 def get_jobs(
     db: Session = Depends(get_db),
+    # get cur_user
     current_user: m.User | None = Depends(get_user),
 ):
     query = sa.select(m.Job)

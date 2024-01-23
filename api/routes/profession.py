@@ -4,8 +4,9 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-import app.model as m
+import app.models as m
 import app.schema as s
+from api.dependency import get_current_user
 from app.database import get_db
 from app.logger import log
 
@@ -13,7 +14,7 @@ profession_router = APIRouter(prefix="/professions", tags=["Jobs"])
 
 
 @profession_router.get("", status_code=status.HTTP_200_OK, response_model=s.ProfessionList)
-def get_professions(db: Session = Depends(get_db)):
+def get_professions(db: Session = Depends(get_db), current_user: m.User = Depends(get_current_user)):
     professions: Sequence[m.Profession] = db.scalars(
         select(m.Profession)
         .where(m.Profession.is_deleted == False)  # noqa E712
