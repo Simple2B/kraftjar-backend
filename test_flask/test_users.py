@@ -6,6 +6,15 @@ from test_flask.utils import login
 from .utility import create_users
 
 
+def test_policy(populate: FlaskClient):
+    response = populate.get("/policy")
+    assert response
+    assert response.status_code == 200
+    html = response.data.decode()
+    assert "Privacy Policy" in html
+    assert "Simple2B" in html
+
+
 def test_list(populate: FlaskClient):
     login(populate)
     USERS_COUNT = 11
