@@ -36,6 +36,8 @@ class User(db.Model, ModelMixin):
 
     updated_at: orm.Mapped[datetime] = orm.mapped_column(default=sa.func.now(), onupdate=sa.func.now())
 
+    # is_volunteer: orm.Mapped[bool] = orm.mapped_column(default=False)
+
     is_deleted: orm.Mapped[bool] = orm.mapped_column(default=False)
 
     @property
