@@ -46,3 +46,50 @@ def get_all():
         page=pagination,
         search_query=q,
     )
+
+
+@field_route.route("/save", methods=["POST"])
+@login_required
+def save():
+    form = f.FieldForm()
+    if form.validate_on_submit():
+        query = m.Field.select().where(m.Field.id == int(form.Field_id.data))
+        u: m.Field | None = db.session.scalar(query)
+        if not u:
+            log(log.ERROR, "Not found field by id : [%s]", form.Field_id.data)
+            flash("Cannot save field data", "danger")
+            return redirect(url_for("field.get_all"))
+        u.first_name = form.First_name.data
+        u.last_name = form.last_name.data
+        u.phone = form.phone.data
+        # form.is_deleted.data is always False
+        u.is_deleted = form.is_deleted.data
+        u.email = form.email.data
+        if form.password.data.strip("*\n "):
+            u.password = form.password.data
+        u.save()
+        log(log.INFO, "field [%s] updated", u)
+        if form.next_url.data:
+            return redirect(form.next_url.data)
+        return redirect(url_for("field.get_all"))
+
+    else:
+        log(log.ERROR, "field save errors: [%s]", form.errors)
+        flash(f"{form.errors}", "danger")
+        return redirect(url_for("field.get_all"))
+
+
+@field_route.route("/delete/<int:id>", methods=["GET"])
+@login_required
+def delete(id: int):
+    u = db.session.scalar(m.Field.select().where(m.Field.id == id))
+    if not u:
+        log(log.INFO, "There is no field with id: [%s]", id)
+        flash("There is no such field", "danger")
+        return "no field", 404
+
+    u.is_deleted = True
+    db.session.commit()
+    log(log.INFO, "field deleted. field: [%s]", u)
+    flash("field deleted!", "success")
+    return "ok", 200
