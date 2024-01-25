@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import TYPE_CHECKING
 from uuid import uuid4
 
 import sqlalchemy as sa
@@ -6,7 +7,11 @@ from sqlalchemy import orm
 
 from app.database import db
 
+from .field_services import field_services
 from .utils import ModelMixin
+
+if TYPE_CHECKING:
+    from .field import Field
 
 
 class Service(db.Model, ModelMixin):
@@ -30,6 +35,10 @@ class Service(db.Model, ModelMixin):
         onupdate=sa.func.now(),
     )
     is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
+
+    fields: orm.Mapped[list["Field"]] = orm.relationship(
+        secondary=field_services,
+    )
 
     def __repr__(self):
         return f"<Service {self.id} {self.name} >"
