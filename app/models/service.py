@@ -1,4 +1,3 @@
-from typing import Self
 from datetime import datetime
 from uuid import uuid4
 
@@ -39,7 +38,7 @@ class Service(db.Model, ModelMixin):
             return None
         with db.begin() as session:
             stmt = sa.select(Service).where(Service.id == self.parent_id)
-            return s.ServiceDB(session.scalar(stmt))
+            return s.ServiceDB.model_validate(session.scalar(stmt))
 
     @property
     def children(self) -> list[s.ServiceDB]:

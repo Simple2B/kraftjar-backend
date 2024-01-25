@@ -17,7 +17,7 @@ mail = Mail()
 
 def create_app(environment="development"):
     from config import config
-    from app.views import main_blueprint, auth_blueprint, admin_blueprint, user_route, field_route
+    from app.views import main_blueprint, auth_blueprint, admin_blueprint, user_route
     from app import models as m
 
     # Instantiate app.
@@ -42,7 +42,6 @@ def create_app(environment="development"):
     app.register_blueprint(main_blueprint)
     app.register_blueprint(admin_blueprint)
     app.register_blueprint(user_route)
-    app.register_blueprint(field_route)
 
     # Set up flask login.
     @login_manager.user_loader

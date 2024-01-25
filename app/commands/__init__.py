@@ -49,18 +49,6 @@ def init(app: Flask):
             create_users(db)
             print("users created")
 
-    @app.cli.command("create-fields")
-    def create_fields(with_services: bool = True):
-        """Create fields
-
-        Args:
-            with_services (bool, optional): if it's true - creates services too. Defaults to True.
-        """
-        from api.utility import create_fields
-
-        create_fields(db.session, with_services)
-        print("Fields created")
-
     @app.cli.command()
     def export_services():
         """Fill services with data from json file"""

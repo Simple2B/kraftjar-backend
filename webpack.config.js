@@ -36,7 +36,6 @@ const userConfig = {
   },
 };
 
-
 const adminConfig = {
   entry: {
     main: './src/admin.ts',
@@ -46,18 +45,6 @@ const adminConfig = {
     filename: 'js/admin.js', // <--- Will be compiled to this single file
   },
 };
-
-
-const fieldConfig = {
-  entry: {
-    main: './src/field.ts',
-  },
-  output: {
-    path: path.resolve(__dirname, './app/static'),
-    filename: 'js/field.js', // <--- Will be compiled to this single file
-  },
-};
-
 
 const configs = [baseConfig, userConfig, adminConfig, fieldConfig].map(conf =>
   merge(defaultConfig, conf),

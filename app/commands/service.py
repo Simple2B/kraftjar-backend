@@ -18,10 +18,10 @@ def print_added_services(service: m.Service, session: Session):
 
     print("+ ", end="")
     stack = [service]
-    service = session.scalar(sa.select(m.Service).where(m.Service.id == service.parent_id))
-    while service:
-        stack.append(service)
-        service = session.scalar(sa.select(m.Service).where(m.Service.id == service.parent_id))
+    svc: m.Service | None = session.scalar(sa.select(m.Service).where(m.Service.id == service.parent_id))
+    while svc:
+        stack.append(svc)
+        svc = session.scalar(sa.select(m.Service).where(m.Service.id == service.parent_id))
     first = True
     for service in reversed(stack):
         if first:
