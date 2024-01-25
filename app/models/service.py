@@ -6,6 +6,7 @@ import sqlalchemy as sa
 from sqlalchemy import orm
 
 from app.database import db
+from app import schema as s
 
 from .utils import ModelMixin
 
@@ -18,7 +19,7 @@ class Service(db.Model, ModelMixin):
 
     name_ua: orm.Mapped[str] = orm.mapped_column(sa.String(128), nullable=False)
     name_en: orm.Mapped[str] = orm.mapped_column(sa.String(128), nullable=False)
-    parent_id: orm.Mapped[int] = orm.mapped_column(default=0)
+    parent_id: orm.Mapped[int | None] = orm.mapped_column()
 
     created_at: orm.Mapped[datetime] = orm.mapped_column(
         sa.DateTime,
@@ -33,15 +34,18 @@ class Service(db.Model, ModelMixin):
     is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
 
     @property
-    def parent(self) -> Self | None:
-        if self.parent_id:
+    def parent(self) -> s.ServiceDB | None:
+        if not self.parent_id:
+            return None
+        with db.begin() as session:
             stmt = sa.select(Service).where(Service.id == self.parent_id)
-            return db.session.scalar(stmt)
+            return s.ServiceDB(session.scalar(stmt))
 
     @property
-    def children(self) -> list[Self]:
-        stmt = sa.select(Service).where(Service.parent_id == self.id)
-        return db.session.execute(stmt).scalars().all()
+    def children(self) -> list[s.ServiceDB]:
+        with db.begin() as session:
+            stmt = sa.select(Service).where(Service.parent_id == self.id)
+            return [s.ServiceDB.model_validate(service) for service in session.scalars(stmt).all()]
 
     def __repr__(self):
         return f"<{self.id}:{self.name_ua}>"

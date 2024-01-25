@@ -1,13 +1,16 @@
 import json
 
+from pathlib import Path
+
 import sqlalchemy as sa
 from sqlalchemy.orm import Session
+
 from app import models as m
 from app import schema as s
 from app.database import db
 
-
-JSON_FILE = "data/services.json"
+MODULE_PATH = Path(__file__).parent
+JSON_FILE = MODULE_PATH / ".." / ".." / "data" / "services.json"
 
 
 def print_added_services(service: m.Service, session: Session):
@@ -41,7 +44,7 @@ def check_if_service_exists(services: dict[int, s.ServiceData], service: s.Servi
         return True
 
 
-def fill_services_from_json_file():
+def fill_services_from_json_file(with_print: bool = True):
     """Fill services with data from json file"""
 
     with open(JSON_FILE, "r") as file:
@@ -52,19 +55,16 @@ def fill_services_from_json_file():
         for service in services.values():
             if check_if_service_exists(services, service):
                 continue
+            service_db = m.Service(
+                name_ua=service.name_ua,
+                name_en=service.name_en,
+            )
             if service.parent_id:
                 parent = services[service.parent_id]
-                service_db = m.Service(
-                    name_ua=service.name_ua,
-                    name_en=service.name_en,
-                    parent_id=parent.db_id,
-                )
-            else:
-                service_db = m.Service(
-                    name_ua=service.name_ua,
-                    name_en=service.name_en,
-                )
+                service_db.parent_id = parent.db_id
+
             session.add(service_db)
             session.flush()
             service.db_id = service_db.id
-            print_added_services(service_db, session)
+            if with_print:
+                print_added_services(service_db, session)

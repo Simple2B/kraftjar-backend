@@ -44,6 +44,14 @@ def db(test_data: TestData) -> Generator[orm.Session, None, None]:
 
 
 @pytest.fixture
+def full_db(db: orm.Session) -> Generator[orm.Session, None, None]:
+    from app.commands.service import fill_services_from_json_file
+
+    fill_services_from_json_file(with_print=False)
+    yield db
+
+
+@pytest.fixture
 def client(db) -> Generator[TestClient, None, None]:
     """Returns a non-authorized test client for the API"""
     with TestClient(app) as c:

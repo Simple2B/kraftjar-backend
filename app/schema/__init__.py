@@ -12,4 +12,4 @@ from .auth import Auth, GoogleAuth, AppleAuth
 from .registration import RegistrationIn
 from .field import FieldCreate
 from .exception import NotFound
-from .service import Service, ServicesIn, ServicesOut, ServiceData, ServiceDataFile
+from .service import Service, ServicesIn, ServicesOut, ServiceData, ServiceDataFile, ServiceDB

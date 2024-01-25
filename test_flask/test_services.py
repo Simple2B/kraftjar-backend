@@ -6,6 +6,6 @@ from app import models as m, db
 def test_export_services(runner: FlaskCliRunner):
     res: Result = runner.invoke(args=["export-services"])
     assert "done" in res.output
-    query = m.Field.select()
+    query = m.Service.select()
     assert db.session.scalars(query).all()
     assert len(db.session.scalars(query).all())
