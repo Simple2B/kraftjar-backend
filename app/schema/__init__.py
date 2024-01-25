@@ -11,3 +11,4 @@ from .whoami import WhoAmI
 from .rate import RateIn, RateOut, RateOutList
 from .auth import Auth, GoogleAuth, AppleAuth
 from .registration import RegistrationIn
+from .field import FieldCreate
