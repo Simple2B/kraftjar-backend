@@ -46,7 +46,7 @@ const adminConfig = {
   },
 };
 
-const configs = [baseConfig, userConfig, adminConfig, fieldConfig].map(conf =>
+const configs = [baseConfig, userConfig, adminConfig].map(conf =>
   merge(defaultConfig, conf),
 );
 
