@@ -35,6 +35,12 @@
       "args": ["run", "--port", "5000"],
       "jinja": true,
       "justMyCode": false
-    }
+    },
+    {
+      "name": "Export services",
+      "type": "python",
+      "request": "launch",
+      "module": "flask",
+      "args": ["export-services"],
   ]
 }

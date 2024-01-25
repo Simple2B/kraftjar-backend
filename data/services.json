@@ -1,0 +1,493 @@
+{
+  "services": [
+    {
+      "id": 1,
+      "name_ua": "Домашній майстер",
+      "name_en": "Home master"
+    },
+    {
+      "id": 2,
+      "name_ua": "Освіта",
+      "name_en": "Education"
+    },
+    {
+      "id": 3,
+      "name_ua": "Здоров'я",
+      "name_en": "Health"
+    },
+    {
+      "id": 4,
+      "name_ua": "Краса",
+      "name_en": "Beauty"
+    },
+    {
+      "id": 5,
+      "name_ua": "Розваги",
+      "name_en": "Entertainment"
+    },
+    {
+      "id": 6,
+      "name_ua": "Спорт",
+      "name_en": "Sport"
+    },
+    {
+      "id": 7,
+      "name_ua": "Транспорт",
+      "name_en": "Transport"
+    },
+    {
+      "id": 8,
+      "name_ua": "Дизайн",
+      "name_en": "Design"
+    },
+    {
+      "id": 9,
+      "name_ua": "Ремонт",
+      "name_en": "Repair"
+    },
+    {
+      "id": 10,
+      "name_ua": "Сантехнік",
+      "name_en": "Plumber",
+      "parent_id": 1
+    },
+    {
+      "id": 11,
+      "name_ua": "Електрик",
+      "name_en": "Electrician",
+      "parent_id": 1
+    },
+    {
+      "id": 12,
+      "name_ua": "Садівник",
+      "name_en": "Gardener",
+      "parent_id": 1
+    },
+    {
+      "id": 13,
+      "name_ua": "Прибирання",
+      "name_en": "Cleaning",
+      "parent_id": 1
+    },
+    {
+      "id": 14,
+      "name_ua": "Викладач",
+      "name_en": "Teacher",
+      "parent_id": 2
+    },
+    {
+      "id": 15,
+      "name_ua": "Репетитор",
+      "name_en": "Tutor",
+      "parent_id": 2
+    },
+    {
+      "id": 16,
+      "name_ua": "Водій",
+      "name_en": "Driver",
+      "parent_id": 7
+    },
+    {
+      "id": 17,
+      "name_ua": "Майстер на час",
+      "name_en": "Handyman",
+      "parent_id": 1
+    },
+    {
+      "id": 18,
+      "name_ua": "Майстер по ремонту техніки",
+      "name_en": "Appliance repairman",
+      "parent_id": 1
+    },
+    {
+      "id": 19,
+      "name_ua": "Майстер по ремонту меблів",
+      "name_en": "Furniture repairman",
+      "parent_id": 1
+    },
+    {
+      "id": 20,
+      "name_ua": "Майстер по ремонту взуття",
+      "name_en": "Shoemaker",
+      "parent_id": 1
+    },
+    {
+      "id": 21,
+      "name_ua": "Майстер по ремонту одягу",
+      "name_en": "Tailor",
+      "parent_id": 1
+    },
+    {
+      "id": 22,
+      "name_ua": "Майстер по ремонту сумок",
+      "name_en": "Bag repairman",
+      "parent_id": 1
+    },
+    {
+      "id": 23,
+      "name_ua": "Майстер по ремонту годинників",
+      "name_en": "Watchmaker",
+      "parent_id": 1
+    },
+    {
+      "id": 24,
+      "name_ua": "Майстер по ремонту велосипедів",
+      "name_en": "Bicycle repairman",
+      "parent_id": 1
+    },
+    {
+      "id": 25,
+      "name_ua": "Майстер по ремонту мотоциклів",
+      "name_en": "Motorcycle repairman",
+      "parent_id": 1
+    },
+    {
+      "id": 26,
+      "parent_id": 14,
+      "name_ua": "Мова",
+      "name_en": "Language"
+    },
+    {
+      "id": 27,
+      "parent_id": 26,
+      "name_ua": "Англійська",
+      "name_en": "English"
+    },
+    {
+      "id": 28,
+      "parent_id": 26,
+      "name_ua": "Німецька",
+      "name_en": "German"
+    },
+    {
+      "id": 29,
+      "parent_id": 26,
+      "name_ua": "Французька",
+      "name_en": "French"
+    },
+    {
+      "id": 30,
+      "parent_id": 26,
+      "name_ua": "Іспанська",
+      "name_en": "Spanish"
+    },
+    {
+      "id": 31,
+      "parent_id": 26,
+      "name_ua": "Італійська",
+      "name_en": "Italian"
+    },
+    {
+      "id": 32,
+      "parent_id": 26,
+      "name_ua": "Польська",
+      "name_en": "Polish"
+    },
+    {
+      "id": 33,
+      "parent_id": 26,
+      "name_ua": "Іврит",
+      "name_en": "Hebrew"
+    },
+    {
+      "id": 34,
+      "parent_id": 26,
+      "name_ua": "Українська",
+      "name_en": "Ukrainian"
+    },
+    {
+      "id": 35,
+      "parent_id": 14,
+      "name_ua": "Математика",
+      "name_en": "Mathematics"
+    },
+    {
+      "id": 36,
+      "parent_id": 14,
+      "name_ua": "Фізика",
+      "name_en": "Physics"
+    },
+    {
+      "id": 37,
+      "parent_id": 14,
+      "name_ua": "Хімія",
+      "name_en": "Chemistry"
+    },
+    {
+      "id": 38,
+      "parent_id": 14,
+      "name_ua": "Біологія",
+      "name_en": "Biology"
+    },
+    {
+      "id": 39,
+      "parent_id": 14,
+      "name_ua": "Історія",
+      "name_en": "History"
+    },
+    {
+      "id": 40,
+      "parent_id": 14,
+      "name_ua": "Географія",
+      "name_en": "Geography"
+    },
+    {
+      "id": 41,
+      "parent_id": 14,
+      "name_ua": "Економіка",
+      "name_en": "Economics"
+    },
+    {
+      "id": 42,
+      "parent_id": 14,
+      "name_ua": "Право",
+      "name_en": "Law"
+    },
+    {
+      "id": 43,
+      "parent_id": 14,
+      "name_ua": "Психологія",
+      "name_en": "Psychology"
+    },
+    {
+      "id": 44,
+      "parent_id": 14,
+      "name_ua": "Філософія",
+      "name_en": "Philosophy"
+    },
+    {
+      "id": 45,
+      "parent_id": 14,
+      "name_ua": "Інформатика",
+      "name_en": "Informatics"
+    },
+    {
+      "id": 46,
+      "parent_id": 14,
+      "name_ua": "Програмування",
+      "name_en": "Programming"
+    },
+    {
+      "id": 47,
+      "parent_id": 14,
+      "name_ua": "Музика",
+      "name_en": "Music"
+    },
+    {
+      "id": 48,
+      "parent_id": 14,
+      "name_ua": "Малювання",
+      "name_en": "Drawing"
+    },
+    {
+      "id": 49,
+      "parent_id": 14,
+      "name_ua": "Танці",
+      "name_en": "Dancing"
+    },
+    {
+      "id": 50,
+      "parent_id": 14,
+      "name_ua": "Спів",
+      "name_en": "Singing"
+    },
+    {
+      "id": 51,
+      "parent_id": 14,
+      "name_ua": "Театр",
+      "name_en": "Theater"
+    },
+    {
+      "id": 52,
+      "parent_id": 14,
+      "name_ua": "Акторська майстерність",
+      "name_en": "Acting"
+    },
+    {
+      "id": 53,
+      "parent_id": 14,
+      "name_ua": "Кулінарія",
+      "name_en": "Cooking"
+    },
+    {
+      "id": 54,
+      "parent_id": 14,
+      "name_ua": "Фотографія",
+      "name_en": "Photography"
+    },
+    {
+      "id": 55,
+      "parent_id": 3,
+      "name_ua": "Масаж",
+      "name_en": "Massage"
+    },
+    {
+      "id": 56,
+      "parent_id": 3,
+      "name_ua": "Косметологія",
+      "name_en": "Cosmetology"
+    },
+    {
+      "id": 57,
+      "parent_id": 4,
+      "name_ua": "Манікюр",
+      "name_en": "Manicure"
+    },
+    {
+      "id": 58,
+      "parent_id": 4,
+      "name_ua": "Педикюр",
+      "name_en": "Pedicure"
+    },
+    {
+      "id": 59,
+      "parent_id": 4,
+      "name_ua": "Макіяж",
+      "name_en": "Makeup"
+    },
+    {
+      "id": 60,
+      "parent_id": 3,
+      "name_ua": "Педіатр",
+      "name_en": "Pediatrician"
+    },
+    {
+      "id": 61,
+      "parent_id": 3,
+      "name_ua": "Терапевт",
+      "name_en": "Therapist"
+    },
+    {
+      "id": 62,
+      "parent_id": 3,
+      "name_ua": "Хірург",
+      "name_en": "Surgeon"
+    },
+    {
+      "id": 63,
+      "parent_id": 3,
+      "name_ua": "Окуліст",
+      "name_en": "Ophthalmologist"
+    },
+    {
+      "id": 64,
+      "parent_id": 3,
+      "name_ua": "ЛОР",
+      "name_en": "ENT"
+    },
+    {
+      "id": 65,
+      "parent_id": 3,
+      "name_ua": "Стоматолог",
+      "name_en": "Dentist"
+    },
+    {
+      "id": 66,
+      "parent_id": 3,
+      "name_ua": "Кардіолог",
+      "name_en": "Cardiologist"
+    },
+    {
+      "id": 67,
+      "parent_id": 3,
+      "name_ua": "Медсестра",
+      "name_en": "Nurse"
+    },
+    {
+      "id": 68,
+      "parent_id": 5,
+      "name_ua": "Свята",
+      "name_en": "Events"
+    },
+    {
+      "id": 69,
+      "parent_id": 5,
+      "name_ua": "Мандри",
+      "name_en": "Travel"
+    },
+    {
+      "id": 70,
+      "parent_id": 5,
+      "name_ua": "Фотосесії",
+      "name_en": "Photo sessions"
+    },
+    {
+      "id": 71,
+      "parent_id": 5,
+      "name_ua": "Відеосесії",
+      "name_en": "Video sessions"
+    },
+    {
+      "id": 72,
+      "parent_id": 68,
+      "name_ua": "Весілля",
+      "name_en": "Wedding"
+    },
+    {
+      "id": 73,
+      "parent_id": 68,
+      "name_ua": "День народження",
+      "name_en": "Birthday"
+    },
+    {
+      "id": 74,
+      "parent_id": 68,
+      "name_ua": "Ювілей",
+      "name_en": "Anniversary"
+    },
+    {
+      "id": 75,
+      "parent_id": 68,
+      "name_ua": "Корпоратив",
+      "name_en": "Corporate"
+    },
+    {
+      "id": 76,
+      "parent_id": 68,
+      "name_ua": "Дитяче свято",
+      "name_en": "Children's holiday"
+    },
+    {
+      "id": 77,
+      "parent_id": 68,
+      "name_ua": "Випускний",
+      "name_en": "Graduation"
+    },
+    {
+      "id": 78,
+      "parent_id": 68,
+      "name_ua": "День закоханих",
+      "name_en": "Valentine's Day"
+    },
+    {
+      "id": 79,
+      "parent_id": 72,
+      "name_ua": "Весільний фотограф",
+      "name_en": "Wedding photographer"
+    },
+    {
+      "id": 80,
+      "parent_id": 72,
+      "name_ua": "Весільний відеограф",
+      "name_en": "Wedding videographer"
+    },
+    {
+      "id": 81,
+      "parent_id": 72,
+      "name_ua": "Весільний координатор",
+      "name_en": "Wedding coordinator"
+    },
+    {
+      "id": 82,
+      "parent_id": 72,
+      "name_ua": "Весільний ведучий",
+      "name_en": "Wedding host"
+    },
+    {
+      "id": 83,
+      "parent_id": 72,
+      "name_ua": "Весільний стиліст",
+      "name_en": "Wedding stylist"
+    }
+  ]
+}

@@ -61,4 +61,12 @@ def init(app: Flask):
         create_fields(db.session, with_services)
         print("Fields created")
 
+    @app.cli.command()
+    def export_services():
+        """Fill services with data from json file"""
+        from .service import fill_services_from_json_file
+
+        fill_services_from_json_file()
+        print("done")
+
     # @app.cli.command("register-user")
