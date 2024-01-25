@@ -15,7 +15,8 @@ class Service(db.Model, ModelMixin):
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
     uuid: orm.Mapped[str] = orm.mapped_column(sa.String(36), default=lambda: str(uuid4()))
 
-    name: orm.Mapped[str] = orm.mapped_column(sa.String(128), nullable=False)
+    name_ua: orm.Mapped[str] = orm.mapped_column(sa.String(128), nullable=False)
+    name_en: orm.Mapped[str] = orm.mapped_column(sa.String(128), nullable=False)
     profession_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("professions.id"))
 
     created_at: orm.Mapped[datetime] = orm.mapped_column(
@@ -31,4 +32,4 @@ class Service(db.Model, ModelMixin):
     is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
 
     def __repr__(self):
-        return f"<Profession {self.id} {self.name} >"
+        return f"<Service {self.id} {self.name} >"

@@ -31,7 +31,8 @@ def create_services(db: Session, count: int = SERVICES_COUNT):
 
     services: Sequence[m.Service] = [
         m.Service(
-            name=faker.word(),
+            name_ua=faker.word(),
+            name_en=faker.word(),
             profession_id=random.choice(professions),
         )
         for _ in range(count)
@@ -41,18 +42,21 @@ def create_services(db: Session, count: int = SERVICES_COUNT):
     log(log.INFO, "Created %s services", count)
 
 
-def create_service(db: Session, service_name: str = "", profession_id: int | None = None) -> m.Service:
+def create_service(db: Session, name_ua: str = "", name_en: str = "", profession_id: int | None = None) -> m.Service:
     """Creates service for a profession
 
     Args:
         db (Session): Database session
-        service_name (str, optional): Name of service. Defaults to "".
+        name_ua (str, optional): Name of service in ukrainian. Defaults to "".
+        name_en (str, optional): Name of service in english. Defaults to "".
         profession_id (int, optional): Profession id to create service for. Defaults to None.
     Returns:
         m.Service: Created service
     """
-    if not service_name:
-        service_name = faker.word()
+    if not name_ua:
+        name_ua = faker.word()
+    if not name_en:
+        name_en = faker.word()
     if not profession_id:
         professions: Sequence[int] = db.scalars(select(m.Profession.id)).all()
         if not professions:
@@ -66,11 +70,12 @@ def create_service(db: Session, service_name: str = "", profession_id: int | Non
         raise ValueError(f"No profession found by id: [{profession_id}]")
 
     service: m.Service = m.Service(
-        name=service_name,
+        name_ua=name_ua,
+        name_en=name_en,
         profession_id=profession_id,
     )
 
     db.add(service)
     db.commit()
-    log(log.INFO, "Created service [%s]", service.name)
+    log(log.INFO, "Created service [%s]", service.name_en)
     return service

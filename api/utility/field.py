@@ -22,7 +22,7 @@ def create_fields(db: Session, with_services: bool = True):
         db (Session): Database session
         with_services (bool, optional): If it's true - creates services too. Defaults to False.
     """
-    fields = [s.FieldCreate.from_orm(f) for f in FIELDS]
+    fields = [s.FieldCreate.model_validate(f) for f in FIELDS]
     for field in fields:
         if db.scalars(select(m.Field.id).where(m.Field.name_ua == field.name_ua)).first():
             log(log.INFO, "Field [%s] already exists", field.name_ua)
@@ -61,7 +61,7 @@ def create_field_services(db: Session, field: s.FieldCreate):
         field (s.FieldCreate): Field to create services for
     """
     for service in field.services:
-        service_id: int | None = db.scalars(select(m.Service.id).where(m.Service.name == service)).first()
+        service_id: int | None = db.scalars(select(m.Service.id).where(m.Service.name_ua == service)).first()
         if not service_id:
             service_id = create_service(db, service).id
         field_id: int | None = db.scalars(select(m.Field.id).where(m.Field.name_ua == field.name_ua)).first()
