@@ -26,11 +26,11 @@ def get_all():
     count_query = sa.select(sa.func.count()).select_from(m.Field)
     if q:
         query = (
-            m.Field.select().where(m.Field.fieldname.like(f"{q}%") | m.Field.email.like(f"{q}%")).order_by(m.Field.id)
+            m.Field.select().where(m.Field.name_ua.like(f"{q}%") | m.Field.name_en.like(f"{q}%")).order_by(m.Field.id)
         )
         count_query = (
             sa.select(sa.func.count())
-            .where(m.Field.fieldname.like(f"{q}%") | m.Field.email.like(f"{q}%"))
+            .where(m.Field.name_ua.like(f"{q}%") | m.Field.name_en.like(f"{q}%"))
             .select_from(m.Field)
         )
 
@@ -64,7 +64,7 @@ def save():
         u.phone = form.phone.data
         # form.is_deleted.data is always False
         u.is_deleted = form.is_deleted.data
-        u.email = form.email.data
+        u.name_en = form.name_en.data
         if form.password.data.strip("*\n "):
             u.password = form.password.data
         u.save()
@@ -73,10 +73,9 @@ def save():
             return redirect(form.next_url.data)
         return redirect(url_for("field.get_all"))
 
-    else:
-        log(log.ERROR, "field save errors: [%s]", form.errors)
-        flash(f"{form.errors}", "danger")
-        return redirect(url_for("field.get_all"))
+    log(log.ERROR, "field save errors: [%s]", form.errors)
+    flash(f"{form.errors}", "danger")
+    return redirect(url_for("field.get_all"))
 
 
 @field_route.route("/delete/<int:id>", methods=["GET"])
