@@ -1,8 +1,8 @@
 """init
 
-Revision ID: 28ae85e8f43d
+Revision ID: ebd3b998ce2a
 Revises: 
-Create Date: 2024-01-25 09:58:51.444854
+Create Date: 2024-01-25 15:13:45.484338
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '28ae85e8f43d'
+revision = 'ebd3b998ce2a'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -29,16 +29,6 @@ def upgrade():
     sa.PrimaryKeyConstraint('id', name=op.f('pk_admins')),
     sa.UniqueConstraint('email', name=op.f('uq_admins_email')),
     sa.UniqueConstraint('username', name=op.f('uq_admins_username'))
-    )
-    op.create_table('fields',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('uuid', sa.String(length=36), nullable=False),
-    sa.Column('name_en', sa.String(length=128), nullable=False),
-    sa.Column('name_ua', sa.String(length=128), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
-    sa.Column('updated_at', sa.DateTime(), nullable=False),
-    sa.Column('is_deleted', sa.Boolean(), nullable=False),
-    sa.PrimaryKeyConstraint('id', name=op.f('pk_fields'))
     )
     op.create_table('files',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -60,14 +50,16 @@ def upgrade():
     sa.Column('is_deleted', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_locations'))
     )
-    op.create_table('professions',
+    op.create_table('services',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('uuid', sa.String(length=36), nullable=False),
-    sa.Column('name', sa.String(length=128), nullable=False),
+    sa.Column('name_ua', sa.String(length=128), nullable=False),
+    sa.Column('name_en', sa.String(length=128), nullable=False),
+    sa.Column('parent_id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.Column('is_deleted', sa.Boolean(), nullable=False),
-    sa.PrimaryKeyConstraint('id', name=op.f('pk_professions'))
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_services'))
     )
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -101,38 +93,12 @@ def upgrade():
     sa.ForeignKeyConstraint(['location_id'], ['locations.id'], name=op.f('fk_addresses_location_id_locations')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_addresses'))
     )
-    op.create_table('services',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('uuid', sa.String(length=36), nullable=False),
-    sa.Column('name_ua', sa.String(length=128), nullable=False),
-    sa.Column('name_en', sa.String(length=128), nullable=False),
-    sa.Column('profession_id', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
-    sa.Column('updated_at', sa.DateTime(), nullable=False),
-    sa.Column('is_deleted', sa.Boolean(), nullable=False),
-    sa.ForeignKeyConstraint(['profession_id'], ['professions.id'], name=op.f('fk_services_profession_id_professions')),
-    sa.PrimaryKeyConstraint('id', name=op.f('pk_services'))
-    )
     op.create_table('user_locations',
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('location_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['location_id'], ['locations.id'], name=op.f('fk_user_locations_location_id_locations')),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], name=op.f('fk_user_locations_user_id_users')),
     sa.PrimaryKeyConstraint('user_id', 'location_id', name=op.f('pk_user_locations'))
-    )
-    op.create_table('user_professions',
-    sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('profession_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['profession_id'], ['professions.id'], name=op.f('fk_user_professions_profession_id_professions')),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], name=op.f('fk_user_professions_user_id_users')),
-    sa.PrimaryKeyConstraint('user_id', 'profession_id', name=op.f('pk_user_professions'))
-    )
-    op.create_table('field_services',
-    sa.Column('service_id', sa.Integer(), nullable=False),
-    sa.Column('field_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['field_id'], ['fields.id'], name=op.f('fk_field_services_field_id_fields')),
-    sa.ForeignKeyConstraint(['service_id'], ['services.id'], name=op.f('fk_field_services_service_id_services')),
-    sa.PrimaryKeyConstraint('service_id', 'field_id', name=op.f('pk_field_services'))
     )
     op.create_table('jobs',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -209,15 +175,11 @@ def downgrade():
     op.drop_table('job_files')
     op.drop_table('applications')
     op.drop_table('jobs')
-    op.drop_table('field_services')
-    op.drop_table('user_professions')
     op.drop_table('user_locations')
-    op.drop_table('services')
     op.drop_table('addresses')
     op.drop_table('users')
-    op.drop_table('professions')
+    op.drop_table('services')
     op.drop_table('locations')
     op.drop_table('files')
-    op.drop_table('fields')
     op.drop_table('admins')
     # ### end Alembic commands ###

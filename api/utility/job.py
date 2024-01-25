@@ -10,7 +10,6 @@ from app import models as m
 from app.logger import log
 
 from .address import create_addresses
-from .service import create_services
 
 faker: Faker = Faker()
 
@@ -32,12 +31,6 @@ def create_job(db: Session, user_id: int, is_pending=False) -> m.Job:
         log(log.ERROR, "No addresses found")
         create_addresses(db)
         addresses = db.scalars(select(m.Address.id)).all()
-
-    services: Sequence[int] = db.scalars(select(m.Service.id)).all()
-    if not services:
-        log(log.ERROR, "No services found")
-        create_services(db)
-        services = db.scalars(select(m.Service.id)).all()
 
     locations: Sequence[int] = db.scalars(select(m.Location.id)).all()
 

@@ -21,4 +21,9 @@ class ServiceData(BaseModel):
     id: int
     name_ua: str
     name_en: str
-    parent_id: int | None
+    parent_id: int | None = None
+    db_id: int | None = None  # id in db
+
+
+class ServiceDataFile(BaseModel):
+    services: list[ServiceData]

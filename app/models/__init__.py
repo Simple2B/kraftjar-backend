@@ -10,7 +10,4 @@ from .location import Location
 from .rates import Rate
 from .service import Service
 from .user_locations import user_locations, UserLocation
-from .user_professions import user_professions, UserProfession
 from .admin import Admin, AnonymousUser
-from .field import Field
-from .service_fields import field_services, FieldService
