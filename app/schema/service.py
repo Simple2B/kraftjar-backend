@@ -2,18 +2,23 @@ from pydantic import BaseModel, ConfigDict
 
 
 class Service(BaseModel):
-    id: int
     uuid: str
     name: str
 
-    model_config = ConfigDict(
-        from_attributes=True,
-    )
+
+class ServicesIn(BaseModel):
+    lang: str = "ua"
+    selected: list[str] | None  # list of uuids - selected services
 
 
-class ServiceList(BaseModel):
+class ServicesOut(BaseModel):
+    lang: str = "ua"
     services: list[Service]
+    selected: list[str]  # list of uuids - selected services
 
-    model_config = ConfigDict(
-        from_attributes=True,
-    )
+
+class ServiceData(BaseModel):
+    id: int
+    name_ua: str
+    name_en: str
+    parent_id: int | None

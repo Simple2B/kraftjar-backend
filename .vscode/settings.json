@@ -31,10 +31,11 @@
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
-  
+
   "taipyStudio.config.mainPythonFile": "wsgi.py",
   "mypy.dmypyExecutable": "${workspaceFolder}/.venv/bin/dmypy",
   "mypy.runUsingActiveInterpreter": true,
   "taipyStudio.gUI.elementsFilePaths": [],
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "cSpell.language": "en,uk"
 }

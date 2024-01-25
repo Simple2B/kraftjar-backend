@@ -7,7 +7,6 @@ from .job_files import job_files, JobFile
 from .job_services import job_services, JobService
 from .job import Job, JobStatus
 from .location import Location
-from .profession import Profession
 from .rates import Rate
 from .service import Service
 from .user_locations import user_locations, UserLocation
