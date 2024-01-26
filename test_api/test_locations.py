@@ -4,12 +4,10 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 import sqlalchemy as sa
 
-from api.utility import create_locations
 from app import schema as s
 from app import models as m
 from config import config
 
-from .test_data import TestData
 
 CFG = config()
 
