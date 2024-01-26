@@ -15,19 +15,13 @@ CFG = config()
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_get_locations(client: TestClient, headers: list[dict[str, str]], test_data: TestData, db: Session):
-    LOCATION_NUMBER = 10
-    create_locations(db, LOCATION_NUMBER)
-    response = client.get("/api/locations", headers=headers[0])
+def test_get_locations(client: TestClient, full_db: Session):
+    db = full_db
+    response = client.post("/api/locations", json=s.LocationsIn(lang="ua", selected=[]).model_dump())
     assert response.status_code == status.HTTP_200_OK
-    locations = s.LocationList.model_validate(response.json())
-    assert locations.locations and len(locations.locations) == LOCATION_NUMBER
+    res = s.LocationsOut.model_validate(response.json())
+    locations = res.locations
+    assert locations
 
-    location: m.Location | None = db.scalar(sa.select(m.Location))
-    assert location
-    location.is_deleted = True
-    db.commit()
-    response = client.get("/api/locations", headers=headers[0])
-    assert response.status_code == status.HTTP_200_OK
-    locations = s.LocationList.model_validate(response.json())
-    assert locations.locations and len(locations.locations) == LOCATION_NUMBER - 1
+    db_regions = db.scalars(sa.select(m.Region).where(m.Region.is_deleted == sa.false())).all()
+    assert len(db_regions) == len(locations)

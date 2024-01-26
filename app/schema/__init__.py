@@ -2,7 +2,7 @@
 from .admin import Admin
 from .application import ApplicationIn, ApplicationOut, ApplicationOutList, ApplicationPut
 from .job import JobIn, JobOut, JobOutList, JobPut
-from .location import Location, LocationList
+from .location import Location, LocationsIn, LocationsOut, Region, RegionsFile
 from .pagination import Pagination
 from .token import Token, TokenData
 from .user import User

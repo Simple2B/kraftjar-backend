@@ -21,16 +21,14 @@ class Service(db.Model, ModelMixin):
     parent_id: orm.Mapped[int | None] = orm.mapped_column()
 
     created_at: orm.Mapped[datetime] = orm.mapped_column(
-        sa.DateTime,
         default=datetime.utcnow,
     )
 
-    updated_at: orm.Mapped[sa.DateTime] = orm.mapped_column(
-        sa.DateTime,
+    updated_at: orm.Mapped[datetime] = orm.mapped_column(
         default=sa.func.now(),
         onupdate=sa.func.now(),
     )
-    is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
+    is_deleted: orm.Mapped[bool] = orm.mapped_column(default=False)
 
     @property
     def parent(self) -> s.ServiceDB | None:

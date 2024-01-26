@@ -46,8 +46,10 @@ def db(test_data: TestData) -> Generator[orm.Session, None, None]:
 @pytest.fixture
 def full_db(db: orm.Session) -> Generator[orm.Session, None, None]:
     from app.commands.service import fill_services_from_json_file
+    from app.commands.locations import export_regions_from_json_file
 
     fill_services_from_json_file(with_print=False)
+    export_regions_from_json_file(with_print=False)
     yield db
 
 

@@ -1,0 +1,108 @@
+{
+  "regions": [
+    {
+      "name_ua": "Київ",
+      "name_en": "Kyiv"
+    },
+    {
+      "name_ua": "Київська область",
+      "name_en": "Kyivska oblast"
+    },
+    {
+      "name_ua": "Вінницька область",
+      "name_en": "Vinnytska oblast"
+    },
+    {
+      "name_ua": "Волинська область",
+      "name_en": "Volynska oblast"
+    },
+    {
+      "name_ua": "Дніпропетровська область",
+      "name_en": "Dnipropetrovska oblast"
+    },
+    {
+      "name_ua": "Донецька область",
+      "name_en": "Donetska oblast"
+    },
+    {
+      "name_ua": "Житомирська область",
+      "name_en": "Zhytomyrska oblast"
+    },
+    {
+      "name_ua": "Закарпатська область",
+      "name_en": "Zakarpatska oblast"
+    },
+    {
+      "name_ua": "Запорізька область",
+      "name_en": "Zaporizka oblast"
+    },
+    {
+      "name_ua": "Івано-Франківська область",
+      "name_en": "Ivano-Frankivska oblast"
+    },
+    {
+      "name_ua": "Кіровоградська область",
+      "name_en": "Kirovohradska oblast"
+    },
+    {
+      "name_ua": "Крим",
+      "name_en": "Crimea"
+    },
+    {
+      "name_ua": "Луганська область",
+      "name_en": "Luhanska oblast"
+    },
+    {
+      "name_ua": "Львівська область",
+      "name_en": "Lvivska oblast"
+    },
+    {
+      "name_ua": "Миколаївська область",
+      "name_en": "Mykolaivska oblast"
+    },
+    {
+      "name_ua": "Одеська область",
+      "name_en": "Odeska oblast"
+    },
+    {
+      "name_ua": "Полтавська область",
+      "name_en": "Poltavska oblast"
+    },
+    {
+      "name_ua": "Рівненська область",
+      "name_en": "Rivnenska oblast"
+    },
+    {
+      "name_ua": "Сумська область",
+      "name_en": "Sumska oblast"
+    },
+    {
+      "name_ua": "Тернопільська область",
+      "name_en": "Ternopilska oblast"
+    },
+    {
+      "name_ua": "Харківська область",
+      "name_en": "Kharkivska oblast"
+    },
+    {
+      "name_ua": "Херсонська область",
+      "name_en": "Khersonska oblast"
+    },
+    {
+      "name_ua": "Хмельницька область",
+      "name_en": "Khmelnytska oblast"
+    },
+    {
+      "name_ua": "Черкаська область",
+      "name_en": "Cherkaska oblast"
+    },
+    {
+      "name_ua": "Чернівецька область",
+      "name_en": "Chernivetska oblast"
+    },
+    {
+      "name_ua": "Чернігівська область",
+      "name_en": "Chernihivska oblast"
+    }
+  ]
+}
