@@ -11,3 +11,6 @@ from .rates import Rate
 from .service import Service
 from .user_locations import user_locations, UserLocation
 from .admin import Admin, AnonymousUser
+from .settlement import Settlement
+from .region import Region
+from .rayon import Rayon
