@@ -14,9 +14,9 @@
 README.md
 TODO.md
 **/.venv
-/tests/
+/test_api/
+/test_flask/
 /src/
 **/*.sqlite3
 **/package.json
-**/tox.ini
 **/yarn.lock
