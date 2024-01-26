@@ -4,7 +4,6 @@ from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from api.utility import create_locations
 from app import models as m
 from app import schema as s
 from config import config
@@ -28,8 +27,8 @@ def test_auth(db: Session, client: TestClient, test_data: TestData):
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_google_apple_auth(db: Session, client: TestClient, test_data: TestData):
-    create_locations(db)
+def test_google_apple_auth(full_db: Session, client: TestClient, test_data: TestData):
+    db = full_db
     users_before: int | None = db.scalar(sa.select(sa.func.count(m.User.id)))
     assert users_before is not None
 

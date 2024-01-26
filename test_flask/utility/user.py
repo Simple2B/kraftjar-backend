@@ -6,13 +6,18 @@ from faker import Faker
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from api.utility.location import create_locations
 from app import models as m
 from app.logger import log
 
 faker: Faker = Faker()
 
 USER_COUNT = 10
+
+
+def create_locations():
+    from app.commands.locations import export_regions_from_json_file
+
+    export_regions_from_json_file(with_print=False)
 
 
 def create_users(db: Session, count: int = USER_COUNT):
@@ -27,7 +32,7 @@ def create_users(db: Session, count: int = USER_COUNT):
     locations: Sequence[int] = db.scalars(select(m.Location.id)).all()
     if not locations:
         log(log.WARNING, "No locations found")
-        create_locations(db)
+        create_locations()
         created_locations: Sequence[int] = db.scalars(select(m.Location.id)).all()
         locations = created_locations
 
