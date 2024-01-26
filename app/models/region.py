@@ -35,4 +35,4 @@ class Region(db.Model, ModelMixin):
     location: orm.Mapped["Location"] = orm.relationship()
 
     def __repr__(self):
-        return f"<{self.id}:{self.uuid} >"
+        return f"<{self.id}:{self.name_ua} >"
