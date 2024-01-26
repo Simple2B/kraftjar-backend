@@ -24,6 +24,19 @@ def register_user(user_data: s.RegistrationIn, db: Session) -> s.Token:
         password=user_data.password,
     )
     db.add(user)
+    # link user to services
+    for service_uuid in user_data.services:
+        service = db.scalar(sa.select(m.Service).where(m.Service.uuid == service_uuid))
+        if not service:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Service not found")
+        user.services.append(service)
+
+    # link user to locations
+    for location_uuid in user_data.locations:
+        location = db.scalar(sa.select(m.Location).where(m.Location.uuid == location_uuid))
+        if not location:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Location not found")
+        user.locations.append(location)
     db.commit()
     db.refresh(user)
     return s.Token(access_token=create_access_token(user.id))

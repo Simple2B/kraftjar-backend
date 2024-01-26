@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 from datetime import datetime
 from typing import Self
 from uuid import uuid4
@@ -11,6 +12,13 @@ from app.logger import log
 from app.schema.user import User as u
 
 from .utils import ModelMixin
+
+from .user_locations import user_locations
+from .user_services import user_services
+
+if TYPE_CHECKING:
+    from .service import Service
+    from .location import Location
 
 
 class User(db.Model, ModelMixin):
@@ -39,6 +47,10 @@ class User(db.Model, ModelMixin):
     # is_volunteer: orm.Mapped[bool] = orm.mapped_column(default=False)
 
     is_deleted: orm.Mapped[bool] = orm.mapped_column(default=False)
+
+    # Relationships
+    services: orm.Mapped[list["Service"]] = orm.relationship(secondary=user_services)
+    locations: orm.Mapped[list["Location"]] = orm.relationship(secondary=user_locations)
 
     @property
     def password(self):

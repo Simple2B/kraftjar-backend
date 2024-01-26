@@ -8,3 +8,6 @@ class RegistrationIn(BaseModel):
     password: str
     fullname: str
     phone: str
+    services: list[str] = []  # uuids of selected services
+    locations: list[str] = []  # uuids of selected locations
+    is_volunteer: bool = False

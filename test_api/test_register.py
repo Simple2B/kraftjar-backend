@@ -1,9 +1,11 @@
 import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
+import sqlalchemy as sa
 from sqlalchemy.orm import Session
 
 from app import schema as s
+from app import models as m
 from config import config
 
 from .test_data import TestData
@@ -12,7 +14,17 @@ CFG = config()
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_register(db: Session, client: TestClient, test_data: TestData):
+def test_register(full_db: Session, client: TestClient, test_data: TestData):
+    db = full_db
+
+    LOCATIONS_NUM = 3
+    locations = db.scalars(sa.select(m.Location).limit(LOCATIONS_NUM)).all()
+    assert locations
+
+    SERVICES_NUM = 3
+    services = db.scalars(sa.select(m.Service).limit(SERVICES_NUM)).all()
+    assert services
+
     USER = test_data.test_users[0]
     USER.phone = "1234567890"
     USER.email = "test_user@kraftjar.net"
@@ -21,6 +33,8 @@ def test_register(db: Session, client: TestClient, test_data: TestData):
         phone=USER.phone,
         email=USER.email,
         password=USER.password,
+        services=[s.uuid for s in services],
+        locations=[loc.uuid for loc in locations],
     )
     response = client.post("/api/registration/", json=user_data.model_dump())
     assert response.status_code == status.HTTP_200_OK
