@@ -40,10 +40,10 @@ def get_all():
     )
 
 
-def arg_params() -> dict[str, str]:
+def arg_params() -> dict:
     q = request.args.get("q", type=str, default="")
     page = request.args.get("page", type=int, default=1)
-    arg_params = {}
+    arg_params: dict[str, str | int] = {}
     if q:
         arg_params["q"] = q
     if page:
@@ -58,7 +58,8 @@ def delete(uuid: str):
     if not service:
         flash("Service not found", "error")
         log(log.ERROR, "Service not found: [%s]", uuid)
-        return redirect(url_for("service.get_all", **arg_params()))
+        values = arg_params()
+        return redirect(url_for("service.get_all", **values))
     service.is_deleted = True
     db.session.commit()
     flash("Service deleted", "success")
