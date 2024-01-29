@@ -50,6 +50,14 @@ def init(app: Flask):
             create_users(db)
             print("users created")
 
+    @app.cli.command("export-users")
+    def export_users():
+        """Creates records in user table from json"""
+        from .user import export_users_from_json_file
+
+        export_users_from_json_file()
+        print("done")
+
     @app.cli.command()
     def export_services():
         """Fill services with data from json file"""

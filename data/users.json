@@ -1,0 +1,93 @@
+{
+    "users":
+    [
+        {
+            "fullname": "Микола Салтиков",
+            "email": "mykola_saltykov@gmail.com",
+            "phone": "+380661234561",
+            "password": "test_password",
+            "location_ids": [1, 2, 4],
+            "service_ids": [1, 9],
+            "is_volunteer": true
+        },
+        {
+            "fullname": "Anton Černov",
+            "email": "anton_chernov@gmail.com",
+            "phone": "+380661234562",
+            "password": "test_password",
+            "location_ids": [],
+            "service_ids": [13],
+            "is_volunteer": false
+        },
+        {
+            "fullname": "Vasil Shcherbyna",
+            "email": "ista_kitty@gmail.com",
+            "phone": "+380661234563",
+            "password": "test_password",
+            "location_ids": [9, 1],
+            "service_ids": [15, 3],
+            "is_volunteer": true
+        },
+        {
+            "fullname": "Тарас Шевченко",
+            "email": "kobzar@gmail.com",
+            "phone": "+380661234564",
+            "password": "test_password",
+            "location_ids": [2],
+            "service_ids": [],
+            "is_volunteer": true
+        },
+        {
+            "fullname": "Gleb Stoliarsky",
+            "email": "rozumnik@gmail.com",
+            "phone": "+380661234565",
+            "password": "test_password",
+            "location_ids": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "service_ids": [1, 10, 11, 12, 13, 14, 15],
+            "is_volunteer": false
+        },
+        {
+            "fullname": "Тарас Кузьміч",
+            "email": "lord_of_kingdoms@gmail.com",
+            "phone": "+380661234566",
+            "password": "test_password",
+            "location_ids": [1, 2, 3],
+            "service_ids": [1, 2, 3],
+            "is_volunteer": false
+        },
+        {
+            "fullname": "Hodor Hodor",
+            "email": "holding_the_door@gmail.com",
+            "phone": "+380661234567",
+            "password": "test_password",
+            "location_ids": [],
+            "service_ids": [],
+            "is_volunteer": false
+        },
+        {
+            "fullname": "Nazar Kedesh",
+            "email": "notorious_big@gmail.com",
+            "phone": "+380661234568",
+            "password": "test_password",
+            "location_ids": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "service_ids": [1, 2, 3, 4],
+            "is_volunteer": true
+        },
+        {
+            "fullname": "Franz Kafka",
+            "email": "metamorphosis@mail.com",
+            "phone": "+380661234569",
+            "password": "test_password",
+            "location_ids": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "service_ids": [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        },
+        {
+            "fullname": "Lesya Ukrainka",
+            "email": "contra_spem_spero@mail.com",
+            "phone": "+380661234580",
+            "password": "test_password",
+            "location_ids": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "service_ids": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+        }
+    ]
+}
