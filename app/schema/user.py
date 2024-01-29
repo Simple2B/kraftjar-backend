@@ -26,3 +26,17 @@ class UserFile(BaseModel):
 
 class UsersFile(BaseModel):
     users: list[UserFile]
+
+
+class UserList(BaseModel):
+    users: list[User]
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class UserFilters(BaseModel):
+    services: list[str] = []
+    locations: list[str] = []
+    q: str = ""

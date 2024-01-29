@@ -58,6 +58,4 @@ def export_users_from_json_file(with_print: bool = True):
 
             session.add(new_user)
             if with_print:
-                print(f"Created user {user.fullname}")
-
-    return
+                log(log.INFO, f"Created user {user.fullname}")
