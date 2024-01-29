@@ -5,7 +5,7 @@ import sqlalchemy as sa
 from sqlalchemy import orm
 
 from app.database import db
-from app import schema as s
+from app.schema.service import ServiceDB
 
 from .utils import ModelMixin
 
@@ -31,18 +31,18 @@ class Service(db.Model, ModelMixin):
     is_deleted: orm.Mapped[bool] = orm.mapped_column(default=False)
 
     @property
-    def parent(self) -> s.ServiceDB | None:
+    def parent(self) -> ServiceDB | None:
         if not self.parent_id:
             return None
         with db.begin() as session:
             stmt = sa.select(Service).where(Service.id == self.parent_id)
-            return s.ServiceDB.model_validate(session.scalar(stmt))
+            return ServiceDB.model_validate(session.scalar(stmt))
 
     @property
-    def children(self) -> list[s.ServiceDB]:
+    def children(self) -> list[ServiceDB]:
         with db.begin() as session:
             stmt = sa.select(Service).where(Service.parent_id == self.id)
-            return [s.ServiceDB.model_validate(service) for service in session.scalars(stmt).all()]
+            return [ServiceDB.model_validate(service) for service in session.scalars(stmt).all()]
 
     def __repr__(self):
         return f"<{self.id}:{self.name_ua}>"
