@@ -1,4 +1,4 @@
-from typing import Sequence, cast
+from typing import cast
 
 from alchemical.flask import Alchemical
 from faker import Faker

@@ -64,13 +64,3 @@ def init(app: Flask):
 
         export_regions_from_json_file()
         print("done")
-
-    @app.cli.command()
-    def export_regions():
-        """Fill regions with data from json file"""
-        from .locations import export_regions_from_json_file
-
-        export_regions_from_json_file()
-        print("done")
-
-    # @app.cli.command("register-user")
