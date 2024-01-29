@@ -51,6 +51,9 @@ class BaseConfig(BaseSettings):
     MINIMUM_RATE: int = 1
     MAXIMUM_RATE: int = 5
 
+    UA: str = "ua"
+    EN: str = "en"
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.
