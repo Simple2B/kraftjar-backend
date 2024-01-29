@@ -27,7 +27,7 @@ def test_get_me(client: TestClient, headers: list[dict[str, str]], test_data: Te
 def test_get_users(client: TestClient, headers: list[dict[str, str]], test_data: TestData, full_db: Session):
     db: Session = full_db
 
-    users_with_services: Sequence[m.User] = db.scalars(sa.select(m.User).join(m.user_services)).all()
+    users_with_services: Sequence[m.User] = db.scalars(sa.select(m.User)).all()
     users_with_services = [
         users_with_services[3],
         users_with_services[7],
