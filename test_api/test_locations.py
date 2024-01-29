@@ -15,7 +15,7 @@ CFG = config()
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_get_locations(client: TestClient, full_db: Session):
     db = full_db
-    response = client.post("/api/locations", json=s.LocationsIn(lang="ua", selected=[]).model_dump())
+    response = client.post("/api/locations", json=s.LocationsIn(lang=CFG.UA, selected=[]).model_dump())
     assert response.status_code == status.HTTP_200_OK
     res = s.LocationsOut.model_validate(response.json())
     locations = res.locations

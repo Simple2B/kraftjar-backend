@@ -1,6 +1,10 @@
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
+from config import config
+
+CFG = config()
+
 
 class Service(BaseModel):
     uuid: str
@@ -23,7 +27,7 @@ class ServiceDB(BaseModel):
 
 
 class ServicesIn(BaseModel):
-    lang: str = "ua"
+    lang: str = CFG.UA
     selected: list[str] = []  # list of uuids - selected services
 
 

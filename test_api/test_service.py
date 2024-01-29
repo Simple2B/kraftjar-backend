@@ -14,7 +14,7 @@ CFG = config()
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_get_services(client: TestClient, full_db: Session):
     db = full_db
-    query = s.ServicesIn(lang="ua")
+    query = s.ServicesIn(lang=CFG.UA)
     response = client.post("/api/services", json=query.model_dump())
     assert response.status_code == status.HTTP_200_OK
     res = s.ServicesOut.model_validate(response.json())
@@ -29,7 +29,7 @@ def test_get_services(client: TestClient, full_db: Session):
 
     first_service = main_services[0]
     # select first service
-    query = s.ServicesIn(lang="ua", selected=[first_service.uuid])
+    query = s.ServicesIn(lang=CFG.UA, selected=[first_service.uuid])
     response = client.post("/api/services", json=query.model_dump())
     assert response.status_code == status.HTTP_200_OK
     res = s.ServicesOut.model_validate(response.json())

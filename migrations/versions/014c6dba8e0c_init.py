@@ -1,8 +1,8 @@
 """init
 
-Revision ID: 11422d855357
+Revision ID: 014c6dba8e0c
 Revises: 
-Create Date: 2024-01-25 17:00:20.167706
+Create Date: 2024-01-29 13:20:43.998532
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '11422d855357'
+revision = '014c6dba8e0c'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -44,10 +44,6 @@ def upgrade():
     op.create_table('locations',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('uuid', sa.String(length=36), nullable=False),
-    sa.Column('name', sa.String(length=128), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
-    sa.Column('updated_at', sa.DateTime(), nullable=False),
-    sa.Column('is_deleted', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_locations'))
     )
     op.create_table('services',
@@ -75,6 +71,7 @@ def upgrade():
     sa.Column('password_hash', sa.String(length=256), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
+    sa.Column('is_volunteer', sa.Boolean(), nullable=False),
     sa.Column('is_deleted', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_users')),
     sa.UniqueConstraint('phone', name=op.f('uq_users_phone'))
@@ -93,12 +90,56 @@ def upgrade():
     sa.ForeignKeyConstraint(['location_id'], ['locations.id'], name=op.f('fk_addresses_location_id_locations')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_addresses'))
     )
-    op.create_table('user_locations',
-    sa.Column('user_id', sa.Integer(), nullable=False),
+    op.create_table('rayons',
+    sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('location_id', sa.Integer(), nullable=False),
+    sa.Column('name_ua', sa.String(length=128), nullable=False),
+    sa.Column('name_en', sa.String(length=128), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
+    sa.Column('is_deleted', sa.Boolean(), nullable=False),
+    sa.ForeignKeyConstraint(['location_id'], ['locations.id'], name=op.f('fk_rayons_location_id_locations')),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_rayons'))
+    )
+    op.create_table('regions',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('location_id', sa.Integer(), nullable=False),
+    sa.Column('name_ua', sa.String(length=128), nullable=False),
+    sa.Column('name_en', sa.String(length=128), nullable=False),
+    sa.Column('svg_value', sa.Text(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
+    sa.Column('is_deleted', sa.Boolean(), nullable=False),
+    sa.ForeignKeyConstraint(['location_id'], ['locations.id'], name=op.f('fk_regions_location_id_locations')),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_regions'))
+    )
+    op.create_table('settlements',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('location_id', sa.Integer(), nullable=False),
+    sa.Column('type', sa.Enum('REGION_CENTER', 'RAYON_CENTER', 'CITY', 'VILLAGE', name='type'), nullable=False),
+    sa.Column('name_ua', sa.String(length=128), nullable=False),
+    sa.Column('name_en', sa.String(length=128), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
+    sa.Column('is_deleted', sa.Boolean(), nullable=False),
+    sa.ForeignKeyConstraint(['location_id'], ['locations.id'], name=op.f('fk_settlements_location_id_locations')),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_settlements'))
+    )
+    op.create_table('user_locations',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('location_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['location_id'], ['locations.id'], name=op.f('fk_user_locations_location_id_locations')),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], name=op.f('fk_user_locations_user_id_users')),
-    sa.PrimaryKeyConstraint('user_id', 'location_id', name=op.f('pk_user_locations'))
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_user_locations'))
+    )
+    op.create_table('user_services',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('service_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['service_id'], ['services.id'], name=op.f('fk_user_services_service_id_services')),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], name=op.f('fk_user_services_user_id_users')),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_user_services'))
     )
     op.create_table('jobs',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -175,7 +216,11 @@ def downgrade():
     op.drop_table('job_files')
     op.drop_table('applications')
     op.drop_table('jobs')
+    op.drop_table('user_services')
     op.drop_table('user_locations')
+    op.drop_table('settlements')
+    op.drop_table('regions')
+    op.drop_table('rayons')
     op.drop_table('addresses')
     op.drop_table('users')
     op.drop_table('services')

@@ -1,9 +1,10 @@
 import click
-from flask import Flask
 import sqlalchemy as sa
+from flask import Flask
 from sqlalchemy import orm
-from app import models as m
+
 from app import db, forms
+from app import models as m
 from app import schema as s
 
 
@@ -49,12 +50,20 @@ def init(app: Flask):
             create_users(db)
             print("users created")
 
+    @app.cli.command("export-users")
+    def export_users():
+        """Creates records in user table from json"""
+        from .user import export_users_from_json_file
+
+        export_users_from_json_file()
+        print("done")
+
     @app.cli.command()
     def export_services():
         """Fill services with data from json file"""
-        from .service import fill_services_from_json_file
+        from .service import export_services_from_json_file
 
-        fill_services_from_json_file()
+        export_services_from_json_file()
         print("done")
 
     @app.cli.command()
@@ -64,5 +73,3 @@ def init(app: Flask):
 
         export_regions_from_json_file()
         print("done")
-
-    # @app.cli.command("register-user")

@@ -13,3 +13,5 @@ from .admin import Admin, AnonymousUser
 from .settlement import Settlement
 from .region import Region
 from .rayon import Rayon
+from .user_services import user_services
+from .user_locations import user_locations

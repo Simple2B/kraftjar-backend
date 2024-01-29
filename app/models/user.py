@@ -1,6 +1,5 @@
-from typing import TYPE_CHECKING
 from datetime import datetime
-from typing import Self
+from typing import TYPE_CHECKING, Self
 from uuid import uuid4
 
 import sqlalchemy as sa
@@ -11,14 +10,13 @@ from app.database import db
 from app.logger import log
 from app.schema.user import User as u
 
-from .utils import ModelMixin
-
 from .user_locations import user_locations
 from .user_services import user_services
+from .utils import ModelMixin
 
 if TYPE_CHECKING:
-    from .service import Service
     from .location import Location
+    from .service import Service
 
 
 class User(db.Model, ModelMixin):
@@ -44,7 +42,7 @@ class User(db.Model, ModelMixin):
 
     updated_at: orm.Mapped[datetime] = orm.mapped_column(default=sa.func.now(), onupdate=sa.func.now())
 
-    # is_volunteer: orm.Mapped[bool] = orm.mapped_column(default=False)
+    is_volunteer: orm.Mapped[bool] = orm.mapped_column(default=False)
 
     is_deleted: orm.Mapped[bool] = orm.mapped_column(default=False)
 

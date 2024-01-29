@@ -44,7 +44,7 @@ def check_if_service_exists(services: dict[int, s.ServiceData], service: s.Servi
         return True
 
 
-def fill_services_from_json_file(with_print: bool = True):
+def export_services_from_json_file(with_print: bool = True):
     """Fill services with data from json file"""
 
     with open(JSON_FILE, "r") as file:

@@ -2,7 +2,6 @@ import sqlalchemy as sa
 
 from app.database import db
 
-
 user_locations = sa.Table(
     "user_locations",
     db.Model.metadata,

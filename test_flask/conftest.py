@@ -57,4 +57,11 @@ def populate(client: FlaskClient):
             password_hash="*",
         ).save(False)
     db.session.commit()
+
+    from app.commands.locations import export_regions_from_json_file
+    from app.commands.service import export_services_from_json_file
+
+    export_regions_from_json_file(False)
+    export_services_from_json_file(False)
+
     yield client
