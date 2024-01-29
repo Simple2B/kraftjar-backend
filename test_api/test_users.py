@@ -1,3 +1,5 @@
+from typing import Sequence
+
 import pytest
 import sqlalchemy as sa
 from fastapi import status
@@ -25,7 +27,7 @@ def test_get_me(client: TestClient, headers: list[dict[str, str]], test_data: Te
 def test_get_users(client: TestClient, headers: list[dict[str, str]], test_data: TestData, full_db: Session):
     db: Session = full_db
 
-    users_with_services: list[m.User] = db.scalars(sa.select(m.User).join(m.user_services)).all()
+    users_with_services: Sequence[m.User] = db.scalars(sa.select(m.User).join(m.user_services)).all()
     users_with_services = [
         users_with_services[3],
         users_with_services[7],
@@ -34,7 +36,7 @@ def test_get_users(client: TestClient, headers: list[dict[str, str]], test_data:
         users_with_services[11],
         users_with_services[12],
     ]
-    services: list[m.Service] = db.scalars(sa.select(m.Service)).all()
+    services: Sequence[m.Service] = db.scalars(sa.select(m.Service)).all()
     data: s.UserFilters = s.UserFilters(
         services=[services[0].uuid, services[1].uuid],
     )

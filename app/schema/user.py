@@ -1,4 +1,5 @@
 from pydantic import BaseModel, ConfigDict
+from typing import Sequence
 
 
 class User(BaseModel):
@@ -29,7 +30,7 @@ class UsersFile(BaseModel):
 
 
 class UserList(BaseModel):
-    users: list[User]
+    users: Sequence[User]
 
     model_config = ConfigDict(
         from_attributes=True,
