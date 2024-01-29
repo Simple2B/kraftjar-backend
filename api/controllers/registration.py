@@ -25,6 +25,7 @@ def register_user(user_data: s.RegistrationIn, db: Session) -> s.Token:
         phone=user_data.phone,
         email=user_data.email,
         password=user_data.password,
+        is_volunteer=user_data.is_volunteer,
     )
     db.add(user)
     # link user to services
