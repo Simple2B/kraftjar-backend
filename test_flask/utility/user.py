@@ -1,4 +1,3 @@
-import random
 from typing import Sequence, cast
 
 from alchemical.flask import Alchemical
@@ -45,14 +44,6 @@ def create_users(db: Session, count: int = USER_COUNT):
         )
         db.add(user)
         db.flush()
-        user_locations = set(random.choices(locations, k=3))
-        for location in user_locations:
-            db.add(
-                m.UserLocation(
-                    user_id=user.id,
-                    location_id=location,
-                )
-            )
 
     db.commit()
     log(log.INFO, "Created %s users", count)
