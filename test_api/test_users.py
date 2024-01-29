@@ -27,14 +27,14 @@ def test_get_me(client: TestClient, headers: list[dict[str, str]], test_data: Te
 def test_get_users(client: TestClient, headers: list[dict[str, str]], test_data: TestData, full_db: Session):
     db: Session = full_db
 
-    users_with_services: Sequence[m.User] = db.scalars(sa.select(m.User).join(m.user_services)).all()
-    users_with_services = [
-        users_with_services[3],
-        users_with_services[7],
-        users_with_services[8],
-        users_with_services[10],
-        users_with_services[11],
-        users_with_services[12],
+    all_users: Sequence[m.User] = db.scalars(sa.select(m.User)).all()
+    users_with_services: list[m.User] = [
+        all_users[3],
+        all_users[7],
+        all_users[8],
+        all_users[10],
+        all_users[11],
+        all_users[12],
     ]
     services: Sequence[m.Service] = db.scalars(sa.select(m.Service)).all()
     data: s.UserFilters = s.UserFilters(
