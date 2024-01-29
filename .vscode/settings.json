@@ -12,6 +12,7 @@
     "dotenv",
     "fastapi",
     "flowbite",
+    "fullname",
     "jsonify",
     "kraftjar",
     "onupdate",

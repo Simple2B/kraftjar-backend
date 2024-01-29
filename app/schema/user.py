@@ -12,3 +12,17 @@ class User(BaseModel):
     model_config = ConfigDict(
         from_attributes=True,
     )
+
+
+class UserFile(BaseModel):
+    fullname: str
+    phone: str
+    email: str
+    password: str
+    location_ids: list[int] = []
+    service_ids: list[int] = []
+    is_volunteer: bool = False
+
+
+class UsersFile(BaseModel):
+    users: list[UserFile]
