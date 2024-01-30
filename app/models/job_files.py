@@ -10,6 +10,3 @@ job_files = sa.Table(
     sa.Column("job_id", sa.ForeignKey("jobs.id"), primary_key=True),
 )
 
-
-class JobFile(db.Model):
-    __tablename__ = "job_files"

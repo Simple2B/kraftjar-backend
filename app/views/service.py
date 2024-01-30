@@ -59,13 +59,13 @@ def delete(uuid: str):
 @service_route.route("/<uuid>/edit", methods=["GET", "POST"])
 @login_required
 def edit(uuid: str):
-    service = db.session.scalar(m.Service.select().where(m.Service.uuid == uuid))
+    service: m.Service = db.session.scalar(m.Service.select().where(m.Service.uuid == uuid))
     if not service:
         flash("Service not found", "error")
         log(log.ERROR, "Service not found: [%s]", uuid)
         return redirect(url_for("service.get_all", **arg_params()))
 
-    form = f.ServiceForm()
+    form: f.ServiceForm = f.ServiceForm()
     if form.validate_on_submit():
         service.name_ua = form.name_ua.data
         service.name_en = form.name_en.data
@@ -80,4 +80,12 @@ def edit(uuid: str):
     form.name_ua.data = service.name_ua
     form.name_en.data = service.name_en
     form.parent_id.data = str(service.parent_id)
-    return render_template("service/edit.html", form=form, service=service)
+
+    parents: list[m.Service] = []
+    service_parent: m.Service = service
+    while service_parent.parent:
+        service_parent = service_parent.parent
+
+    parents.append(service)
+
+    return render_template("service/edit.html", form=form, service=service, parents=parents)
