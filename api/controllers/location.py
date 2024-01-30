@@ -19,7 +19,6 @@ def get_locations(query: s.LocationsIn, db: Session) -> s.LocationsOut:
         s.Location(
             uuid=region.location.uuid,
             name=region.name_ua if query.lang == CFG.UA else region.name_en,
-            svg=region.svg_value,
         )
         for region in db_regions
     ]
