@@ -65,4 +65,9 @@ def create_app(environment="development"):
     def handle_http_error(exc):
         return render_template("error.html", error=exc), exc.code
 
+    from app.controllers.jinja_globals import get_parent_services, get_neighbors_services
+
+    app.jinja_env.globals["get_parent_services"] = get_parent_services
+    app.jinja_env.globals["get_neighbors_services"] = get_neighbors_services
+
     return app

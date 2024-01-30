@@ -81,11 +81,4 @@ def edit(uuid: str):
     form.name_en.data = service.name_en
     form.parent_id.data = str(service.parent_id)
 
-    parents: list[m.Service] = []
-    service_parent: m.Service = service
-    while service_parent.parent:
-        service_parent = service_parent.parent
-
-    parents.append(service)
-
-    return render_template("service/edit.html", form=form, service=service, parents=parents)
+    return render_template("service/edit.html", form=form, service=service)
