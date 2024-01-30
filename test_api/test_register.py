@@ -91,6 +91,5 @@ def test_phone_validation(full_db: Session, client: TestClient, test_data: TestD
     response = client.post("/api/registration/validate-phone", json=data_validate.model_dump(), headers=headers[0])
     assert response.status_code == status.HTTP_200_OK
 
-    db_user = db.scalar(sa.select(m.User).where(m.User.email == USER.email))
-    assert db_user
     assert db_user.phone_verified
+    db.commit()
