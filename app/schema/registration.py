@@ -11,3 +11,11 @@ class RegistrationIn(BaseModel):
     services: list[str] = []  # uuids of selected services
     locations: list[str] = []  # uuids of selected locations
     is_volunteer: bool = False
+
+
+class SetPhoneIn(BaseModel):
+    phone: str
+
+
+class ValidatePhoneIn(BaseModel):
+    code: str

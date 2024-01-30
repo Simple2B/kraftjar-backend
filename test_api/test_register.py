@@ -1,11 +1,11 @@
 import pytest
+import sqlalchemy as sa
 from fastapi import status
 from fastapi.testclient import TestClient
-import sqlalchemy as sa
 from sqlalchemy.orm import Session
 
-from app import schema as s
 from app import models as m
+from app import schema as s
 from config import config
 
 from .test_data import TestData
@@ -67,3 +67,29 @@ def test_register(full_db: Session, client: TestClient, test_data: TestData):
     )
     response = client.post("/api/registration/", json=user_data.model_dump())
     assert response.status_code == status.HTTP_406_NOT_ACCEPTABLE
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_phone_validation(full_db: Session, client: TestClient, test_data: TestData, headers: list[dict[str, str]]):
+    db = full_db
+
+    USER = test_data.test_users[0]
+    db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.email == USER.email))
+    assert db_user
+
+    assert not db_user.phone_verified
+    phone: str = USER.phone.replace("0", "1")
+    data: s.SetPhoneIn = s.SetPhoneIn(phone=phone)
+    response = client.post("/api/registration/set-phone", json=data.model_dump(), headers=headers[0])
+
+    assert response.status_code == status.HTTP_201_CREATED
+    assert response.json() is None
+
+    assert db_user.phone == phone
+
+    data_validate: s.ValidatePhoneIn = s.ValidatePhoneIn(code="1234")
+    response = client.post("/api/registration/validate-phone", json=data_validate.model_dump(), headers=headers[0])
+    assert response.status_code == status.HTTP_200_OK
+
+    assert db_user.phone_verified
+    db.commit()
