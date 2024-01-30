@@ -5,6 +5,7 @@ from sqlalchemy.sql.expression import Executable
 
 from app import models as m
 from app import schema as s
+from app.logger import log
 
 from .oauth2 import create_access_token
 
@@ -44,3 +45,25 @@ def register_user(user_data: s.RegistrationIn, db: Session) -> s.Token:
     db.commit()
     db.refresh(user)
     return s.Token(access_token=create_access_token(user.id))
+
+
+def set_phone(phone_data: s.SetPhoneIn, user: m.User, db: Session) -> None:
+    stmt: Executable = sa.select(m.User).where(m.User.phone == phone_data.phone)
+    if db.scalar(stmt) is not None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This phone is already registered")
+    user.phone = phone_data.phone
+    user.phone_verified = False
+    db.commit()
+
+
+def send_sms(phone: str, db: Session) -> None:
+    log(log.INFO, "Sending SMS to [%s]", phone)
+    return
+
+
+def validate_phone(user: m.User, code: str, db: Session) -> None:
+    log(log.INFO, "Validating phone [%s] with code [%s]", user.phone, code)
+    if True:
+        user.phone_verified = True
+
+    return
