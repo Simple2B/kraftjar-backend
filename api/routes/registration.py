@@ -53,3 +53,4 @@ def validate_phone(phone_data: s.ValidatePhoneIn, db=Depends(get_db), current_us
     """Sets phone for a user"""
     log(log.INFO, "Set phone [%s] for user with id [%s]", current_user.phone, current_user.id)
     c.validate_phone(current_user, phone_data.code, db=db)
+    return

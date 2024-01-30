@@ -58,12 +58,11 @@ def set_phone(phone_data: s.SetPhoneIn, user: m.User, db: Session) -> None:
 
 def send_sms(phone: str, db: Session) -> None:
     log(log.INFO, "Sending SMS to [%s]", phone)
-    return
 
 
 def validate_phone(user: m.User, code: str, db: Session) -> None:
     log(log.INFO, "Validating phone [%s] with code [%s]", user.phone, code)
-    if True:
-        user.phone_verified = True
 
-    return
+    user.phone_verified = True
+
+    db.commit()
