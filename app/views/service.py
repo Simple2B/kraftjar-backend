@@ -7,6 +7,7 @@ from flask import (
     request,
     url_for,
 )
+from flask import current_app as app
 from flask_login import login_required
 
 from app import db
@@ -14,7 +15,7 @@ from app import forms as f
 from app import models as m
 from app.controllers import create_pagination
 from app.logger import log
-from app.utilities import arg_params, Params
+from app.utilities import Params, arg_params
 
 service_route = Blueprint("service", __name__, url_prefix="/service")
 
@@ -29,7 +30,7 @@ def get_all():
         stmt = stmt.where(m.Service.name_ua.like(f"{q}%") | m.Service.name_en.like(f"{q}%"))
         count_stmt = count_stmt.where(m.Service.name_ua.like(f"{q}%") | m.Service.name_en.like(f"{q}%"))
 
-    pagination = create_pagination(total=db.session.scalar(count_stmt))
+    pagination = create_pagination(total=db.session.scalar(count_stmt), page_size=app.config["SERVICES_PAGE_SIZE"])
     services = list(
         db.session.scalars(stmt.offset((pagination.page - 1) * pagination.per_page).limit(pagination.per_page)).all()
     )
@@ -80,5 +81,6 @@ def edit(uuid: str):
     form.name_ua.data = service.name_ua
     form.name_en.data = service.name_en
     form.parent_id.data = str(service.parent_id)
+    form.id.data = str(service.id)
 
     return render_template("service/edit.html", form=form, service=service)

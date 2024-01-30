@@ -41,6 +41,7 @@ class BaseConfig(BaseSettings):
     # Pagination
     DEFAULT_PAGE_SIZE: int
     PAGE_LINKS_NUMBER: int
+    SERVICES_PAGE_SIZE: int = 10
 
     # API
     JWT_SECRET: str
