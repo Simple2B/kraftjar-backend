@@ -17,7 +17,6 @@ def login():
         if user:
             login_user(user)
             log(log.INFO, "Login successful.")
-            flash("Login successful.", "success")
             return redirect(url_for("main.index"))
         flash("Wrong user ID or password.", "danger")
 
