@@ -18,8 +18,8 @@ class Address(db.Model, ModelMixin):
     line1: orm.Mapped[str] = orm.mapped_column(sa.String(255))
     line2: orm.Mapped[str] = orm.mapped_column(sa.String(255))
 
-    postcode: orm.Mapped[str] = orm.mapped_column(sa.String(255))
-    city: orm.Mapped[str] = orm.mapped_column(sa.String(255))
+    # postcode: orm.Mapped[str] = orm.mapped_column(sa.String(255))
+    # city: orm.Mapped[str] = orm.mapped_column(sa.String(255))
 
     location_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("locations.id"))
 

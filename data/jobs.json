@@ -1,0 +1,13 @@
+{
+    "jobs":
+    [
+        {
+            "title": "Software Engineer",
+            "description": "Developed a web application for a client using the MEAN stack.",
+            "time": "1 Month",
+            "is_public": true,
+            "owner_id": 1,
+            ""
+        }
+    ]
+}
