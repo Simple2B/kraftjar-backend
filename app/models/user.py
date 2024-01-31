@@ -84,7 +84,7 @@ class User(db.Model, ModelMixin):
         return bool(self.apple_id)
 
     def __repr__(self):
-        return f"<{self.id}: {self.first_name},{self.email}>"
+        return f"<{self.id}: {self.fullname},{self.email}>"
 
     # uses for editing user
     @property
