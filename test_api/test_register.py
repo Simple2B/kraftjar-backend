@@ -92,4 +92,8 @@ def test_phone_validation(full_db: Session, client: TestClient, test_data: TestD
     assert response.status_code == status.HTTP_200_OK
 
     assert db_user.phone_verified
+
+    response = client.get("api/registration/set-otp", headers=headers[0])
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+
     db.commit()
