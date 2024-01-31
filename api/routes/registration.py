@@ -33,12 +33,15 @@ def register_user(auth_data: s.RegistrationIn, db=Depends(get_db)):
     responses={
         status.HTTP_409_CONFLICT: {"description": "This phone is already registered"},
     },
+    response_model=s.SetPhoneOut,
 )
 def set_phone(phone_data: s.SetPhoneIn, db=Depends(get_db), current_user: m.User = Depends(get_current_user)):
     """Sets phone for a user"""
     log(log.INFO, "Set phone [%s] for user with id [%s]", phone_data.phone, current_user.id)
     c.set_phone(phone_data, current_user, db=db)
     c.send_otp_to_user(current_user, db=db)
+
+    return s.SetPhoneOut(phone=phone_data.phone)
 
 
 @router.post(

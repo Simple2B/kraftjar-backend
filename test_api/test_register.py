@@ -83,8 +83,6 @@ def test_phone_validation(full_db: Session, client: TestClient, test_data: TestD
     response = client.post("/api/registration/set-phone", json=data.model_dump(), headers=headers[0])
 
     assert response.status_code == status.HTTP_201_CREATED
-    assert response.json() is None
-
     assert db_user.phone == phone
 
     data_validate: s.ValidatePhoneIn = s.ValidatePhoneIn(code="1234")

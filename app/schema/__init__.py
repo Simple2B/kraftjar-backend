@@ -9,7 +9,7 @@ from .user import User, UserFile, UsersFile, UserList, UserFilters
 from .whoami import WhoAmI
 from .rate import RateIn, RateOut, RateOutList
 from .auth import Auth, GoogleAuth, AppleAuth
-from .registration import RegistrationIn, SetPhoneIn, ValidatePhoneIn
+from .registration import RegistrationIn, SetPhoneIn, ValidatePhoneIn, SetPhoneOut
 from .field import FieldCreate
 from .exception import NotFound
 from .service import Service, ServicesIn, ServicesOut, ServiceData, ServiceDataFile, ServiceDB

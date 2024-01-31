@@ -17,5 +17,9 @@ class SetPhoneIn(BaseModel):
     phone: str
 
 
+class SetPhoneOut(BaseModel):
+    phone: str
+
+
 class ValidatePhoneIn(BaseModel):
     code: str
