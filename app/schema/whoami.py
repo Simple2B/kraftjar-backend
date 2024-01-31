@@ -5,6 +5,7 @@ class WhoAmI(BaseModel):
     uuid: str
     is_auth_by_google: bool
     is_auth_by_apple: bool
+    phone_verified: bool
 
     model_config = ConfigDict(
         from_attributes=True,
