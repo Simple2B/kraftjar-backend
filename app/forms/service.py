@@ -10,8 +10,10 @@ class ServiceForm(FlaskForm):
     name_ua = StringField("Name UA", validators=[DataRequired(), Length(3, 128)])
     name_en = StringField("Name EN", validators=[DataRequired(), Length(3, 128)])
     parent_id = StringField("Parent ID", validators=[DataRequired()])
+    parent_uuid = StringField("Parent UUID", validators=[DataRequired()])
 
-    id = HiddenField("ID")
+    id = StringField("ID", validators=[DataRequired()])
+    uuid = StringField("UUID", validators=[DataRequired()])
 
     save = SubmitField("Save")
 

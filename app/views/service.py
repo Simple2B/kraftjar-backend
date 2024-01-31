@@ -57,6 +57,21 @@ def delete(uuid: str):
     return redirect(url_for("service.get_all", **arg_params()))
 
 
+@service_route.route("/<uuid>/restore")
+@login_required
+def restore(uuid: str):
+    service = db.session.scalar(m.Service.select().where(m.Service.uuid == uuid))
+    if not service:
+        flash("Service not found", "error")
+        log(log.ERROR, "Service not found: [%s]", uuid)
+        values: Params = arg_params()
+        return redirect(url_for("service.get_all", **values))
+    service.is_deleted = False
+    db.session.commit()
+    flash("Service restored", "success")
+    return redirect(url_for("service.get_all", **arg_params()))
+
+
 @service_route.route("/<uuid>/edit", methods=["GET", "POST"])
 @login_required
 def edit(uuid: str):
@@ -70,7 +85,6 @@ def edit(uuid: str):
     if form.validate_on_submit():
         service.name_ua = form.name_ua.data
         service.name_en = form.name_en.data
-        service.parent_id = form.parent_id.data
         db.session.commit()
         flash("Service updated", "success")
         return redirect(url_for("service.get_all", **arg_params()))
@@ -82,5 +96,7 @@ def edit(uuid: str):
     form.name_en.data = service.name_en
     form.parent_id.data = str(service.parent_id)
     form.id.data = str(service.id)
+    form.uuid.data = service.uuid
+    form.parent_uuid.data = service.parent.uuid if service.parent else None
 
     return render_template("service/edit.html", form=form, service=service)
