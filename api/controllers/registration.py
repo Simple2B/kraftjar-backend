@@ -56,8 +56,15 @@ def set_phone(phone_data: s.SetPhoneIn, user: m.User, db: Session) -> None:
     db.commit()
 
 
-def send_sms(phone: str, db: Session) -> None:
-    log(log.INFO, "Sending SMS to [%s]", phone)
+def send_otp_to_user(user: m.User, db: Session) -> None:
+    log(log.INFO, "Sending SMS to [%s]", user.phone)
+    if not user.phone:
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="User phone not found")
+
+    if user.phone_verified:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User phone is validated already")
+
+    log(log.INFO, "SMS sended to [%s]", user.phone)
 
 
 def validate_phone(user: m.User, code: str, db: Session) -> None:
