@@ -13,7 +13,7 @@ service_alias = aliased(m.Service)
 def get_users(filters: s.UserFilters, db: Session) -> s.UserSearchOut:
     """filters users"""
     stmt = sa.select(m.User).where(m.User.is_deleted == False)  # noqa: E712
-    services: list[m.Service] = []
+    services: Sequence[m.Service] = []
     if filters.q:
         stmt = stmt.where(
             sa.or_(
@@ -24,7 +24,7 @@ def get_users(filters: s.UserFilters, db: Session) -> s.UserSearchOut:
                 m.User.phone.ilike(f"%{filters.q}%"),
             )
         )
-        services_search: list[int] = db.scalars(
+        services_search: Sequence[int] = db.scalars(
             sa.select(m.Service.id).where(
                 sa.or_(m.Service.name_ua.ilike(f"%{filters.q}%"), m.Service.name_en.ilike(f"%{filters.q}%"))
             )
@@ -53,4 +53,4 @@ def get_users(filters: s.UserFilters, db: Session) -> s.UserSearchOut:
         )
 
     users: Sequence[m.User] = db.scalars(stmt.distinct()).all()
-    return s.UserSearchOut(users=users, services=services)
+    return s.UserSearchOut(users=users, services=services)  # type: ignore
