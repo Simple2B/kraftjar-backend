@@ -1,6 +1,8 @@
 from pydantic import BaseModel, ConfigDict
 from typing import Sequence
 
+from .service import ServiceDB
+
 
 class User(BaseModel):
     id: int
@@ -27,6 +29,11 @@ class UserFile(BaseModel):
 
 class UsersFile(BaseModel):
     users: list[UserFile]
+
+
+class UserSearchOut(BaseModel):
+    services: list[ServiceDB] = []
+    users: list[User] = []
 
 
 class UserList(BaseModel):

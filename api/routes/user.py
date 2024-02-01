@@ -21,7 +21,7 @@ def get_current_user_profile(
     return current_user
 
 
-@user_router.post("/", status_code=status.HTTP_200_OK, response_model=s.UserList)
+@user_router.post("/", status_code=status.HTTP_200_OK, response_model=s.UserSearchOut)
 def get_users(
     filters: s.UserFilters,
     current_user: m.User = Depends(get_current_user),

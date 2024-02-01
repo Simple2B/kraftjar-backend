@@ -42,7 +42,7 @@ def test_get_users(client: TestClient, headers: list[dict[str, str]], test_data:
     )
     response = client.post("/api/users/", headers=headers[0], json=data.model_dump())
     assert response.status_code == status.HTTP_200_OK
-    users = s.UserList.model_validate(response.json())
+    users = s.UserSearchOut.model_validate(response.json())
     assert len(users.users) == len(users_with_services)
     for user in users.users:
         assert user.id in [u.id for u in users_with_services]
