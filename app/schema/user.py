@@ -1,7 +1,8 @@
 from pydantic import BaseModel, ConfigDict
 from typing import Sequence
 
-from .service import ServiceDB
+from .service import Service, CFG
+from .location import Location
 
 
 class User(BaseModel):
@@ -31,11 +32,6 @@ class UsersFile(BaseModel):
     users: list[UserFile]
 
 
-class UserSearchOut(BaseModel):
-    services: list[ServiceDB] = []
-    users: list[User] = []
-
-
 class UserList(BaseModel):
     users: Sequence[User]
 
@@ -44,7 +40,26 @@ class UserList(BaseModel):
     )
 
 
-class UserFilters(BaseModel):
-    services: list[str] = []
-    locations: list[str] = []
-    q: str = ""
+class UserSearchOut(BaseModel):
+    uuid: str
+    fullname: str
+    services: list[Service]
+    locations: list[Location]
+
+
+class UserSearchIn(BaseModel):
+    lang: str = CFG.UA
+    selected_services: list[str] = []  # list of uuids - selected services
+    selected_locations: list[str] = []  # list of uuids - selected locations
+    query: str = ""
+
+
+class UsersSearchOut(BaseModel):
+    lang: str = CFG.UA
+    services: list[Service] = []
+    locations: list[Location] = []
+    selected_services: list[str] = []  # list of uuids - selected services
+    selected_locations: list[str] = []  # list of uuids - selected locations
+    top_users: list[UserSearchOut] = []
+    near_users: list[UserSearchOut] = []
+    query: str = ""

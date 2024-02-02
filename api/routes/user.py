@@ -21,11 +21,11 @@ def get_current_user_profile(
     return current_user
 
 
-@user_router.post("/", status_code=status.HTTP_200_OK, response_model=s.UserSearchOut)
-def get_users(
-    filters: s.UserFilters,
+@user_router.post("/search", status_code=status.HTTP_200_OK, response_model=s.UsersSearchOut)
+def search_users(
+    query: s.UserSearchIn,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     """Returns filtered list of users"""
-    return c.get_users(filters, db)
+    return c.search_users(query, current_user, db)

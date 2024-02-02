@@ -37,12 +37,12 @@ def test_get_users(client: TestClient, headers: list[dict[str, str]], test_data:
         users_with_services[12],
     ]
     services: Sequence[m.Service] = db.scalars(sa.select(m.Service)).all()
-    data: s.UserFilters = s.UserFilters(
-        services=[services[0].uuid, services[1].uuid],
+    query_data: s.UserSearchIn = s.UserSearchIn(
+        selected_services=[services[0].uuid, services[1].uuid],
     )
-    response = client.post("/api/users/", headers=headers[0], json=data.model_dump())
+    response = client.post("/api/users/search", headers=headers[0], json=query_data.model_dump())
     assert response.status_code == status.HTTP_200_OK
-    users = s.UserSearchOut.model_validate(response.json())
-    assert len(users.users) == len(users_with_services)
-    for user in users.users:
-        assert user.id in [u.id for u in users_with_services]
+    users = s.UsersSearchOut.model_validate(response.json())
+    assert len(users.top_users) == len(users_with_services)
+    for user in users.top_users:
+        assert user.uuid in [u.uuid for u in users_with_services]

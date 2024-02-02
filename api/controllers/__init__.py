@@ -5,4 +5,4 @@ from .registration import register_user, set_phone, send_otp_to_user, validate_p
 from .oauth2 import create_access_token
 from .service import get_services
 from .location import get_locations
-from .user import get_users
+from .user import search_users

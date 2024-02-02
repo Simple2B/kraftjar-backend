@@ -54,6 +54,8 @@ class BaseConfig(BaseSettings):
     UA: str = "ua"
     EN: str = "en"
 
+    MAX_USER_SEARCH_RESULTS: int = 10
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.
