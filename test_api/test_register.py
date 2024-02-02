@@ -8,15 +8,11 @@ from app import models as m
 from app import schema as s
 from config import config
 
-from .test_data import TestData
-
 CFG = config()
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_register(full_db: Session, client: TestClient, test_data: TestData):
-    db = full_db
-
+def test_register(db: Session, client: TestClient):
     LOCATIONS_NUM = 3
     locations = db.scalars(sa.select(m.Location).limit(LOCATIONS_NUM)).all()
     assert locations
@@ -25,14 +21,16 @@ def test_register(full_db: Session, client: TestClient, test_data: TestData):
     services = db.scalars(sa.select(m.Service).limit(SERVICES_NUM)).all()
     assert services
 
-    USER = test_data.test_users[0]
-    USER.phone = "1234567890"
-    USER.email = "test_user@kraftjar.net"
+    USER_PHONE = "1234567890"
+    USER_EMAIL = "test_user@kraftjar.net"
+    USER_FNAME = "TestFName"
+    USER_LNAME = "TestLName"
+    USER_PASSWORD = "test_password"
     user_data = s.RegistrationIn(
-        fullname=USER.first_name + " " + USER.last_name,
-        phone=USER.phone,
-        email=USER.email,
-        password=USER.password,
+        fullname=USER_FNAME + " " + USER_LNAME,
+        phone=USER_PHONE,
+        email=USER_EMAIL,
+        password=USER_PASSWORD,
         services=[s.uuid for s in services],
         locations=[loc.uuid for loc in locations],
     )
@@ -45,53 +43,50 @@ def test_register(full_db: Session, client: TestClient, test_data: TestData):
     assert res.status_code == status.HTTP_200_OK
 
     # Try to register again with the same email
-    USER = test_data.test_users[0]
-    USER.phone = "999999999"
+    USER_PHONE2 = "999999999"
     user_data = s.RegistrationIn(
-        fullname=USER.first_name + " " + USER.last_name,
-        phone=USER.phone,
-        email=USER.email,
-        password=USER.password,
+        fullname=USER_FNAME + " " + USER_LNAME,
+        phone=USER_PHONE2,
+        email=USER_EMAIL,
+        password=USER_PASSWORD,
     )
     response = client.post("/api/registration/", json=user_data.model_dump())
     assert response.status_code == status.HTTP_409_CONFLICT
 
     # Try to register again with the same phone
-    USER = test_data.test_users[1]
-    USER.email = "new_email@new.york.post.org"
+    USER_EMAIL2 = "new_email@new.york.post.org"
+    USER_PHONE2 = "+380661234562"
     user_data = s.RegistrationIn(
-        fullname=USER.first_name + " " + USER.last_name,
-        phone=USER.phone,
-        email=USER.email,
-        password=USER.password,
+        fullname=USER_FNAME + " " + USER_LNAME,
+        phone=USER_PHONE2,
+        email=USER_EMAIL2,
+        password=USER_PASSWORD,
     )
     response = client.post("/api/registration/", json=user_data.model_dump())
     assert response.status_code == status.HTTP_406_NOT_ACCEPTABLE
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_phone_validation(full_db: Session, client: TestClient, test_data: TestData, headers: list[dict[str, str]]):
-    db = full_db
-
-    USER = test_data.test_users[0]
-    db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.email == USER.email))
+def test_phone_validation(db: Session, client: TestClient, auth_header: dict[str, str]):
+    USER_EMAIL = "mykola_saltykov@gmail.com"
+    db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.email == USER_EMAIL))
     assert db_user
 
     assert not db_user.phone_verified
-    phone: str = USER.phone.replace("0", "1")
-    data: s.SetPhoneIn = s.SetPhoneIn(phone=phone)
-    response = client.post("/api/registration/set-phone", json=data.model_dump(), headers=headers[0])
+    NEW_USER_PHONE = "777777777777"
+    data: s.SetPhoneIn = s.SetPhoneIn(phone=NEW_USER_PHONE)
+    response = client.post("/api/registration/set-phone", json=data.model_dump(), headers=auth_header)
 
     assert response.status_code == status.HTTP_201_CREATED
-    assert db_user.phone == phone
+    assert db_user.phone == NEW_USER_PHONE
 
     data_validate: s.ValidatePhoneIn = s.ValidatePhoneIn(code="1234")
-    response = client.post("/api/registration/validate-phone", json=data_validate.model_dump(), headers=headers[0])
+    response = client.post("/api/registration/validate-phone", json=data_validate.model_dump(), headers=auth_header)
     assert response.status_code == status.HTTP_200_OK
 
     assert db_user.phone_verified
 
-    response = client.get("api/registration/set-otp", headers=headers[0])
+    response = client.get("api/registration/set-otp", headers=auth_header)
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
     db.commit()

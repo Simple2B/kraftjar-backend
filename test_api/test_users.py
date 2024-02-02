@@ -10,37 +10,38 @@ from app import models as m
 from app import schema as s
 from config import config
 
-from .test_data import TestData
-
 CFG = config()
 
+USER_PHONE = "+380661234561"
+USER_PASSWORD = "test_password"
+
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_get_me(client: TestClient, headers: list[dict[str, str]], test_data: TestData):
-    response = client.get("/api/users/me", headers=headers[0])
+def test_get_me(client: TestClient, auth_header: dict[str, str]):
+    response = client.get("/api/users/me", headers=auth_header)
     assert response.status_code == status.HTTP_200_OK
     user = s.User.model_validate(response.json())
-    assert user.first_name == test_data.test_users[0].first_name
+    assert user.phone == USER_PHONE
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_get_users(client: TestClient, headers: list[dict[str, str]], test_data: TestData, full_db: Session):
+def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Session):
     db: Session = full_db
 
     users_with_services: Sequence[m.User] = db.scalars(sa.select(m.User)).all()
     users_with_services = [
-        users_with_services[3],
+        users_with_services[0],
+        users_with_services[4],
+        users_with_services[5],
         users_with_services[7],
         users_with_services[8],
-        users_with_services[10],
-        users_with_services[11],
-        users_with_services[12],
+        users_with_services[9],
     ]
     services: Sequence[m.Service] = db.scalars(sa.select(m.Service)).all()
     query_data: s.UserSearchIn = s.UserSearchIn(
         selected_services=[services[0].uuid, services[1].uuid],
     )
-    response = client.post("/api/users/search", headers=headers[0], json=query_data.model_dump())
+    response = client.post("/api/users/search", headers=auth_header, json=query_data.model_dump())
     assert response.status_code == status.HTTP_200_OK
     users = s.UsersSearchOut.model_validate(response.json())
     assert len(users.top_users) == len(users_with_services)

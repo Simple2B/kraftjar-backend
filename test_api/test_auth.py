@@ -8,15 +8,15 @@ from app import models as m
 from app import schema as s
 from config import config
 
-from .test_data import TestData
-
 CFG = config()
+
+USER_PHONE = "+380661234561"
+USER_PASSWORD = "test_password"
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_auth(db: Session, client: TestClient, test_data: TestData):
-    USER = test_data.test_users[0]
-    user_auth = s.Auth(phone=USER.phone, password=USER.password)
+def test_auth(db: Session, client: TestClient):
+    user_auth = s.Auth(phone=USER_PHONE, password=USER_PASSWORD)
     response = client.post("/api/auth/token", json=user_auth.model_dump())
     assert response.status_code == status.HTTP_200_OK
     token = s.Token.model_validate(response.json())
@@ -27,7 +27,7 @@ def test_auth(db: Session, client: TestClient, test_data: TestData):
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_google_apple_auth(full_db: Session, client: TestClient, test_data: TestData):
+def test_google_apple_auth(full_db: Session, client: TestClient):
     db = full_db
     users_before: int | None = db.scalar(sa.select(sa.func.count(m.User.id)))
     assert users_before is not None

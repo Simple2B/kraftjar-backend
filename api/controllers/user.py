@@ -45,12 +45,15 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
     """filters users"""
 
     # fill locations
+    location_ids = [location.id for location in me.locations]
+    region_stmt = sa.select(m.Region).where(m.Region.location_id.in_(location_ids))
+    db_regions = db.scalars(region_stmt).all()
     locations: list[s.Location] = [
         s.Location(
             uuid=region.location.uuid,
             name=region.name_ua if query.lang == CFG.UA else region.name_en,
         )
-        for region in me.locations
+        for region in db_regions
     ]
 
     stmt = sa.select(m.User).where(m.User.is_deleted == False)  # noqa: E712
