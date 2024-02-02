@@ -17,10 +17,6 @@ db = Alchemical()
 if CFG.IS_API:
     db.initialize(url=CFG.ALCHEMICAL_DATABASE_URL)
 
-    @sqlalchemy.event.listens_for(db.get_engine(), "connect")
-    def on_connect(dbapi_connection, connection_record):
-        dbapi_connection.create_function("lower", 1, lambda arg: arg.lower())
-
 
 def get_db() -> Generator[Session, None, None]:
     with db.Session() as session:
