@@ -1,6 +1,5 @@
 from typing import Generator
 
-import sqlalchemy
 from sqlalchemy.orm import Session
 
 from config import config
