@@ -56,7 +56,7 @@ def client(db) -> Generator[TestClient, None, None]:
 def auth_header(
     client: TestClient,
     db: orm.Session,
-) -> Generator[list[dict[str, str]], None, None]:
+) -> Generator[dict[str, str], None, None]:
     """Returns an authorized test client for the API"""
     authorized_header: dict[str, str] = {}
     USER_PHONE = "+380661234561"
