@@ -26,6 +26,9 @@ def search_users(
     query: s.UserSearchIn,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
+    responses={
+        status.HTTP_409_CONFLICT: {"description": "Selected service not found"},
+    },
 ):
     """Returns filtered list of users"""
     return c.search_users(query, current_user, db)
