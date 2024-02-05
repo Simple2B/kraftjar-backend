@@ -36,8 +36,7 @@ def create_users(db: Session, count: int = USER_COUNT):
 
     for i in range(1, count + 1):
         user = m.User(
-            first_name=faker.first_name(),
-            last_name=faker.last_name(),
+            fullname=faker.last_name(),
             email=faker.email(),
             phone=faker.phone_number(),
         )

@@ -25,8 +25,6 @@ class User(db.Model, ModelMixin):
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
     uuid: orm.Mapped[str] = orm.mapped_column(sa.String(36), default=lambda: str(uuid4()))
 
-    first_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
-    last_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
     fullname: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")  # fill in registration form
 
     email: orm.Mapped[str] = orm.mapped_column(sa.String(128))  # fill in registration form

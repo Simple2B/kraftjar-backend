@@ -1,12 +1,13 @@
-from typing import Sequence
+from typing import Sequence, Tuple
 
 import sqlalchemy as sa
+from sqlalchemy.engine.result import Result
 from sqlalchemy.orm import Session, aliased
 
 import app.models as m
 import app.schema as s
-from config import config
 from app.logger import log
+from config import config
 
 CFG = config()
 
@@ -45,18 +46,22 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
     """filters users"""
 
     # fill locations
-    location_ids = [location.id for location in me.locations]
-    region_stmt = sa.select(m.Region).where(m.Region.location_id.in_(location_ids))
-    db_regions = db.scalars(region_stmt).all()
+
+    db_regions: Result[Tuple[str, str]] = db.execute(
+        sa.select(m.Region.name_ua if query.lang == CFG.UA else m.Region.name_en, m.Location.uuid)
+        .join(m.Location)
+        .join(m.user_locations)
+        .where(m.user_locations.c.user_id == me.id)
+    )
     locations: list[s.Location] = [
         s.Location(
-            uuid=region.location.uuid,
-            name=region.name_ua if query.lang == CFG.UA else region.name_en,
+            uuid=uuid,
+            name=name,
         )
-        for region in db_regions
+        for uuid, name in db_regions
     ]
 
-    stmt = sa.select(m.User).where(m.User.is_deleted == False)  # noqa: E712
+    stmt = sa.select(m.User).where(m.User.is_deleted.is_(False))
     services: list[s.Service] = []
     if query.query:
         # search services
@@ -72,11 +77,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
             ]
 
         stmt = stmt.where(
-            sa.or_(
-                m.User.first_name.ilike(f"%{query.query}%"),  # ??
-                m.User.last_name.ilike(f"%{query.query}%"),  # ??
-                m.User.fullname.ilike(f"%{query.query}%"),
-            )
+            m.User.fullname.ilike(f"%{query.query}%"),  # TODO: ITS A BUG
         )
     else:
         # query string is empty
