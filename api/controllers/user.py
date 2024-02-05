@@ -16,17 +16,19 @@ CFG = config()
 service_alias = aliased(m.Service)
 
 
-def create_out_search_users(db_users: Sequence[m.User], lang: str, db: Session) -> list[s.UserSearchOut]:
+def create_out_search_users(
+    db_users: Sequence[m.User], lang: str, selected_services: list[str], db: Session
+) -> list[s.UserSearchOut]:
     """Creates list of UserSearchOut from db users"""
 
     users: list[s.UserSearchOut] = []
+    services = [
+        s.Service(uuid=service.uuid, name=service.name_ua if lang == CFG.UA else service.name_en)
+        for service in db.scalars(sa.select(m.Service).where(m.Service.uuid.in_(selected_services))).all()
+    ]
     for db_user in db_users:
-        services = [
-            s.Service(uuid=service.uuid, name=service.name_ua if lang == CFG.UA else service.name_en)
-            for service in db_user.services
-        ]
         regions: Result[Tuple[str, str]] = db.execute(
-            sa.select(m.Region.name_ua if lang == CFG.UA else m.Region.name_en, m.Location.uuid, m.Location.uuid)
+            sa.select(m.Region.name_ua if lang == CFG.UA else m.Region.name_en, m.Location.uuid)
             .join(m.Location)
             .join(m.user_locations)
             .where(m.user_locations.c.user_id == db_user.id)
@@ -124,7 +126,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
         locations=locations,
         selected_services=query.selected_services,
         selected_locations=query.selected_locations,
-        top_users=create_out_search_users(db_users, query.lang, db),  # how does those two differ?
-        near_users=create_out_search_users(db_users, query.lang, db),
+        top_users=create_out_search_users(db_users, query.lang, query.selected_services, db),
+        near_users=create_out_search_users(db_users, query.lang, query.selected_services, db),
         query=query.query,
     )
