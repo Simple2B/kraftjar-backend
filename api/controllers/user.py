@@ -61,7 +61,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
             uuid=uuid,
             name=name,
         )
-        for uuid, name in db_regions
+        for name, uuid in db_regions
     ]
 
     stmt = sa.select(m.User).where(m.User.is_deleted.is_(False))
