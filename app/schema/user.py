@@ -7,8 +7,7 @@ from .location import Location
 
 class User(BaseModel):
     id: int
-    first_name: str
-    last_name: str
+    fullname: str
     phone: str
     email: str
     is_deleted: bool

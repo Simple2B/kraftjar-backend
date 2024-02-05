@@ -57,8 +57,7 @@ def save():
             log(log.ERROR, "Not found user by id : [%s]", form.user_id.data)
             flash("Cannot save user data", "danger")
             return redirect(url_for("user.get_all"))
-        u.first_name = form.first_name.data
-        u.last_name = form.last_name.data
+        u.fullname = form.fullname.data
         u.phone = form.phone.data
         # form.is_deleted.data is always False
         u.is_deleted = form.is_deleted.data

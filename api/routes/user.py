@@ -17,7 +17,7 @@ def get_current_user_profile(
 ):
     """Returns the current user profile"""
 
-    log(log.INFO, f"User {current_user.first_name} - {current_user.id} requested his profile")
+    log(log.INFO, f"User {current_user.fullname} - {current_user.id} requested his profile")
     return current_user
 
 
@@ -26,6 +26,9 @@ def search_users(
     query: s.UserSearchIn,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
+    responses={
+        status.HTTP_409_CONFLICT: {"description": "Selected service not found"},
+    },
 ):
     """Returns filtered list of users"""
     return c.search_users(query, current_user, db)

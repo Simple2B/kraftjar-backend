@@ -10,7 +10,7 @@ import type {ModalOptions, ModalInterface} from 'flowbite';
 
 interface IUser {
   id: number;
-  first_name: string;
+  fullname: string;
   last_name: string;
   email: string;
   phone: string;
@@ -87,7 +87,7 @@ deleteButtons.forEach(e => {
 
 function editUser(user: IUser) {
   let input: HTMLInputElement = document.querySelector('#user-edit-first-name');
-  input.value = user.first_name;
+  input.value = user.fullname;
   input = document.querySelector('#user-edit-last-name');
   input.value = user.last_name;
   input = document.querySelector('#user-edit-id');

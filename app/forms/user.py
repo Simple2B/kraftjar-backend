@@ -16,8 +16,7 @@ class UserForm(FlaskForm):
     next_url = StringField("next_url")
     user_id = StringField("user_id", [DataRequired()])
     email = StringField("email", [DataRequired(), Email()])
-    first_name = StringField("first_name", [DataRequired()])
-    last_name = StringField("last_name", [DataRequired()])
+    fullname = StringField("fullname", [DataRequired()])
     phone = StringField("phone", [DataRequired()])
     is_deleted = BooleanField("is_deleted", [DataRequired()])
     password = PasswordField("Password", validators=[DataRequired(), Length(6, 30)])
@@ -30,8 +29,8 @@ class UserForm(FlaskForm):
     )
     submit = SubmitField("Save")
 
-    def validate_username(self, field):
-        query = m.User.select().where(m.User.username == field.data).where(m.User.id != int(self.user_id.data))
+    def validate_fullname(self, field):
+        query = m.User.select().where(m.User.fullname == field.data).where(m.User.id != int(self.user_id.data))
         if db.session.scalar(query) is not None:
             raise ValidationError("This username is taken.")
 

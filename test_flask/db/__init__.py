@@ -23,10 +23,7 @@ def gen_test_items(num_objects: int) -> Generator[tuple[str, str], None, None]:
     for _ in range(num_objects):
         i += 1
         # Primary name
-        first_name = fake.first_name()
-
-        # Secondary name
-        last_name = fake.last_name()
+        fullname = fake.first_name()
 
         company = fake.company().split()[0].strip(",")
 
@@ -34,7 +31,7 @@ def gen_test_items(num_objects: int) -> Generator[tuple[str, str], None, None]:
         dns_org = fake.random_choices(elements=DOMAINS, length=1)[0]
 
         # email formatting
-        yield f"{first_name}{i}".lower(), f"{first_name}.{last_name}{i}@{company}.{dns_org}".lower()
+        yield f"{fullname}{i}".lower(), f"{fullname}{i}@{company}.{dns_org}".lower()
 
 
 def populate(count: int = NUM_TEST_USERS):
