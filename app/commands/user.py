@@ -3,7 +3,6 @@ import json
 from pathlib import Path
 
 import sqlalchemy as sa
-from sqlalchemy.orm import InstrumentedAttribute
 
 from app import models as m
 from app import schema as s
