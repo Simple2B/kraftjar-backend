@@ -73,3 +73,11 @@ def init(app: Flask):
 
         export_regions_from_json_file()
         print("done")
+
+    @app.cli.command()
+    def fill_stage_db():
+        """Fill users and contacts (job) with data from google spreadsheets"""
+        from .user import export_users_from_google_spreadsheets
+
+        export_users_from_google_spreadsheets()
+        print("done")
