@@ -249,7 +249,8 @@ def export_users_from_google_spreadsheets(with_print: bool = True):
                 new_user.services.append(service)
 
             session.add(new_user)
-            session.commit()
+            if with_print:
+                log(log.INFO, f"Created user {user.fullname} =====> {user.email} ======> {user.phone}")
 
 
 def export_users_from_json_file(with_print: bool = True):
