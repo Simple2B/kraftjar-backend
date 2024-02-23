@@ -1,4 +1,3 @@
-import os
 import re
 import random
 import json
@@ -21,8 +20,13 @@ from config import config
 CFG = config()
 
 
+MODULE_PATH = Path(__file__).parent
+JSON_FILE = MODULE_PATH / ".." / ".." / "data" / "users.json"
+
+
 SCOPES = CFG.SCOPES
 SPREADSHEET_ID = CFG.SPREADSHEET_ID
+
 RANGE_NAME = "Users!A1:P"
 # rows name
 # ['id', 'Персонаж', 'Статус', 'Вид послуг', 'Область', 'Стать', 'Вік', 'Рейтинг', 'З нами вже', 'Робіт/замовлень', 'Опис', 'Імʼя', 'Прізвище', 'e-mail', 'phone', 'id']
@@ -34,13 +38,15 @@ SURNAME = "Прізвище"
 EMAIL = "e-mail"
 PHONE = "phone"
 
+TOKEN_FILE = MODULE_PATH / "token.json"
+
 
 def export_users_from_google_spreadsheets(with_print: bool = True):
     """Fill users with data from google spreadsheets"""
 
     credentials = None
     # auth process - > create token.json
-    if os.path.exists("token.json"):
+    if Path.exists(TOKEN_FILE):
         credentials = Credentials.from_authorized_user("token.json", SCOPES)
     if not credentials or not credentials.valid:
         if credentials and credentials.expired and credentials.refresh_token:
@@ -72,10 +78,10 @@ def export_users_from_google_spreadsheets(with_print: bool = True):
 
         # TODO: first  name and last name must be add to model User
         NAME_INDEX = values[0].index(NAME)
-        SURNAME_INDEX = values[0].index(SURNAME)
+        # SURNAME_INDEX = values[0].index(SURNAME)
 
         # TODO: correct data region in google sheet
-        REGION_INDEX = values[0].index(REGION)
+        # REGION_INDEX = values[0].index(REGION)
 
         with db.begin() as session:
             if not session.scalar(sa.select(m.Location)):
@@ -87,13 +93,13 @@ def export_users_from_google_spreadsheets(with_print: bool = True):
                 log(log.ERROR, "Please run `flask export-services` first")
                 raise Exception("Services table is empty. Please run `flask export-services` first")
 
-            # from 2 to 218
             for row in values:
                 user_fullname = row[PERSON_INDEX]
                 if not user_fullname:
                     log(log.INFO, "This row is empty")
                     continue
                 user_phone: str = ""
+                # TODO: change this code
                 if not row[PHONE_INDEX]:
                     code = random.randint(63, 99)
                     num = random.randint(100, 999)
@@ -149,12 +155,6 @@ def export_users_from_google_spreadsheets(with_print: bool = True):
     except HttpError as error:
         log(log.ERROR, "An error occurred: %s", error)
         raise Exception("An error occurred")
-
-    os.remove("token.json")
-
-
-MODULE_PATH = Path(__file__).parent
-JSON_FILE = MODULE_PATH / ".." / ".." / "data" / "users.json"
 
 
 def export_users_from_json_file(with_print: bool = True):
