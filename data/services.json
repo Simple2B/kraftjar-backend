@@ -488,6 +488,97 @@
       "parent_id": 72,
       "name_ua": "Весільний стиліст",
       "name_en": "Wedding stylist"
+    },
+    {
+      "id": 84,
+      "parent_id": 7,
+      "name_ua": "Вантажник",
+      "name_en": "Loader"
+    },
+    {
+      "id": 86,
+      "parent_id": 4,
+      "name_ua": "Стиліст",
+      "name_en": "Stylist"
+    },
+    {
+      "id": 87,
+      "name_ua": "Архітектор",
+      "name_en": "Architect"
+    },
+    {
+      "id": 88,
+      "name_ua": "Мистецтво",
+      "name_en": "Art"
+    },
+    {
+      "id": 89,
+      "parent_id": 1,
+      "name_ua": "Мебляр",
+      "name_en": "Furniture maker"
+    }
+    ,
+    {
+      "id": 90,
+      "parent_id": 1,
+      "name_ua": "Майстер з пошиття одягу",
+      "name_en": "Master tailor"
+    }
+    ,
+    {
+      "id": 91,
+      "parent_id": 95,
+      "name_ua": "Вишиванки",
+      "name_en": "Vyshyvanka"
+    },
+    {
+      "id": 92,
+      "parent_id": 9,
+      "name_ua": "Комп'ютерні послуги",
+      "name_en": "Computer services"
+    },
+    {
+      "id": 93,
+      "parent_id": 6,
+      "name_ua": "Фітнес тренер",
+      "name_en": "Fitness trainer"
+    }
+    ,
+    {
+      "id": 94,
+      "name_ua": "Маркетинг",
+      "name_en": "Marketing"
+    },
+    {
+      "id": 95,
+      "name_ua": "Рукоділля",
+      "name_en": "Needlework"
+    },
+    {
+      "id": 96,
+      "name_ua": "Флорист",
+      "name_en": "Florist"
+    },
+    {
+      "id": 97,
+      "name_ua": "Копірайтер",
+      "name_en": "Copywriter"
+    },
+    {
+      "id": 98,
+      "name_ua": "Догляд за дитиною",
+      "name_en": "Babysitting"
+    },
+    {
+      "id": 99,
+      "parent_id": 5,
+      "name_ua": "Організація свят",
+      "name_en": "Organization of holidays"
+    },
+    {
+      "id": 100,
+      "name_ua": "Менеджмент",
+      "name_en": "Management"
     }
   ]
 }
