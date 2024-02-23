@@ -1,11 +1,9 @@
-from operator import is_
 import re
 import random
 import json
 from pathlib import Path
 
 import sqlalchemy as sa
-from test.test_email.test_message import first
 
 from app import models as m
 from app import schema as s
@@ -16,7 +14,6 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build, Resource
-from googleapiclient.errors import HttpError
 from config import config, BASE_DIR
 
 CFG = config()
