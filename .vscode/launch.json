@@ -22,14 +22,14 @@
     },
     {
       "name": "PyTest",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "module": "pytest",
       "justMyCode": true
     },
     {
       "name": "Flask",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "module": "flask",
       "env": {
@@ -47,11 +47,29 @@
     },
     {
       "name": "Export services",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "module": "flask",
       "args": [
         "export-services"
+      ],
+    },
+    {
+      "name": "Fill DB",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "flask",
+      "args": [
+        "fill-stage-db"
+      ],
+    },
+    {
+      "name": "Write phone numbers",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "flask",
+      "args": [
+        "write-phones"
       ],
     }
   ]

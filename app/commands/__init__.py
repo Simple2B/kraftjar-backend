@@ -75,6 +75,14 @@ def init(app: Flask):
         print("done")
 
     @app.cli.command()
+    def write_phones():
+        """Write phones to google spreadsheets"""
+        from .user import write_phone_to_google_spreadsheets
+
+        write_phone_to_google_spreadsheets()
+        print("done")
+
+    @app.cli.command()
     def fill_stage_db():
         """Fill users and contacts (job) with data from google spreadsheets"""
         from .user import export_users_from_google_spreadsheets

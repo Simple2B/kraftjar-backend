@@ -10,5 +10,5 @@ node_modules/
 *.pyc
 /*.sqlite3
 
-credentials.json
-token.json
+/credentials.json
+/token.json
