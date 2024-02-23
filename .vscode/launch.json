@@ -71,6 +71,15 @@
       "args": [
         "write-phones"
       ],
+    },
+    {
+      "name": "Write emails",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "flask",
+      "args": [
+        "write-emails"
+      ],
     }
   ]
 }

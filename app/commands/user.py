@@ -58,12 +58,12 @@ def authorized_user_in_google_spreadsheets() -> Credentials:
     return credentials
 
 
+# a function for filling the table with phones for users who do not have a phone number. Used only once
 def write_phone_to_google_spreadsheets():
     """Write phone to google spreadsheets User"""
     credentials = authorized_user_in_google_spreadsheets()
 
     OPERATOR_CODE = [50, 63, 66, 67, 68, 73, 99, 44]
-
     PHONE_RANGE = "Users!O2:O"
 
     resource: Resource = build("sheets", "v4", credentials=credentials)
@@ -73,8 +73,6 @@ def write_phone_to_google_spreadsheets():
     res: Resource = sheets.values()
     range = res.get(spreadsheetId=CFG.SPREADSHEET_ID, range=PHONE_RANGE).execute()
     values = range["values"]
-
-    # TODO: update values
 
     generated_values = []
     for val in values:
@@ -105,6 +103,53 @@ def write_phone_to_google_spreadsheets():
         .update(
             spreadsheetId=CFG.SPREADSHEET_ID,
             range=PHONE_RANGE,
+            valueInputOption="USER_ENTERED",
+            body=body,
+        )
+        .execute()
+    )
+    log(log.INFO, "Result: %s", result)
+
+
+# a function for filling the table with emails for users who do not have an email. Used only once
+def write_email_to_google_spreadsheets():
+    """Write email to google spreadsheets User"""
+    credentials = authorized_user_in_google_spreadsheets()
+
+    EMAIL_PROVIDERS = ["@gmail.com", "@ukr.net", "@i.ua", "@meta.ua", "@bigmir.net"]
+    EMAIL_RANGE = "Users!N2:N"
+
+    resource: Resource = build("sheets", "v4", credentials=credentials)
+    sheets = resource.spreadsheets()
+
+    # get all values of column phone
+    res: Resource = sheets.values()
+    range = res.get(spreadsheetId=CFG.SPREADSHEET_ID, range=EMAIL_RANGE).execute()
+    values = range["values"]
+
+    generated_values = []
+    for i, val in enumerate(values):
+        if not val or not val[0].strip():
+            # generate email
+            while True:
+                email = f"{i+1}.{EMAIL_PROVIDERS[random.randint(0, len(EMAIL_PROVIDERS) - 1)]}"
+                if email not in generated_values:
+                    generated_values += [email]
+                    break
+            if not val:
+                val.append(email)
+            else:
+                val[0] = email
+
+    for i, v in enumerate(values):
+        print(i, v)
+    body = {"values": values}
+
+    result = (
+        sheets.values()
+        .update(
+            spreadsheetId=CFG.SPREADSHEET_ID,
+            range=EMAIL_RANGE,
             valueInputOption="USER_ENTERED",
             body=body,
         )
