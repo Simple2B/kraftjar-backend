@@ -15,17 +15,14 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from config import config
+from config import config, BASE_DIR
 
 CFG = config()
 
 
-MODULE_PATH = Path(__file__).parent
-JSON_FILE = MODULE_PATH / ".." / ".." / "data" / "users.json"
+ROOT_PATH = Path(BASE_DIR)
+JSON_FILE = ROOT_PATH / "data" / "users.json"
 
-
-SCOPES = CFG.SCOPES
-SPREADSHEET_ID = CFG.SPREADSHEET_ID
 
 RANGE_NAME = "Users!A1:P"
 # rows name
@@ -33,12 +30,20 @@ RANGE_NAME = "Users!A1:P"
 PERSON = "Персонаж"
 SERVICES_TYPE = "Вид послуг"
 REGION = "Область"
-NAME = "Імʼя"
-SURNAME = "Прізвище"
+FIRST_NAME = "Імʼя"
+LAST_NAME = "Прізвище"
 EMAIL = "e-mail"
 PHONE = "phone"
 
-TOKEN_FILE = MODULE_PATH / "token.json"
+ALL_REGIONS = "Вся Україна"
+
+TOKEN_FILE = ROOT_PATH / "token.json"
+USER_PASSWORD = "Kraftjar2024"
+SEARCH_SERVICE_IDS = re.compile(r"\((?P<id>\d+)\)")
+
+
+def write_phone_to_google_spreadsheets():
+    pass
 
 
 def export_users_from_google_spreadsheets(with_print: bool = True):
@@ -47,53 +52,75 @@ def export_users_from_google_spreadsheets(with_print: bool = True):
     credentials = None
     # auth process - > create token.json
     if Path.exists(TOKEN_FILE):
-        credentials = Credentials.from_authorized_user("token.json", SCOPES)
+        credentials = Credentials.from_authorized_user_file(TOKEN_FILE, CFG.SCOPES)
     if not credentials or not credentials.valid:
         if credentials and credentials.expired and credentials.refresh_token:
             credentials.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", CFG.SCOPES)
             credentials = flow.run_local_server(port=0)
         with open("token.json", "w") as token:
             token.write(credentials.to_json())
 
     try:
         # get data from google spreadsheets
-        service = build("sheets", "v4", credentials=credentials)
-        sheets = service.spreadsheets()
+        resource = build("sheets", "v4", credentials=credentials)
+        sheets = resource.spreadsheets()
 
         # get all values from sheet Users
-        result = sheets.values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
+        result = sheets.values().get(spreadsheetId=CFG.SPREADSHEET_ID, range=RANGE_NAME).execute()
         values = result.get("values", [])
 
-        if not values:
-            log(log.INFO, "No data found")
-            return
+        assert values, "No data found"
+
+        users: list[s.UserFile] = []
 
         # indexes of row values
+        INDEX_ID = values[0].index("id")
         PERSON_INDEX = values[0].index(PERSON)
         PHONE_INDEX = values[0].index(PHONE)
         EMAIL_INDEX = values[0].index(EMAIL)
         SERVICES_TYPE_INDEX = values[0].index(SERVICES_TYPE)
+        FIRST_NAME_INDEX = values[0].index(FIRST_NAME)
+        LAST_NAME_INDEX = values[0].index(LAST_NAME)
+        REGION_INDEX = values[0].index(REGION)
 
-        # TODO: first  name and last name must be add to model User
-        NAME_INDEX = values[0].index(NAME)
-        # SURNAME_INDEX = values[0].index(SURNAME)
+        for row in values[1:]:
+            id = row[INDEX_ID]
+            phone = row[PHONE_INDEX]
 
-        # TODO: correct data region in google sheet
-        # REGION_INDEX = values[0].index(REGION)
+            assert phone, f"Phone is empty id: {id}"
+            user_services = row[SERVICES_TYPE_INDEX]
+            services_ids = [int(i) for i in SEARCH_SERVICE_IDS.findall(user_services)]
+
+            user_regions = row[REGION_INDEX]
+            regions_ids = [int(i) for i in SEARCH_SERVICE_IDS.findall(user_regions)]
+
+            if ALL_REGIONS in regions_ids:
+                regions_ids = [db_region.id for db_region in db.scalars(sa.select(m.Region)).all()]
+            users.append(
+                s.UserFile(
+                    fullname=row[PERSON_INDEX],
+                    phone=phone,
+                    email=row[EMAIL_INDEX],
+                    first_name=row[FIRST_NAME_INDEX],
+                    last_name=row[LAST_NAME_INDEX],
+                    location_ids=regions_ids,
+                    service_ids=services_ids,
+                    is_volunteer=False,
+                    password=USER_PASSWORD,
+                )
+            )
 
         with db.begin() as session:
-            if not session.scalar(sa.select(m.Location)):
-                log(log.ERROR, "Locations table is empty")
-                log(log.ERROR, "Please run `flask export-regions` first")
-                raise Exception("Locations table is empty. Please run `flask export-regions` first")
-            if not session.scalar(sa.select(m.Service)):
-                log(log.ERROR, "Services table is empty")
-                log(log.ERROR, "Please run `flask export-services` first")
-                raise Exception("Services table is empty. Please run `flask export-services` first")
+            assert session.scalar(
+                sa.select(m.Location)
+            ), "Locations table is empty. Please run `flask export-regions` first"
+            assert session.scalar(
+                sa.select(m.Service)
+            ), "Services table is empty. Please run `flask export-services` first"
 
-            for row in values:
+            for row in values[1:]:
                 user_fullname = row[PERSON_INDEX]
                 if not user_fullname:
                     log(log.INFO, "This row is empty")
@@ -112,7 +139,7 @@ def export_users_from_google_spreadsheets(with_print: bool = True):
                     continue
 
                 # TODO: add to model User firstname and lastname
-                user_firstname = row[NAME_INDEX]
+                user_firstname = row[FIRST_NAME_INDEX]
                 # user_lastname = row[SURNAME_INDEX]
 
                 user_email: str = row[EMAIL_INDEX]
@@ -139,14 +166,14 @@ def export_users_from_google_spreadsheets(with_print: bool = True):
                 # new_user.locations.append(location)
 
                 user_services = row[SERVICES_TYPE_INDEX]
-                services_ids = re.findall(r"\d+", user_services)
+                services_ids = [int(i) for i in SEARCH_SERVICE_IDS.findall(user_services)]
 
                 for service_id in services_ids:
-                    service: m.Service | None = session.scalar(sa.select(m.Service).where(m.Service.id == service_id))
-                    if not service:
+                    svc: m.Service | None = session.scalar(sa.select(m.Service).where(m.Service.id == service_id))
+                    if not svc:
                         log(log.ERROR, "Service with id [%s] not found", service_id)
                         raise Exception(f"Service with id [{service_id}] not found")
-                    new_user.services.append(service)
+                    new_user.services.append(svc)
 
                 session.add(new_user)
                 if with_print:

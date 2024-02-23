@@ -41,7 +41,8 @@ def export_regions_from_json_file(with_print: bool = True):
                 region_db.svg_value = region.svg
 
             session.add(region_db)
+            session.flush()
             if with_print:
-                print(f"+ {region.name_ua}")
+                print(f"{region_db.id}: {region_db.name_ua}")
 
     return
