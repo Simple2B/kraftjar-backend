@@ -1,20 +1,14 @@
 from datetime import datetime
 
-import enum
 from uuid import uuid4
 
 import sqlalchemy as sa
 from sqlalchemy import orm
 
 from app.database import db
+from app import schema as s
 
 from .utils import ModelMixin
-
-
-class JobStatus(enum.Enum):
-    PENDING = "pending"
-    IN_PROGRESS = "in_progress"
-    COMPLETED = "completed"
 
 
 class Job(db.Model, ModelMixin):
@@ -24,14 +18,14 @@ class Job(db.Model, ModelMixin):
     uuid: orm.Mapped[str] = orm.mapped_column(sa.String(36), default=lambda: str(uuid4()))
 
     title: orm.Mapped[str] = orm.mapped_column(sa.String(128), nullable=False)
-    description: orm.Mapped[str] = orm.mapped_column(sa.String(512), nullable=False)
+    description: orm.Mapped[str] = orm.mapped_column(sa.String(1024), nullable=False)
     address_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("addresses.id"))
     time: orm.Mapped[str] = orm.mapped_column(sa.String(128), nullable=False)
 
-    status: orm.Mapped[str] = orm.mapped_column(sa.Enum(JobStatus), default=JobStatus.PENDING)
+    status: orm.Mapped[str] = orm.mapped_column(sa.Enum(s.JobStatus), default=s.JobStatus.PENDING)
     is_public: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=True)
 
-    location_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("locations.id"))
+    location_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("locations.id"), nullable=True)
     owner_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("users.id"), nullable=False)
     worker_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("users.id"), nullable=True)
 

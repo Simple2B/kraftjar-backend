@@ -1,7 +1,7 @@
 # ruff: noqa: F401
 from .admin import Admin
 from .application import ApplicationIn, ApplicationOut, ApplicationOutList, ApplicationPut
-from .job import JobIn, JobOut, JobOutList, JobPut
+from .job import JobStatus, JobIn, JobOut, JobOutList, JobPut, JobCompletedCreate
 from .location import Location, LocationsIn, LocationsOut, Region, RegionsFile
 from .pagination import Pagination
 from .token import Token, TokenData
@@ -13,3 +13,4 @@ from .registration import RegistrationIn, SetPhoneIn, ValidatePhoneIn, SetPhoneO
 from .field import FieldCreate
 from .exception import NotFound
 from .service import Service, ServicesIn, ServicesOut, ServiceData, ServiceDataFile, ServiceDB
+from .address import AddressBase, AddressesFile, AddressIn, AddressOut

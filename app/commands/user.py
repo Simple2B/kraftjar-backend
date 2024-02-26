@@ -1,4 +1,3 @@
-import re
 import random
 import json
 from pathlib import Path
@@ -10,10 +9,8 @@ from app import schema as s
 from app.database import db
 from app.logger import log
 
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build, Resource
+from .utility import authorized_user_in_google_spreadsheets, SEARCH_IDS
 from config import config, BASE_DIR
 
 CFG = config()
@@ -38,24 +35,6 @@ ALL_REGIONS = "Вся Україна"
 
 TOKEN_FILE = ROOT_PATH / "token.json"
 USER_PASSWORD = "Kraftjar2024"
-SEARCH_IDS = re.compile(r"\((?P<id>\d+)\)")
-
-
-# an internal function for authorization in Google Sheets
-def authorized_user_in_google_spreadsheets() -> Credentials:
-    credentials = None
-    # auth process - > create token.json
-    if Path.exists(TOKEN_FILE):
-        credentials = Credentials.from_authorized_user_file(TOKEN_FILE, CFG.SCOPES)
-    if not credentials or not credentials.valid:
-        if credentials and credentials.expired and credentials.refresh_token:
-            credentials.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", CFG.SCOPES)
-            credentials = flow.run_local_server(port=0)
-        with open("token.json", "w") as token:
-            token.write(credentials.to_json())
-    return credentials
 
 
 # a function for filling the table with phones for users who do not have a phone number. Used only once
