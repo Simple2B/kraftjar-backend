@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime
 import sqlalchemy as sa
 
 from app import models as m
@@ -8,7 +8,7 @@ from app.database import db
 from app.logger import log
 
 from googleapiclient.discovery import build
-from .utility import authorized_user_in_google_spreadsheets, SEARCH_IDS, ALL_UKRAINE
+from .utility import authorized_user_in_google_spreadsheets, SEARCH_IDS
 from config import config
 
 
@@ -64,8 +64,8 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True):
     CREATED_AT_INDEX = values[0].index(CREATED_AT)
     STARTED_AT_INDEX = values[0].index(STARTED_AT)
     FINISHED_AT_INDEX = values[0].index(FINISHED_AT)
-    RATE_CLIENT_INDEX = values[0].index(RATE_CLIENT)
-    RATE_WORKER_INDEX = values[0].index(RATE_WORKER)
+    # RATE_CLIENT_INDEX = values[0].index(RATE_CLIENT)
+    # RATE_WORKER_INDEX = values[0].index(RATE_WORKER)
 
     for row in values[1:]:
         if len(row) < 12:
