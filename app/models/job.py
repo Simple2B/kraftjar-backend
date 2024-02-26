@@ -19,7 +19,7 @@ class Job(db.Model, ModelMixin):
 
     title: orm.Mapped[str] = orm.mapped_column(sa.String(128), nullable=False)
     description: orm.Mapped[str] = orm.mapped_column(sa.String(1024), nullable=False)
-    address_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("addresses.id"))
+    address_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("addresses.id"), nullable=True)
     time: orm.Mapped[str] = orm.mapped_column(sa.String(128), nullable=False)
 
     status: orm.Mapped[str] = orm.mapped_column(sa.Enum(s.JobStatus), default=s.JobStatus.PENDING)

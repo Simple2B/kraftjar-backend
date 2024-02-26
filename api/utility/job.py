@@ -8,8 +8,9 @@ from sqlalchemy import select
 
 from app import models as m
 from app.logger import log
+from app import schema as s
 
-from .address import create_addresses
+# from .address import create_addresses
 
 faker: Faker = Faker()
 
@@ -29,25 +30,25 @@ def create_job(db: Session, user_id: int, is_pending=False) -> m.Job:
 
     if not addresses:
         log(log.ERROR, "No addresses found")
-        create_addresses(db)
+        # create_addresses(db)
         addresses = db.scalars(select(m.Address.id)).all()
 
     locations: Sequence[int] = db.scalars(select(m.Location.id)).all()
 
-    statuses = [m.JobStatus.PENDING] if is_pending else list(m.JobStatus)
+    statuses = [s.JobStatus.PENDING] if is_pending else list(s.JobStatus)
     # random titles, services, locations in ukrainian
 
     job: m.Job = m.Job(
         title=faker.job(),
         description=faker.text(),
         owner_id=user_id,
-        address_id=random.choice(addresses),
+        # address_id=random.choice(addresses),
         time=faker.time(),
         location_id=random.choice(locations),
         status=random.choice(statuses),
     )
 
-    if job.status != m.JobStatus.PENDING:
+    if job.status != s.JobStatus.PENDING:
         job.worker_id = random.choice(db.scalars(select(m.User.id).where(m.User.id != user_id)).all())
 
     db.add(job)
