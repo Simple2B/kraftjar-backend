@@ -158,8 +158,6 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True):
             session.add(new_job)
             session.flush()
 
-            new_job
-
             new_job_service: m.JobService = m.JobService(
                 service_id=db_service.id,
                 job_id=new_job.id,
@@ -171,5 +169,3 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True):
 
             if with_print:
                 log(log.DEBUG, "Job with title [%s] created", job.title)
-
-        jobs
