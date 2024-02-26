@@ -85,9 +85,9 @@ def init(app: Flask):
     @app.cli.command()
     def export_services_regions_addresses():
         """Fill services, regions, addresses with data from json file"""
-        from .service import export_services_from_json_file
-        from .locations import export_regions_from_json_file
         from .addresses import export_addresses_from_json_file
+        from .locations import export_regions_from_json_file
+        from .service import export_services_from_json_file
 
         export_services_from_json_file()
         export_regions_from_json_file()
@@ -130,8 +130,8 @@ def init(app: Flask):
     @app.cli.command()
     def fill_stage_db():
         """Fill users and contacts (job) with data from google spreadsheets"""
-        from .user import export_users_from_google_spreadsheets
         from .job import export_jobs_from_google_spreadsheets
+        from .user import export_users_from_google_spreadsheets
 
         export_users_from_google_spreadsheets()
         export_jobs_from_google_spreadsheets()

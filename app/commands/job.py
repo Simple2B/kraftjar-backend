@@ -1,16 +1,15 @@
 from datetime import datetime
+
 import sqlalchemy as sa
+from googleapiclient.discovery import build
 
 from app import models as m
 from app import schema as s
 from app.database import db
-
 from app.logger import log
-
-from googleapiclient.discovery import build
-from .utility import authorized_user_in_google_spreadsheets, SEARCH_IDS
 from config import config
 
+from .utility import SEARCH_IDS, authorized_user_in_google_spreadsheets
 
 CFG = config()
 
@@ -71,9 +70,7 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True):
         if len(row) < 12:
             continue
 
-        id = row[INDEX_ID]
-
-        if not id:
+        if not row[INDEX_ID]:
             continue
 
         owner_id = row[OWNER_ID_INDEX]

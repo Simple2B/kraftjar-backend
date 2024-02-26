@@ -1,12 +1,11 @@
 from datetime import datetime
-
 from uuid import uuid4
 
 import sqlalchemy as sa
 from sqlalchemy import orm
 
-from app.database import db
 from app import schema as s
+from app.database import db
 
 from .utils import ModelMixin
 

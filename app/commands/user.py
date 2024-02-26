@@ -1,17 +1,17 @@
-import random
 import json
+import random
 from pathlib import Path
 
 import sqlalchemy as sa
+from googleapiclient.discovery import Resource, build
 
 from app import models as m
 from app import schema as s
 from app.database import db
 from app.logger import log
+from config import BASE_DIR, config
 
-from googleapiclient.discovery import build, Resource
-from .utility import authorized_user_in_google_spreadsheets, SEARCH_IDS
-from config import config, BASE_DIR
+from .utility import SEARCH_IDS, authorized_user_in_google_spreadsheets
 
 CFG = config()
 
@@ -21,7 +21,7 @@ JSON_FILE = ROOT_PATH / "data" / "users.json"
 
 
 RANGE_NAME = "Users!A1:P"
-# rows name
+
 # ['id', 'Персонаж', 'Статус', 'Вид послуг', 'Область', 'Стать', 'Вік', 'Рейтинг', 'З нами вже', 'Робіт/замовлень', 'Опис', 'Імʼя', 'Прізвище', 'e-mail', 'phone', 'id']
 PERSON = "Персонаж"
 SERVICES_TYPE = "Вид послуг"
@@ -50,8 +50,8 @@ def write_phone_to_google_spreadsheets():
 
     # get all values of column phone
     res: Resource = sheets.values()
-    range = res.get(spreadsheetId=CFG.SPREADSHEET_ID, range=PHONE_RANGE).execute()
-    values = range["values"]
+    range_ = res.get(spreadsheetId=CFG.SPREADSHEET_ID, range=PHONE_RANGE).execute()
+    values = range_["values"]
 
     generated_values = []
     for val in values:
@@ -103,8 +103,8 @@ def write_email_to_google_spreadsheets():
 
     # get all values of column phone
     res: Resource = sheets.values()
-    range = res.get(spreadsheetId=CFG.SPREADSHEET_ID, range=EMAIL_RANGE).execute()
-    values = range["values"]
+    range_ = res.get(spreadsheetId=CFG.SPREADSHEET_ID, range=EMAIL_RANGE).execute()
+    values = range_["values"]
 
     generated_values = []
     for i, val in enumerate(values):

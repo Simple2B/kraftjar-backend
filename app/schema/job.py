@@ -1,5 +1,5 @@
-from datetime import datetime
 import enum
+from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
 
@@ -75,7 +75,6 @@ class JobCompletedCreate(BaseModel):
     address_id: int
     location_id: int | None = None
     time: str = ""
-    # status: m.JobStatus
     status: JobStatus
     is_public: bool
     owner_id: int
