@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 
 services:
   db:
@@ -21,6 +21,8 @@ services:
     environment:
       APP_ENV: production
       ALCHEMICAL_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-passwd}@db:5432/db
+    volumes:
+      - ./credentials.json:/home/app/credentials.json
     env_file:
       - .env
     depends_on:
@@ -32,7 +34,7 @@ services:
     command: sh ./start_api.sh
     environment:
       APP_ENV: production
-      IS_API: "true"
+      IS_API: 'true'
       ALCHEMICAL_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-passwd}@db:5432/db
     env_file:
       - .env
