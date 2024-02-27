@@ -1,6 +1,13 @@
+import enum
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
+
+
+class JobStatus(enum.Enum):
+    PENDING = "pending"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
 
 
 class BaseJob(BaseModel):
@@ -55,6 +62,26 @@ class JobPut(BaseModel):
     location_id: int | None = None
     time: str | None = None
     is_public: bool | None = None
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+# schema for created jobs test data
+class JobCompletedCreate(BaseModel):
+    title: str
+    description: str
+    address_id: int
+    location_id: int | None = None
+    time: str = ""
+    status: JobStatus
+    is_public: bool
+    owner_id: int
+    worker_id: int | None = None
+    created_at: datetime
+    updated_at: datetime
+    is_deleted: bool = False
 
     model_config = ConfigDict(
         from_attributes=True,

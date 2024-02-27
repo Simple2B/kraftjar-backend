@@ -9,7 +9,12 @@
       "type": "python",
       "request": "launch",
       "module": "uvicorn",
-      "args": ["api:app", "--reload", "--port", "5002"],
+      "args": [
+        "api:app",
+        "--reload",
+        "--port",
+        "5002"
+      ],
       "justMyCode": true,
       "env": {
         "IS_API": "true"
@@ -17,14 +22,14 @@
     },
     {
       "name": "PyTest",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "module": "pytest",
       "justMyCode": true
     },
     {
       "name": "Flask",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "module": "flask",
       "env": {
@@ -32,15 +37,67 @@
         "APP_ENV": "development",
         "FLASK_DEBUG": "1"
       },
-      "args": ["run", "--port", "5000"],
+      "args": [
+        "run",
+        "--port",
+        "5000"
+      ],
       "jinja": true,
       "justMyCode": false
     },
     {
       "name": "Export services",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "module": "flask",
-      "args": ["export-services"],
+      "args": [
+        "export-services"
+      ],
+    },
+    {
+      "name": "Export addresses",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "flask",
+      "args": [
+        "export-addresses"
+      ],
+    },
+    {
+      "name": "Fill DB",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "flask",
+      "args": [
+        "fill-stage-db"
+      ],
+    },
+    {
+      "name": "Write phone numbers",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "flask",
+      "args": [
+        "write-phones"
+      ],
+    },
+    {
+      "name": "Write emails",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "flask",
+      "args": [
+        "write-emails"
+      ],
+    },
+    {
+      "name": "Fill db with jobs",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "flask",
+      "args": [
+        "fill-db-with-jobs"
+      ],
+    }
   ]
 }

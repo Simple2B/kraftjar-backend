@@ -19,6 +19,8 @@ class User(BaseModel):
 
 class UserFile(BaseModel):
     fullname: str
+    first_name: str = ""
+    last_name: str = ""
     phone: str
     email: str
     password: str

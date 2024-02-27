@@ -73,3 +73,66 @@ def init(app: Flask):
 
         export_regions_from_json_file()
         print("done")
+
+    @app.cli.command()
+    def export_addresses():
+        """Fill addresses with data from json file"""
+        from .addresses import export_addresses_from_json_file
+
+        export_addresses_from_json_file()
+        print("done")
+
+    @app.cli.command()
+    def export_services_regions_addresses():
+        """Fill services, regions, addresses with data from json file"""
+        from .addresses import export_addresses_from_json_file
+        from .locations import export_regions_from_json_file
+        from .service import export_services_from_json_file
+
+        export_services_from_json_file()
+        export_regions_from_json_file()
+        export_addresses_from_json_file()
+
+        print("done")
+
+    @app.cli.command()
+    def write_phones():
+        """Write phones to google spreadsheets"""
+        from .user import write_phone_to_google_spreadsheets
+
+        write_phone_to_google_spreadsheets()
+        print("done")
+
+    @app.cli.command()
+    def write_emails():
+        """Write emails to google spreadsheets"""
+        from .user import write_email_to_google_spreadsheets
+
+        write_email_to_google_spreadsheets()
+        print("done")
+
+    @app.cli.command()
+    def fill_db_with_users():
+        """Fill users with data from google spreadsheets"""
+        from .user import export_users_from_google_spreadsheets
+
+        export_users_from_google_spreadsheets()
+        print("done")
+
+    @app.cli.command()
+    def fill_db_with_jobs():
+        """Fill jobs with data from google spreadsheets"""
+        from .job import export_jobs_from_google_spreadsheets
+
+        export_jobs_from_google_spreadsheets()
+        print("done")
+
+    @app.cli.command()
+    def fill_stage_db():
+        """Fill users and contacts (job) with data from google spreadsheets"""
+        from .job import export_jobs_from_google_spreadsheets
+        from .user import export_users_from_google_spreadsheets
+
+        export_users_from_google_spreadsheets()
+        export_jobs_from_google_spreadsheets()
+        print("done")

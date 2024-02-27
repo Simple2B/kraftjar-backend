@@ -56,6 +56,11 @@ class BaseConfig(BaseSettings):
 
     MAX_USER_SEARCH_RESULTS: int = 10
 
+    # for test data from google spreadsheets
+
+    SCOPES: list[str] = ["https://www.googleapis.com/auth/spreadsheets"]
+    SPREADSHEET_ID: str = "1Hw5Oh9vtwuPUYJkSGo0uGikRbHeiM52SNdUxwXFU3hQ"
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.

@@ -1,0 +1,12 @@
+{
+  "addresses": [
+    {
+      "id": 1,
+      "line1": "Григорія Гуляницького",
+      "line2": "Grigory Gulyanitskyi",
+      "postcode": "02218",
+      "city": "Київ",
+      "location_id": 1
+    }
+  ]
+}
