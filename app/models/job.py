@@ -5,6 +5,7 @@ import sqlalchemy as sa
 from sqlalchemy import orm
 
 from app import schema as s
+
 from app.database import db
 
 from .utils import ModelMixin

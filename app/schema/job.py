@@ -1,7 +1,7 @@
+from pydantic import BaseModel, ConfigDict
+
 import enum
 from datetime import datetime
-
-from pydantic import BaseModel, ConfigDict
 
 
 class JobStatus(enum.Enum):
