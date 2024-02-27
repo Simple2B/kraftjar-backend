@@ -28,7 +28,7 @@ def authorized_user_in_google_spreadsheets() -> Credentials:
             credentials.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file("credentials.json", CFG.SCOPES)
-            credentials = flow.run_local_server(port=0)
+            credentials = flow.run_console()
         with open("token.json", "w") as token:
             token.write(credentials.to_json())
     return credentials
