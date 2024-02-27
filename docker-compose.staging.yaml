@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 
 services:
   db:
@@ -23,13 +23,15 @@ services:
       ALCHEMICAL_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-passwd}@db:5432/db
     env_file:
       - .env
+    volumes:
+      - ./credentials.json:/home/app/credentials.json
     depends_on:
       - db
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.kraftjar_portal.rule=Host(`www.kraftjar.net`, `kraftjar.net`)"
-      - "traefik.http.routers.kraftjar_portal.tls=true"
-      - "traefik.http.routers.kraftjar_portal.tls.certresolver=myresolver"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.kraftjar_portal.rule=Host(`www.kraftjar.net`, `kraftjar.net`)'
+      - 'traefik.http.routers.kraftjar_portal.tls=true'
+      - 'traefik.http.routers.kraftjar_portal.tls.certresolver=myresolver'
 
   api:
     image: simple2b/kraftjar:0.1
@@ -37,17 +39,17 @@ services:
     command: sh ./start_api.sh
     environment:
       APP_ENV: production
-      IS_API: "true"
+      IS_API: 'true'
       ALCHEMICAL_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-passwd}@db:5432/db
     env_file:
       - .env
     depends_on:
       - db
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.kraftjar_api.rule=Host(`api.kraftjar.net`)"
-      - "traefik.http.routers.kraftjar_api.tls=true"
-      - "traefik.http.routers.kraftjar_api.tls.certresolver=myresolver"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.kraftjar_api.rule=Host(`api.kraftjar.net`)'
+      - 'traefik.http.routers.kraftjar_api.tls=true'
+      - 'traefik.http.routers.kraftjar_api.tls.certresolver=myresolver'
 
   backup:
     image: simple2b/pg-backup:1.0
