@@ -184,7 +184,7 @@ def export_users_from_google_spreadsheets(with_print: bool = True):
         users.append(
             s.UserFile(
                 fullname=fullname,
-                phone=phone,
+                phone="+" + phone,
                 email=email,
                 first_name=row[FIRST_NAME_INDEX],
                 last_name=row[LAST_NAME_INDEX],
