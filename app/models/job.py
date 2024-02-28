@@ -9,6 +9,10 @@ from app import schema as s
 from app.database import db
 
 from .utils import ModelMixin
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .location import Location
 
 
 class Job(db.Model, ModelMixin):
@@ -25,6 +29,8 @@ class Job(db.Model, ModelMixin):
     status: orm.Mapped[str] = orm.mapped_column(sa.Enum(s.JobStatus), default=s.JobStatus.PENDING)
     is_public: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=True)
 
+    cost: orm.Mapped[float] = orm.mapped_column(sa.Float, nullable=True)
+
     location_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("locations.id"), nullable=True)
     owner_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("users.id"), nullable=False)
     worker_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("users.id"), nullable=True)
@@ -39,6 +45,8 @@ class Job(db.Model, ModelMixin):
         onupdate=sa.func.now(),
     )
     is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
+
+    location: orm.Mapped["Location"] = orm.relationship()
 
     def __repr__(self):
         return f"<Job {self.id} {self.title} >"

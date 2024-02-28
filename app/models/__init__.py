@@ -15,3 +15,4 @@ from .region import Region
 from .rayon import Rayon
 from .user_services import user_services
 from .user_locations import user_locations
+from .saved_jobs import saved_jobs, SavedJob

@@ -1,9 +1,13 @@
-from pydantic import BaseModel, ConfigDict
-
 import enum
 from datetime import datetime
-from .service import CFG
-from .location import Location
+
+from pydantic import BaseModel, ConfigDict
+
+from config import config
+
+from .location import LocationStrings
+
+CFG = config()
 
 
 class JobStatus(enum.Enum):
@@ -85,23 +89,49 @@ class JobPut(BaseModel):
 
 
 class JobSearchIn(BaseModel):
-    lang: str = CFG.UA
-    query: str = ""
+    lang: str | None = CFG.UA
+    query: str | None = ""
 
-    # selected_services: list[str] = []  # list of uuids - selected services
-    selected_locations: list[str] = []  # list of uuids - selected
+    selected_services: list[str] = []
+    selected_locations: list[str] = []
+
+
+class JobSearch(BaseModel):
+    id: int
+    uuid: str
+    title: str
+    description: str
+    location: LocationStrings
+    cost: int
+    is_saved: bool
 
 
 class JobsSearchOut(BaseModel):
-    lang: str = CFG.UA
-    # services: list[Service] = []
-    locations: list[Location] = []
-    # selected_services: list[str] = []  # list of uuids - selected services
-    selected_locations: list[str] = []  # list of uuids - selected locations
+    lang: str | None = CFG.UA
+    query: str | None = ""
+    jobs: list[JobOut] = []
 
-    recommended_jobs: list[JobOut] = []
-    near_users: list[JobOut] = []
-    query: str = ""
+
+class JobCard(BaseModel):
+    id: int
+    uuid: str
+    title: str
+    description: str
+    location: LocationStrings
+    cost: int
+    is_saved: bool
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class JobsCardList(BaseModel):
+    lang: str | None = CFG.UA
+
+    location_uuid: str | None = None
+    recommended_jobs: list[JobCard] = []
+    jobs_near_you: list[JobCard] = []
 
 
 # schema for created jobs test data
@@ -110,7 +140,7 @@ class JobCompletedCreate(BaseModel):
     description: str
     address_id: int
     location_id: int | None = None
-    time: str = ""
+    time: str | None = ""
     status: JobStatus
     is_public: bool
     owner_id: int

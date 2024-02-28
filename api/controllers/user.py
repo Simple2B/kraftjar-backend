@@ -22,11 +22,11 @@ def create_out_search_users(
     """Creates list of UserSearchOut from db users"""
 
     users: list[s.UserSearchOut] = []
-    services = [
-        s.Service(uuid=service.uuid, name=service.name_ua if lang == CFG.UA else service.name_en)
-        for service in db.scalars(sa.select(m.Service).where(m.Service.uuid.in_(selected_services))).all()
-    ]
     for db_user in db_users:
+        services = [
+            s.Service(uuid=service.uuid, name=service.name_ua if lang == CFG.UA else service.name_en)
+            for service in db_user.services
+        ]
         regions: Result[Tuple[str, str]] = db.execute(
             sa.select(m.Region.name_ua if lang == CFG.UA else m.Region.name_en, m.Location.uuid)
             .join(m.Location)
@@ -47,8 +47,6 @@ def create_out_search_users(
 
 def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearchOut:
     """filters users"""
-
-    # fill locations
 
     db_regions: Result[Tuple[str, str]] = db.execute(
         sa.select(m.Region.name_ua if query.lang == CFG.UA else m.Region.name_en, m.Location.uuid)

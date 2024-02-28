@@ -32,7 +32,7 @@ class Region(db.Model, ModelMixin):
     is_deleted: orm.Mapped[bool] = orm.mapped_column(default=False)
 
     # Relationships
-    location: orm.Mapped["Location"] = orm.relationship()
+    location: orm.Mapped["Location"] = orm.relationship(back_populates="region")
 
     def __repr__(self):
         return f"<{self.id}:{self.name_ua} >"
