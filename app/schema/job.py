@@ -2,6 +2,8 @@ from pydantic import BaseModel, ConfigDict
 
 import enum
 from datetime import datetime
+from .service import CFG
+from .location import Location
 
 
 class JobStatus(enum.Enum):
@@ -29,9 +31,23 @@ class BaseJob(BaseModel):
 
 
 class JobOut(BaseJob):
-    description: str
-    # owner: UserOut
-    # worker: UserOut
+    uuid: str
+    title: str
+    description: str = ""
+    address_id: int
+    location_id: int
+    time: str | None = None
+    status: JobStatus
+    is_public: bool
+    owner_id: int
+    worker_id: int | None = None
+    created_at: datetime
+    updated_at: datetime
+    is_deleted: bool = False
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
 
 
 class JobOutList(BaseModel):
@@ -66,6 +82,26 @@ class JobPut(BaseModel):
     model_config = ConfigDict(
         from_attributes=True,
     )
+
+
+class JobSearchIn(BaseModel):
+    lang: str = CFG.UA
+    query: str = ""
+
+    # selected_services: list[str] = []  # list of uuids - selected services
+    selected_locations: list[str] = []  # list of uuids - selected
+
+
+class JobsSearchOut(BaseModel):
+    lang: str = CFG.UA
+    # services: list[Service] = []
+    locations: list[Location] = []
+    # selected_services: list[str] = []  # list of uuids - selected services
+    selected_locations: list[str] = []  # list of uuids - selected locations
+
+    recommended_jobs: list[JobOut] = []
+    near_users: list[JobOut] = []
+    query: str = ""
 
 
 # schema for created jobs test data

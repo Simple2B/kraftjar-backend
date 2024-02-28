@@ -1,6 +1,6 @@
 # ruff: noqa: F401
 from .admin import Admin
-from .job import JobStatus, JobIn, JobOut, JobOutList, JobPut, JobCompletedCreate
+from .job import JobStatus, JobIn, JobOut, JobOutList, JobPut, JobCompletedCreate, JobsSearchOut, JobSearchIn
 from .application import ApplicationIn, ApplicationOut, ApplicationOutList, ApplicationPut
 from .location import Location, LocationsIn, LocationsOut, Region, RegionsFile
 from .pagination import Pagination
