@@ -1,7 +1,13 @@
-from pydantic import BaseModel, ConfigDict
-
 import enum
 from datetime import datetime
+
+from pydantic import BaseModel, ConfigDict
+
+from config import config
+
+from .location import LocationStrings
+
+CFG = config()
 
 
 class JobStatus(enum.Enum):
@@ -29,9 +35,23 @@ class BaseJob(BaseModel):
 
 
 class JobOut(BaseJob):
-    description: str
-    # owner: UserOut
-    # worker: UserOut
+    uuid: str
+    title: str
+    description: str = ""
+    address_id: int
+    location_id: int
+    time: str | None = None
+    status: JobStatus
+    is_public: bool
+    owner_id: int
+    worker_id: int | None = None
+    created_at: datetime
+    updated_at: datetime
+    is_deleted: bool = False
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
 
 
 class JobOutList(BaseModel):
@@ -68,13 +88,64 @@ class JobPut(BaseModel):
     )
 
 
+class JobSearchIn(BaseModel):
+    lang: str | None = CFG.UA
+    query: str | None = ""
+
+    selected_services: list[str] = []
+    selected_locations: list[str] = []
+
+
+class JobSearch(BaseModel):
+    id: int
+    uuid: str
+    title: str
+    description: str
+    location: LocationStrings
+    cost: int
+    is_saved: bool
+
+
+class JobsSearchOut(BaseModel):
+    lang: str | None = CFG.UA
+    query: str | None = ""
+    jobs: list[JobSearch] = []
+
+
+class JobHomePage(BaseModel):
+    lang: str | None = CFG.UA
+    location_uuid: str | None = None
+
+
+class JobCard(BaseModel):
+    id: int
+    uuid: str
+    title: str
+    description: str
+    location: LocationStrings
+    cost: int
+    is_saved: bool
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class JobsCardList(BaseModel):
+    lang: str | None = CFG.UA
+
+    location_uuid: str | None = None
+    recommended_jobs: list[JobCard] = []
+    jobs_near_you: list[JobCard] = []
+
+
 # schema for created jobs test data
 class JobCompletedCreate(BaseModel):
     title: str
     description: str
     address_id: int
     location_id: int | None = None
-    time: str = ""
+    time: str | None = ""
     status: JobStatus
     is_public: bool
     owner_id: int

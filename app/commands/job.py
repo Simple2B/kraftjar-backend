@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 
 import sqlalchemy as sa
 from googleapiclient.discovery import build
@@ -33,7 +34,7 @@ TEST_ADDRESS_ID = 1
 TEST_DATA = "01.11.2023"
 
 
-def export_jobs_from_google_spreadsheets(with_print: bool = True):
+def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool = False):
     """Fill users with data from google spreadsheets"""
 
     credentials = authorized_user_in_google_spreadsheets()
@@ -126,6 +127,11 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True):
                 is_deleted=False,
             )
         )
+
+    if in_json:
+        with open("data/jobs.json", "w") as file:
+            json.dump({"jobs": [job.model_dump() for job in jobs]}, file, indent=4)
+        return
 
     with db.begin() as session:
         assert session.scalar(

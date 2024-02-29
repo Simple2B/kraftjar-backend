@@ -4,6 +4,7 @@ import sqlalchemy as sa
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+import api.controllers as c
 import app.models as m
 import app.schema as s
 from api.dependency import get_current_user, get_user
@@ -76,3 +77,26 @@ def put_job(
     db.commit()
     log(log.INFO, "Updated job [%s]", job_id)
     return job
+
+
+@job_router.post("/search", status_code=status.HTTP_200_OK, response_model=s.JobsSearchOut)
+def search_jobs(
+    query: s.JobSearchIn,
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+    responses={
+        status.HTTP_409_CONFLICT: {"description": "Selected service not found"},
+    },
+):
+    """Returns filtered list of jobs"""
+    return c.search_jobs(query, current_user, db)
+
+
+@job_router.post("/home", status_code=status.HTTP_200_OK, response_model=s.JobsCardList)
+def get_jobs_on_home_page(
+    query: s.JobHomePage,
+    db: Session = Depends(get_db),
+    current_user: m.User = Depends(get_current_user),
+):
+    """Returns jobs for home page"""
+    return c.get_jobs_on_home_page(query, current_user, db)

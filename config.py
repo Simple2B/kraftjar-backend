@@ -55,6 +55,7 @@ class BaseConfig(BaseSettings):
     EN: str = "en"
 
     MAX_USER_SEARCH_RESULTS: int = 10
+    MAX_JOBS_SEARCH_RESULTS: int = 15
 
     # for test data from google spreadsheets
 

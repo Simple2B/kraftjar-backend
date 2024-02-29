@@ -6,3 +6,4 @@ from .oauth2 import create_access_token
 from .service import get_services
 from .location import get_locations
 from .user import search_users
+from .job import search_jobs, get_jobs_on_home_page
