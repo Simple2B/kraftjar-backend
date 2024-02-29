@@ -11,6 +11,7 @@ from .job import (
     JobSearchIn,
     JobCard,
     JobsCardList,
+    JobHomePage,
 )
 from .application import ApplicationIn, ApplicationOut, ApplicationOutList, ApplicationPut
 from .location import Location, LocationsIn, LocationsOut, Region, RegionsFile, LocationStrings

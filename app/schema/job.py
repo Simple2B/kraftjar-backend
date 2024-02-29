@@ -112,6 +112,11 @@ class JobsSearchOut(BaseModel):
     jobs: list[JobOut] = []
 
 
+class JobHomePage(BaseModel):
+    lang: str | None = CFG.UA
+    location_uuid: str | None = None
+
+
 class JobCard(BaseModel):
     id: int
     uuid: str
