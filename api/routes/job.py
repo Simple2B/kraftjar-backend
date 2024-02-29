@@ -96,7 +96,7 @@ def search_jobs(
 def get_jobs_on_home_page(
     query: s.JobHomePage,
     db: Session = Depends(get_db),
-    current_user: m.User | None = Depends(get_user),
+    current_user: m.User = Depends(get_current_user),
 ):
     """Returns jobs for home page"""
-    return c.get_jobs_on_home_page(query, db, current_user)
+    return c.get_jobs_on_home_page(query, current_user, db)

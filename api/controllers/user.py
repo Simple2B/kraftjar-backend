@@ -64,7 +64,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
 
     stmt = sa.select(m.User).where(m.User.is_deleted.is_(False))
     services: list[s.Service] = []
-    if query.query:
+    if query.query: 
         # search services
         if not query.selected_services:
             service_lang_column = m.Service.name_ua if query.lang == CFG.UA else m.Service.name_en

@@ -109,7 +109,7 @@ class JobSearch(BaseModel):
 class JobsSearchOut(BaseModel):
     lang: str | None = CFG.UA
     query: str | None = ""
-    jobs: list[JobOut] = []
+    jobs: list[JobSearch] = []
 
 
 class JobHomePage(BaseModel):

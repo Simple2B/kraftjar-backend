@@ -1,7 +1,6 @@
 from typing import Sequence
 
 import sqlalchemy as sa
-from sqlalchemy.engine.result import Result
 from sqlalchemy.orm import Session, aliased
 
 import app.models as m
@@ -9,11 +8,12 @@ import app.schema as s
 from config import config
 
 CFG = config()
+CARDS_LIMIT = 10
 
 service_alias = aliased(m.Service)
 
 
-def get_jobs_on_home_page(current_user: m.User, query: s.JobHomePage, db: Session) -> s.JobsCardList:
+def get_jobs_on_home_page(query: s.JobHomePage, current_user: m.User, db: Session) -> s.JobsCardList:
     stmt = sa.select(m.Job).where(
         sa.and_(
             m.Job.is_deleted.is_(False),
@@ -22,23 +22,24 @@ def get_jobs_on_home_page(current_user: m.User, query: s.JobHomePage, db: Sessio
         )
     )
 
-    recommended_jobs: Sequence[m.Job] = db.scalars(stmt.order_by(m.Job.id)).limit(10).all()
+    recommended_jobs: Sequence[m.Job] = db.scalars(stmt.order_by(m.Job.id)).fetchmany(CARDS_LIMIT)
     if query.location_uuid:
         stmt = stmt.join(m.Location).where(m.Location.uuid == query.location_uuid)
 
-    jobs_near_you: Sequence[m.Job] = db.scalars(stmt).limit(10).all()
-    user_saved_jobs: Result = db.scalars(sa.select(m.saved_jobs).where(m.saved_jobs.user_id == current_user.id))
+    jobs_near_you: Sequence[m.Job] = db.scalars(stmt).fetchmany(CARDS_LIMIT)
+    user_saved_jobs: Sequence[m.Job] = db.scalars(
+        sa.select(m.Job).join(m.SavedJob).where(m.SavedJob.user_id == current_user.id)
+    ).all()
 
-    s.JobCard.model_validate
     return s.JobsCardList(
         lang=query.lang,
         recommended_jobs=[
             s.JobCard(
                 location=s.LocationStrings(
-                    uuid=query.location_uuid,
+                    uuid=job.location.uuid,
                     name=job.location.region.name_ua if query.lang == CFG.UA else job.location.region.name_en,
                 ),
-                is_saved=job.id in user_saved_jobs,
+                is_saved=job in user_saved_jobs,
                 **job.__dict__,
             )
             for job in recommended_jobs
@@ -46,10 +47,10 @@ def get_jobs_on_home_page(current_user: m.User, query: s.JobHomePage, db: Sessio
         jobs_near_you=[
             s.JobCard(
                 location=s.LocationStrings(
-                    uuid=query.location_uuid,
+                    uuid=job.location.uuid,
                     name=job.location.region.name_ua if query.lang == CFG.UA else job.location.region.name_en,
                 ),
-                is_saved=job.id in user_saved_jobs,
+                is_saved=job in user_saved_jobs,
                 **job.__dict__,
             )
             for job in jobs_near_you
@@ -85,7 +86,7 @@ def search_jobs(query: s.JobSearchIn, me: m.User, db: Session) -> s.JobsSearchOu
         lang=query.lang,
         query=query.query,
         jobs=[
-            s.JobCard(
+            s.JobSearch(
                 location=s.LocationStrings(
                     uuid=job.location.uuid,
                     name=job.location.region.name_ua if query.lang == CFG.UA else job.location.region.name_en,
