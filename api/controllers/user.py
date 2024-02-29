@@ -1,9 +1,9 @@
 from typing import Sequence, Tuple
 
 import sqlalchemy as sa
+from fastapi import HTTPException, status
 from sqlalchemy.engine.result import Result
 from sqlalchemy.orm import Session, aliased
-from fastapi import HTTPException, status
 
 import app.models as m
 import app.schema as s
@@ -64,7 +64,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
 
     stmt = sa.select(m.User).where(m.User.is_deleted.is_(False))
     services: list[s.Service] = []
-    if query.query: 
+    if query.query:
         # search services
         if not query.selected_services:
             service_lang_column = m.Service.name_ua if query.lang == CFG.UA else m.Service.name_en
