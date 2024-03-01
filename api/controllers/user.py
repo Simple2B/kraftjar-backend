@@ -54,13 +54,28 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
         .join(m.user_locations)
         .where(m.user_locations.c.user_id == me.id)
     )
-    locations: list[s.Location] = [
+
+    all_db_locations = db.execute(
+        sa.select(m.Region.name_ua if query.lang == CFG.UA else m.Region.name_en, m.Location.uuid).join(m.Location)
+    )
+
+    db_locations: list[s.Location] = [
+        s.Location(
+            uuid=uuid,
+            name=name,
+        )
+        for name, uuid in all_db_locations
+    ]
+
+    user_locations: list[s.Location] = [
         s.Location(
             uuid=uuid,
             name=name,
         )
         for name, uuid in db_regions
     ]
+
+    db_locations = [location for location in db_locations if location not in user_locations]
 
     stmt = sa.select(m.User).where(m.User.is_deleted.is_(False))
     services: list[s.Service] = []
@@ -115,13 +130,17 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
         stmt = stmt.join(m.user_services).join(m.Service).where(m.Service.uuid.in_(query.selected_services))
 
     if query.selected_locations:
-        stmt = stmt.join(m.user_locations).join(m.Location).where(m.Location.uuid.in_(query.selected_locations))
+        if CFG.ALL_UKRAINE in query.selected_locations:
+            stmt = stmt.join(m.user_locations).join(m.Location)
+        else:
+            stmt = stmt.join(m.user_locations).join(m.Location).where(m.Location.uuid.in_(query.selected_locations))
 
     db_users: Sequence[m.User] = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
     return s.UsersSearchOut(
         lang=query.lang,
         services=services,
-        locations=locations,
+        locations=db_locations,
+        user_locations=user_locations,
         selected_services=query.selected_services,
         selected_locations=query.selected_locations,
         top_users=create_out_search_users(db_users, query.lang, query.selected_services, db),

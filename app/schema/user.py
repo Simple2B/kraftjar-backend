@@ -58,6 +58,7 @@ class UserSearchIn(BaseModel):
 class UsersSearchOut(BaseModel):
     lang: str = CFG.UA
     services: list[Service] = []
+    user_locations: list[Location] = []
     locations: list[Location] = []
     selected_services: list[str] = []  # list of uuids - selected services
     selected_locations: list[str] = []  # list of uuids - selected locations

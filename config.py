@@ -62,6 +62,8 @@ class BaseConfig(BaseSettings):
     SCOPES: list[str] = ["https://www.googleapis.com/auth/spreadsheets"]
     SPREADSHEET_ID: str = "1Hw5Oh9vtwuPUYJkSGo0uGikRbHeiM52SNdUxwXFU3hQ"
 
+    ALL_UKRAINE: str = "all-ukraine"
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.
