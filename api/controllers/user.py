@@ -78,20 +78,23 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
     db_locations = [location for location in db_locations if location not in user_locations]
 
     stmt = sa.select(m.User).where(m.User.is_deleted.is_(False))
-    services: list[s.Service] = []
+    # services: list[s.Service] = []
     if query.query:
         # search services
-        if not query.selected_services:
-            service_lang_column = m.Service.name_ua if query.lang == CFG.UA else m.Service.name_en
-            svc_stmt = sa.select(m.Service).where(service_lang_column.ilike(f"%{query.query}%"))
-            services = [
-                s.Service(uuid=service.uuid, name=service.name_ua if query.lang == CFG.UA else service.name_en)
-                for service in db.scalars(svc_stmt).all()
-            ]
+        service_lang_column = m.Service.name_ua if query.lang == CFG.UA else m.Service.name_en
+        svc_stmt = sa.select(m.Service).where(service_lang_column.ilike(f"%{query.query}%"))
 
-        stmt = stmt.where(
-            m.User.fullname.ilike(f"%{query.query}%"),
-        )
+        services = [
+            s.Service(uuid=service.uuid, name=service.name_ua if query.lang == CFG.UA else service.name_en)
+            for service in db.scalars(svc_stmt).all()
+        ]
+
+        services_uuids = [service.uuid for service in services]
+
+        if services_uuids:
+            stmt = stmt.join(m.user_services).join(m.Service).where(m.Service.uuid.in_(services_uuids))
+        else:
+            stmt = stmt.where(m.User.fullname.ilike(f"%{query.query}%"))
     else:
         # query string is empty
         db_main_services = db.scalars(sa.select(m.Service).where(m.Service.parent_id.is_(None))).all()
@@ -125,9 +128,6 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
                 services.append(
                     s.Service(uuid=child.uuid, name=child.name_ua if query.lang == CFG.UA else child.name_en)
                 )
-
-    if query.selected_services:
-        stmt = stmt.join(m.user_services).join(m.Service).where(m.Service.uuid.in_(query.selected_services))
 
     if query.selected_locations:
         if CFG.ALL_UKRAINE in query.selected_locations:
