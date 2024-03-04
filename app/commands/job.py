@@ -203,11 +203,13 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
     write_jobs_in_db(jobs)
 
 
-def export_jobs_from_json_file():
+def export_jobs_from_json_file(max_job_limit: int | None = None):
     """Fill users with data from json file"""
 
     with open("data/jobs.json", "r") as file:
         file_data = s.JobsFile.model_validate(json.load(file))
 
     jobs = file_data.jobs
+    if max_job_limit:
+        jobs = jobs[:max_job_limit]
     write_jobs_in_db(jobs)

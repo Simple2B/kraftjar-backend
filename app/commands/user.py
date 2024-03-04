@@ -34,7 +34,6 @@ PHONE = "phone"
 ALL_REGIONS = "Вся Україна"
 
 TOKEN_FILE = ROOT_PATH / "token.json"
-USER_PASSWORD = "Kraftjar2024"
 
 
 def write_users_in_db(users: list[s.UserFile], with_print: bool = True):
@@ -69,7 +68,6 @@ def write_users_in_db(users: list[s.UserFile], with_print: bool = True):
                 service = session.scalar(sa.select(m.Service).where(m.Service.id == service_id))
                 assert service, f"Service with id [{service_id}] not found"
                 new_user.services.append(service)
-
             session.add(new_user)
             if with_print:
                 log(log.INFO, f"Created user {user.fullname} =====> {user.email} ======> {user.phone}")
@@ -225,7 +223,7 @@ def export_users_from_google_spreadsheets(with_print: bool = True, in_json: bool
                 location_ids=regions_ids,
                 service_ids=services_ids,
                 is_volunteer=False,
-                password=USER_PASSWORD,
+                password=CFG.TEST_USER_PASSWORD,
             )
         )
 
@@ -237,11 +235,14 @@ def export_users_from_google_spreadsheets(with_print: bool = True, in_json: bool
     write_users_in_db(users, with_print)
 
 
-def export_users_from_json_file(with_print: bool = True):
+def export_users_from_json_file(with_print: bool = True, max_user_limit: int | None = None):
     """Fill users with data from json file"""
 
     with open(JSON_FILE, "r") as file:
         file_data: s.UsersFile = s.UsersFile.model_validate(json.load(file))
 
     users = file_data.users
+    if max_user_limit:
+        users = users[:max_user_limit]
+
     write_users_in_db(users, with_print)

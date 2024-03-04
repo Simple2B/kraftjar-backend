@@ -55,7 +55,7 @@ def test_register(db: Session, client: TestClient):
 
     # Try to register again with the same phone
     USER_EMAIL2 = "new_email@new.york.post.org"
-    USER_PHONE2 = "+380661234562"
+    USER_PHONE2 = USER_PHONE
     user_data = s.RegistrationIn(
         fullname=USER_FNAME + " " + USER_LNAME,
         phone=USER_PHONE2,
@@ -68,11 +68,13 @@ def test_register(db: Session, client: TestClient):
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_phone_validation(db: Session, client: TestClient, auth_header: dict[str, str]):
-    USER_EMAIL = "mykola_saltykov@gmail.com"
-    db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.email == USER_EMAIL))
+    db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == 1))
     assert db_user
 
-    assert not db_user.phone_verified
+    assert db_user.phone_verified
+    db_user.phone_verified = False
+    db.commit()
+
     NEW_USER_PHONE = "777777777777"
     data: s.SetPhoneIn = s.SetPhoneIn(phone=NEW_USER_PHONE)
     response = client.post("/api/registration/set-phone", json=data.model_dump(), headers=auth_header)

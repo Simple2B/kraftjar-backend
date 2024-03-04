@@ -64,6 +64,8 @@ class BaseConfig(BaseSettings):
 
     ALL_UKRAINE: str = "all-ukraine"
 
+    TEST_USER_PASSWORD: str = "Kraftjar2024"
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.

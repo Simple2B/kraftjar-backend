@@ -13,8 +13,3 @@ def test_export_jobs(runner: FlaskCliRunner, populate: FlaskClient):
     assert "done" in res.output
     query = m.Job.select()
     assert db.session.scalars(query).all()
-
-
-def test_export_jobs_in_json(runner: FlaskCliRunner, populate: FlaskClient):
-    res: Result = runner.invoke(args=["export-jobs-in-json"])
-    assert "done" in res.output

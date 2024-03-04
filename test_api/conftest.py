@@ -1,18 +1,21 @@
 from typing import Generator
+
 import pytest
-from fastapi import status
 from dotenv import load_dotenv
+from fastapi import status
 
 load_dotenv("test_api/test.env")
 
 # ruff: noqa: F401 E402
 from fastapi.testclient import TestClient
-from sqlalchemy import orm
-
-from app import models as m
-from app import schema as s
+from sqlalchemy import orm, select
 
 from api import app
+from app import models as m
+from app import schema as s
+from config import config
+
+CFG = config()
 
 
 @pytest.fixture
@@ -23,17 +26,17 @@ def db() -> Generator[orm.Session, None, None]:
         db.Model.metadata.drop_all(bind=session.bind)
         db.Model.metadata.create_all(bind=session.bind)
 
-        from app.commands.service import export_services_from_json_file
-        from app.commands.locations import export_regions_from_json_file
-        from app.commands.user import export_users_from_json_file
-        from app.commands.job import export_jobs_from_json_file
         from app.commands.addresses import export_addresses_from_json_file
+        from app.commands.job import export_jobs_from_json_file
+        from app.commands.locations import export_regions_from_json_file
+        from app.commands.service import export_services_from_json_file
+        from app.commands.user import export_users_from_json_file
 
         export_services_from_json_file(with_print=False)
         export_regions_from_json_file(with_print=False)
-        export_users_from_json_file(with_print=False)
+        export_users_from_json_file(with_print=False, max_user_limit=30)
         export_addresses_from_json_file(with_print=False)
-        export_jobs_from_json_file()
+        export_jobs_from_json_file(max_job_limit=30)
 
         def override_get_db() -> Generator:
             yield session
@@ -63,14 +66,13 @@ def auth_header(
 ) -> Generator[dict[str, str], None, None]:
     """Returns an authorized test client for the API"""
     authorized_header: dict[str, str] = {}
-    USER_PHONE = "+380661234561"
-    USER_PASSWORD = "test_password"
+    user = db.scalar(select(m.User).where(m.User.id == 1))
 
     response = client.post(
         "/api/auth/login",
         data={
-            "username": USER_PHONE,
-            "password": USER_PASSWORD,
+            "username": user.phone,
+            "password": CFG.TEST_USER_PASSWORD,
         },
     )
     assert response.status_code == status.HTTP_200_OK
