@@ -1,3 +1,4 @@
+import re
 from typing import Sequence, Tuple
 import sqlalchemy as sa
 from sqlalchemy.engine.result import Result
@@ -9,6 +10,8 @@ from config import config
 
 CFG = config()
 service_alias = aliased(m.Service)
+
+RE_WORD = "[^\w]"
 
 
 def create_out_search_users(db_users: Sequence[m.User], lang: str, db: Session) -> list[s.UserSearchOut]:
@@ -74,18 +77,21 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
     stmt = sa.select(m.User).where(m.User.is_deleted.is_(False))
 
     if query.query:
+        wordList = re.sub(RE_WORD, " ", query.query).split()
         # search services
-        service_lang_column = m.Service.name_ua if query.lang == CFG.UA else m.Service.name_en
-        svc_stmt = sa.select(m.Service).where(service_lang_column.ilike(f"%{query.query}%"))
-        services = [
-            s.Service(uuid=service.uuid, name=service.name_ua if query.lang == CFG.UA else service.name_en)
-            for service in db.scalars(svc_stmt).all()
-        ]
-        services_uuids = [service.uuid for service in services]
-        if services_uuids:
-            stmt = stmt.join(m.user_services).join(m.Service).where(m.Service.uuid.in_(services_uuids))
-        else:
-            stmt = stmt.where(m.User.fullname.ilike(f"%{query.query}%"))
+        for word in wordList:
+            if len(word) > 3:
+                service_lang_column = m.Service.name_ua if query.lang == CFG.UA else m.Service.name_en
+                svc_stmt = sa.select(m.Service).where(service_lang_column.ilike(f"%{word}%"))
+                services = [
+                    s.Service(uuid=service.uuid, name=service.name_ua if query.lang == CFG.UA else service.name_en)
+                    for service in db.scalars(svc_stmt).all()
+                ]
+                services_uuids = [service.uuid for service in services]
+                if services_uuids:
+                    stmt = stmt.join(m.user_services).join(m.Service).where(m.Service.uuid.in_(services_uuids))
+                else:
+                    stmt = stmt.where(m.User.fullname.ilike(f"%{word}%"))
     else:
         # query string is empty
         db_main_services = db.scalars(sa.select(m.Service).where(m.Service.parent_id.is_(None))).all()
