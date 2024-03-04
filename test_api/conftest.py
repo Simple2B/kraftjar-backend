@@ -26,10 +26,14 @@ def db() -> Generator[orm.Session, None, None]:
         from app.commands.service import export_services_from_json_file
         from app.commands.locations import export_regions_from_json_file
         from app.commands.user import export_users_from_json_file
+        from app.commands.job import export_jobs_from_json_file
+        from app.commands.addresses import export_addresses_from_json_file
 
         export_services_from_json_file(with_print=False)
         export_regions_from_json_file(with_print=False)
         export_users_from_json_file(with_print=False)
+        export_addresses_from_json_file(with_print=False)
+        export_jobs_from_json_file()
 
         def override_get_db() -> Generator:
             yield session

@@ -13,6 +13,7 @@ from .job import (
     JobsCardList,
     JobHomePage,
     JobSearch,
+    JobsFile,
 )
 from .application import ApplicationIn, ApplicationOut, ApplicationOutList, ApplicationPut
 from .location import Location, LocationsIn, LocationsOut, Region, RegionsFile, LocationStrings
