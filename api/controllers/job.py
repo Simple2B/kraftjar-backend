@@ -7,6 +7,8 @@ import app.models as m
 import app.schema as s
 from config import config
 
+from app.utilities import pop_keys
+
 CFG = config()
 CARDS_LIMIT = 10
 
@@ -37,10 +39,10 @@ def get_jobs_on_home_page(query: s.JobHomePage, current_user: m.User, db: Sessio
             s.JobCard(
                 location=s.LocationStrings(
                     uuid=job.location.uuid,
-                    name=job.location.region.name_ua if query.lang == CFG.UA else job.location.region.name_en,
+                    name=job.location.region[0].name_ua if query.lang == CFG.UA else job.location.region[0].name_en,
                 ),
                 is_saved=job in user_saved_jobs,
-                **job.__dict__,
+                **pop_keys(job.__dict__, ["location"]),
             )
             for job in recommended_jobs
         ],
@@ -48,10 +50,10 @@ def get_jobs_on_home_page(query: s.JobHomePage, current_user: m.User, db: Sessio
             s.JobCard(
                 location=s.LocationStrings(
                     uuid=job.location.uuid,
-                    name=job.location.region.name_ua if query.lang == CFG.UA else job.location.region.name_en,
+                    name=job.location.region[0].name_ua if query.lang == CFG.UA else job.location.region[0].name_en,
                 ),
                 is_saved=job in user_saved_jobs,
-                **job.__dict__,
+                **pop_keys(job.__dict__, ["location"]),
             )
             for job in jobs_near_you
         ],
@@ -89,10 +91,10 @@ def search_jobs(query: s.JobSearchIn, me: m.User, db: Session) -> s.JobsSearchOu
             s.JobSearch(
                 location=s.LocationStrings(
                     uuid=job.location.uuid,
-                    name=job.location.region.name_ua if query.lang == CFG.UA else job.location.region.name_en,
+                    name=job.location.region[0].name_ua if query.lang == CFG.UA else job.location.region[0].name_en,
                 ),
                 is_saved=False,
-                **job.__dict__,
+                **pop_keys(job.__dict__, ["location"]),
             )
             for job in jobs
         ],

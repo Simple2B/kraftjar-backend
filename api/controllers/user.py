@@ -15,7 +15,7 @@ CFG = config()
 service_alias = aliased(m.Service)
 
 
-def create_out_search_users(db_users: Sequence[m.User], lang: str, db: Session) -> list[s.UserSearchOut]:
+def get_search_users(db_users: Sequence[m.User], lang: str, db: Session) -> list[s.UserSearchOut]:
     """Creates list of UserSearchOut from db users"""
 
     users: list[s.UserSearchOut] = []
@@ -45,16 +45,17 @@ def create_out_search_users(db_users: Sequence[m.User], lang: str, db: Session) 
 def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearchOut:
     """filters users"""
 
-    db_regions: Result[Tuple[str, str]] = db.execute(
-        sa.select(m.Region.name_ua if query.lang == CFG.UA else m.Region.name_en, m.Location.uuid)
-        .join(m.Location)
-        .join(m.user_locations)
-        .where(m.user_locations.c.user_id == me.id)
+    user_locations_subquery = (
+        sa.select(m.Location.uuid).join(m.user_locations).where(m.user_locations.c.user_id == me.id)
     )
 
-    all_db_locations = db.execute(
-        sa.select(m.Region.name_ua if query.lang == CFG.UA else m.Region.name_en, m.Location.uuid).join(m.Location)
+    main_query = (
+        sa.select(m.Region.name_ua if query.lang == CFG.UA else m.Region.name_en, m.Location.uuid)
+        .join(m.Location, m.Region.location_id == m.Location.id)
+        .where(m.Location.uuid.notin_(user_locations_subquery))
     )
+
+    all_db_locations = db.execute(main_query)
 
     db_locations: list[s.Location] = [
         s.Location(
@@ -63,16 +64,6 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
         )
         for name, uuid in all_db_locations
     ]
-
-    user_locations: list[s.Location] = [
-        s.Location(
-            uuid=uuid,
-            name=name,
-        )
-        for name, uuid in db_regions
-    ]
-
-    db_locations = [location for location in db_locations if location not in user_locations]
 
     stmt = sa.select(m.User).where(m.User.is_deleted.is_(False))
 
@@ -109,7 +100,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
             stmt_top_users = stmt.join(m.user_locations).join(m.Location)
             top_users = db.scalars(stmt_top_users.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
 
-            user_locations_ids = [location.uuid for location in user_locations]
+            user_locations_ids = [location.uuid for location in db_locations]
 
             stmt_near_users = (
                 stmt.join(m.user_locations).join(m.Location).where(m.Location.uuid.in_(user_locations_ids))
@@ -121,17 +112,16 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
             near_users = []
 
     log(log.INFO, "Top users [%s]", top_users)
-    print("==================================")
     log(log.INFO, "Near users [%s]", near_users)
 
     return s.UsersSearchOut(
         lang=query.lang,
         # services=services,
         locations=db_locations,
-        user_locations=user_locations,
+        user_locations=db_locations,
         # selected_services=query.selected_services,
         selected_locations=query.selected_locations,
-        top_users=create_out_search_users(top_users, query.lang, db),
-        near_users=create_out_search_users(near_users, query.lang, db),
+        top_users=get_search_users(top_users, query.lang, db),
+        near_users=get_search_users(near_users, query.lang, db),
         query=query.query,
     )

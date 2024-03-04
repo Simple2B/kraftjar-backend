@@ -7,7 +7,6 @@ from app import create_app, db
 from app import models as m
 from test_flask.utils import register
 
-
 load_dotenv("test_flask/test.env")
 
 
@@ -58,10 +57,12 @@ def populate(client: FlaskClient):
         ).save(False)
     db.session.commit()
 
+    from app.commands.addresses import export_addresses_from_json_file
     from app.commands.locations import export_regions_from_json_file
     from app.commands.service import export_services_from_json_file
 
     export_regions_from_json_file(False)
     export_services_from_json_file(False)
+    export_addresses_from_json_file(False)
 
     yield client

@@ -6,6 +6,7 @@ import sqlalchemy as sa
 from app import models as m
 from app import schema as s
 from app.database import db
+from app.logger import log
 
 MODULE_PATH = Path(__file__).parent
 JSON_FILE = MODULE_PATH / ".." / ".." / "data" / "regions.json"
@@ -42,6 +43,6 @@ def export_regions_from_json_file(with_print: bool = True):
             session.add(region_db)
             session.flush()
             if with_print:
-                print(f"{region_db.id}: {region_db.name_ua}")
+                log(log.DEBUG, f"{region_db.id}: {region_db.name_ua}")
 
     return

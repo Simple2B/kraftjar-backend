@@ -34,6 +34,54 @@ TEST_ADDRESS_ID = 1
 TEST_DATA = "01.11.2023"
 
 
+def write_jobs_in_db(jobs: list[s.JobCompletedCreate]):
+    with db.begin() as session:
+        if not session.scalar(sa.select(m.Location)):
+            log(log.ERROR, "Locations table is empty")
+            log(log.ERROR, "Please run `flask export-regions` first")
+            raise Exception("Locations table is empty. Please run `flask export-regions` first")
+
+        if not session.scalar(sa.select(m.Service)):
+            log(log.ERROR, "Services table is empty")
+            log(log.ERROR, "Please run `flask export-services` first")
+            raise Exception("Services table is empty. Please run `flask export-services` first")
+        service_id = 1
+
+        for job in jobs:
+            db_address: m.Address = session.scalar(sa.select(m.Address).where(m.Address.id == job.address_id))
+            assert db_address, f"Service with id [{db_address}] not found"
+
+            new_job: m.Job = m.Job(
+                title=job.title,
+                description=job.description,
+                address_id=job.address_id,
+                location_id=job.location_id,
+                time=job.time,
+                status=job.status,
+                is_public=job.is_public,
+                owner_id=job.owner_id,
+                worker_id=job.worker_id,
+                created_at=job.created_at,
+                updated_at=job.updated_at,
+                is_deleted=job.is_deleted,
+            )
+
+            db_service: m.Service = session.scalar(sa.select(m.Service).where(m.Service.id == service_id))
+            assert db_service, f"Service with id [{db_service}] not found"
+
+            session.add(new_job)
+            session.flush()
+
+            new_job_service: m.JobService = m.JobService(
+                service_id=db_service.id,
+                job_id=new_job.id,
+            )
+
+            session.add(new_job_service)
+
+            log(log.DEBUG, "Job with title [%s] created", job.title)
+
+
 def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool = False):
     """Fill users with data from google spreadsheets"""
 
@@ -89,7 +137,6 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
         job_service = row[SERVICE_INDEX]
         service = SEARCH_IDS.findall(job_service)
         assert service, f"The service {service} is empty"
-        service_id = int(service[0])
 
         job_location = row[LOCATION_INDEX]
         location_ids = SEARCH_IDS.findall(job_location)
@@ -130,48 +177,17 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
 
     if in_json:
         with open("data/jobs.json", "w") as file:
-            json.dump({"jobs": [job.model_dump() for job in jobs]}, file, indent=4)
+            json.dump(s.JobsFile(jobs=jobs).model_dump(mode="json"), file, indent=4)
         return
 
-    with db.begin() as session:
-        assert session.scalar(
-            sa.select(m.Location)
-        ), "Locations table is empty. Please run `flask export-regions` first"
-        assert session.scalar(sa.select(m.Service)), "Services table is empty. Please run `flask export-services` first"
+    write_jobs_in_db(jobs)
 
-        for job in jobs:
-            db_address: m.Address = session.scalar(sa.select(m.Address).where(m.Address.id == job.address_id))
-            assert db_address, f"Service with id [{db_address}] not found"
 
-            new_job: m.Job = m.Job(
-                title=job.title,
-                description=job.description,
-                address_id=job.address_id,
-                location_id=job.location_id,
-                time=job.time,
-                status=job.status,
-                is_public=job.is_public,
-                owner_id=job.owner_id,
-                worker_id=job.worker_id,
-                created_at=job.created_at,
-                updated_at=job.updated_at,
-                is_deleted=job.is_deleted,
-            )
+def export_jobs_from_json_file():
+    """Fill users with data from json file"""
 
-            db_service: m.Service = session.scalar(sa.select(m.Service).where(m.Service.id == service_id))
-            assert db_service, f"Service with id [{db_service}] not found"
+    with open("data/jobs.json", "r") as file:
+        file_data = s.JobsFile.model_validate(json.load(file))
 
-            session.add(new_job)
-            session.flush()
-
-            new_job_service: m.JobService = m.JobService(
-                service_id=db_service.id,
-                job_id=new_job.id,
-            )
-
-            session.add(new_job_service)
-
-            new_job_service
-
-            if with_print:
-                log(log.DEBUG, "Job with title [%s] created", job.title)
+    jobs = file_data.jobs
+    write_jobs_in_db(jobs)
