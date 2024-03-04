@@ -18,6 +18,7 @@
     "isouter",
     "jsonify",
     "kraftjar",
+    "notin",
     "onupdate",
     "outerjoin",
     "pydantic",
