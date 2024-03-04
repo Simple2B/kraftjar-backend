@@ -73,8 +73,6 @@ def write_phone_to_google_spreadsheets():
             elif len(val[0]) == 9:
                 val[0] = f"380{val[0]}"
 
-    for i, v in enumerate(values):
-        print(i, v)
     body = {"values": values}
 
     result = (
@@ -120,8 +118,6 @@ def write_email_to_google_spreadsheets():
             else:
                 val[0] = email
 
-    for i, v in enumerate(values):
-        print(i, v)
     body = {"values": values}
 
     result = (
