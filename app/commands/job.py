@@ -1,5 +1,5 @@
-from datetime import datetime
 import json
+from datetime import datetime
 
 import sqlalchemy as sa
 from googleapiclient.discovery import build
@@ -14,7 +14,7 @@ from .utility import SEARCH_IDS, authorized_user_in_google_spreadsheets
 
 CFG = config()
 
-# ['ID', 'owner_id', 'worker_id', 'title', 'description', 'service', 'location', 'address', 'created_at', 'started_at', 'finished_at', 'rate_client', 'rate_worker']
+# ['ID', 'owner_id', 'worker_id', 'title', 'description', 'service', 'location', 'address', 'created_at', 'started_at', 'finished_at', 'rate_owner', 'rate_worker']
 ID = "ID"
 OWNER_ID = "owner_id"
 WORKER_ID = "worker_id"
@@ -26,7 +26,7 @@ ADDRESS = "address"
 CREATED_AT = "created_at"
 STARTED_AT = "started_at"
 FINISHED_AT = "finished_at"
-RATE_CLIENT = "rate_client"
+RATE_OWNER = "rate_client"
 RATE_WORKER = "rate_worker"
 
 # TODO: add logic of create address_id
@@ -79,6 +79,22 @@ def write_jobs_in_db(jobs: list[s.JobCompletedCreate]):
 
             session.add(new_job_service)
 
+            rate_worker: m.Rate = m.Rate(
+                message="Mocked rate",
+                gives_id=new_job.owner_id,
+                receives_id=new_job.worker_id,
+                job_id=new_job.id,
+                rate=job.rate_worker,
+            )
+            rate_owner: m.Rate = m.Rate(
+                message="Mocked rate",
+                gives_id=new_job.worker_id,
+                receives_id=new_job.owner_id,
+                job_id=new_job.id,
+                rate=job.rate_owner,
+            )
+            session.add_all([rate_worker, rate_owner])
+
             log(log.DEBUG, "Job with title [%s] created", job.title)
 
 
@@ -112,8 +128,8 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
     CREATED_AT_INDEX = values[0].index(CREATED_AT)
     STARTED_AT_INDEX = values[0].index(STARTED_AT)
     FINISHED_AT_INDEX = values[0].index(FINISHED_AT)
-    # RATE_CLIENT_INDEX = values[0].index(RATE_CLIENT)
-    # RATE_WORKER_INDEX = values[0].index(RATE_WORKER)
+    RATE_OWNER_INDEX = values[0].index(RATE_OWNER)
+    RATE_WORKER_INDEX = values[0].index(RATE_WORKER)
 
     for row in values[1:]:
         if len(row) < 12:
@@ -155,8 +171,10 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
         finished_at = row[FINISHED_AT_INDEX]
         assert finished_at, f"The finished_at {finished_at} is empty"
 
-        # rate_client = row[RATE_CLIENT_INDEX]
-        # rate_worker = row[RATE_WORKER_INDEX]
+        rate_owner = row[RATE_OWNER_INDEX]
+        assert rate_owner, f"The rate_owner {rate_owner} is empty"
+        rate_worker = row[RATE_WORKER_INDEX]
+        assert rate_worker, f"The rate_worker {rate_worker} is empty"
 
         jobs.append(
             s.JobCompletedCreate(
@@ -172,6 +190,8 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
                 created_at=datetime.strptime(TEST_DATA, "%d.%m.%Y"),
                 updated_at=datetime.strptime(TEST_DATA, "%d.%m.%Y"),
                 is_deleted=False,
+                rate_owner=rate_owner,
+                rate_worker=rate_worker,
             )
         )
 

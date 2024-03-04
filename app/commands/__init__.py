@@ -137,13 +137,25 @@ def init(app: Flask):
         export_jobs_from_google_spreadsheets()
         print("done")
 
-    @app.cli.command()
-    def export_jobs_in_json():
-        """Export jobs to json file"""
-        from .job import export_jobs_from_google_spreadsheets
+    if app.config["ENV"] != "production":
 
-        export_jobs_from_google_spreadsheets(in_json=True)
-        print("done")
+        @app.cli.command()
+        def export_jobs_in_json():
+            """Export jobs to json file"""
+            from .job import export_jobs_from_google_spreadsheets
+
+            export_jobs_from_google_spreadsheets(in_json=True)
+            print("done")
+
+    if app.config["ENV"] != "production":
+
+        @app.cli.command()
+        def export_users_in_json():
+            """Export users to json file"""
+            from .user import export_users_from_google_spreadsheets
+
+            export_users_from_google_spreadsheets(in_json=True)
+            print("done")
 
     @app.cli.command()
     def export_jobs():
