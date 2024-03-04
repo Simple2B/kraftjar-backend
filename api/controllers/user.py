@@ -1,7 +1,6 @@
 from typing import Sequence, Tuple
 
 import sqlalchemy as sa
-from fastapi import HTTPException, status
 from sqlalchemy.engine.result import Result
 from sqlalchemy.orm import Session, aliased
 
@@ -16,9 +15,7 @@ CFG = config()
 service_alias = aliased(m.Service)
 
 
-def create_out_search_users(
-    db_users: Sequence[m.User], lang: str, selected_services: list[str], db: Session
-) -> list[s.UserSearchOut]:
+def create_out_search_users(db_users: Sequence[m.User], lang: str, db: Session) -> list[s.UserSearchOut]:
     """Creates list of UserSearchOut from db users"""
 
     users: list[s.UserSearchOut] = []
@@ -78,19 +75,16 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
     db_locations = [location for location in db_locations if location not in user_locations]
 
     stmt = sa.select(m.User).where(m.User.is_deleted.is_(False))
-    # services: list[s.Service] = []
+
     if query.query:
         # search services
         service_lang_column = m.Service.name_ua if query.lang == CFG.UA else m.Service.name_en
         svc_stmt = sa.select(m.Service).where(service_lang_column.ilike(f"%{query.query}%"))
-
         services = [
             s.Service(uuid=service.uuid, name=service.name_ua if query.lang == CFG.UA else service.name_en)
             for service in db.scalars(svc_stmt).all()
         ]
-
         services_uuids = [service.uuid for service in services]
-
         if services_uuids:
             stmt = stmt.join(m.user_services).join(m.Service).where(m.Service.uuid.in_(services_uuids))
         else:
@@ -98,52 +92,46 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
     else:
         # query string is empty
         db_main_services = db.scalars(sa.select(m.Service).where(m.Service.parent_id.is_(None))).all()
-
         # get only main services
         services = [
             s.Service(uuid=service.uuid, name=service.name_ua if query.lang == CFG.UA else service.name_en)
             for service in db_main_services
         ]
+        services_uuids = [service.uuid for service in services]
+        stmt = stmt.join(m.user_services).join(m.Service).where(m.Service.uuid.in_(services_uuids))
 
-        for selected_uuid in query.selected_services:
-            # add selected service
-            selected_service: m.Service | None = db.scalar(sa.select(m.Service).where(m.Service.uuid == selected_uuid))
-            if not selected_service:
-                log(log.ERROR, "Service with uuid [%s] not found", selected_uuid)
-                raise HTTPException(
-                    status_code=status.HTTP_409_CONFLICT,
-                    detail=f"Service with uuid [{selected_uuid}] not found",
-                )
+    top_users: Sequence[m.User] = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
 
-            if selected_service.parent_id:
-                services.append(
-                    s.Service(
-                        uuid=selected_service.uuid,
-                        name=selected_service.name_ua if query.lang == CFG.UA else selected_service.name_en,
-                    )
-                )
-
-            # add all it's children
-            for child in selected_service.children:
-                services.append(
-                    s.Service(uuid=child.uuid, name=child.name_ua if query.lang == CFG.UA else child.name_en)
-                )
+    near_users: Sequence[m.User] = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
 
     if query.selected_locations:
         if CFG.ALL_UKRAINE in query.selected_locations:
-            stmt = stmt.join(m.user_locations).join(m.Location)
+            stmt_top_users = stmt.join(m.user_locations).join(m.Location)
+            top_users = db.scalars(stmt_top_users.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
+
+            user_locations_ids = [location.uuid for location in user_locations]
+
+            stmt_near_users = (
+                stmt.join(m.user_locations).join(m.Location).where(m.Location.uuid.in_(user_locations_ids))
+            )
+            near_users = db.scalars(stmt_near_users.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
         else:
             stmt = stmt.join(m.user_locations).join(m.Location).where(m.Location.uuid.in_(query.selected_locations))
+            top_users = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
+            near_users = []
 
-    db_users: Sequence[m.User] = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
+    log(log.INFO, "Top users [%s]", top_users)
+    print("==================================")
+    log(log.INFO, "Near users [%s]", near_users)
+
     return s.UsersSearchOut(
         lang=query.lang,
-        services=services,
+        # services=services,
         locations=db_locations,
         user_locations=user_locations,
-        selected_services=query.selected_services,
+        # selected_services=query.selected_services,
         selected_locations=query.selected_locations,
-        top_users=create_out_search_users(db_users, query.lang, query.selected_services, db),
-        near_users=create_out_search_users(db_users, query.lang, query.selected_services, db),
+        top_users=create_out_search_users(top_users, query.lang, db),
+        near_users=create_out_search_users(near_users, query.lang, db),
         query=query.query,
     )
