@@ -40,7 +40,7 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     ]
     locations: Sequence[m.Location] = db.scalars(sa.select(m.Location)).all()
     query_data: s.UserSearchIn = s.UserSearchIn(
-        selected_locations=[locations[0].uuid, locations[1].uuid, locations[2].uuid],
+        selected_locations=[locations[0].uuid, locations[1].uuid],
     )
     response = client.post("/api/users/search", headers=auth_header, json=query_data.model_dump())
     assert response.status_code == status.HTTP_200_OK
