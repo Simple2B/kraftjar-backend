@@ -8,7 +8,7 @@ from config import config
 CFG = config("testing")
 
 
-def test_export_services(runner: FlaskCliRunner, populate: FlaskClient):
+def test_export_jobs(runner: FlaskCliRunner, populate: FlaskClient):
     res: Result = runner.invoke(args=["export-jobs"])
     assert "done" in res.output
     query = m.Job.select()

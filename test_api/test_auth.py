@@ -10,12 +10,14 @@ from config import config
 
 CFG = config()
 
-USER_PHONE = "+380661234561"
-USER_PASSWORD = "test_password"
+
+USER_PASSWORD = CFG.TEST_USER_PASSWORD
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_auth(db: Session, client: TestClient):
+    USER_PHONE = db.scalar(sa.select(m.User.phone))
+    assert USER_PHONE
     user_auth = s.Auth(phone=USER_PHONE, password=USER_PASSWORD)
     response = client.post("/api/auth/token", json=user_auth.model_dump())
     assert response.status_code == status.HTTP_200_OK

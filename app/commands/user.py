@@ -34,7 +34,43 @@ PHONE = "phone"
 ALL_REGIONS = "Вся Україна"
 
 TOKEN_FILE = ROOT_PATH / "token.json"
-USER_PASSWORD = "Kraftjar2024"
+
+
+def write_users_in_db(users: list[s.UserFile], with_print: bool = True):
+    with db.begin() as session:
+        assert session.scalar(
+            sa.select(m.Location)
+        ), "Locations table is empty. Please run `flask export-regions` first"
+        assert session.scalar(sa.select(m.Service)), "Services table is empty. Please run `flask export-services` first"
+
+        for user in users:
+            if session.scalar(sa.select(m.User).where(m.User.email == user.email)):
+                log(log.DEBUG, "User with email [%s] already exists", user.email)
+                continue
+
+            new_user: m.User = m.User(
+                fullname=user.fullname,
+                first_name=user.first_name,
+                last_name=user.last_name,
+                phone=user.phone,
+                email=user.email,
+                password=user.password,
+                is_volunteer=user.is_volunteer,
+                phone_verified=True,
+            )
+
+            for location_id in user.location_ids:
+                location = session.scalar(sa.select(m.Location).where(m.Location.id == location_id))
+                assert location, f"Location with id [{location_id}] not found"
+                new_user.locations.append(location)
+
+            for service_id in user.service_ids:
+                service = session.scalar(sa.select(m.Service).where(m.Service.id == service_id))
+                assert service, f"Service with id [{service_id}] not found"
+                new_user.services.append(service)
+            session.add(new_user)
+            if with_print:
+                log(log.INFO, f"Created user {user.fullname} =====> {user.email} ======> {user.phone}")
 
 
 # a function for filling the table with phones for users who do not have a phone number. Used only once
@@ -133,7 +169,7 @@ def write_email_to_google_spreadsheets():
     log(log.INFO, "Result: %s", result)
 
 
-def export_users_from_google_spreadsheets(with_print: bool = True):
+def export_users_from_google_spreadsheets(with_print: bool = True, in_json: bool = False):
     """Fill users with data from google spreadsheets"""
 
     credentials = authorized_user_in_google_spreadsheets()
@@ -187,91 +223,26 @@ def export_users_from_google_spreadsheets(with_print: bool = True):
                 location_ids=regions_ids,
                 service_ids=services_ids,
                 is_volunteer=False,
-                password=USER_PASSWORD,
+                password=CFG.TEST_USER_PASSWORD,
             )
         )
 
-    with db.begin() as session:
-        assert session.scalar(
-            sa.select(m.Location)
-        ), "Locations table is empty. Please run `flask export-regions` first"
-        assert session.scalar(sa.select(m.Service)), "Services table is empty. Please run `flask export-services` first"
+    if in_json:
+        with open(JSON_FILE, "w") as file:
+            json.dump(s.UsersFile(users=users).dict(), file, ensure_ascii=False, indent=4)
+        return
 
-        for user in users:
-            if session.scalar(sa.select(m.User).where(m.User.email == user.email)):
-                log(log.DEBUG, "User with email [%s] already exists", user.email)
-                continue
-
-            new_user: m.User = m.User(
-                fullname=user.fullname,
-                first_name=user.first_name,
-                last_name=user.last_name,
-                phone=user.phone,
-                email=user.email,
-                password=user.password,
-                is_volunteer=user.is_volunteer,
-                phone_verified=True,
-            )
-
-            for location_id in user.location_ids:
-                location = session.scalar(sa.select(m.Location).where(m.Location.id == location_id))
-                assert location, f"Location with id [{location_id}] not found"
-                new_user.locations.append(location)
-
-            for service_id in user.service_ids:
-                service = session.scalar(sa.select(m.Service).where(m.Service.id == service_id))
-                assert service, f"Service with id [{service_id}] not found"
-                new_user.services.append(service)
-
-            session.add(new_user)
-            if with_print:
-                log(log.INFO, f"Created user {user.fullname} =====> {user.email} ======> {user.phone}")
+    write_users_in_db(users, with_print)
 
 
-def export_users_from_json_file(with_print: bool = True):
+def export_users_from_json_file(with_print: bool = True, max_user_limit: int | None = None):
     """Fill users with data from json file"""
 
     with open(JSON_FILE, "r") as file:
         file_data: s.UsersFile = s.UsersFile.model_validate(json.load(file))
 
-    with db.begin() as session:
-        if not session.scalar(sa.select(m.Location)):
-            log(log.ERROR, "Locations table is empty")
-            log(log.ERROR, "Please run `flask export-regions` first")
-            raise Exception("Locations table is empty. Please run `flask export-regions` first")
+    users = file_data.users
+    if max_user_limit:
+        users = users[:max_user_limit]
 
-        if not session.scalar(sa.select(m.Service)):
-            log(log.ERROR, "Services table is empty")
-            log(log.ERROR, "Please run `flask export-services` first")
-            raise Exception("Services table is empty. Please run `flask export-services` first")
-
-        for user in file_data.users:
-            if session.scalar(sa.select(m.User).where(m.User.phone == user.phone)):
-                log(log.INFO, "User with phone [%s] already exists", user.phone)
-                continue
-
-            new_user: m.User = m.User(
-                fullname=user.fullname,
-                phone=user.phone,
-                email=user.email,
-                password=user.password,
-                is_volunteer=user.is_volunteer,
-            )
-
-            for location_id in user.location_ids:
-                location: m.Location | None = session.scalar(sa.select(m.Location).where(m.Location.id == location_id))
-                if not location:
-                    log(log.ERROR, "Location with id [%s] not found", location_id)
-                    raise Exception(f"Location with id [{location_id}] not found")
-                new_user.locations.append(location)
-
-            for service_id in user.service_ids:
-                service: m.Service | None = session.scalar(sa.select(m.Service).where(m.Service.id == service_id))
-                if not service:
-                    log(log.ERROR, "Service with id [%s] not found", service_id)
-                    raise Exception(f"Service with id [{service_id}] not found")
-                new_user.services.append(service)
-
-            session.add(new_user)
-            if with_print:
-                log(log.INFO, f"Created user {user.fullname}")
+    write_users_in_db(users, with_print)

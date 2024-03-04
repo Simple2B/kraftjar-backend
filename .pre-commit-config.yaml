@@ -1,0 +1,46 @@
+# exclude test_api and test_app, exclude .vscode and .venv directories
+exclude: ^test_api/|^test_app/|\.vscode/|\.venv/
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-ast
+      - id: check-docstring-first
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: ''
+    hooks:
+      - id: mypy
+
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.3.0
+    hooks:
+      - id: ruff
+        args: [ --fix ]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+    - id: pytest
+      name: pytest
+      entry: ./.venv/bin/pytest test_api
+      language: system
+      types: [python]
+      pass_filenames: false
+      always_run: true
+
+    - id: pytest
+      name: pytest
+      entry: ./.venv/bin/pytest test_flask
+      language: system
+      types: [python]
+      pass_filenames: false
+      always_run: true

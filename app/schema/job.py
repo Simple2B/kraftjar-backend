@@ -153,6 +153,8 @@ class JobCompletedCreate(BaseModel):
     created_at: datetime
     updated_at: datetime
     is_deleted: bool = False
+    rate_worker: int
+    rate_owner: int
 
     model_config = ConfigDict(
         from_attributes=True,
