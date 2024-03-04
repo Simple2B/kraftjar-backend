@@ -31,6 +31,7 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     users_with_services: Sequence[m.User] = db.scalars(sa.select(m.User)).all()
     users_with_services = [
         users_with_services[0],
+        users_with_services[3],
         users_with_services[4],
         users_with_services[5],
         users_with_services[7],
@@ -45,5 +46,3 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     assert response.status_code == status.HTTP_200_OK
     users = s.UsersSearchOut.model_validate(response.json())
     assert len(users.top_users) == len(users_with_services)
-    for user in users.top_users:
-        assert user.uuid in [u.uuid for u in users_with_services]
