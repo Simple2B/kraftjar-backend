@@ -145,10 +145,10 @@ def init(app: Flask):
         export_jobs_from_google_spreadsheets(in_json=True)
         print("done")
 
-    @app.cli.command()
-    def export_jobs():
-        """Fill jobs with data from json file"""
-        from .job import export_jobs_from_json_file
+    # @app.cli.command()
+    # def export_jobs():
+    #     """Fill jobs with data from json file"""
+    #     from .job import export_jobs_from_json_file
 
-        export_jobs_from_json_file()
-        print("done")
+    #     export_jobs_from_json_file()
+    #     print("done")
