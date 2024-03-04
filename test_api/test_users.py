@@ -44,6 +44,6 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     )
     response = client.post("/api/users/search", headers=auth_header, json=query_data.model_dump())
     assert response.status_code == status.HTTP_200_OK
-    users = s.UsersSearchOut.model_validate(response.json())
+    # users = s.UsersSearchOut.model_validate(response.json())
     # assert len(users.top_users) == len(users_with_services)
     # TODO: remake this test

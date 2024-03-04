@@ -67,6 +67,7 @@ def auth_header(
     """Returns an authorized test client for the API"""
     authorized_header: dict[str, str] = {}
     user = db.scalar(select(m.User).where(m.User.id == 1))
+    assert user
 
     response = client.post(
         "/api/auth/login",
