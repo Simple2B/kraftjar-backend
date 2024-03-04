@@ -63,6 +63,7 @@ class BaseConfig(BaseSettings):
     SPREADSHEET_ID: str = "1Hw5Oh9vtwuPUYJkSGo0uGikRbHeiM52SNdUxwXFU3hQ"
 
     ALL_UKRAINE: str = "all-ukraine"
+    RE_WORD: str = "[^\w]"
 
     @staticmethod
     def configure(app):

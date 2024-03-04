@@ -11,8 +11,6 @@ from config import config
 CFG = config()
 service_alias = aliased(m.Service)
 
-RE_WORD = "[^\w]"
-
 
 def create_out_search_users(db_users: Sequence[m.User], lang: str, db: Session) -> list[s.UserSearchOut]:
     """Creates list of UserSearchOut from db users"""
@@ -77,7 +75,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
     stmt = sa.select(m.User).where(m.User.is_deleted.is_(False))
 
     if query.query:
-        wordList = re.sub(RE_WORD, " ", query.query).split()
+        wordList = re.sub(CFG.RE_WORD, " ", query.query).split()
         # search services
         for word in wordList:
             if len(word) > 3:
