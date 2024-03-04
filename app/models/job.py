@@ -29,7 +29,7 @@ class Job(db.Model, ModelMixin):
     status: orm.Mapped[str] = orm.mapped_column(sa.Enum(s.JobStatus), default=s.JobStatus.PENDING)
     is_public: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=True)
 
-    cost: orm.Mapped[float] = orm.mapped_column(sa.Float, nullable=True)
+    cost: orm.Mapped[float] = orm.mapped_column(sa.Float, nullable=True, default=10)  # TODO: remove default!!!
 
     location_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("locations.id"), nullable=True)
     owner_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("users.id"), nullable=False)
