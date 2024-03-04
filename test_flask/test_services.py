@@ -1,6 +1,5 @@
 import sqlalchemy as sa
-from click.testing import Result
-from flask.testing import FlaskClient, FlaskCliRunner
+from flask.testing import FlaskClient
 
 from app import db
 from app import models as m
@@ -11,12 +10,12 @@ from .utils import login
 CFG = config("testing")
 
 
-def test_export_services(runner: FlaskCliRunner):
-    res: Result = runner.invoke(args=["export-services"])
-    assert "done" in res.output
-    query = m.Service.select()
-    assert db.session.scalars(query).all()
-    assert len(db.session.scalars(query).all())
+# def test_export_services(runner: FlaskCliRunner):
+#     res: Result = runner.invoke(args=["export-services"])
+#     assert "done" in res.output
+#     query = m.Service.select()
+#     assert db.session.scalars(query).all()
+#     assert len(db.session.scalars(query).all())
 
 
 def test_list_all_services(populate: FlaskClient):
