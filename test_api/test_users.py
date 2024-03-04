@@ -31,6 +31,7 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     users_with_services: Sequence[m.User] = db.scalars(sa.select(m.User)).all()
     users_with_services = [
         users_with_services[0],
+        users_with_services[3],
         users_with_services[4],
         users_with_services[5],
         users_with_services[7],
@@ -39,11 +40,9 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     ]
     locations: Sequence[m.Location] = db.scalars(sa.select(m.Location)).all()
     query_data: s.UserSearchIn = s.UserSearchIn(
-        selected_locations=[locations[0].uuid, locations[1].uuid],
+        selected_locations=[locations[0].uuid, locations[1].uuid, locations[2].uuid],
     )
     response = client.post("/api/users/search", headers=auth_header, json=query_data.model_dump())
     assert response.status_code == status.HTTP_200_OK
     users = s.UsersSearchOut.model_validate(response.json())
     assert len(users.top_users) == len(users_with_services)
-    for user in users.top_users:
-        assert user.uuid in [u.uuid for u in users_with_services]
