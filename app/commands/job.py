@@ -52,6 +52,8 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
 
     jobs: list[s.JobCompletedCreate] = []
 
+    rates: list[s.RateCreate] = []
+
     # indexes of row values
     INDEX_ID = values[0].index(ID)
     OWNER_ID_INDEX = values[0].index(OWNER_ID)
@@ -64,8 +66,8 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
     CREATED_AT_INDEX = values[0].index(CREATED_AT)
     STARTED_AT_INDEX = values[0].index(STARTED_AT)
     FINISHED_AT_INDEX = values[0].index(FINISHED_AT)
-    # RATE_CLIENT_INDEX = values[0].index(RATE_CLIENT)
-    # RATE_WORKER_INDEX = values[0].index(RATE_WORKER)
+    RATE_CLIENT_INDEX = values[0].index(RATE_CLIENT)
+    RATE_WORKER_INDEX = values[0].index(RATE_WORKER)
 
     for row in values[1:]:
         if len(row) < 12:
@@ -108,8 +110,8 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
         finished_at = row[FINISHED_AT_INDEX]
         assert finished_at, f"The finished_at {finished_at} is empty"
 
-        # rate_client = row[RATE_CLIENT_INDEX]
-        # rate_worker = row[RATE_WORKER_INDEX]
+        rate_owner = row[RATE_CLIENT_INDEX]
+        rate_worker = row[RATE_WORKER_INDEX]
 
         jobs.append(
             s.JobCompletedCreate(
@@ -170,8 +172,47 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
             )
 
             session.add(new_job_service)
+            session.flush()
 
-            new_job_service
+            # rate client
+            rates.append(
+                s.RateCreate(
+                    message="",
+                    job_id=new_job.id,
+                    gives_id=owner_id,
+                    receives_id=worker_id,
+                    rate=rate_worker,
+                    created_at=finished_at,
+                )
+            )
+
+            # rate owner
+            rates.append(
+                s.RateCreate(
+                    message="",
+                    job_id=new_job.id,
+                    gives_id=worker_id,
+                    receives_id=owner_id,
+                    rate=rate_owner,
+                    created_at=finished_at,
+                )
+            )
 
             if with_print:
                 log(log.DEBUG, "Job with title [%s] created", job.title)
+
+        for rate in rates:
+            new_rate: m.Rate = m.Rate(
+                message=rate.message,
+                job_id=rate.job_id,
+                gives_id=rate.gives_id,
+                receives_id=rate.receives_id,
+                rate=rate.rate,
+                created_at=rate.created_at,
+            )
+
+            session.add(new_rate)
+            session.flush()
+
+            if with_print:
+                log(log.DEBUG, "Rate with rate [%s] created", rate.rate)

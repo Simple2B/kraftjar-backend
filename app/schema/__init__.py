@@ -20,7 +20,7 @@ from .pagination import Pagination
 from .token import Token, TokenData
 from .user import User, UserFile, UsersFile, UserList, UserSearchIn, UsersSearchOut, UserSearchOut
 from .whoami import WhoAmI
-from .rate import RateIn, RateOut, RateOutList
+from .rate import RateCreate, RateIn, RateOut, RateOutList
 from .auth import Auth, GoogleAuth, AppleAuth
 from .registration import RegistrationIn, SetPhoneIn, ValidatePhoneIn, SetPhoneOut
 from .field import FieldCreate
