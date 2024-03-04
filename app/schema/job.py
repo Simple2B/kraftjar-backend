@@ -157,3 +157,11 @@ class JobCompletedCreate(BaseModel):
     model_config = ConfigDict(
         from_attributes=True,
     )
+
+
+class JobsFile(BaseModel):
+    jobs: list[JobCompletedCreate]
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
