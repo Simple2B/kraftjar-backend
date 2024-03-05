@@ -10,6 +10,8 @@ class Service(BaseModel):
     uuid: str
     name: str
 
+    __hash__ = object.__hash__
+
 
 class ServiceDB(BaseModel):
     id: int

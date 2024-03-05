@@ -49,3 +49,7 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     assert response.status_code == status.HTTP_200_OK
     users = s.UsersSearchOut.model_validate(response.json())
     assert len(users.top_users) == len(users_with_services)
+    for i in range(len(users.top_users) - 1):
+        assert (
+            users.top_users[i].owned_rates_median >= users.top_users[i + 1].owned_rates_median
+        ), f"User rates are not decreasing at index {i}"
