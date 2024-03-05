@@ -8,6 +8,8 @@ import app.schema as s
 from app.logger import log
 from config import config
 
+from app.utilities import pop_keys
+
 CFG = config()
 service_alias = aliased(m.Service)
 
@@ -31,10 +33,11 @@ def create_out_search_users(db_users: Sequence[m.User], lang: str, db: Session) 
         locations: list[s.Location] = [s.Location(name=name, uuid=uuid) for name, uuid in regions]
         users.append(
             s.UserSearchOut(
-                uuid=db_user.uuid,
-                fullname=db_user.fullname,
+                **pop_keys(db_user.__dict__, ["services", "locations"]),
                 services=services,
                 locations=locations,
+                owned_rates_count=db_user.owned_rates_count,
+                owned_rates_median=db_user.owned_rates_median,
             )
         )
     return users

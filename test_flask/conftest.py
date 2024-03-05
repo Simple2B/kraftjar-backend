@@ -16,9 +16,10 @@ def app():
     app.config.update(
         {
             "TESTING": True,
+            "SQLALCHEMY_DATABASE_URI": "sqlite:///database-test-flask.sqlite3",
         }
     )
-
+    db.initialize(url=app.config["SQLALCHEMY_DATABASE_URI"])
     yield app
 
 

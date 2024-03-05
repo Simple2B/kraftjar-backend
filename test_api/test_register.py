@@ -26,6 +26,11 @@ def test_register(db: Session, client: TestClient):
     USER_FNAME = "TestFName"
     USER_LNAME = "TestLName"
     USER_PASSWORD = "test_password"
+    db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.email == USER_EMAIL))
+    if db_user:
+        db.delete(db_user)
+        db.commit()
+
     user_data = s.RegistrationIn(
         fullname=USER_FNAME + " " + USER_LNAME,
         phone=USER_PHONE,
@@ -71,11 +76,15 @@ def test_phone_validation(db: Session, client: TestClient, auth_header: dict[str
     db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == 1))
     assert db_user
 
-    assert db_user.phone_verified
     db_user.phone_verified = False
     db.commit()
 
     NEW_USER_PHONE = "777777777777"
+    user: m.User | None = db.scalar(sa.select(m.User).where(m.User.phone == NEW_USER_PHONE))
+    if user:
+        user.phone = "12345678901"
+        db.commit()
+
     data: s.SetPhoneIn = s.SetPhoneIn(phone=NEW_USER_PHONE)
     response = client.post("/api/registration/set-phone", json=data.model_dump(), headers=auth_header)
 

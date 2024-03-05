@@ -35,5 +35,11 @@ class Rate(db.Model, ModelMixin):
         default=datetime.utcnow,
     )
 
+    updated_at: orm.Mapped[datetime] = orm.mapped_column(
+        sa.DateTime,
+        default=sa.func.now(),
+        onupdate=sa.func.now(),
+    )
+
     def __repr__(self):
         return f"<Rate {self.id} | {self.gives_id} ({self.rate}) -> {self.receives_id}>)"

@@ -42,8 +42,11 @@ class UserList(BaseModel):
 
 
 class UserSearchOut(BaseModel):
+    id: int
     uuid: str
     fullname: str
+    owned_rates_count: int
+    owned_rates_median: float
     services: list[Service]
     locations: list[Location]
 

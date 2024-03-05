@@ -13,6 +13,7 @@ from app.schema.user import User as u
 from .user_locations import user_locations
 from .user_services import user_services
 from .utils import ModelMixin
+from .rates import Rate
 
 if TYPE_CHECKING:
     from .location import Location
@@ -20,6 +21,11 @@ if TYPE_CHECKING:
 
 
 class User(db.Model, ModelMixin):
+    rates_as_giver: orm.Mapped[list["Rate"]] = orm.relationship("Rate", foreign_keys=[Rate.gives_id], backref="giver")
+    rates_as_receiver: orm.Mapped[list["Rate"]] = orm.relationship(
+        "Rate", foreign_keys=[Rate.receives_id], backref="receiver"
+    )
+
     __tablename__ = "users"
 
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
@@ -50,6 +56,16 @@ class User(db.Model, ModelMixin):
     # Relationships
     services: orm.Mapped[list["Service"]] = orm.relationship(secondary=user_services)
     locations: orm.Mapped[list["Location"]] = orm.relationship(secondary=user_locations)
+
+    @property
+    def owned_rates_count(self) -> int:
+        return len(self.rates_as_receiver)
+
+    @property
+    def owned_rates_median(self) -> float:
+        if not self.rates_as_receiver:
+            return 0
+        return sum([rate.rate for rate in self.rates_as_receiver]) / len(self.rates_as_receiver)
 
     @property
     def password(self):
