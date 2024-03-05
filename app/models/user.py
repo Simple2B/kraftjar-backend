@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Self
 from uuid import uuid4
 
 import sqlalchemy as sa
-from sqlalchemy import orm
+from sqlalchemy import Label, orm
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -68,8 +68,8 @@ class User(db.Model, ModelMixin):
             return 0
         return sum([rate.rate for rate in self.rates_as_receiver]) / len(self.rates_as_receiver)
 
-    @owned_rates_median.expression
-    def owned_rates_median(cls):
+    @owned_rates_median.expression  # type: ignore
+    def owned_rates_median(cls) -> Label["owned_rates_median"]:  # type: ignore
         return sa.select(sa.func.avg(Rate.rate)).where(Rate.receiver_id == cls.id).label("owned_rates_median")
 
     @property

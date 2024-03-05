@@ -71,7 +71,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
             if len(word) > 3:
                 service_lang_column = m.Service.name_ua if query.lang == CFG.UA else m.Service.name_en
                 svc_stmt = sa.select(m.Service).where(service_lang_column.ilike(f"%{word}%"))
-                if db.scalar(svc_stmt.exists()):
+                if db.execute(svc_stmt).one_or_none():
                     stmt = stmt.join(m.user_services).join(m.Service).where(service_lang_column.ilike(f"%{word}%"))
                 else:
                     stmt = stmt.where(m.User.fullname.ilike(f"%{word}%"))
@@ -91,19 +91,19 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
             stmt = stmt.where(m.Location.uuid.in_([location.uuid for location in user_locations]))
         else:
             stmt = stmt.where(m.Location.uuid.in_(query.selected_locations))
-        stmt = stmt.order_by(m.User.owned_rates_median.desc())
+        stmt = stmt.order_by(m.User.owned_rates_median.desc())  # type: ignore
         top_users: Sequence[m.User] = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
         near_users: Sequence[m.User] = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
     else:
-        stmt = stmt.order_by(m.User.owned_rates_median.desc())
-        top_users: Sequence[m.User] = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
+        stmt = stmt.order_by(m.User.owned_rates_median.desc())  # type: ignore
+        top_users = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
         near_users = []
 
     return s.UsersSearchOut(
         lang=query.lang,
         # services=services,
-        locations=db_locations,
-        user_locations=user_locations,
+        locations=[_ for _ in db_locations],
+        user_locations=[_ for _ in user_locations],
         # selected_services=query.selected_services,
         selected_locations=query.selected_locations,
         top_users=create_out_search_users(top_users, query.lang, db),

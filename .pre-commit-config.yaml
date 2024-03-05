@@ -4,7 +4,7 @@ repos:
   - repo: local
     hooks:
     - id: pytest
-      name: pytest
+      name: pytest api
       entry: ./.venv/bin/pytest test_api
       language: system
       types: [python]
@@ -12,7 +12,7 @@ repos:
       always_run: true
 
     - id: pytest
-      name: pytest
+      name: pytest flask
       entry: ./.venv/bin/pytest test_flask
       language: system
       types: [python]
