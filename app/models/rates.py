@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import TYPE_CHECKING
 from uuid import uuid4
 
 import sqlalchemy as sa
@@ -10,6 +11,10 @@ from config import config
 from .utils import ModelMixin
 
 CFG = config()
+
+
+if TYPE_CHECKING:
+    from .user import User
 
 
 class Rate(db.Model, ModelMixin):
@@ -34,6 +39,15 @@ class Rate(db.Model, ModelMixin):
         sa.DateTime,
         default=datetime.utcnow,
     )
+
+    updated_at: orm.Mapped[datetime] = orm.mapped_column(
+        sa.DateTime,
+        default=sa.func.now(),
+        onupdate=sa.func.now(),
+    )
+
+    giver: orm.Mapped["User"] = orm.relationship("User", foreign_keys=[gives_id])
+    receiver: orm.Mapped["User"] = orm.relationship("User", foreign_keys=[receives_id])
 
     def __repr__(self):
         return f"<Rate {self.id} | {self.gives_id} ({self.rate}) -> {self.receives_id}>)"
