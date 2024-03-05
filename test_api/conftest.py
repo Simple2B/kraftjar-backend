@@ -23,6 +23,7 @@ def db() -> Generator[orm.Session, None, None]:
     from app.database import db, get_db
 
     with db.Session() as session:
+        # TODO: use already prepared sqlite3 db file
         db.Model.metadata.drop_all(bind=session.bind)
         db.Model.metadata.create_all(bind=session.bind)
 
