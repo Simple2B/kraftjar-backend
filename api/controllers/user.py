@@ -1,14 +1,14 @@
 import re
 from typing import Sequence, Tuple
+
 import sqlalchemy as sa
 from sqlalchemy.engine.result import Result
 from sqlalchemy.orm import Session, aliased
+
 import app.models as m
 import app.schema as s
-from app.logger import log
-from config import config
-
 from app.utilities import pop_keys
+from config import config
 
 CFG = config()
 service_alias = aliased(m.Service)
@@ -120,10 +120,6 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
             stmt = stmt.join(m.user_locations).join(m.Location).where(m.Location.uuid.in_(query.selected_locations))
             top_users = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
             near_users = []
-
-    log(log.INFO, "Top users [%s]", top_users)
-    print("==================================")
-    log(log.INFO, "Near users [%s]", near_users)
 
     return s.UsersSearchOut(
         lang=query.lang,
