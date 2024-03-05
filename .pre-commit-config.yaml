@@ -1,4 +1,4 @@
-exclude: .vscode/
+exclude: '^\.vscode/|app/static/'
 
 repos:
   - repo: local
