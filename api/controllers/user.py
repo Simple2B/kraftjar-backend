@@ -92,11 +92,11 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
         else:
             stmt = stmt.where(m.Location.uuid.in_(query.selected_locations))
         stmt = stmt.order_by(m.User.owned_rates_median.desc())  # type: ignore
-        top_users: Sequence[m.User] = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
-        near_users: Sequence[m.User] = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
+        top_users: Sequence[m.User] = db.scalars(stmt.limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
+        near_users: Sequence[m.User] = db.scalars(stmt.limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
     else:
         stmt = stmt.order_by(m.User.owned_rates_median.desc())  # type: ignore
-        top_users = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
+        top_users = db.scalars(stmt.limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
         near_users = []
 
     return s.UsersSearchOut(
