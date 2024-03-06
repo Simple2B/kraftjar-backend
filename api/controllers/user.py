@@ -71,7 +71,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
             if len(word) >= 3:
                 service_lang_column = m.Service.name_ua if query.lang == CFG.UA else m.Service.name_en
                 svc_stmt = sa.select(m.Service).where(service_lang_column.ilike(f"%{word}%"))
-                if db.execute(svc_stmt).one_or_none():
+                if db.execute(svc_stmt).first():
                     stmt = stmt.join(m.user_services).join(m.Service).where(service_lang_column.ilike(f"%{word}%"))
                 else:
                     stmt = stmt.where(m.User.fullname.ilike(f"%{word}%"))
