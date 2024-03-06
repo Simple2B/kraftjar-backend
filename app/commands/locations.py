@@ -12,12 +12,11 @@ MODULE_PATH = Path(__file__).parent
 JSON_FILE = MODULE_PATH / ".." / ".." / "data" / "regions.json"
 
 
-def check_if_region_exists(region: s.Region):
+def check_if_region_exists(region: s.Region, session: sa.orm.Session):
     """Check if region exists in db"""
-    with db.begin() as session:
-        stmt = sa.select(m.Region).where(m.Region.name_ua == region.name_ua)
-        db_region = session.scalar(stmt)
-        return db_region is not None
+    stmt = sa.select(m.Region).where(m.Region.name_ua == region.name_ua)
+    db_region = session.scalar(stmt)
+    return db_region is not None
 
 
 def export_regions_from_json_file(with_print: bool = True):
@@ -29,7 +28,7 @@ def export_regions_from_json_file(with_print: bool = True):
     regions = file_data.regions
     with db.begin() as session:
         for region in regions:
-            if check_if_region_exists(region):
+            if check_if_region_exists(region, session):
                 continue
 
             region_db = m.Region(
