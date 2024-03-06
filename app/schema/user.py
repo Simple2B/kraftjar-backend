@@ -50,6 +50,8 @@ class UserSearchOut(BaseModel):
     services: list[Service]
     locations: list[Location]
 
+    __hash__ = object.__hash__
+
 
 class UserSearchIn(BaseModel):
     lang: str = CFG.UA

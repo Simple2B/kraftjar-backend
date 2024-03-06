@@ -47,9 +47,12 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     )
     response = client.post("/api/users/search", headers=auth_header, json=query_data.model_dump())
     assert response.status_code == status.HTTP_200_OK
-    users = s.UsersSearchOut.model_validate(response.json())
-    assert len(users.top_users) == len(users_with_services)
-    for i in range(len(users.top_users) - 1):
+    data = s.UsersSearchOut.model_validate(response.json())
+    assert len(data.top_users) == len(users_with_services)
+    assert len(data.top_users) == len(set(data.top_users))
+    for i in range(len(data.top_users) - 1):
         assert (
-            users.top_users[i].owned_rates_median >= users.top_users[i + 1].owned_rates_median
+            data.top_users[i].owned_rates_median >= data.top_users[i + 1].owned_rates_median
         ), f"User rates are not decreasing at index {i}"
+    for loc in data.user_locations:
+        assert loc not in data.locations
