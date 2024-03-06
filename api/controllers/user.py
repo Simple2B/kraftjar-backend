@@ -1,11 +1,13 @@
 import re
 from typing import Sequence, Tuple
+
 import sqlalchemy as sa
 from sqlalchemy.engine.result import Result
 from sqlalchemy.orm import Session, aliased
+
 import app.models as m
 import app.schema as s
-from app.logger import log
+from app.utilities import pop_keys
 from config import config
 
 CFG = config()
@@ -31,10 +33,11 @@ def create_out_search_users(db_users: Sequence[m.User], lang: str, db: Session) 
         locations: list[s.Location] = [s.Location(name=name, uuid=uuid) for name, uuid in regions]
         users.append(
             s.UserSearchOut(
-                uuid=db_user.uuid,
-                fullname=db_user.fullname,
+                **pop_keys(db_user.__dict__, ["services", "locations"]),
                 services=services,
                 locations=locations,
+                owned_rates_count=db_user.owned_rates_count,
+                owned_rates_median=db_user.owned_rates_median,
             )
         )
     return users
@@ -54,79 +57,53 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
         sa.select(m.Region.name_ua if query.lang == CFG.UA else m.Region.name_en, m.Location.uuid).join(m.Location)
     )
 
-    db_locations: list[s.Location] = [
-        s.Location(
-            uuid=uuid,
-            name=name,
-        )
-        for name, uuid in all_db_locations
-    ]
+    db_locations: set[s.Location] = {s.Location(uuid=uuid, name=name) for name, uuid in all_db_locations}
 
-    user_locations: list[s.Location] = [
-        s.Location(
-            uuid=uuid,
-            name=name,
-        )
-        for name, uuid in db_regions
-    ]
+    user_locations: set[s.Location] = {s.Location(uuid=uuid, name=name) for name, uuid in db_regions}
 
-    db_locations = [location for location in db_locations if location not in user_locations]
+    db_locations -= user_locations
 
     stmt = sa.select(m.User).where(m.User.is_deleted.is_(False))
 
     if query.query:
         wordList = re.sub(CFG.RE_WORD, " ", query.query).split()
-        # search services
         for word in wordList:
-            if len(word) > 3:
+            if len(word) >= 3:
                 service_lang_column = m.Service.name_ua if query.lang == CFG.UA else m.Service.name_en
                 svc_stmt = sa.select(m.Service).where(service_lang_column.ilike(f"%{word}%"))
-                services = [
-                    s.Service(uuid=service.uuid, name=service.name_ua if query.lang == CFG.UA else service.name_en)
-                    for service in db.scalars(svc_stmt).all()
-                ]
-                services_uuids = [service.uuid for service in services]
-                if services_uuids:
-                    stmt = stmt.join(m.user_services).join(m.Service).where(m.Service.uuid.in_(services_uuids))
+                if db.execute(svc_stmt).first():
+                    stmt = stmt.join(m.user_services).join(m.Service).where(service_lang_column.ilike(f"%{word}%"))
                 else:
                     stmt = stmt.where(m.User.fullname.ilike(f"%{word}%"))
     else:
-        # query string is empty
         db_main_services = db.scalars(sa.select(m.Service).where(m.Service.parent_id.is_(None))).all()
-        # get only main services
-        services = [
+        services = {
             s.Service(uuid=service.uuid, name=service.name_ua if query.lang == CFG.UA else service.name_en)
             for service in db_main_services
-        ]
-        services_uuids = [service.uuid for service in services]
-        stmt = stmt.join(m.user_services).join(m.Service).where(m.Service.uuid.in_(services_uuids))
-
-    top_users: Sequence[m.User] = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
-    near_users: Sequence[m.User] = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
+        }
+        stmt = (
+            stmt.join(m.user_services).join(m.Service).where(m.Service.uuid.in_([service.uuid for service in services]))
+        )
 
     if query.selected_locations:
+        stmt = stmt.join(m.user_locations).join(m.Location)
         if CFG.ALL_UKRAINE in query.selected_locations:
-            stmt_top_users = stmt.join(m.user_locations).join(m.Location)
-            top_users = db.scalars(stmt_top_users.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
-            user_locations_ids = [location.uuid for location in user_locations]
-            stmt_near_users = (
-                stmt.join(m.user_locations).join(m.Location).where(m.Location.uuid.in_(user_locations_ids))
-            )
-            near_users = db.scalars(stmt_near_users.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
+            stmt = stmt.where(m.Location.uuid.in_([location.uuid for location in user_locations]))
         else:
-            stmt = stmt.join(m.user_locations).join(m.Location).where(m.Location.uuid.in_(query.selected_locations))
-            top_users = db.scalars(stmt.distinct().limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
-            near_users = []
-
-    log(log.INFO, "Top users [%s]", top_users)
-    print("==================================")
-    log(log.INFO, "Near users [%s]", near_users)
+            stmt = stmt.where(m.Location.uuid.in_(query.selected_locations))
+        stmt = stmt.order_by(m.User.owned_rates_median.desc())  # type: ignore
+        top_users: Sequence[m.User] = db.scalars(stmt.limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
+        near_users: Sequence[m.User] = db.scalars(stmt.limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
+    else:
+        stmt = stmt.order_by(m.User.owned_rates_median.desc())  # type: ignore
+        top_users = db.scalars(stmt.limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
+        near_users = []
 
     return s.UsersSearchOut(
         lang=query.lang,
         # services=services,
-        locations=db_locations,
-        user_locations=user_locations,
+        locations=[_ for _ in db_locations],
+        user_locations=[_ for _ in user_locations],
         # selected_services=query.selected_services,
         selected_locations=query.selected_locations,
         top_users=create_out_search_users(top_users, query.lang, db),

@@ -6,6 +6,8 @@ class Location(BaseModel):
     name: str
     svg: str | None = None
 
+    __hash__ = object.__hash__
+
 
 class LocationStrings(BaseModel):
     uuid: str

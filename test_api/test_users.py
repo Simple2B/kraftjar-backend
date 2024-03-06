@@ -31,12 +31,15 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     users_with_services: Sequence[m.User] = db.scalars(sa.select(m.User)).all()
     users_with_services = [
         users_with_services[0],
+        users_with_services[1],
         users_with_services[3],
-        users_with_services[4],
         users_with_services[5],
-        users_with_services[7],
-        users_with_services[8],
         users_with_services[9],
+        users_with_services[10],
+        users_with_services[31],
+        users_with_services[36],
+        users_with_services[43],
+        users_with_services[50],
     ]
     locations: Sequence[m.Location] = db.scalars(sa.select(m.Location)).all()
     query_data: s.UserSearchIn = s.UserSearchIn(
@@ -44,6 +47,9 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     )
     response = client.post("/api/users/search", headers=auth_header, json=query_data.model_dump())
     assert response.status_code == status.HTTP_200_OK
-    # users = s.UsersSearchOut.model_validate(response.json())
-    # assert len(users.top_users) == len(users_with_services)
-    # TODO: remake this test
+    users = s.UsersSearchOut.model_validate(response.json())
+    assert len(users.top_users) == len(users_with_services)
+    for i in range(len(users.top_users) - 1):
+        assert (
+            users.top_users[i].owned_rates_median >= users.top_users[i + 1].owned_rates_median
+        ), f"User rates are not decreasing at index {i}"

@@ -26,7 +26,7 @@ class Rate(db.Model, ModelMixin):
 
     job_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("jobs.id"))
     gives_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("users.id"))
-    receives_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("users.id"))
+    receiver_id: orm.Mapped[int] = orm.mapped_column(sa.Integer, sa.ForeignKey("users.id"))
 
     rate: orm.Mapped[int] = orm.mapped_column(sa.Integer, nullable=False)
 
@@ -35,5 +35,11 @@ class Rate(db.Model, ModelMixin):
         default=datetime.utcnow,
     )
 
+    updated_at: orm.Mapped[datetime] = orm.mapped_column(
+        sa.DateTime,
+        default=sa.func.now(),
+        onupdate=sa.func.now(),
+    )
+
     def __repr__(self):
-        return f"<Rate {self.id} | {self.gives_id} ({self.rate}) -> {self.receives_id}>)"
+        return f"<Rate {self.id} | {self.gives_id} ({self.rate}) -> {self.receiver_id}>)"

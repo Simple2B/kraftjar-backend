@@ -82,14 +82,14 @@ def write_jobs_in_db(jobs: list[s.JobCompletedCreate]):
             rate_worker: m.Rate = m.Rate(
                 message="Mocked rate",
                 gives_id=new_job.owner_id,
-                receives_id=new_job.worker_id,
+                receiver_id=new_job.worker_id,
                 job_id=new_job.id,
                 rate=job.rate_worker,
             )
             rate_owner: m.Rate = m.Rate(
                 message="Mocked rate",
                 gives_id=new_job.worker_id,
-                receives_id=new_job.owner_id,
+                receiver_id=new_job.owner_id,
                 job_id=new_job.id,
                 rate=job.rate_owner,
             )
