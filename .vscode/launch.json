@@ -49,7 +49,16 @@
       "module": "flask",
       "args": [
         "export-services"
-      ],
+      ]
+    },
+    {
+      "name": "Export regions",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "flask",
+      "args": [
+        "export-regions"
+      ]
     },
     {
       "name": "Export addresses",
@@ -58,7 +67,7 @@
       "module": "flask",
       "args": [
         "export-addresses"
-      ],
+      ]
     },
     {
       "name": "Fill DB",
@@ -67,7 +76,7 @@
       "module": "flask",
       "args": [
         "fill-stage-db"
-      ],
+      ]
     },
     {
       "name": "Write phone numbers",
@@ -76,7 +85,7 @@
       "module": "flask",
       "args": [
         "write-phones"
-      ],
+      ]
     },
     {
       "name": "Write emails",
@@ -85,7 +94,7 @@
       "module": "flask",
       "args": [
         "write-emails"
-      ],
+      ]
     },
     {
       "name": "Fill db with jobs",
@@ -94,7 +103,7 @@
       "module": "flask",
       "args": [
         "fill-db-with-jobs"
-      ],
+      ]
     }
   ]
 }
