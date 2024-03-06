@@ -46,24 +46,38 @@ def create_out_search_users(db_users: Sequence[m.User], lang: str, db: Session) 
 def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearchOut:
     """filters users"""
 
-    db_regions: Result[Tuple[str, str]] = db.execute(
-        sa.select(m.Region.name_ua if query.lang == CFG.UA else m.Region.name_en, m.Location.uuid)
-        .join(m.Location)
-        .join(m.user_locations)
-        .where(m.user_locations.c.user_id == me.id)
+    user_locations: set[s.Location] = {
+        s.Location(
+            uuid=location.uuid, name=location.region[0].name_en if query.lang == CFG.EN else location.region[0].name_ua
+        )
+        for location in me.locations
+    }
+
+    stmt = (
+        sa.select(sa.case({query.lang == CFG.UA: m.Region.name_ua}, else_=m.Region.name_en), m.Location.uuid)
+        .select_from(m.Location)
+        .join(m.Region)
+        .where(
+            sa.and_(
+                m.Location.uuid.notin_([location.uuid for location in me.locations]),
+                sa.not_(
+                    m.Location.uuid.in_(
+                        sa.select(m.user_locations.c.location_id).where(m.user_locations.c.user_id == me.id)
+                    )
+                ),
+            )
+        )
     )
 
-    all_db_locations = db.execute(
-        sa.select(m.Region.name_ua if query.lang == CFG.UA else m.Region.name_en, m.Location.uuid).join(m.Location)
+    db_locations: set[s.Location] = {s.Location(uuid=uuid, name=name) for name, uuid in db.execute(stmt)}
+
+    stmt = (
+        sa.select(m.User)
+        .where(m.User.is_deleted.is_(False))
+        .where(m.User.id.is_not(me.id))
+        .limit(CFG.MAX_USER_SEARCH_RESULTS)
+        .distinct()
     )
-
-    db_locations: set[s.Location] = {s.Location(uuid=uuid, name=name) for name, uuid in all_db_locations}
-
-    user_locations: set[s.Location] = {s.Location(uuid=uuid, name=name) for name, uuid in db_regions}
-
-    db_locations -= user_locations
-
-    stmt = sa.select(m.User).where(m.User.is_deleted.is_(False))
 
     if query.query:
         wordList = re.sub(CFG.RE_WORD, " ", query.query).split()
@@ -92,11 +106,11 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
         else:
             stmt = stmt.where(m.Location.uuid.in_(query.selected_locations))
         stmt = stmt.order_by(m.User.owned_rates_median.desc())  # type: ignore
-        top_users: Sequence[m.User] = db.scalars(stmt.limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
-        near_users: Sequence[m.User] = db.scalars(stmt.limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
+        top_users: Sequence[m.User] = db.scalars(stmt).all()
+        near_users: Sequence[m.User] = db.scalars(stmt).all()
     else:
         stmt = stmt.order_by(m.User.owned_rates_median.desc())  # type: ignore
-        top_users = db.scalars(stmt.limit(CFG.MAX_USER_SEARCH_RESULTS)).all()
+        top_users = db.scalars(stmt).all()
         near_users = []
 
     return s.UsersSearchOut(
