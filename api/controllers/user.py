@@ -69,7 +69,9 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
         )
     )
 
-    db_locations: set[s.Location] = {s.Location(uuid=uuid, name=name) for name, uuid in db.execute(stmt)}
+    db_locations: set[s.Location] = {
+        s.Location(uuid=uuid, name=name) for name, uuid in db.execute(stmt, {"id_1": me.id})
+    }
 
     stmt = (
         sa.select(m.User)
