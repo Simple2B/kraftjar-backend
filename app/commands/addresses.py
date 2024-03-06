@@ -12,12 +12,12 @@ MODULE_PATH = Path(__file__).parent
 JSON_FILE = MODULE_PATH / ".." / ".." / "data" / "address.json"
 
 
-def check_if_address_exists(address: s.AddressBase):
+def check_if_address_exists(address: s.AddressBase, session: sa.orm.Session):
     """Check if region exists in db"""
-    with db.begin() as session:
-        stmt = sa.select(m.Address).where(m.Address.line1 == address.line1)
-        db_address = session.scalar(stmt)
-        return db_address is not None
+
+    stmt = sa.select(m.Address).where(m.Address.line1 == address.line1)
+    db_address = session.scalar(stmt)
+    return db_address is not None
 
 
 def export_addresses_from_json_file(with_print: bool = True):
@@ -29,7 +29,7 @@ def export_addresses_from_json_file(with_print: bool = True):
     addresses = file_data.addresses
     with db.begin() as session:
         for address in addresses:
-            if check_if_address_exists(address):
+            if check_if_address_exists(address, session):
                 continue
 
             address_db = m.Address(

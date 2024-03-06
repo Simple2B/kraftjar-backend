@@ -32,15 +32,14 @@ def print_added_services(service: m.Service, session: Session):
     print()
 
 
-def check_if_service_exists(services: dict[int, s.ServiceData], service: s.ServiceData):
+def check_if_service_exists(service: s.ServiceData, session: Session) -> bool:
     """Check if service exists in db"""
-    with db.begin() as session:
-        stmt = sa.select(m.Service).where(m.Service.name_ua == service.name_ua)
-        db_service = session.scalar(stmt)
-        if not db_service:
-            return False
-        # TODO: check by parent
-        return True
+    stmt = sa.select(m.Service).where(m.Service.name_ua == service.name_ua)
+    db_service = session.scalar(stmt)
+    if not db_service:
+        return False
+    # TODO: check by parent
+    return True
 
 
 def export_services_from_json_file(with_print: bool = True):
@@ -52,7 +51,7 @@ def export_services_from_json_file(with_print: bool = True):
 
     with db.begin() as session:
         for service in services.values():
-            if check_if_service_exists(services, service):
+            if check_if_service_exists(service, session):
                 continue
             service_db = m.Service(
                 name_ua=service.name_ua,
