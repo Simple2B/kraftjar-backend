@@ -61,7 +61,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
             sa.and_(
                 m.Location.uuid.notin_([location.uuid for location in me.locations]),
                 sa.not_(
-                    m.Location.uuid.in_(
+                    m.Location.id.in_(
                         sa.select(m.user_locations.c.location_id).where(m.user_locations.c.user_id == me.id)
                     )
                 ),
