@@ -102,12 +102,13 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
 
     if query.selected_locations:
         stmt = stmt.join(m.user_locations).join(m.Location)
+        near_stmt = stmt
         if CFG.ALL_UKRAINE in query.selected_locations:
-            stmt = stmt.where(m.Location.uuid.in_([location.uuid for location in user_locations]))
+            near_stmt = stmt.where(m.Location.uuid.in_([location.uuid for location in user_locations]))
         else:
             stmt = stmt.where(m.Location.uuid.in_(query.selected_locations))
         top_users: Sequence[m.User] = db.scalars(stmt).all()
-        near_users: Sequence[m.User] = db.scalars(stmt).all()
+        near_users: Sequence[m.User] = db.scalars(near_stmt).all()
     else:
         top_users = db.scalars(stmt).all()
         near_users = []

@@ -68,3 +68,16 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     assert len(data.top_users) == 2
     for user in data.top_users:
         assert user.id in {94, 218}  # Микола Чернов Та TestFname TestLname
+
+    query_data = s.UserSearchIn(
+        selected_locations=[CFG.ALL_UKRAINE],
+    )
+
+    response = client.post("/api/users/search", headers=auth_header, json=query_data.model_dump())
+    data = s.UsersSearchOut.model_validate(response.json())
+    assert len(data.top_users) == CFG.MAX_USER_SEARCH_RESULTS
+
+    for user in data.near_users:
+        assert data.user_locations[0] in user.locations
+
+    assert any([any([loc not in data.user_locations for loc in user.locations]) for user in data.top_users])
