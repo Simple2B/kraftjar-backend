@@ -11,6 +11,7 @@ from app.logger import log
 from config import config
 
 from .utility import SEARCH_IDS, authorized_user_in_google_spreadsheets
+from .rate import fix_users_average_rate
 
 CFG = config()
 
@@ -96,6 +97,8 @@ def write_jobs_in_db(jobs: list[s.JobCompletedCreate]):
             session.add_all([rate_worker, rate_owner])
 
             log(log.DEBUG, "Job with title [%s] created", job.title)
+
+    fix_users_average_rate()
 
 
 def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool = False):

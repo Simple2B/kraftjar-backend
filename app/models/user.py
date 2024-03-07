@@ -3,18 +3,20 @@ from typing import TYPE_CHECKING, Self
 from uuid import uuid4
 
 import sqlalchemy as sa
-from sqlalchemy import Label, orm
-from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy import orm
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.database import db
 from app.logger import log
 from app.schema.user import User as u
+from config import config
 
 from .rates import Rate
 from .user_locations import user_locations
 from .user_services import user_services
 from .utils import ModelMixin
+
+CFG = config()
 
 if TYPE_CHECKING:
     from .location import Location
@@ -22,6 +24,11 @@ if TYPE_CHECKING:
 
 
 class User(db.Model, ModelMixin):
+    __table_args__ = (
+        sa.CheckConstraint(f"average_rate >= {CFG.MINIMUM_RATE}", name="min_rate_check"),
+        sa.CheckConstraint(f"average_rate <= {CFG.MAXIMUM_RATE}", name="max_rate_check"),
+    )
+
     rates_as_giver: orm.Mapped[list["Rate"]] = orm.relationship("Rate", foreign_keys=[Rate.gives_id], backref="giver")
     rates_as_receiver: orm.Mapped[list["Rate"]] = orm.relationship(
         "Rate", foreign_keys=[Rate.receiver_id], backref="receiver"
@@ -54,6 +61,8 @@ class User(db.Model, ModelMixin):
 
     is_deleted: orm.Mapped[bool] = orm.mapped_column(default=False)
 
+    average_rate: orm.Mapped[float] = orm.mapped_column(sa.Float, default=1)
+
     # Relationships
     services: orm.Mapped[list["Service"]] = orm.relationship(secondary=user_services)
     locations: orm.Mapped[list["Location"]] = orm.relationship(secondary=user_locations)
@@ -61,16 +70,6 @@ class User(db.Model, ModelMixin):
     @property
     def owned_rates_count(self) -> int:
         return len(self.rates_as_receiver)
-
-    @hybrid_property
-    def owned_rates_median(self) -> float:
-        if not self.rates_as_receiver:
-            return 0
-        return sum([rate.rate for rate in self.rates_as_receiver]) / len(self.rates_as_receiver)
-
-    @owned_rates_median.expression  # type: ignore
-    def owned_rates_median(cls) -> Label["owned_rates_median"]:  # type: ignore
-        return sa.select(sa.func.avg(Rate.rate)).where(Rate.receiver_id == cls.id).label("owned_rates_median")
 
     @property
     def password(self):
