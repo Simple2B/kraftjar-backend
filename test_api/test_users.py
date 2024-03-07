@@ -81,3 +81,11 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
         assert data.user_locations[0] in user.locations
 
     assert any([any([loc not in data.user_locations for loc in user.locations]) for user in data.top_users])
+
+    query_data = s.UserSearchIn(query="Сантехні")
+    response = client.post("/api/users/search", headers=auth_header, json=query_data.model_dump())
+
+    data = s.UsersSearchOut.model_validate(response.json())
+    assert data.top_users
+    for user in data.top_users:
+        assert any([query_data.query.lower() in service.name.lower() for service in user.services])
