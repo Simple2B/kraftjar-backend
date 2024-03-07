@@ -57,3 +57,14 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
         ), f"User rates are not decreasing at index {i}"
     for loc in data.user_locations:
         assert loc not in data.locations
+
+    query_data = s.UserSearchIn(
+        selected_locations=[locations[0].uuid, locations[1].uuid],
+        query="Домашній майстер",
+    )
+    response = client.post("/api/users/search", headers=auth_header, json=query_data.model_dump())
+    assert response.status_code == status.HTTP_200_OK
+    data: s.UsersSearchOut = s.UsersSearchOut.model_validate(response.json())
+    assert len(data.top_users) == 2
+    for user in data.top_users:
+        assert user.id in {94, 218}  # Микола Чернов Та TestFname TestLname

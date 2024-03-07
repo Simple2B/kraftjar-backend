@@ -81,7 +81,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
         .distinct()
         .limit(CFG.MAX_USER_SEARCH_RESULTS)
     )
-
+    stmt = stmt.join(m.user_services).join(m.Service)
     if query.query:
         wordList = re.sub(CFG.RE_WORD, " ", query.query).split()
         for word in wordList:
@@ -89,7 +89,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
                 service_lang_column = m.Service.name_ua if query.lang == CFG.UA else m.Service.name_en
                 svc_stmt = sa.select(m.Service).where(service_lang_column.ilike(f"%{word}%"))
                 if db.execute(svc_stmt).first():
-                    stmt = stmt.join(m.user_services).join(m.Service).where(service_lang_column.ilike(f"%{word}%"))
+                    stmt = stmt.where(service_lang_column.ilike(f"%{word}%"))
                 else:
                     stmt = stmt.where(m.User.fullname.ilike(f"%{word}%"))
     else:
@@ -98,9 +98,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
             s.Service(uuid=service.uuid, name=service.name_ua if query.lang == CFG.UA else service.name_en)
             for service in db_main_services
         }
-        stmt = (
-            stmt.join(m.user_services).join(m.Service).where(m.Service.uuid.in_([service.uuid for service in services]))
-        )
+        stmt = stmt.where(m.Service.uuid.in_([service.uuid for service in services]))
 
     if query.selected_locations:
         stmt = stmt.join(m.user_locations).join(m.Location)
