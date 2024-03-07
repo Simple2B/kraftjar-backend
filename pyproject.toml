@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Kraftjar"
-version = "0.1.60"
+version = "0.1.61"
 description = ""
 authors = ["Anton <tinkerino571@gmail.com>"]
 
