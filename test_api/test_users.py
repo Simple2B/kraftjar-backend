@@ -57,6 +57,7 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
         ), f"User rates are not decreasing at index {i}"
     for loc in data.user_locations:
         assert loc not in data.locations
+    assert not data.near_users
 
     query_data = s.UserSearchIn(
         selected_locations=[locations[0].uuid, locations[1].uuid],
@@ -82,10 +83,11 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
 
     assert any([any([loc not in data.user_locations for loc in user.locations]) for user in data.top_users])
 
-    query_data = s.UserSearchIn(query="Сантехні")
+    query_data = s.UserSearchIn(query="Сантехнік")
     response = client.post("/api/users/search", headers=auth_header, json=query_data.model_dump())
 
     data = s.UsersSearchOut.model_validate(response.json())
+
     assert data.top_users
     for user in data.top_users:
         assert any([query_data.query.lower() in service.name.lower() for service in user.services])

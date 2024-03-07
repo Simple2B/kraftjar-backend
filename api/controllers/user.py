@@ -77,7 +77,6 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
             m.User,
         )
         .where(m.User.is_deleted.is_(False))
-        .order_by(m.User.average_rate.desc())
         .distinct()
         .limit(CFG.MAX_USER_SEARCH_RESULTS)
     )
@@ -100,18 +99,16 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
         }
         stmt = stmt.where(m.Service.uuid.in_([service.uuid for service in services]))
 
-    if query.selected_locations:
-        stmt = stmt.join(m.user_locations).join(m.Location)
-        near_stmt = stmt
-        if CFG.ALL_UKRAINE in query.selected_locations:
-            near_stmt = stmt.where(m.Location.uuid.in_([location.uuid for location in user_locations]))
-        else:
-            stmt = stmt.where(m.Location.uuid.in_(query.selected_locations))
-        top_users: Sequence[m.User] = db.scalars(stmt).all()
-        near_users: Sequence[m.User] = db.scalars(near_stmt).all()
+    stmt = stmt.join(m.user_locations).join(m.Location)
+    if CFG.ALL_UKRAINE in query.selected_locations:
+        near_users: Sequence[m.User] = db.scalars(
+            stmt.where(m.Location.uuid.in_([location.uuid for location in user_locations]))
+        ).all()
     else:
-        top_users = db.scalars(stmt).all()
+        if query.selected_locations:
+            stmt = stmt.where(m.Location.uuid.in_(query.selected_locations))
         near_users = []
+    top_users: Sequence[m.User] = db.scalars(stmt.order_by(m.User.average_rate.desc())).all()
 
     return s.UsersSearchOut(
         lang=query.lang,
