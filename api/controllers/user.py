@@ -30,7 +30,7 @@ def create_out_search_users(db_users: Sequence[m.User], lang: str, db: Session) 
             .join(m.user_locations)
             .where(m.user_locations.c.user_id == db_user.id)
         )
-        locations: list[s.Location] = [s.Location(name=name, uuid=uuid) for name, uuid in regions]
+        locations: list[s.LocationStrings] = [s.LocationStrings(name=name, uuid=uuid) for name, uuid in regions]
         users.append(
             s.UserSearchOut(
                 **pop_keys(db_user.__dict__, ["services", "locations"]),
