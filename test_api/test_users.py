@@ -53,7 +53,7 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
 
     for i in range(len(data.top_users) - 1):
         assert (
-            data.top_users[i].owned_rates_median >= data.top_users[i + 1].owned_rates_median
+            data.top_users[i].average_rate >= data.top_users[i + 1].average_rate
         ), f"User rates are not decreasing at index {i}"
     for loc in data.user_locations:
         assert loc not in data.locations

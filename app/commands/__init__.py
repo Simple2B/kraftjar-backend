@@ -164,3 +164,11 @@ def init(app: Flask):
 
         export_jobs_from_json_file()
         print("done")
+
+    @app.cli.command()
+    def fix_rates():
+        """Fix rates"""
+        from .rate import fix_users_average_rate
+
+        fix_users_average_rate()
+        print("done")

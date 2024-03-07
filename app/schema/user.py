@@ -2,7 +2,7 @@ from pydantic import BaseModel, ConfigDict
 from typing import Sequence
 
 from .service import Service, CFG
-from .location import Location
+from .location import LocationStrings
 
 
 class User(BaseModel):
@@ -46,9 +46,9 @@ class UserSearchOut(BaseModel):
     uuid: str
     fullname: str
     owned_rates_count: int
-    owned_rates_median: float
+    average_rate: float
     services: list[Service]
-    locations: list[Location]
+    locations: list[LocationStrings]
 
     __hash__ = object.__hash__
 
@@ -61,8 +61,8 @@ class UserSearchIn(BaseModel):
 
 class UsersSearchOut(BaseModel):
     lang: str = CFG.UA
-    user_locations: list[Location] = []
-    locations: list[Location] = []
+    user_locations: list[LocationStrings] = []
+    locations: list[LocationStrings] = []
     selected_locations: list[str] = []  # list of uuids - selected locations
     top_users: list[UserSearchOut] = []
     near_users: list[UserSearchOut] = []

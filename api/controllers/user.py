@@ -37,7 +37,6 @@ def create_out_search_users(db_users: Sequence[m.User], lang: str, db: Session) 
                 services=services,
                 locations=locations,
                 owned_rates_count=db_user.owned_rates_count,
-                owned_rates_median=db_user.owned_rates_median,
             )
         )
     return users
@@ -74,11 +73,13 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
     }
 
     stmt = (
-        sa.select(m.User)
+        sa.select(
+            m.User,
+        )
         .where(m.User.is_deleted.is_(False))
-        .where(m.User.id.is_not(me.id))
-        .limit(CFG.MAX_USER_SEARCH_RESULTS)
+        .order_by(m.User.average_rate.desc())
         .distinct()
+        .limit(CFG.MAX_USER_SEARCH_RESULTS)
     )
 
     if query.query:
@@ -107,20 +108,16 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
             stmt = stmt.where(m.Location.uuid.in_([location.uuid for location in user_locations]))
         else:
             stmt = stmt.where(m.Location.uuid.in_(query.selected_locations))
-        stmt = stmt.order_by(m.User.owned_rates_median.desc())  # type: ignore
         top_users: Sequence[m.User] = db.scalars(stmt).all()
         near_users: Sequence[m.User] = db.scalars(stmt).all()
     else:
-        stmt = stmt.order_by(m.User.owned_rates_median.desc())  # type: ignore
         top_users = db.scalars(stmt).all()
         near_users = []
 
     return s.UsersSearchOut(
         lang=query.lang,
-        # services=services,
         locations=[_ for _ in db_locations],
         user_locations=[_ for _ in user_locations],
-        # selected_services=query.selected_services,
         selected_locations=query.selected_locations,
         top_users=create_out_search_users(top_users, query.lang, db),
         near_users=create_out_search_users(near_users, query.lang, db),
