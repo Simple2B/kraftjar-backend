@@ -3,6 +3,7 @@ from typing import Generator
 import pytest
 from dotenv import load_dotenv
 from fastapi import status
+from sqlalchemy import event
 
 load_dotenv("test_api/test.env")
 
@@ -50,6 +51,10 @@ def db() -> Generator[orm.Session, None, None]:
     else:
         engine = create_engine(f"sqlite:///{db_file}")
         SessionLocal = orm.sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+        @event.listens_for(engine, "connect")
+        def on_connect(dbapi_connection, connection_record):
+            dbapi_connection.create_function("lower", 1, lambda arg: arg.lower())
 
         with SessionLocal() as session:
 

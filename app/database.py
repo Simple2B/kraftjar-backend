@@ -1,6 +1,5 @@
 from typing import Generator
 
-import sqlalchemy
 from sqlalchemy.orm import Session
 
 from config import config
@@ -20,9 +19,4 @@ if CFG.IS_API:
 
 def get_db() -> Generator[Session, None, None]:
     with db.Session() as session:
-
-        @sqlalchemy.event.listens_for(session, "connect")
-        def on_connect(dbapi_connection, connection_record):
-            dbapi_connection.create_function("lower", 1, lambda arg: arg.lower())
-
         yield session
