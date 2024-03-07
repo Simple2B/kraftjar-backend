@@ -21,7 +21,7 @@ def upgrade():
     with op.batch_alter_table('users', schema=None) as batch_op:
         batch_op.add_column(sa.Column('average_rate', sa.Float(), nullable=True))
 
-    op.execute("UPDATE users SET average_rate = 1")
+    op.execute("UPDATE users SET average_rate = 0")
     batch_op.alter_column('average_rate', nullable=False)
 
     # ### end Alembic commands ###

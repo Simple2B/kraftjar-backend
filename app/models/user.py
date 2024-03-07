@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 
 class User(db.Model, ModelMixin):
     __table_args__ = (
-        sa.CheckConstraint(f"average_rate >= {CFG.MINIMUM_RATE}", name="min_rate_check"),
+        sa.CheckConstraint(f"average_rate >= {CFG.MINIMUM_RATE} or average_rate == 0", name="min_rate_check"),
         sa.CheckConstraint(f"average_rate <= {CFG.MAXIMUM_RATE}", name="max_rate_check"),
     )
 
@@ -61,7 +61,7 @@ class User(db.Model, ModelMixin):
 
     is_deleted: orm.Mapped[bool] = orm.mapped_column(default=False)
 
-    average_rate: orm.Mapped[float] = orm.mapped_column(sa.Float, default=1)
+    average_rate: orm.Mapped[float] = orm.mapped_column(sa.Float, default=0)
 
     # Relationships
     services: orm.Mapped[list["Service"]] = orm.relationship(secondary=user_services)
