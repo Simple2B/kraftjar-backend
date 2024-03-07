@@ -7,3 +7,4 @@ from .service import get_services
 from .location import get_locations
 from .user import search_users
 from .job import search_jobs, get_jobs_on_home_page
+from .rate import update_user_average_rate, update_users_average_rate
