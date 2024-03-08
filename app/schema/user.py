@@ -1,8 +1,9 @@
-from pydantic import BaseModel, ConfigDict
 from typing import Sequence
 
-from .service import Service, CFG
+from pydantic import BaseModel, ConfigDict
+
 from .location import LocationStrings
+from .service import CFG, Service
 
 
 class User(BaseModel):
@@ -67,3 +68,18 @@ class UsersSearchOut(BaseModel):
     top_users: list[UserSearchOut] = []
     near_users: list[UserSearchOut] = []
     query: str = ""
+
+
+class UserProfileOut(BaseModel):
+    id: int
+    uuid: str
+    fullname: str
+    phone: str
+    email: str
+    is_deleted: bool
+    owned_rates_count: int
+    average_rate: float
+    services: list[Service]
+    locations: list[LocationStrings]
+
+    __hash__ = object.__hash__

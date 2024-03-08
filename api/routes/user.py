@@ -1,3 +1,5 @@
+from typing import Literal
+
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
@@ -7,6 +9,9 @@ import app.schema as s
 from api.dependency import get_current_user
 from app.database import get_db
 from app.logger import log
+from config import config
+
+CFG = config()
 
 user_router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -32,3 +37,17 @@ def search_users(
 ):
     """Returns filtered list of users"""
     return c.search_users(query, current_user, db)
+
+
+@user_router.get("/{user_uuid}", status_code=status.HTTP_200_OK, response_model=s.UserProfileOut)
+def get_user_profile(
+    user_uuid: str,
+    lang: Literal[CFG.UA, CFG.EN] = CFG.UA,  # type: ignore
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "User not found"},
+    },
+):
+    """Returns the user profile"""
+    return c.get_user_profile(user_uuid, lang, db)
