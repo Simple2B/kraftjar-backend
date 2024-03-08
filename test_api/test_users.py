@@ -14,14 +14,33 @@ CFG = config()
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_get_me(client: TestClient, auth_header: dict[str, str], full_db: Session):
+def test_get_user(client: TestClient, auth_header: dict[str, str], full_db: Session):
     db: Session = full_db
 
     USER_PHONE = db.scalar(sa.select(m.User.phone).where(m.User.id == 1))
     response = client.get("/api/users/me", headers=auth_header)
     assert response.status_code == status.HTTP_200_OK
-    user = s.User.model_validate(response.json())
-    assert user.phone == USER_PHONE
+    me_user: s.User = s.User.model_validate(response.json())
+    assert me_user.phone == USER_PHONE
+
+    search_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == 42))
+    assert search_user
+
+    response = client.get(f"/api/users/{search_user.uuid}", headers=auth_header)
+    assert response.status_code == status.HTTP_200_OK
+
+    user: s.UserProfileOut = s.UserProfileOut.model_validate(response.json())
+    assert user.id == search_user.id
+    assert user.fullname == search_user.fullname
+    assert user.average_rate == search_user.average_rate
+    assert user.services[0].name == search_user.services[0].name_ua
+
+    response = client.get(f"/api/users/{search_user.uuid}?lang={CFG.EN}", headers=auth_header)
+    assert response.status_code == status.HTTP_200_OK
+
+    user = s.UserProfileOut.model_validate(response.json())
+    assert user.id == search_user.id
+    assert user.services[0].name == search_user.services[0].name_en
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")

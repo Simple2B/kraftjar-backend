@@ -19,7 +19,7 @@ from .application import ApplicationIn, ApplicationOut, ApplicationOutList, Appl
 from .location import Location, LocationsIn, LocationsOut, Region, RegionsFile, LocationStrings
 from .pagination import Pagination
 from .token import Token, TokenData
-from .user import User, UserFile, UsersFile, UserList, UserSearchIn, UsersSearchOut, UserSearchOut
+from .user import User, UserFile, UsersFile, UserList, UserSearchIn, UsersSearchOut, UserSearchOut, UserProfileOut
 from .whoami import WhoAmI
 from .rate import RateIn, RateOut, RateOutList
 from .auth import Auth, GoogleAuth, AppleAuth

@@ -1,7 +1,8 @@
 import re
-from typing import Sequence, Tuple
+from typing import Literal, Sequence, Tuple
 
 import sqlalchemy as sa
+from fastapi import HTTPException, status
 from sqlalchemy.engine.result import Result
 from sqlalchemy.orm import Session, aliased
 
@@ -118,4 +119,31 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
         top_users=create_out_search_users(top_users, query.lang, db),
         near_users=create_out_search_users(near_users, query.lang, db),
         query=query.query,
+    )
+
+
+def get_user_profile(user_uuid: str, lang: Literal[CFG.UA, CFG.EN], db: Session) -> s.UserProfileOut:
+    """Returns user profile"""
+
+    db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.uuid == user_uuid))
+    if not db_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    services = [
+        s.Service(uuid=service.uuid, name=service.name_ua if lang == CFG.UA else service.name_en)
+        for service in db_user.services
+    ]
+    regions: Result[Tuple[str, str]] = db.execute(
+        sa.select(m.Region.name_ua if lang == CFG.UA else m.Region.name_en, m.Location.uuid)
+        .join(m.Location)
+        .join(m.user_locations)
+        .where(m.user_locations.c.user_id == db_user.id)
+    )
+    locations: list[s.LocationStrings] = [s.LocationStrings(name=name, uuid=uuid) for name, uuid in regions]
+
+    return s.UserProfileOut(
+        **pop_keys(db_user.__dict__, ["services", "locations"]),
+        services=services,
+        locations=locations,
+        owned_rates_count=db_user.owned_rates_count,
     )
