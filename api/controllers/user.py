@@ -122,7 +122,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
     )
 
 
-def get_user_profile(user_uuid: str, lang: Literal[CFG.UA, CFG.EN], db: Session) -> s.UserProfileOut:
+def get_user_profile(user_uuid: str, lang: Literal[CFG.UA, CFG.EN], db: Session) -> s.UserProfileOut:  # type: ignore
     """Returns user profile"""
 
     db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.uuid == user_uuid))

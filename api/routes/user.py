@@ -42,7 +42,7 @@ def search_users(
 @user_router.get("/{user_uuid}", status_code=status.HTTP_200_OK, response_model=s.UserProfileOut)
 def get_user_profile(
     user_uuid: str,
-    lang: Literal[CFG.UA, CFG.EN] = CFG.UA,
+    lang: Literal[CFG.UA, CFG.EN] = CFG.UA,  # type: ignore
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
     responses={
