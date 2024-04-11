@@ -108,7 +108,11 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
     else:
         if query.selected_locations:
             stmt = stmt.where(m.Location.uuid.in_(query.selected_locations))
-        near_users = []
+            near_users = []
+        else:
+            stmt = stmt.where(m.Location.uuid.in_([location.uuid for location in user_locations]))
+            near_users = db.scalars(stmt).all()
+
     top_users: Sequence[m.User] = db.scalars(stmt.order_by(m.User.average_rate.desc())).all()
 
     return s.UsersSearchOut(
