@@ -1,5 +1,5 @@
 from typing import Sequence
-
+from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
 from .location import LocationStrings
@@ -83,3 +83,24 @@ class UserProfileOut(BaseModel):
     locations: list[LocationStrings]
 
     __hash__ = object.__hash__
+
+
+class PublicUserProfileOut(BaseModel):
+    id: int
+    uuid: str
+    fullname: str
+    owned_rates_count: int
+    average_rate: float
+    services: list[Service]
+    locations: list[LocationStrings]
+    created_at: datetime
+
+    __hash__ = object.__hash__
+
+
+class PublicUsersSearchOut(BaseModel):
+    lang: str = CFG.UA
+    locations: list[LocationStrings] = []
+    selected_locations: list[str] = []  # list of uuids - selected locations
+    top_users: list[UserSearchOut] = []
+    query: str = ""

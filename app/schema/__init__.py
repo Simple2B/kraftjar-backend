@@ -19,7 +19,18 @@ from .application import ApplicationIn, ApplicationOut, ApplicationOutList, Appl
 from .location import Location, LocationsIn, LocationsOut, Region, RegionsFile, LocationStrings
 from .pagination import Pagination
 from .token import Token, TokenData
-from .user import User, UserFile, UsersFile, UserList, UserSearchIn, UsersSearchOut, UserSearchOut, UserProfileOut
+from .user import (
+    User,
+    UserFile,
+    UsersFile,
+    UserList,
+    UserSearchIn,
+    UsersSearchOut,
+    UserSearchOut,
+    UserProfileOut,
+    PublicUsersSearchOut,
+    PublicUserProfileOut,
+)
 from .whoami import WhoAmI
 from .rate import RateIn, RateOut, RateOutList
 from .auth import Auth, GoogleAuth, AppleAuth
@@ -28,3 +39,4 @@ from .field import FieldCreate
 from .exception import NotFound
 from .service import Service, ServicesIn, ServicesOut, ServiceData, ServiceDataFile, ServiceDB
 from .address import AddressBase, AddressesFile, AddressIn, AddressOut
+from .language import Language
