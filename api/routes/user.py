@@ -2,7 +2,6 @@ from typing import Literal
 
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
-import sqlalchemy as sa
 
 import api.controllers as c
 import app.models as m
