@@ -151,3 +151,79 @@ def get_user_profile(user_uuid: str, lang: Literal[CFG.UA, CFG.EN], db: Session)
         locations=locations,
         owned_rates_count=db_user.owned_rates_count,
     )
+
+
+def public_search_users(query: s.UserSearchIn, db: Session) -> s.PublicUsersSearchOut:
+    """filters users"""
+
+    locations = db.scalars(sa.select(m.Location)).all()
+
+    stmt = (
+        sa.select(sa.case({query.lang == CFG.UA: m.Region.name_ua}, else_=m.Region.name_en), m.Location.uuid)
+        .select_from(m.Location)
+        .join(m.Region)
+        .where(
+            sa.and_(
+                m.Location.uuid.notin_([location.uuid for location in locations]),
+            )
+        )
+    )
+
+    db_locations: set[s.Location] = {
+        s.Location(uuid=uuid, name=name) for name, uuid in db.execute(stmt)
+    }
+
+    stmt = (
+        sa.select(
+            m.User,
+        )
+        .where(m.User.is_deleted.is_(False))
+        .distinct()
+    )
+    stmt = stmt.join(m.user_services).join(m.Service)
+    if query.query:
+        wordList = re.sub(CFG.RE_WORD, " ", query.query).split()
+        for word in wordList:
+            if len(word) >= 3:
+                service_lang_column = m.Service.name_ua if query.lang == CFG.UA else m.Service.name_en
+                svc_stmt = sa.select(m.Service).where(service_lang_column.ilike(f"%{word}%"))
+                if db.execute(svc_stmt).first():
+                    stmt = stmt.where(service_lang_column.ilike(f"%{word}%"))
+                else:
+                    stmt = stmt.where(m.User.fullname.ilike(f"%{word}%"))
+
+    top_users: Sequence[m.User] = db.scalars(stmt.order_by(m.User.average_rate.desc())).all()
+
+    return s.PublicUsersSearchOut(
+        lang=query.lang,
+        locations=[_ for _ in db_locations],
+        selected_locations=query.selected_locations,
+        top_users=create_out_search_users(top_users, query.lang, db),
+        query=query.query,
+    )
+
+def get_public_user_profile(user_uuid: str, lang: Literal[CFG.UA, CFG.EN], db: Session) -> s.PublicUserProfileOut:  # type: ignore
+    """Returns user profile"""
+
+    db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.uuid == user_uuid))
+    if not db_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    services = [
+        s.Service(uuid=service.uuid, name=service.name_ua if lang == CFG.UA else service.name_en)
+        for service in db_user.services
+    ]
+    regions: Result[Tuple[str, str]] = db.execute(
+        sa.select(m.Region.name_ua if lang == CFG.UA else m.Region.name_en, m.Location.uuid)
+        .join(m.Location)
+        .join(m.user_locations)
+        .where(m.user_locations.c.user_id == db_user.id)
+    )
+    locations: list[s.LocationStrings] = [s.LocationStrings(name=name, uuid=uuid) for name, uuid in regions]
+
+    return s.PublicUserProfileOut(
+        **pop_keys(db_user.__dict__, ["services", "locations"]),
+        services=services,
+        locations=locations,
+        owned_rates_count=db_user.owned_rates_count,
+    )

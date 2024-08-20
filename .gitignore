@@ -14,3 +14,4 @@ node_modules/
 /token.json
 /data/users.json
 /data/jobs.json
+.yarn/*

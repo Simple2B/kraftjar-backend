@@ -2,6 +2,7 @@ from typing import Literal
 
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
+import sqlalchemy as sa
 
 import api.controllers as c
 import app.models as m
@@ -51,3 +52,30 @@ def get_user_profile(
 ):
     """Returns the user profile"""
     return c.get_user_profile(user_uuid, lang, db)
+
+
+@user_router.post("/search-public", status_code=status.HTTP_200_OK, response_model=s.PublicUsersSearchOut)
+def public_search_users(
+    query: s.UserSearchIn,
+    db: Session = Depends(get_db),
+    responses={
+        status.HTTP_409_CONFLICT: {"description": "Selected service not found"},
+    },
+):
+    """Returns filtered list of users"""
+
+    result = c.public_search_users(query, db)
+    return result
+
+
+@user_router.get("/public/{user_uuid}", status_code=status.HTTP_200_OK, response_model=s.PublicUserProfileOut)
+def get_public_user_profile(
+    user_uuid: str,
+    lang: Literal[CFG.UA, CFG.EN] = CFG.UA,  # type: ignore
+    db: Session = Depends(get_db),
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "User not found"},
+    },
+):
+    """Returns the user profile for public view"""
+    return c.get_public_user_profile(user_uuid, lang, db)
