@@ -97,6 +97,7 @@ class PublicUserProfileOut(BaseModel):
 
     __hash__ = object.__hash__
 
+
 class PublicUsersSearchOut(BaseModel):
     lang: str = CFG.UA
     locations: list[LocationStrings] = []

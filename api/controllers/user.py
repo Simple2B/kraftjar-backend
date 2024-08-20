@@ -169,9 +169,7 @@ def public_search_users(query: s.UserSearchIn, db: Session) -> s.PublicUsersSear
         )
     )
 
-    db_locations: set[s.Location] = {
-        s.Location(uuid=uuid, name=name) for name, uuid in db.execute(stmt)
-    }
+    db_locations: set[s.Location] = {s.Location(uuid=uuid, name=name) for name, uuid in db.execute(stmt)}
 
     stmt = (
         sa.select(
@@ -201,6 +199,7 @@ def public_search_users(query: s.UserSearchIn, db: Session) -> s.PublicUsersSear
         top_users=create_out_search_users(top_users, query.lang, db),
         query=query.query,
     )
+
 
 def get_public_user_profile(user_uuid: str, lang: Literal[CFG.UA, CFG.EN], db: Session) -> s.PublicUserProfileOut:  # type: ignore
     """Returns user profile"""
