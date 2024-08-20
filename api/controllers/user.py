@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session, aliased
 
 import app.models as m
 import app.schema as s
+from app.schema.language import Language
 from app.utilities import pop_keys
 from config import config
 
@@ -126,7 +127,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
     )
 
 
-def get_user_profile(user_uuid: str, lang: Literal[CFG.UA, CFG.EN], db: Session) -> s.UserProfileOut:  # type: ignore
+def get_user_profile(user_uuid: str, lang: Literal[Language.UA, Language.EN], db: Session) -> s.UserProfileOut:
     """Returns user profile"""
 
     db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.uuid == user_uuid))
@@ -134,11 +135,11 @@ def get_user_profile(user_uuid: str, lang: Literal[CFG.UA, CFG.EN], db: Session)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
     services = [
-        s.Service(uuid=service.uuid, name=service.name_ua if lang == CFG.UA else service.name_en)
+        s.Service(uuid=service.uuid, name=service.name_ua if lang.value == CFG.UA else service.name_en)
         for service in db_user.services
     ]
     regions: Result[Tuple[str, str]] = db.execute(
-        sa.select(m.Region.name_ua if lang == CFG.UA else m.Region.name_en, m.Location.uuid)
+        sa.select(m.Region.name_ua if lang.value == CFG.UA else m.Region.name_en, m.Location.uuid)
         .join(m.Location)
         .join(m.user_locations)
         .where(m.user_locations.c.user_id == db_user.id)
@@ -201,7 +202,9 @@ def public_search_users(query: s.UserSearchIn, db: Session) -> s.PublicUsersSear
     )
 
 
-def get_public_user_profile(user_uuid: str, lang: Literal[CFG.UA, CFG.EN], db: Session) -> s.PublicUserProfileOut:  # type: ignore
+def get_public_user_profile(
+    user_uuid: str, lang: Literal[Language.UA, Language.EN], db: Session
+) -> s.PublicUserProfileOut:
     """Returns user profile"""
 
     db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.uuid == user_uuid))
@@ -209,11 +212,11 @@ def get_public_user_profile(user_uuid: str, lang: Literal[CFG.UA, CFG.EN], db: S
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
     services = [
-        s.Service(uuid=service.uuid, name=service.name_ua if lang == CFG.UA else service.name_en)
+        s.Service(uuid=service.uuid, name=service.name_ua if lang.value == CFG.UA else service.name_en)
         for service in db_user.services
     ]
     regions: Result[Tuple[str, str]] = db.execute(
-        sa.select(m.Region.name_ua if lang == CFG.UA else m.Region.name_en, m.Location.uuid)
+        sa.select(m.Region.name_ua if lang.value == CFG.UA else m.Region.name_en, m.Location.uuid)
         .join(m.Location)
         .join(m.user_locations)
         .where(m.user_locations.c.user_id == db_user.id)

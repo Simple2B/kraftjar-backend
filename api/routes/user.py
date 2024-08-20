@@ -9,6 +9,7 @@ import app.schema as s
 from api.dependency import get_current_user
 from app.database import get_db
 from app.logger import log
+from app.schema.language import Language
 from config import config
 
 CFG = config()
@@ -42,7 +43,7 @@ def search_users(
 @user_router.get("/{user_uuid}", status_code=status.HTTP_200_OK, response_model=s.UserProfileOut)
 def get_user_profile(
     user_uuid: str,
-    lang: Literal[CFG.UA, CFG.EN] = CFG.UA,  # type: ignore
+    lang: Literal[Language.UA, Language.EN] = Language.UA,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
     responses={
@@ -70,7 +71,7 @@ def public_search_users(
 @user_router.get("/public/{user_uuid}", status_code=status.HTTP_200_OK, response_model=s.PublicUserProfileOut)
 def get_public_user_profile(
     user_uuid: str,
-    lang: Literal[CFG.UA, CFG.EN] = CFG.UA,  # type: ignore
+    lang: Literal[Language.UA, Language.EN] = Language.UA,
     db: Session = Depends(get_db),
     responses={
         status.HTTP_404_NOT_FOUND: {"description": "User not found"},

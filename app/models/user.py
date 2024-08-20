@@ -29,12 +29,6 @@ class User(db.Model, ModelMixin):
         sa.CheckConstraint(f"average_rate <= {CFG.MAXIMUM_RATE}", name="max_rate_check"),
     )
 
-    # avatar
-    # gender? for avatar
-    # role?
-    # description
-    # Досвід&Сертифікати
-
     rates_as_giver: orm.Mapped[list["Rate"]] = orm.relationship("Rate", foreign_keys=[Rate.gives_id], backref="giver")
     rates_as_receiver: orm.Mapped[list["Rate"]] = orm.relationship(
         "Rate", foreign_keys=[Rate.receiver_id], backref="receiver"
