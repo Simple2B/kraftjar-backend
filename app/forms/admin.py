@@ -3,7 +3,6 @@ from wtforms import (
     StringField,
     PasswordField,
     SubmitField,
-    BooleanField,
     ValidationError,
 )
 from wtforms.validators import DataRequired, Email, Length, EqualTo
@@ -17,7 +16,6 @@ class AdminForm(FlaskForm):
     user_id = StringField("user_id", [DataRequired()])
     username = StringField("username", [DataRequired()])
     email = StringField("email", [DataRequired(), Email()])
-    is_deleted = BooleanField("is_deleted", [DataRequired()])
     password = PasswordField("Password", validators=[DataRequired(), Length(6, 30)])
     password_confirmation = PasswordField(
         "Confirm Password",

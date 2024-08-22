@@ -8,58 +8,48 @@ import type {ModalOptions, ModalInterface} from 'flowbite';
 
 // // For your js code
 
-interface IUser {
+interface IAdmin {
   id: number;
   username: string;
   email: string;
   is_deleted: boolean;
 }
 
-const $modalElement: HTMLElement = document.querySelector('#editUserModal');
-const $addUserModalElement: HTMLElement =
-  document.querySelector('#add-user-modal');
+const $modalElement: HTMLElement = document.querySelector('#editAdminModal');
+const $addAdminModalElement: HTMLElement =
+  document.querySelector('#add-admin-modal');
 
 const modalOptions: ModalOptions = {
   placement: 'bottom-right',
   backdrop: 'dynamic',
   backdropClasses:
     'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
-  closable: true,
-  onHide: () => {
-    console.log('modal is hidden');
-  },
-  onShow: () => {
-    console.log('user id: ');
-  },
-  onToggle: () => {
-    console.log('modal has been toggled');
-  },
+  // closable: true,
 };
 
 const modal: ModalInterface = new Modal($modalElement, modalOptions);
-const addModal: ModalInterface = new Modal($addUserModalElement, modalOptions);
+const addModal: ModalInterface = new Modal($addAdminModalElement, modalOptions);
 
-const $buttonElements = document.querySelectorAll('.user-edit-button');
+const $buttonElements = document.querySelectorAll('.admin-edit-button');
 $buttonElements.forEach(e =>
   e.addEventListener('click', () => {
-    editUser(JSON.parse(e.getAttribute('data-target')));
+    editAdmin(JSON.parse(e.getAttribute('data-target')));
   }),
 );
 
-
 // closing add user modal
-const addModalCloseBtn = document.querySelector('#modalAddCloseButton');
-if (addModalCloseBtn) {
-  addModalCloseBtn.addEventListener('click', () => {
-    addModal.hide();
+const editModalCloseBtn = document.querySelector('#editAdminModalCloseButton');
+if (editModalCloseBtn) {
+  editModalCloseBtn.addEventListener('click', () => {
+    modal.hide();
   });
 }
 
 // search flow
 const searchInput: HTMLInputElement = document.querySelector(
-  '#table-search-users',
+  '#table-search-admins',
 );
-const searchInputButton = document.querySelector('#table-search-user-button');
+const searchInputButton = document.querySelector('#table-search-admin-button');
 if (searchInputButton && searchInput) {
   searchInputButton.addEventListener('click', () => {
     const url = new URL(window.location.href);
@@ -67,12 +57,12 @@ if (searchInputButton && searchInput) {
     window.location.href = `${url.href}`;
   });
 }
-const deleteButtons = document.querySelectorAll('.delete-user-btn');
+const deleteButtons = document.querySelectorAll('.delete-admin-btn');
 
 deleteButtons.forEach(e => {
   e.addEventListener('click', async () => {
     if (confirm('Are sure?')) {
-      let id = e.getAttribute('data-user-id');
+      let id = e.getAttribute('data-admin-id');
       const response = await fetch(`/admin/delete/${id}`, {
         method: 'DELETE',
       });
@@ -83,20 +73,34 @@ deleteButtons.forEach(e => {
   });
 });
 
-function editUser(user: IUser) {
-  let input: HTMLInputElement = document.querySelector('#user-edit-username');
-  input.value = user.username;
-  input = document.querySelector('#user-edit-id');
-  input.value = user.id.toString();
-  input = document.querySelector('#user-edit-email');
-  input.value = user.email;
-  input = document.querySelector('#user-edit-password');
+// restore flow
+const restoreButtons = document.querySelectorAll('.restore-admin-btn');
+restoreButtons.forEach(e => {
+  e.addEventListener('click', async () => {
+    if (confirm('Are sure?')) {
+      let id = e.getAttribute('data-admin-id');
+      const response = await fetch(`/admin/restore/${id}`, {
+        method: 'POST',
+      });
+      if (response.status == 200) {
+        location.reload();
+      }
+    }
+  });
+});
+
+function editAdmin(admin: IAdmin) {
+  let input: HTMLInputElement = document.querySelector('#admin-edit-username');
+  input.value = admin.username;
+  input = document.querySelector('#admin-edit-id');
+  input.value = admin.id.toString();
+  input = document.querySelector('#admin-edit-email');
+  input.value = admin.email;
+  input = document.querySelector('#admin-edit-password');
   input.value = '*******';
-  input = document.querySelector('#user-edit-password_confirmation');
+  input = document.querySelector('#admin-edit-password_confirmation');
   input.value = '*******';
-  input = document.querySelector('#user-edit-next_url');
+  input = document.querySelector('#admin-edit-next_url');
   input.value = window.location.href;
-  input = document.querySelector('#user-edit-is-deleted');
-  input.checked = user.is_deleted;
   modal.show();
 }

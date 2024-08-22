@@ -41,7 +41,7 @@ def get_all():
         ).scalars()
     )
     return render_template(
-        "admin/users.html",
+        "admin/admins.html",
         users=users,
         page=pagination,
         search_query=q,
@@ -51,13 +51,13 @@ def get_all():
 @bp.route("/save", methods=["POST"])
 @login_required
 def save():
-    form = f.AdminForm()
+    form: f.AdminForm = f.AdminForm()
     if form.validate_on_submit():
         query = m.Admin.select().where(m.Admin.id == int(form.user_id.data))
         u: m.Admin | None = db.session.scalar(query)
         if not u:
-            log(log.ERROR, "Not found user by id : [%s]", form.user_id.data)
-            flash("Cannot save user data", "danger")
+            log(log.ERROR, "Not found admin by id : [%s]", form.user_id.data)
+            flash("Cannot save admin data", "danger")
             return redirect(url_for("admin.get_all"))
         u.username = form.username.data
         u.email = form.email.data
@@ -77,16 +77,20 @@ def save():
 @bp.route("/create", methods=["POST"])
 @login_required
 def create():
-    form = f.NewAdminForm()
+    form: f.NewAdminForm = f.NewAdminForm()
     if form.validate_on_submit():
-        user = m.Admin(
+        admin = m.Admin(
             username=form.username.data,
             email=form.email.data,
             password=form.password.data,
         )
-        log(log.INFO, "Form submitted. User: [%s]", user)
-        flash("User added!", "success")
-        user.save()
+        log(log.INFO, "Form submitted. Admin: [%s]", admin)
+        flash("Admin added!", "success")
+        admin.save()
+        return redirect(url_for("admin.get_all"))
+    else:
+        log(log.ERROR, "Admin create errors: [%s]", form.errors)
+        flash(f"{form.errors}", "danger")
         return redirect(url_for("admin.get_all"))
 
 
@@ -95,12 +99,31 @@ def create():
 def delete(id: int):
     u = db.session.scalar(m.Admin.select().where(m.Admin.id == id))
     if not u:
-        log(log.INFO, "There is no user with id: [%s]", id)
-        flash("There is no such user", "danger")
-        return "no user", 404
+        log(log.INFO, "There is no admin with id: [%s]", id)
+        flash("There is no such admin", "danger")
+        return "no admin", 404
 
     u.is_deleted = True
     db.session.commit()
-    log(log.INFO, "User deleted. User: [%s]", u)
-    flash("User deleted!", "success")
+    log(log.INFO, "Admin deleted. Admin: [%s]", u)
+    flash("Admin deleted!", "success")
+    return "ok", 200
+
+
+@bp.route("/restore/<int:id>", methods=["POST"])
+@login_required
+def restore(id: int):
+    u = db.session.scalar(m.Admin.select().where(m.Admin.id == id))
+    if not u:
+        log(log.INFO, "There is no admin with id: [%s]", id)
+        flash("There is no such admin", "danger")
+        return "no admin", 404
+    if not u.is_deleted:
+        log(log.INFO, "Admin is not deleted. Admin: [%s]", u)
+        flash("Admin is not deleted", "danger")
+        return redirect(url_for("admin.get_all"))
+    u.is_deleted = False
+    db.session.commit()
+    log(log.INFO, "Admin restored. Admin: [%s]", u)
+    flash("Admin restored!", "success")
     return "ok", 200
