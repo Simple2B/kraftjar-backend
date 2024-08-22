@@ -100,3 +100,13 @@ def get_jobs_on_home_page(
 ):
     """Returns jobs for home page"""
     return c.get_jobs_on_home_page(query, current_user, db)
+
+
+@job_router.get("/public-job-statistics/", status_code=status.HTTP_200_OK, response_model=s.PublicJobDict)
+def get_public_job_statistics(
+    db: Session = Depends(get_db),
+):
+    """Get statistics for jobs and experts per location"""
+
+    data = m.Job.job_statistics(db)
+    return s.PublicJobDict(statistics=cast(dict, data))

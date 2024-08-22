@@ -50,3 +50,18 @@ class Job(db.Model, ModelMixin):
 
     def __repr__(self):
         return f"<Job {self.id} {self.title} >"
+
+    @classmethod
+    def job_statistics(cls, db: orm.Session) -> dict[int, dict[str, int]]:
+        """
+        Get statistics for jobs and experts per location
+        """
+
+        jobs_count = sa.func.count(Job.id)
+        experts_count = sa.func.count(sa.func.distinct(Job.worker_id))
+
+        stmt = sa.select(Job.location_id, jobs_count, experts_count).group_by(Job.location_id)
+        result = db.execute(stmt).all()
+
+        result_dict = {row[0]: {"jobs_count": row[1], "experts_count": row[2]} for row in result}
+        return result_dict
