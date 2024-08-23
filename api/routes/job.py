@@ -107,6 +107,6 @@ def get_jobs_on_home_page(
 def get_public_job_statistics(
     db: Session = Depends(get_db),
 ):
-    """Get statistics for jobs and experts per location"""
+    """Get statistics for jobs per location"""
 
     return job_statistics(db)

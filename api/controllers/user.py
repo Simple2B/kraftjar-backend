@@ -1,5 +1,5 @@
 import re
-from typing import Literal, Sequence, Tuple
+from typing import Sequence, Tuple
 
 import sqlalchemy as sa
 from fastapi import HTTPException, status
@@ -16,9 +16,7 @@ CFG = config()
 service_alias = aliased(m.Service)
 
 
-def create_out_search_users(
-    db_users: Sequence[m.User], lang: Language, db: Session
-) -> list[s.UserSearchOut]:
+def create_out_search_users(db_users: Sequence[m.User], lang: Language, db: Session) -> list[s.UserSearchOut]:
     """Creates list of UserSearchOut from db users"""
 
     users: list[s.UserSearchOut] = []
@@ -205,9 +203,7 @@ def public_search_users(query: s.UserSearchIn, db: Session) -> s.PublicUsersSear
     )
 
 
-def get_public_user_profile(
-    user_uuid: str, lang: Language, db: Session
-) -> s.PublicUserProfileOut:
+def get_public_user_profile(user_uuid: str, lang: Language, db: Session) -> s.PublicUserProfileOut:
     """Returns user profile"""
 
     db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.uuid == user_uuid))
