@@ -20,8 +20,8 @@ class BaseJob(BaseModel):
     id: int
     uuid: str
     title: str
-    address_id: int
-    location_id: int
+    address_id: int | None = None
+    location_id: int | None = None
     owner_id: int
     worker_id: int | None = None
 

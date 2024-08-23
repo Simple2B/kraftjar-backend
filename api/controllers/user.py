@@ -120,7 +120,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
     top_users: Sequence[m.User] = db.scalars(stmt.order_by(m.User.average_rate.desc())).all()
 
     return s.UsersSearchOut(
-        lang=query.lang.value,
+        lang=query.lang,
         locations=[_ for _ in db_locations],
         user_locations=[_ for _ in user_locations],
         selected_locations=query.selected_locations,
@@ -197,7 +197,7 @@ def public_search_users(query: s.UserSearchIn, db: Session) -> s.PublicUsersSear
     top_users: Sequence[m.User] = db.scalars(stmt.order_by(m.User.average_rate.desc())).all()
 
     return s.PublicUsersSearchOut(
-        lang=query.lang.value,
+        lang=query.lang,
         locations=[_ for _ in db_locations],
         selected_locations=query.selected_locations,
         top_users=create_out_search_users(top_users, query.lang, db),

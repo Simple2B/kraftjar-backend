@@ -15,7 +15,7 @@ JSON_FILE = MODULE_PATH / ".." / ".." / "data" / "address.json"
 def check_if_address_exists(address: s.AddressBase, session: sa.orm.Session):
     """Check if region exists in db"""
 
-    stmt = sa.select(m.Address).where(m.Address.id == address.id)
+    stmt = sa.select(m.Address).where(m.Address.line1 == address.line1)
     db_address = session.scalar(stmt)
     return db_address is not None
 
