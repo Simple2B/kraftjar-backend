@@ -179,4 +179,4 @@ class PublicJobStatistics(BaseModel):
 
 
 class PublicJobDict(BaseModel):
-    statistics: dict[int | None, PublicJobStatistics]
+    statistics: dict[int, PublicJobStatistics]
