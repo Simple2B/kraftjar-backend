@@ -180,7 +180,3 @@ class PublicJobStatistics(BaseModel):
 
 class PublicJobDict(BaseModel):
     statistics: dict[int | None, PublicJobStatistics]
-
-    model_config = ConfigDict(
-        from_attributes=True,
-    )

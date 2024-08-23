@@ -18,8 +18,6 @@ CFG = config()
 
 user_router = APIRouter(prefix="/users", tags=["Users"])
 
-USER_CAROUSEL_LIMIT = 16
-
 
 @user_router.get("/me", status_code=status.HTTP_200_OK, response_model=s.User)
 def get_current_user_profile(
@@ -47,7 +45,7 @@ def search_users(
 @user_router.get("/{user_uuid}", status_code=status.HTTP_200_OK, response_model=s.UserProfileOut)
 def get_user_profile(
     user_uuid: str,
-    lang: Literal[Language.UA, Language.EN] = Language.UA,
+    lang: Language = Language.UA,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
     responses={
@@ -75,7 +73,7 @@ def public_search_users(
 @user_router.get("/public/{user_uuid}", status_code=status.HTTP_200_OK, response_model=s.PublicUserProfileOut)
 def get_public_user_profile(
     user_uuid: str,
-    lang: Literal[Language.UA, Language.EN] = Language.UA,
+    lang: Language = Language.UA,
     db: Session = Depends(get_db),
     responses={
         status.HTTP_404_NOT_FOUND: {"description": "User not found"},
@@ -87,7 +85,7 @@ def get_public_user_profile(
 
 @user_router.get("/public-top-experts/", status_code=status.HTTP_200_OK, response_model=s.PublicTopExpertsOut)
 def get_public_top_experts(
-    lang: Literal[Language.UA, Language.EN] = Language.UA,
+    lang: Language = Language.UA,
     db: Session = Depends(get_db),
     responses={
         status.HTTP_404_NOT_FOUND: {"description": "Experts not found"},
@@ -102,7 +100,7 @@ def get_public_top_experts(
         .where(m.User.is_deleted.is_(False), has_services)
         .order_by(m.User.average_rate.desc())
         .distinct()
-        .limit(USER_CAROUSEL_LIMIT)
+        .limit(CFG.USER_CAROUSEL_LIMIT)
     ).all()
 
     return s.PublicTopExpertsOut(top_experts=create_out_search_users(experts, lang, db))

@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 import api.controllers as c
+from api.controllers.job import job_statistics
 import app.models as m
 import app.schema as s
 from api.dependency import get_current_user, get_user
@@ -108,5 +109,4 @@ def get_public_job_statistics(
 ):
     """Get statistics for jobs and experts per location"""
 
-    data = m.Job.job_statistics(db)
-    return s.PublicJobDict(statistics=cast(dict, data))
+    return job_statistics(db)
