@@ -99,3 +99,22 @@ def search_jobs(query: s.JobSearchIn, me: m.User, db: Session) -> s.JobsSearchOu
             for job in jobs
         ],
     )
+
+
+def job_statistics(db: Session) -> s.PublicJobDict:
+    """
+    Get statistics for jobs and experts per location
+    """
+
+    jobs_count = sa.func.count(m.Job.id)
+    experts_count = sa.func.count(sa.func.distinct(m.Job.worker_id))
+
+    stmt = sa.select(m.Job.location_id, jobs_count, experts_count).group_by(m.Job.location_id)
+    result = db.execute(stmt).all()
+
+    result_dict = {
+        int(row[0]): s.PublicJobStatistics(jobs_count=row[1], experts_count=row[2])
+        for row in result
+        if row[0] is not None
+    }
+    return s.PublicJobDict(statistics=result_dict)

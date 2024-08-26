@@ -2,8 +2,10 @@ from typing import Sequence
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
+from app.schema.language import Language
+
 from .location import LocationStrings
-from .service import CFG, Service
+from .service import Service
 
 
 class User(BaseModel):
@@ -55,13 +57,13 @@ class UserSearchOut(BaseModel):
 
 
 class UserSearchIn(BaseModel):
-    lang: str = CFG.UA
+    lang: Language = Language.UA
     selected_locations: list[str] = []  # list of uuids - selected locations
     query: str = ""
 
 
 class UsersSearchOut(BaseModel):
-    lang: str = CFG.UA
+    lang: Language = Language.UA
     user_locations: list[LocationStrings] = []
     locations: list[LocationStrings] = []
     selected_locations: list[str] = []  # list of uuids - selected locations
@@ -99,8 +101,12 @@ class PublicUserProfileOut(BaseModel):
 
 
 class PublicUsersSearchOut(BaseModel):
-    lang: str = CFG.UA
+    lang: Language = Language.UA
     locations: list[LocationStrings] = []
     selected_locations: list[str] = []  # list of uuids - selected locations
     top_users: list[UserSearchOut] = []
     query: str = ""
+
+
+class PublicTopExpertsOut(BaseModel):
+    top_experts: list[UserSearchOut]

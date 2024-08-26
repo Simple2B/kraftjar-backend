@@ -20,8 +20,8 @@ class BaseJob(BaseModel):
     id: int
     uuid: str
     title: str
-    address_id: int
-    location_id: int
+    address_id: int | None = None
+    location_id: int | None = None
     owner_id: int
     worker_id: int | None = None
 
@@ -38,8 +38,8 @@ class JobOut(BaseJob):
     uuid: str
     title: str
     description: str = ""
-    address_id: int
-    location_id: int
+    address_id: int | None = None
+    location_id: int | None = None
     time: str | None = None
     status: JobStatus
     is_public: bool
@@ -143,7 +143,7 @@ class JobsCardList(BaseModel):
 class JobCompletedCreate(BaseModel):
     title: str
     description: str
-    address_id: int
+    address_id: int | None = None
     location_id: int | None = None
     time: str | None = ""
     status: JobStatus
@@ -167,3 +167,16 @@ class JobsFile(BaseModel):
     model_config = ConfigDict(
         from_attributes=True,
     )
+
+
+class PublicJobStatistics(BaseModel):
+    jobs_count: int
+    experts_count: int
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class PublicJobDict(BaseModel):
+    statistics: dict[int, PublicJobStatistics]

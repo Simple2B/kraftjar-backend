@@ -14,6 +14,8 @@ from .job import (
     JobHomePage,
     JobSearch,
     JobsFile,
+    PublicJobStatistics,
+    PublicJobDict,
 )
 from .application import ApplicationIn, ApplicationOut, ApplicationOutList, ApplicationPut
 from .location import Location, LocationsIn, LocationsOut, Region, RegionsFile, LocationStrings
@@ -30,6 +32,7 @@ from .user import (
     UserProfileOut,
     PublicUsersSearchOut,
     PublicUserProfileOut,
+    PublicTopExpertsOut,
 )
 from .whoami import WhoAmI
 from .rate import RateIn, RateOut, RateOutList
