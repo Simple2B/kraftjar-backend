@@ -1,13 +1,6 @@
 import {Modal} from 'flowbite';
 import type {ModalOptions, ModalInterface} from 'flowbite';
 
-// /*
-//  * $editUserModal: required
-//  * options: optional
-//  */
-
-// // For your js code
-
 interface IAdmin {
   id: number;
   username: string;

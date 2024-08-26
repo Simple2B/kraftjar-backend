@@ -9,6 +9,8 @@ from .service import CFG, Service
 class User(BaseModel):
     id: int
     fullname: str
+    first_name: str
+    last_name: str
     phone: str
     email: str
     is_deleted: bool

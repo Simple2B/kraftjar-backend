@@ -55,3 +55,23 @@ def test_delete_user(populate: FlaskClient):
     response = populate.delete("/user/delete/1")
     assert response.status_code == 200
     assert db.session.scalar(m.User.select().where(m.User.id == 1)).is_deleted
+
+
+def test_create_new_user(populate: FlaskClient):
+    login(populate)
+    response = populate.post(
+        "/user/create",
+        data=dict(
+            fullname="John Doe",
+            first_name="John",
+            last_name="Doe",
+            email="test@test.com",
+            phone="1234567890",
+            password="password",
+            password_confirmation="password",
+            follow_redirects=True,
+        ),
+    )
+    assert response
+    assert response.status_code == 302
+    assert db.session.scalar(m.User.select().where(m.User.email == "test@test.com"))

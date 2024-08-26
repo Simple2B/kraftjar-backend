@@ -11,6 +11,7 @@ import type {ModalOptions, ModalInterface} from 'flowbite';
 interface IUser {
   id: number;
   fullname: string;
+  first_name: string;
   last_name: string;
   email: string;
   phone: string;
@@ -27,15 +28,6 @@ const modalOptions: ModalOptions = {
   backdropClasses:
     'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
   closable: true,
-  onHide: () => {
-    console.log('modal is hidden');
-  },
-  onShow: () => {
-    console.log('user id: ');
-  },
-  onToggle: () => {
-    console.log('modal has been toggled');
-  },
 };
 
 const modal: ModalInterface = new Modal($modalElement, modalOptions);
@@ -48,12 +40,19 @@ $buttonElements.forEach(e =>
   }),
 );
 
-
 // closing add user modal
 const addModalCloseBtn = document.querySelector('#modalAddCloseButton');
 if (addModalCloseBtn) {
   addModalCloseBtn.addEventListener('click', () => {
     addModal.hide();
+  });
+}
+
+// closing edit modal
+const editModalCloseBtn = document.querySelector('#editUserModalCloseButton');
+if (editModalCloseBtn) {
+  editModalCloseBtn.addEventListener('click', () => {
+    modal.hide();
   });
 }
 
@@ -86,8 +85,11 @@ deleteButtons.forEach(e => {
 });
 
 function editUser(user: IUser) {
-  let input: HTMLInputElement = document.querySelector('#user-edit-first-name');
+  console.log(user);
+  let input: HTMLInputElement = document.querySelector('#user-edit-fullname');
   input.value = user.fullname;
+  input = document.querySelector('#user-edit-first-name');
+  input.value = user.first_name;
   input = document.querySelector('#user-edit-last-name');
   input.value = user.last_name;
   input = document.querySelector('#user-edit-id');
@@ -100,8 +102,6 @@ function editUser(user: IUser) {
   input.value = '*******';
   input = document.querySelector('#user-edit-password_confirmation');
   input.value = '*******';
-  input = document.querySelector('#user-edit-is-deleted');
-  input.checked = user.is_deleted;
   input = document.querySelector('#user-edit-next_url');
   input.value = window.location.href;
   modal.show();
