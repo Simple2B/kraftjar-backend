@@ -112,5 +112,9 @@ def job_statistics(db: Session) -> s.PublicJobDict:
     stmt = sa.select(m.Job.location_id, jobs_count, experts_count).group_by(m.Job.location_id)
     result = db.execute(stmt).all()
 
-    result_dict = {int(row[0]): s.PublicJobStatistics(jobs_count=row[1], experts_count=row[2]) for row in result if row[0] is not None}
+    result_dict = {
+        int(row[0]): s.PublicJobStatistics(jobs_count=row[1], experts_count=row[2])
+        for row in result
+        if row[0] is not None
+    }
     return s.PublicJobDict(statistics=result_dict)
