@@ -30,8 +30,6 @@ FINISHED_AT = "finished_at"
 RATE_OWNER = "rate_client"
 RATE_WORKER = "rate_worker"
 
-# TODO: add logic of create address_id
-TEST_ADDRESS_ID = 1
 TEST_DATA = "01.11.2023"
 
 
@@ -48,10 +46,12 @@ def write_jobs_in_db(jobs: list[s.JobCompletedCreate]):
             raise Exception("Services table is empty. Please run `flask export-services` first")
         service_id = 1
 
-        for job in jobs:
-            db_address: m.Address = session.scalar(sa.select(m.Address).where(m.Address.id == job.address_id))
-            assert db_address, f"Service with id [{db_address}] not found"
+        if not session.scalar(sa.select(m.Address)):
+            log(log.ERROR, "Address table is empty")
+            log(log.ERROR, "Please run `flask export-addresses` first")
+            raise Exception("Address table is empty. Please run `flask export-addresses` first")
 
+        for job in jobs:
             new_job: m.Job = m.Job(
                 title=job.title,
                 description=job.description,
@@ -127,7 +127,7 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
     DESCRIPTION_INDEX = values[0].index(DESCRIPTION)
     SERVICE_INDEX = values[0].index(SERVICE)
     LOCATION_INDEX = values[0].index(LOCATION)
-    # ADDRESS_INDEX = values[0].index(ADDRESS)
+    ADDRESS_INDEX = values[0].index(ADDRESS)
     CREATED_AT_INDEX = values[0].index(CREATED_AT)
     STARTED_AT_INDEX = values[0].index(STARTED_AT)
     FINISHED_AT_INDEX = values[0].index(FINISHED_AT)
@@ -165,6 +165,14 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
         else:
             location_id = None
 
+        job_address = row[ADDRESS_INDEX]
+        address_ids = SEARCH_IDS.findall(job_address)
+
+        if address_ids:
+            address_id = int(address_ids[0])
+        else:
+            address_id = None
+
         created_at = row[CREATED_AT_INDEX]
         assert created_at, f"The created_at {created_at} is empty"
 
@@ -183,7 +191,7 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
             s.JobCompletedCreate(
                 title=title,
                 description=description,
-                address_id=TEST_ADDRESS_ID,
+                address_id=address_id,
                 location_id=location_id,
                 time="",
                 status=s.JobStatus.COMPLETED,

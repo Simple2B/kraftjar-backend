@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 import api.controllers as c
+from api.controllers.job import job_statistics
 import app.models as m
 import app.schema as s
 from api.dependency import get_current_user, get_user
@@ -100,3 +101,12 @@ def get_jobs_on_home_page(
 ):
     """Returns jobs for home page"""
     return c.get_jobs_on_home_page(query, current_user, db)
+
+
+@job_router.get("/public-job-statistics/", status_code=status.HTTP_200_OK, response_model=s.PublicJobDict)
+def get_public_job_statistics(
+    db: Session = Depends(get_db),
+):
+    """Get statistics for jobs per location"""
+
+    return job_statistics(db)
