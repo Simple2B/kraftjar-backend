@@ -1,4 +1,3 @@
-import sqlalchemy as sa
 from click.testing import Result
 from flask.testing import FlaskClient, FlaskCliRunner
 
