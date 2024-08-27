@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block links %} {% endblock %} {% block content %}
+<section>
+  <div class="w-full h-full px-4 mx-auto py-6">
+    <div>
+      <!-- prettier-ignore -->
+      <div class="w-full p-6 space-y-8 sm:p-8 bg-white rounded-lg dark:bg-gray-800">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+            Edit region
+        </h1>
+        <form class="mt-8 space-y-6 from" role="form" action="{{url_for('region.edit',id=region.id)}}" method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            {{form.region_id(class="hidden")}}
+            <div class="mb-6 lg:max-w-xl">
+                <label for="name_ua" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name UA<span class="text-red-600"> *</span></label>
+                {{form.name_ua(placeholder="Name UA",autocomplete="off", class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500")}}
+            </div>
+            <div class="mb-6 lg:max-w-xl">
+                <label for="name_en" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name EN<span class="text-red-600"> *</span></label>
+                {{form.name_en(autocomplete='off',placeholder="Name EN",class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500")}}
+            </div>
+          {{form.save(class="w-full px-5 py-3 text-base font-medium text-center text-white bg-indigo-700 rounded-lg hover:bg-indigo-800 focus:ring-4 focus:ring-blue-300 sm:w-auto dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-blue-800")}}
+
+        </form>
+    </div>
+    </div>
+  </div>
+</section>
+<!-- prettier-ignore -->
+{% endblock %}
+<!-- prettier-ignore -->

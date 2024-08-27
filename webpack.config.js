@@ -54,9 +54,21 @@ const serviceConfig = {
     filename: 'js/service.js', // <--- Will be compiled to this single file
   },
 };
-
-const configs = [baseConfig, userConfig, adminConfig, serviceConfig].map(conf =>
-  merge(defaultConfig, conf),
-);
+const regionConfig = {
+  entry: {
+    main: './src/region.ts',
+  },
+  output: {
+    path: path.resolve(__dirname, './app/static'),
+    filename: 'js/region.js', // <--- Will be compiled to this single file
+  },
+};
+const configs = [
+  baseConfig,
+  userConfig,
+  adminConfig,
+  serviceConfig,
+  regionConfig,
+].map(conf => merge(defaultConfig, conf));
 
 module.exports = configs;

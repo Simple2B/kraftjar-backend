@@ -1,14 +1,14 @@
 // search flow
-const searchInput: HTMLInputElement = document.querySelector(
+const searchServiceInput: HTMLInputElement = document.querySelector(
   '#table-search-services',
 );
-const searchInputButton = document.querySelector(
+const searchServiceInputButton = document.querySelector(
   '#table-search-service-button',
 );
-if (searchInputButton && searchInput) {
-  searchInputButton.addEventListener('click', () => {
+if (searchServiceInputButton && searchServiceInput) {
+  searchServiceInputButton.addEventListener('click', () => {
     const url = new URL(window.location.href);
-    url.searchParams.set('q', searchInput.value);
+    url.searchParams.set('q', searchServiceInput.value);
     window.location.href = `${url.href}`;
   });
 }

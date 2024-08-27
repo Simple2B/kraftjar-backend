@@ -23,6 +23,7 @@ def create_app(environment="development"):
         admin_blueprint,
         user_route,
         service_route,
+        region_route,
     )
     from app import models as m
 
@@ -49,6 +50,7 @@ def create_app(environment="development"):
     app.register_blueprint(admin_blueprint)
     app.register_blueprint(user_route)
     app.register_blueprint(service_route)
+    app.register_blueprint(region_route)
 
     # Set up flask login.
     @login_manager.user_loader
