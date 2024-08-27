@@ -2,4 +2,4 @@
 from .auth import LoginForm, RegistrationForm, ForgotForm, ChangePasswordForm
 from .user import UserForm, CreateUserForm
 from .admin import AdminForm, NewAdminForm
-from .service import ServiceForm
+from .service import ServiceForm, EditServiceForm
