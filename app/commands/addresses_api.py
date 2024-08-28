@@ -17,50 +17,47 @@ CFG = config()
 def get_addresses_from_meest_api(with_print: bool = True):
     """Get addresses from Meest Express Public API"""
 
-    db_settlements = db.session.execute(sa.select(m.Settlement)).scalars().all()
+    with db.begin() as session:
+        db_settlements = session.execute(sa.select(m.Settlement)).scalars().all()
 
-    # 3 seconds multiplied by 25500 equals 21.25 hours.
+        for settlement in db_settlements:
+            print(settlement.name_ua)
 
-    # Idea: make 1000 records per script run. Then check if the address already exists.
-    # 3 seconds multiplied by 1000 equals 50 minutes.
+            time.sleep(CFG.DELAY_TIME)
+            addresses_api_url = f"{CFG.ADDRESSES_API_URL}?city_id={settlement.city_id}"
 
-    for settlement in db_settlements:
-        time.sleep(3)
-        addresses_api_url = f"{CFG.ADDRESSES_API_URL}?city_id={settlement.city_id}"
+            try:
+                res = requests.get(addresses_api_url)
+                addresses_data = s.AddressMeestApi.model_validate(res.json())
+            except Exception:
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail="Error getting addresses from Meest API",
+                )
 
-        try:
-            addresses = requests.get(addresses_api_url)
-            addresses_data: s.AddressMeestApi = addresses.json()
-        except Exception:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Error getting addresses from Meest API",
-            )
+            addresses_list = addresses_data.result
 
-        addresses_list: list[s.AddressList] = addresses_data["result"]
+            for address in addresses_list:
+                db_settlement = session.query(m.Settlement).filter(m.Settlement.city_id == address.city_id).first()
 
-        for address in addresses_list:
-            print(address["ua"])
-            db_settlement = db.session.query(m.Settlement).filter(m.Settlement.city_id == address["city_id"]).first()
+                if not db_settlement:
+                    print("Settlement not found, address:", address.ua)
+                    continue
 
-            if not db_settlement:
-                print("Settlement not found", db_settlement)
-                continue
-
-            with db.begin() as session:
                 address_db = m.Address(
-                    line1=address["ua"],
-                    line2=address["en"],
+                    line1=address.ua,
+                    line2=address.en,
                     postcode="",
                     city="",
                     location_id=db_settlement.location_id,
-                    street_id=address["street_id"],
-                    city_id=address["city_id"],
+                    street_id=address.street_id,
+                    city_id=address.city_id,
                 )
 
                 session.add(address_db)
-                session.flush()
+
                 if with_print:
                     log(log.DEBUG, f"{address_db.id}: {address_db.line1}")
 
+        session.flush()
     return

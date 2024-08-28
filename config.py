@@ -75,6 +75,9 @@ class BaseConfig(BaseSettings):
     SETTLEMENTS_API_URL: str = "https://publicapi.meest.com/geo_localities"
     ADDRESSES_API_URL: str = "https://publicapi.meest.com/geo_streets"
 
+    # Preventing DDOS on Meest API
+    DELAY_TIME: int = 1
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.
