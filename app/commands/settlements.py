@@ -26,7 +26,7 @@ def get_settlements_from_meest_api(with_print: bool = True):
 
     with db.begin() as session:
         for settlement in settlements_list:
-            type = settlement.data.t_ua
+            type = m.Settlement.Type.VILLAGE
             settlement_name = settlement.data.n_ua
             city_id = settlement.data.city_id
             district_id = settlement.data.d_id
@@ -35,8 +35,6 @@ def get_settlements_from_meest_api(with_print: bool = True):
 
             if type == "місто":
                 type = m.Settlement.Type.CITY
-            elif type == "село":
-                type = m.Settlement.Type.VILLAGE
             else:
                 print("Unknown type", type)
 
