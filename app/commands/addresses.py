@@ -29,8 +29,8 @@ def export_addresses_from_json_file(with_print: bool = True):
     addresses = file_data.addresses
     with db.begin() as session:
         for address in addresses:
-            if check_if_address_exists(address, session):
-                continue
+            # if check_if_address_exists(address, session):
+            #     continue
 
             address_db = m.Address(
                 line1=address.line1,

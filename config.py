@@ -67,6 +67,8 @@ class BaseConfig(BaseSettings):
 
     TEST_USER_PASSWORD: str = "Kraftjar2024"
 
+    USER_CAROUSEL_LIMIT: int = 16
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.
