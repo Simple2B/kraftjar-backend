@@ -172,3 +172,28 @@ def init(app: Flask):
 
         fix_users_average_rate()
         print("done")
+
+    @app.cli.command()
+    def get_rayons():
+        """Get rayons from Meest Express Public API"""
+        from .rayons import get_rayons_from_meest_api
+
+        get_rayons_from_meest_api()
+        print("done")
+
+    @app.cli.command()
+    def get_settlements():
+        """Get settlements from Meest Express Public API"""
+        from .settlements import get_settlements_from_meest_api
+
+        get_settlements_from_meest_api()
+        print("done")
+
+
+    @app.cli.command()
+    def get_addresses():
+        """Get addresses from Meest Express Public API"""
+        from .addresses_api import get_addresses_from_meest_api
+
+        get_addresses_from_meest_api()
+        print("done")

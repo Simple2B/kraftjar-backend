@@ -25,6 +25,12 @@ class Settlement(db.Model, ModelMixin):
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
     location_id: orm.Mapped[int] = orm.mapped_column(sa.ForeignKey("locations.id"))
 
+    # From Meest Express Public API
+    district_id: orm.Mapped[str] = orm.mapped_column(sa.String(36))
+    city_id: orm.Mapped[str] = orm.mapped_column(sa.String(36))
+    # Класифікатор об'єктів адміністративно-територіального устрою України
+    kt: orm.Mapped[str] = orm.mapped_column(sa.String(36))
+
     type: orm.Mapped[Type] = orm.mapped_column(sa.Enum(Type))
 
     name_ua: orm.Mapped[str] = orm.mapped_column(sa.String(128))
