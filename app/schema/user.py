@@ -12,6 +12,13 @@ class User(BaseModel):
     phone: str
     email: str
     is_deleted: bool
+    phone_verified: bool
+
+    google_id: str
+    apple_id: str
+    diia_id: str
+
+    is_volunteer: bool
 
     model_config = ConfigDict(
         from_attributes=True,
