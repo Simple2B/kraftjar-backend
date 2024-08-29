@@ -82,6 +82,9 @@ class BaseConfig(BaseSettings):
     API_CITY: str = "місто"
     API_VILLAGE: str = "село"
 
+    # ID from our db, model Region
+    KYIV_ID: int = 1
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.

@@ -14,14 +14,28 @@ from config import config
 CFG = config()
 
 
-def get_addresses_from_meest_api(with_print: bool = True):
+def get_addresses_from_meest_api(lower_limit: int, upper_limit: int, with_print: bool = True):
     """Get addresses from Meest Express Public API"""
 
     with db.begin() as session:
-        db_settlements = session.execute(sa.select(m.Settlement)).scalars().all()
+        db_settlements = (
+            session.execute(sa.select(m.Settlement).offset(lower_limit).limit(upper_limit - lower_limit))
+            .scalars()
+            .all()
+        )
 
-        for settlement in db_settlements:
-            log(log.INFO, f"Settlement: {settlement.name_ua}")
+        first_element = db_settlements[0]
+        last_element = db_settlements[-1]
+        log(log.INFO, f"Settlements offset first: {first_element.name_ua}, {first_element.city_id}")
+        log(log.INFO, f"Settlements offset last: {last_element.name_ua}, {last_element.city_id}")
+
+        for i, settlement in enumerate(db_settlements):
+            every_hundred = (i + 1) % 100 == 0
+            first = i == 0
+            last = i == len(db_settlements) - 1
+
+            if every_hundred or first or last:
+                log(log.INFO, f"Settlement: {settlement.id}, {settlement.name_ua}")
 
             time.sleep(CFG.DELAY_TIME)
             addresses_api_url = f"{CFG.ADDRESSES_API_URL}?city_id={settlement.city_id}"
@@ -41,15 +55,18 @@ def get_addresses_from_meest_api(with_print: bool = True):
                 db_settlement = session.query(m.Settlement).filter(m.Settlement.city_id == address.city_id).first()
 
                 if not db_settlement:
-                    log(log.ERROR, f"Settlement not found, address: {address.ua}")
-                    continue
+                    kyiv = session.query(m.Region).filter(m.Region.id == CFG.KYIV_ID).first()
+                    log(
+                        log.WARNING,
+                        f"Settlement not found, address: {address.ua} - set default location to Kyiv (id: {kyiv.id})",
+                    )
 
                 address_db = m.Address(
                     line1=address.ua,
                     line2=address.en,
                     postcode="",
                     city="",
-                    location_id=db_settlement.location_id,
+                    location_id=db_settlement.location_id if db_settlement else kyiv.id,
                     street_id=address.street_id,
                     city_id=address.city_id,
                 )

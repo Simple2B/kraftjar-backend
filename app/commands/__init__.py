@@ -190,11 +190,13 @@ def init(app: Flask):
         print("done")
 
     @app.cli.command()
-    def get_addresses():
+    @click.argument("lower_limit", type=int)
+    @click.argument("upper_limit", type=int)
+    def get_addresses(lower_limit: int, upper_limit: int):
         """Get addresses from Meest Express Public API"""
         from .addresses_api import get_addresses_from_meest_api
 
-        get_addresses_from_meest_api()
+        get_addresses_from_meest_api(lower_limit, upper_limit)
         print("done")
 
     @app.cli.command()
