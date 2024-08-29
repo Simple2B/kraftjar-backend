@@ -67,5 +67,5 @@ class AddressList(BaseModel):
 
 class AddressMeestApi(BaseModel):
     status: int
-    msg: str | None
-    result: list[AddressList]
+    msg: dict | None
+    result: list[AddressList] | None

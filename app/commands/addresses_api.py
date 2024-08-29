@@ -43,11 +43,27 @@ def get_addresses_from_meest_api(lower_limit: int, upper_limit: int, with_print:
             try:
                 res = requests.get(addresses_api_url)
                 addresses_data = s.AddressMeestApi.model_validate(res.json())
+
+                # I couldn't find the status code types in the API docs
+                if addresses_data.status != CFG.SUCCESS_STATUS:
+                    log(
+                        log.ERROR,
+                        f"Error getting addresses from Meest API. Status: {addresses_data.status}, Message: {addresses_data.msg}, Settlement: {settlement.name_ua}, City ID: {settlement.city_id}",
+                    )
+                    continue
+
             except Exception:
                 raise HTTPException(
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     detail="Error getting addresses from Meest API",
                 )
+
+            if not addresses_data.result:
+                log(
+                    log.WARNING,
+                    f"No addresses found for settlement: {settlement.name_ua}, City ID: {settlement.city_id}",
+                )
+                continue
 
             addresses_list = addresses_data.result
 

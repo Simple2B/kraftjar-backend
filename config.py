@@ -70,6 +70,7 @@ class BaseConfig(BaseSettings):
     USER_CAROUSEL_LIMIT: int = 16
 
     # Meest Public API
+    SUCCESS_STATUS: int = 1
     REGIONS_API_URL: str = "https://publicapi.meest.com/geo_regions"
     RAYONS_API_URL: str = "https://publicapi.meest.com/geo_districts"
     SETTLEMENTS_API_URL: str = "https://publicapi.meest.com/geo_localities"
