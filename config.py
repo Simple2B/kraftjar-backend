@@ -78,6 +78,10 @@ class BaseConfig(BaseSettings):
     # Preventing DDOS on Meest API
     DELAY_TIME: int = 1
 
+    # Meest Public API types name
+    API_CITY: str = "місто"
+    API_VILLAGE: str = "село"
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.

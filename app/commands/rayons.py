@@ -36,7 +36,7 @@ def get_rayons_from_meest_api(with_print: bool = True):
             db_region = session.query(m.Region).filter(m.Region.name_ua.ilike(f"%{region_name}%")).first()
 
             if not db_region:
-                print("Region not found", region_name)
+                log(log.ERROR, f"Region not found, region: {region_name}")
                 continue
 
             time.sleep(CFG.DELAY_TIME)
@@ -53,7 +53,7 @@ def get_rayons_from_meest_api(with_print: bool = True):
             rayons_list = rayons_data.result
 
             for rayon in rayons_list:
-                print("Region:", region_name, "Rayon:", rayon.ua)
+                log(log.INFO, f"Region: {region_name}, Rayon: {rayon.ua}")
 
                 rayon_db = m.Rayon(
                     name_ua=rayon.ua,
@@ -68,4 +68,3 @@ def get_rayons_from_meest_api(with_print: bool = True):
                     log(log.DEBUG, f"{rayon_db.id}: {rayon_db.name_ua}")
 
         session.flush()
-    return

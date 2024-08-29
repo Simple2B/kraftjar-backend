@@ -26,22 +26,25 @@ def get_settlements_from_meest_api(with_print: bool = True):
 
     with db.begin() as session:
         for settlement in settlements_list:
-            type = m.Settlement.Type.VILLAGE
             settlement_name = settlement.data.n_ua
             city_id = settlement.data.city_id
             district_id = settlement.data.d_id
             kt = settlement.data.kt
-            print(settlement_name)
+            log(log.INFO, f"Settlement: {settlement_name}")
 
-            if type == "місто":
+            api_settlement_type = settlement.data.t_ua
+
+            if api_settlement_type == CFG.API_VILLAGE:
+                type = m.Settlement.Type.VILLAGE
+            elif api_settlement_type == CFG.API_CITY:
                 type = m.Settlement.Type.CITY
             else:
-                print("Unknown type", type)
+                log(log.ERROR, f"Unknown type: {api_settlement_type}")
 
             db_rayoun = db.session.query(m.Rayon).filter(m.Rayon.district_id == district_id).first()
 
             if not db_rayoun:
-                print("Rayon not found, settlement:", settlement_name)
+                log(log.ERROR, f"Rayon not found, settlement: {settlement_name}")
                 continue
 
             settlement_db = m.Settlement(
@@ -60,4 +63,3 @@ def get_settlements_from_meest_api(with_print: bool = True):
                 log(log.DEBUG, f"{settlement_db.id}: {settlement_db.name_ua}")
 
         session.flush()
-    return

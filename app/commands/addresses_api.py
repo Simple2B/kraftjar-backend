@@ -21,7 +21,7 @@ def get_addresses_from_meest_api(with_print: bool = True):
         db_settlements = session.execute(sa.select(m.Settlement)).scalars().all()
 
         for settlement in db_settlements:
-            print(settlement.name_ua)
+            log(log.INFO, f"Settlement: {settlement.name_ua}")
 
             time.sleep(CFG.DELAY_TIME)
             addresses_api_url = f"{CFG.ADDRESSES_API_URL}?city_id={settlement.city_id}"
@@ -41,7 +41,7 @@ def get_addresses_from_meest_api(with_print: bool = True):
                 db_settlement = session.query(m.Settlement).filter(m.Settlement.city_id == address.city_id).first()
 
                 if not db_settlement:
-                    print("Settlement not found, address:", address.ua)
+                    log(log.ERROR, f"Settlement not found, address: {address.ua}")
                     continue
 
                 address_db = m.Address(
@@ -60,4 +60,3 @@ def get_addresses_from_meest_api(with_print: bool = True):
                     log(log.DEBUG, f"{address_db.id}: {address_db.line1}")
 
         session.flush()
-    return
