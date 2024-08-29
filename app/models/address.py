@@ -15,6 +15,10 @@ class Address(db.Model, ModelMixin):
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
     uuid: orm.Mapped[str] = orm.mapped_column(sa.String(36), default=lambda: str(uuid4()))
 
+    # From Meest Express Public API
+    street_id: orm.Mapped[str] = orm.mapped_column(sa.String(36))
+    city_id: orm.Mapped[str] = orm.mapped_column(sa.String(36))
+
     line1: orm.Mapped[str] = orm.mapped_column(sa.String(255))
     line2: orm.Mapped[str] = orm.mapped_column(sa.String(255))
 
@@ -36,4 +40,4 @@ class Address(db.Model, ModelMixin):
     is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
 
     def __repr__(self):
-        return f"<Address {self.id} {self.city} >"
+        return f"<{self.id}: {self.line1} >"

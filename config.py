@@ -69,6 +69,19 @@ class BaseConfig(BaseSettings):
 
     USER_CAROUSEL_LIMIT: int = 16
 
+    # Meest Public API
+    REGIONS_API_URL: str = "https://publicapi.meest.com/geo_regions"
+    RAYONS_API_URL: str = "https://publicapi.meest.com/geo_districts"
+    SETTLEMENTS_API_URL: str = "https://publicapi.meest.com/geo_localities"
+    ADDRESSES_API_URL: str = "https://publicapi.meest.com/geo_streets"
+
+    # Preventing DDOS on Meest API
+    DELAY_TIME: int = 1
+
+    # Meest Public API types name
+    API_CITY: str = "місто"
+    API_VILLAGE: str = "село"
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.
