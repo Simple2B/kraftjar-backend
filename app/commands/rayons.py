@@ -52,9 +52,9 @@ def get_rayons_from_meest_api(with_print: bool = True):
 
             rayons_list = rayons_data.result
 
-            for rayon in rayons_list:
-                log(log.INFO, f"Region: {region_name}, Rayon: {rayon.ua}")
+            log(log.INFO, f"Region: {region_name}, Rayons count: {len(rayons_list)}")
 
+            for rayon in rayons_list:
                 rayon_db = m.Rayon(
                     name_ua=rayon.ua,
                     name_en=rayon.en,

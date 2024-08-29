@@ -30,7 +30,6 @@ def get_settlements_from_meest_api(with_print: bool = True):
             city_id = settlement.data.city_id
             district_id = settlement.data.d_id
             kt = settlement.data.kt
-            log(log.INFO, f"Settlement: {settlement_name}")
 
             api_settlement_type = settlement.data.t_ua
 
@@ -44,8 +43,11 @@ def get_settlements_from_meest_api(with_print: bool = True):
             db_rayoun = db.session.query(m.Rayon).filter(m.Rayon.district_id == district_id).first()
 
             if not db_rayoun:
-                log(log.ERROR, f"Rayon not found, settlement: {settlement_name}")
-                continue
+                kyiv = session.query(m.Region).filter(m.Region.id == CFG.KYIV_ID).first()
+                log(
+                    log.WARNING,
+                    f"Rayon not found, settlement: {settlement_name} - set default location to Kyiv (id: {kyiv.id})",
+                )
 
             settlement_db = m.Settlement(
                 type=type,
@@ -53,7 +55,7 @@ def get_settlements_from_meest_api(with_print: bool = True):
                 name_en="",
                 city_id=city_id,
                 district_id=district_id,
-                location_id=db_rayoun.location_id,
+                location_id=db_rayoun.location_id if db_rayoun else kyiv.id,
                 kt=kt,
             )
 
