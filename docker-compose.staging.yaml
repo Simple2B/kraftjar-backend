@@ -52,6 +52,8 @@ services:
   backup:
     image: simple2b/pg-backup:1.0
     restart: unless-stopped
+    volumes:
+      - ./backup:/backup
     links:
       - db
     environment:
