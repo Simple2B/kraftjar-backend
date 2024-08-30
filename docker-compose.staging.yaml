@@ -61,7 +61,7 @@ services:
       POSTGRES_DATABASE: db
       POSTGRES_HOST: db
       POSTGRES_USER: ${DATABASE_USERNAME:-postgres}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-password}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-passwd}
       POSTGRES_EXTRA_OPTS: '--schema=public --blobs'
       DAYS_HISTORY: 7
       SCHEDULE_HOUR: 0
