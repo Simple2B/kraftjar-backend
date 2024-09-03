@@ -71,7 +71,10 @@ def update_addresses_from_meest_api(lower_limit: int, upper_limit: int, with_pri
             db_addresses = session.query(m.Address).filter(m.Address.street_id.in_(street_ids)).all()
 
             if not db_addresses:
-                log(log.WARNING, f"No addresses found in DB for settlement: {settlement.name_ua}, City ID: {settlement.city_id}")
+                log(
+                    log.WARNING,
+                    f"No addresses found in DB for settlement: {settlement.name_ua}, City ID: {settlement.city_id}",
+                )
 
             db_address_map = {db_address.street_id: db_address for db_address in db_addresses}
 
