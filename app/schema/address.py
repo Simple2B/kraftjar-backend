@@ -9,6 +9,8 @@ class AddressBase(BaseModel):
     location_id: int
     street_id: str
     city_id: str
+    street_type_ua: str = ""
+    street_type_en: str = ""
 
 
 class AddressesFile(BaseModel):

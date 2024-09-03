@@ -8,7 +8,9 @@
       "city": "Київ",
       "location_id": 1,
       "street_id": "62c3d54a-749b-11df-b112-00215aee3ebe",
-      "city_id": "62c3d54a-749b-11df-b112-00215aee3ebe"
+      "city_id": "62c3d54a-749b-11df-b112-00215aee3ebe",
+      "street_type_ua": "вул.",
+      "street_type_en": "st."
     }
   ]
 }
