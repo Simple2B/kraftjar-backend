@@ -7,6 +7,8 @@ class AddressBase(BaseModel):
     postcode: str = ""
     city: str = ""
     location_id: int
+    street_id: str
+    city_id: str
 
 
 class AddressesFile(BaseModel):
