@@ -67,24 +67,30 @@ def update_addresses_from_meest_api(lower_limit: int, upper_limit: int, with_pri
 
             addresses_list = addresses_data.result
 
-            for address in addresses_list:
-                db_address = session.execute(
-                    sa.select(m.Address).filter_by(street_id=address.street_id)
-                ).scalar_one_or_none()
+            street_ids = [address.street_id for address in addresses_list]
+            db_addresses = session.query(m.Address).filter(m.Address.street_id.in_(street_ids)).all()
 
-                if not db_address:
+            if not db_addresses:
+                log(log.WARNING, f"No addresses found in DB for settlement: {settlement.name_ua}, City ID: {settlement.city_id}")
+
+            db_address_map = {db_address.street_id: db_address for db_address in db_addresses}
+
+            update_data = []
+
+            for address in addresses_list:
+                db_address = db_address_map.get(address.street_id)
+
+                if db_address:
+                    update_data.append(
+                        {"id": db_address.id, "street_type_ua": address.t_ua, "street_type_en": address.t_en}
+                    )
+                    if with_print:
+                        log(log.DEBUG, f"{db_address.id}: {db_address.line1}")
+                else:
                     log(
                         log.WARNING,
-                        f"Address not found in DB: {db_address.line1}, Street ID: {db_address.street_id}",
+                        f"№{i} Address not found in DB: {address.ua}, City ID: {address.city_id} Street ID: {address.street_id}",
                     )
 
-                session.execute(
-                    sa.update(m.Address)
-                    .where(m.Address.id == db_address.id)
-                    .values(street_type_ua=address.t_ua, street_type_en=address.t_en)
-                )
-
-                if with_print:
-                    log(log.DEBUG, f"{db_address.id}: {db_address.line1}")
-
+            session.bulk_update_mappings(m.Address, update_data)
         session.flush()
