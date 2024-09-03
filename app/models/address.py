@@ -22,6 +22,10 @@ class Address(db.Model, ModelMixin):
     line1: orm.Mapped[str] = orm.mapped_column(sa.String(255))
     line2: orm.Mapped[str] = orm.mapped_column(sa.String(255))
 
+    # вул. парк пл. ст. просп. пров. шосе...
+    street_type_ua: orm.Mapped[str] = orm.mapped_column(sa.String(36), server_default="", default="")
+    street_type_en: orm.Mapped[str] = orm.mapped_column(sa.String(36), server_default="", default="")
+
     postcode: orm.Mapped[str] = orm.mapped_column(sa.String(255))
     city: orm.Mapped[str] = orm.mapped_column(sa.String(255))
 
