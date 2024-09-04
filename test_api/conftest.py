@@ -29,7 +29,6 @@ def db() -> Generator[orm.Session, None, None]:
 
     if not os.path.exists(db_file):
         with db.Session() as session:
-            db.Model.metadata.drop_all(bind=session.bind)
             db.Model.metadata.create_all(bind=session.bind)
 
             from app.commands.addresses import export_addresses_from_json_file
@@ -48,8 +47,6 @@ def db() -> Generator[orm.Session, None, None]:
 
             app.dependency_overrides[get_db] = override_get_db
             yield session
-            # clean up
-            db.Model.metadata.drop_all(bind=session.bind)
     else:
         engine = create_engine(f"sqlite:///{db_file}")
         SessionLocal = orm.sessionmaker(autocommit=False, autoflush=False, bind=engine)
