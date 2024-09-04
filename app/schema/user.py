@@ -11,7 +11,7 @@ from .service import Service
 class User(BaseModel):
     id: int
     fullname: str
-    phone: str
+    phone: str = ""
     email: str
     is_deleted: bool
     phone_verified: bool

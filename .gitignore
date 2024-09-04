@@ -15,3 +15,6 @@ node_modules/
 /data/users.json
 /data/jobs.json
 .yarn/*
+
+dump.sql
+dump.tgz

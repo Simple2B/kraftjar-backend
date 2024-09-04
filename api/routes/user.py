@@ -17,7 +17,11 @@ CFG = config()
 user_router = APIRouter(prefix="/users", tags=["Users"])
 
 
-@user_router.get("/me", status_code=status.HTTP_200_OK, response_model=s.User)
+@user_router.get(
+    "/me",
+    status_code=status.HTTP_200_OK,
+    response_model=s.User,
+)
 def get_current_user_profile(
     current_user: m.User = Depends(get_current_user),
 ):
