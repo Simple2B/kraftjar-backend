@@ -45,7 +45,7 @@ class User(db.Model, ModelMixin):
 
     email: orm.Mapped[str] = orm.mapped_column(sa.String(128))  # fill in registration form
 
-    phone: orm.Mapped[str] = orm.mapped_column(sa.String(32), unique=True)  # fill in registration form
+    phone: orm.Mapped[str] = orm.mapped_column(sa.String(32), default="")  # fill in registration form
     phone_verified: orm.Mapped[bool] = orm.mapped_column(default=False)
 
     google_id: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")
