@@ -39,6 +39,7 @@ services:
       APP_ENV: production
       IS_API: 'true'
       ALCHEMICAL_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-passwd}@db:5432/db
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
     env_file:
       - .env
     depends_on:

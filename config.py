@@ -86,6 +86,8 @@ class BaseConfig(BaseSettings):
     # ID from our db, model Region
     KYIV_ID: int = 1
 
+    GOOGLE_CLIENT_ID: str = ""
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.
