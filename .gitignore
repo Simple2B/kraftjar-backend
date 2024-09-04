@@ -12,7 +12,6 @@ node_modules/
 
 /credentials.json
 /token.json
-/data/users.json
 /data/jobs.json
 .yarn/*
 
