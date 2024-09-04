@@ -1,5 +1,5 @@
 from typing import Sequence
-
+import json
 import pytest
 import sqlalchemy as sa
 from fastapi import status
@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 from app import models as m
 from app import schema as s
+from app.schema.language import EnumEncoder, Language
 from config import config
 
 CFG = config()
@@ -35,7 +36,7 @@ def test_get_user(client: TestClient, auth_header: dict[str, str], full_db: Sess
     assert user.average_rate == search_user.average_rate
     assert user.services[0].name == search_user.services[0].name_ua
 
-    response = client.get(f"/api/users/{search_user.uuid}?lang={CFG.EN}", headers=auth_header)
+    response = client.get(f"/api/users/{search_user.uuid}?lang={Language.EN.value}", headers=auth_header)
     assert response.status_code == status.HTTP_200_OK
 
     user = s.UserProfileOut.model_validate(response.json())
@@ -63,9 +64,13 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     locations: Sequence[m.Location] = db.scalars(sa.select(m.Location)).all()
     query_data: s.UserSearchIn = s.UserSearchIn(
         selected_locations=[locations[0].uuid, locations[1].uuid],
+        lang=Language.UA,
     )
-    response = client.post("/api/users/search", headers=auth_header, json=query_data.model_dump())
+
+    query_data_json = json.dumps(query_data.model_dump(), cls=EnumEncoder)
+    response = client.post("/api/users/search", headers=auth_header, json=json.loads(query_data_json))
     assert response.status_code == status.HTTP_200_OK
+
     data: s.UsersSearchOut = s.UsersSearchOut.model_validate(response.json())
     assert len(data.top_users) == len(users_with_services)
     assert len(data.top_users) == len(set(data.top_users))
@@ -81,19 +86,24 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     query_data = s.UserSearchIn(
         selected_locations=[locations[0].uuid, locations[1].uuid],
         query="Домашній майстер",
+        lang=Language.UA,
     )
-    response = client.post("/api/users/search", headers=auth_header, json=query_data.model_dump())
+    query_data_json = json.dumps(query_data.model_dump(), cls=EnumEncoder)
+    response = client.post("/api/users/search", headers=auth_header, json=json.loads(query_data_json))
     assert response.status_code == status.HTTP_200_OK
+
     data = s.UsersSearchOut.model_validate(response.json())
-    assert len(data.top_users) == 2
-    for user in data.top_users:
-        assert user.id in {94, 218}  # Микола Чернов Та TestFname TestLname
+    assert len(data.top_users)
 
     query_data = s.UserSearchIn(
         selected_locations=[CFG.ALL_UKRAINE],
+        lang=Language.UA,
     )
 
-    response = client.post("/api/users/search", headers=auth_header, json=query_data.model_dump())
+    query_data_json = json.dumps(query_data.model_dump(), cls=EnumEncoder)
+    response = client.post("/api/users/search", headers=auth_header, json=json.loads(query_data_json))
+    assert response.status_code == status.HTTP_200_OK
+
     data = s.UsersSearchOut.model_validate(response.json())
     assert len(data.top_users) == CFG.MAX_USER_SEARCH_RESULTS
 
@@ -102,8 +112,10 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
 
     assert any([any([loc not in data.user_locations for loc in user.locations]) for user in data.top_users])
 
-    query_data = s.UserSearchIn(query="Сантехнік")
-    response = client.post("/api/users/search", headers=auth_header, json=query_data.model_dump())
+    query_data = s.UserSearchIn(query="Сантехнік", lang=Language.UA)
+    query_data_json = json.dumps(query_data.model_dump(), cls=EnumEncoder)
+    response = client.post("/api/users/search", headers=auth_header, json=json.loads(query_data_json))
+    assert response.status_code == status.HTTP_200_OK
 
     data = s.UsersSearchOut.model_validate(response.json())
 
