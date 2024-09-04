@@ -32,6 +32,7 @@ def db() -> Generator[orm.Session, None, None]:
             db.Model.metadata.create_all(bind=session.bind)
 
             from app.commands.addresses import export_addresses_from_json_file
+            from app.commands.job import export_jobs_from_json_file
             from app.commands.locations import export_regions_from_json_file
             from app.commands.service import export_services_from_json_file
             from app.commands.user import export_users_from_json_file
