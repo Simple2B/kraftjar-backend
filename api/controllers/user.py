@@ -103,7 +103,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
         stmt = stmt.where(m.Service.uuid.in_([service.uuid for service in services]))
 
     stmt = stmt.join(m.user_locations).join(m.Location)
-    if CFG.ALL_UKRAINE in query.selected_locations:
+    if CFG.ALL_UKRAINE in query.selected_locations or not query.selected_locations:
         near_users: Sequence[m.User] = db.scalars(
             stmt.where(m.Location.uuid.in_([location.uuid for location in user_locations]))
         ).all()

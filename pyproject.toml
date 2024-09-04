@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "Kraftjar"
-version = "0.1.72"
-description = ""
-authors = ["Anton <tinkerino571@gmail.com>"]
+name = "api"
+version = "0.1.75"
+description = "Kraftjar Backend API"
+authors = ["Simple2B <simple2b.info@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.11"

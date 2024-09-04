@@ -35,7 +35,7 @@ DUMMY_GOOGLE_VALIDATION = GoogleTokenVerification(
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_auth(db: Session, client: TestClient):
-    USER_PHONE = db.scalar(sa.select(m.User.phone))
+    USER_PHONE = db.scalar(sa.select(m.User.phone).order_by(m.User.id))
     assert USER_PHONE
     user_auth = s.Auth(phone=USER_PHONE, password=USER_PASSWORD)
     response = client.post("/api/auth/token", json=user_auth.model_dump())

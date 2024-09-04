@@ -200,6 +200,16 @@ def init(app: Flask):
         print("done")
 
     @app.cli.command()
+    @click.argument("lower_limit", type=int)
+    @click.argument("upper_limit", type=int)
+    def update_addresses(lower_limit: int, upper_limit: int):
+        """Update addresses from Meest Express Public API"""
+        from .update_addresses_api import update_addresses_from_meest_api
+
+        update_addresses_from_meest_api(lower_limit, upper_limit)
+        print("done")
+
+    @app.cli.command()
     @click.argument("region_id", type=int, required=False, default=10)
     @click.argument("district_id", type=str, required=False, default="a1e9f9b8-41b9-11df-907f-00215aee3ebe")
     @click.argument("city_id", type=str, required=False, default="91fc81db-266d-11e7-80fd-1c98ec135263")
