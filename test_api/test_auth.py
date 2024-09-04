@@ -53,11 +53,6 @@ def test_google_auth(monkeypatch, db: Session, client: TestClient):
     mock_verify_oauth2_token = mock.Mock(return_value=DUMMY_GOOGLE_VALIDATION)
     monkeypatch.setattr("api.routes.auth.id_token.verify_oauth2_token", mock_verify_oauth2_token)
 
-    # Create a test user in the database
-    # user = m.User(email="test@example.com", phone="+380989994999", fullname="test", password="test")
-    # db.add(user)
-    # db.commit()
-
     data = s.GoogleAuthIn(id_token="test_token")
 
     # Make a request to the endpoint
