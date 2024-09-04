@@ -50,7 +50,7 @@ def db() -> Generator[orm.Session, None, None]:
             app.dependency_overrides[get_db] = override_get_db
             yield session
             # clean up
-            # db.Model.metadata.drop_all(bind=session.bind)
+            db.Model.metadata.drop_all(bind=session.bind)
     else:
         engine = create_engine(f"sqlite:///{db_file}")
         SessionLocal = orm.sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -68,7 +68,7 @@ def db() -> Generator[orm.Session, None, None]:
             yield session
 
             # clean up
-            # db.Model.metadata.drop_all(bind=session.bind)
+            db.Model.metadata.drop_all(bind=session.bind)
 
 
 @pytest.fixture
