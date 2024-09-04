@@ -1,5 +1,4 @@
 from typing import Sequence
-import json
 import pytest
 import sqlalchemy as sa
 from fastapi import status
@@ -8,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from app import models as m
 from app import schema as s
-from app.schema.language import EnumEncoder, Language
+from app.schema.language import Language
 from config import config
 
 CFG = config()
@@ -67,8 +66,7 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
         lang=Language.UA,
     )
 
-    query_data_json = json.dumps(query_data.model_dump(), cls=EnumEncoder)
-    response = client.post("/api/users/search", headers=auth_header, json=json.loads(query_data_json))
+    response = client.post("/api/users/search", headers=auth_header, content=query_data.model_dump_json())
     assert response.status_code == status.HTTP_200_OK
 
     data: s.UsersSearchOut = s.UsersSearchOut.model_validate(response.json())
@@ -88,8 +86,8 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
         query="Домашній майстер",
         lang=Language.UA,
     )
-    query_data_json = json.dumps(query_data.model_dump(), cls=EnumEncoder)
-    response = client.post("/api/users/search", headers=auth_header, json=json.loads(query_data_json))
+
+    response = client.post("/api/users/search", headers=auth_header, content=query_data.model_dump_json())
     assert response.status_code == status.HTTP_200_OK
 
     data = s.UsersSearchOut.model_validate(response.json())
@@ -100,8 +98,7 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
         lang=Language.UA,
     )
 
-    query_data_json = json.dumps(query_data.model_dump(), cls=EnumEncoder)
-    response = client.post("/api/users/search", headers=auth_header, json=json.loads(query_data_json))
+    response = client.post("/api/users/search", headers=auth_header, content=query_data.model_dump_json())
     assert response.status_code == status.HTTP_200_OK
 
     data = s.UsersSearchOut.model_validate(response.json())
@@ -113,8 +110,7 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     assert any([any([loc not in data.user_locations for loc in user.locations]) for user in data.top_users])
 
     query_data = s.UserSearchIn(query="Сантехнік", lang=Language.UA)
-    query_data_json = json.dumps(query_data.model_dump(), cls=EnumEncoder)
-    response = client.post("/api/users/search", headers=auth_header, json=json.loads(query_data_json))
+    response = client.post("/api/users/search", headers=auth_header, content=query_data.model_dump_json())
     assert response.status_code == status.HTTP_200_OK
 
     data = s.UsersSearchOut.model_validate(response.json())
