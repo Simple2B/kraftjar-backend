@@ -17,8 +17,8 @@ depends_on = None
 
 
 def upgrade():
-    pass
+    op.drop_constraint('uq_users_phone', 'users')
 
 
 def downgrade():
-    pass
+    op.create_unique_constraint('uq_users_phone', 'users', ['phone'])
