@@ -86,7 +86,15 @@ class BaseConfig(BaseSettings):
     # ID from our db, model Region
     KYIV_ID: int = 1
 
+    MOBILE_APP_ID: str = "net.kraftjar.app"
+
+    # GOOGLE AUTH
     GOOGLE_CLIENT_ID: str = ""
+
+    # APPLE AUTH
+    APPLE_PUBLIC_KEY_URL: str = "https://appleid.apple.com/auth/keys"
+    APPLE_ISSUER: str = "https://appleid.apple.com"
+    APPLE_DECODE_ALGORITHMS: list[str] = ["RS256"]
 
     @staticmethod
     def configure(app):

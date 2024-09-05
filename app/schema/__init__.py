@@ -36,7 +36,15 @@ from .user import (
 )
 from .whoami import WhoAmI
 from .rate import RateIn, RateOut, RateOutList
-from .auth import Auth, GoogleAuthIn, GoogleTokenVerification, AppleAuth, PhoneAuthIn
+from .auth import (
+    Auth,
+    GoogleAuthIn,
+    GoogleTokenVerification,
+    AppleAuthTokenIn,
+    AppleAuthenticationFullName,
+    AppleTokenVerification,
+    PhoneAuthIn,
+)
 from .registration import RegistrationIn, SetPhoneIn, ValidatePhoneIn, SetPhoneOut
 from .field import FieldCreate
 from .exception import NotFound
