@@ -27,12 +27,27 @@ class GoogleTokenVerification(BaseModel):
     exp: int
 
 
-class AppleAuth(BaseModel):
-    uid: str
+class AppleAuthTokenIn(BaseModel):
+    id_token: str
+
+
+class AppleAuthenticationFullName(BaseModel):
+    givenName: str | None = None
+    familyName: str | None = None
+
+
+class AppleTokenVerification(BaseModel):
+    iss: str
+    aud: str
+    exp: int
+    iat: int
+    sub: str
+    c_hash: str
     email: str
-    first_name: str | None
-    last_name: str | None
-    display_name: str | None
+    email_verified: bool
+    auth_time: int
+    nonce_supported: bool
+    fullName: AppleAuthenticationFullName | None = None
 
 
 class PhoneAuthIn(BaseModel):

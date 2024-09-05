@@ -1,10 +1,38 @@
-from fastapi import HTTPException, status
-from sqlalchemy.orm import Session
+import jwt
+
+from jwt import PyJWKClient
 
 from app import schema as s
+from config import config
+
+CFG = config()
 
 
-def apple_auth(data: s.AppleAuth, db: Session) -> s.Token:
-    """Logs in a user with Apple"""
+JWKS_CLIENT = PyJWKClient(CFG.APPLE_PUBLIC_KEY_URL)
 
-    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Apple auth not implemented")
+
+def verify_apple_token(auth_data: s.AppleAuthTokenIn) -> s.AppleTokenVerification:
+    """Verifies the Apple auth token and returns the decoded token"""
+    # Fetch Apple's public keys
+    signing_key = JWKS_CLIENT.get_signing_key_from_jwt(auth_data.id_token)
+    apple_public_key = signing_key.key
+
+    # Verify the signature using the fetched public key
+    decoded_token_raw = jwt.decode(
+        auth_data.id_token,
+        apple_public_key,
+        issuer=CFG.APPLE_ISSUER,
+        audience=CFG.MOBILE_APP_ID,
+        algorithms=CFG.APPLE_DECODE_ALGORITHMS,
+    )
+
+    decoded_token = s.AppleTokenVerification.model_validate(decoded_token_raw)
+    return decoded_token
+
+
+def get_apple_fullname(decoded_token: s.AppleTokenVerification) -> str:
+    if not decoded_token.fullName:
+        return decoded_token.email.split("@")[0]
+    if not decoded_token.fullName.givenName and not decoded_token.fullName.familyName:
+        return decoded_token.email
+    return f"{decoded_token.fullName.givenName} {decoded_token.fullName.familyName}".strip()

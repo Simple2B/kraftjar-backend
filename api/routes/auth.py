@@ -46,6 +46,7 @@ def get_token(auth_data: s.Auth, db=Depends(get_db)):
 @router.post("/google", status_code=status.HTTP_200_OK, response_model=s.Token)
 def google_auth(auth_data: s.GoogleAuthIn, db: Session = Depends(get_db)):
     """Validates google auth token and returns a JWT token"""
+
     log(log.INFO, "Validating google token")
 
     try:
@@ -113,11 +114,38 @@ def save_phone(
     return s.Token(access_token=create_access_token(current_user.id))
 
 
-@router.post("/apple", status_code=status.HTTP_200_OK, response_model=s.Token)
-def apple_auth(
-    data: s.AppleAuth,
-    db: Session = Depends(get_db),
-):
-    """Logs in a user with Apple"""
+# @router.post("/apple", status_code=status.HTTP_200_OK, response_model=s.Token)
+# def apple_auth(
+#     data: s.AppleAuth,
+#     db: Session = Depends(get_db),
+# ):
+#     """Logs in a user with Apple"""
 
-    return c.apple_auth(data, db)
+#     return c.apple_auth(data, db)
+
+
+@router.post("/apple", status_code=status.HTTP_200_OK, response_model=s.Token)
+def apple_auth(auth_data: s.AppleAuthTokenIn, db: Session = Depends(get_db)):
+    log(log.INFO, "Validating apple token")
+
+    decoded_token = c.verify_apple_token(auth_data)
+
+    user = db.scalar(
+        sa.select(m.User).where(
+            m.User.email == decoded_token.email,
+        )
+    )
+
+    if not user:
+        log(log.INFO, "[Google Auth] User [%s] not found. Creating a guest user", decoded_token.email)
+        fullname = c.get_apple_fullname(decoded_token)
+        user = m.User(
+            email=decoded_token.email,
+            fullname=fullname,
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+
+    log(log.INFO, "User [%s] found. Apple Auth succeeded", decoded_token.email)
+    return s.Token(access_token=create_access_token(user.id))
