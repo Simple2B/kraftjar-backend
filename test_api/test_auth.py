@@ -5,7 +5,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from app.schema import GoogleTokenVerification, Token
+from app.schema import GoogleTokenVerification, AppleTokenVerification, Token
 
 from app import models as m
 from app import schema as s
@@ -30,6 +30,20 @@ DUMMY_GOOGLE_VALIDATION = GoogleTokenVerification(
     locale="str",
     iat=1,
     exp=1,
+)
+
+DUMMY_IOS_VALIDATION = AppleTokenVerification(
+    iss="https://appleid.apple.com",
+    aud="str",
+    exp=1,
+    iat=1,
+    sub="str",
+    c_hash="str",
+    email="",
+    email_verified=True,
+    auth_time=1,
+    nonce_supported=True,
+    fullName=None,
 )
 
 
@@ -94,3 +108,17 @@ def test_google_token_user_creation(monkeypatch, db: Session, client: TestClient
     # Check that the user was created in the database
     response = client.post("/api/users/me")
     assert response
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_apple_auth_success(monkeypatch, db: Session, client: TestClient):
+    # Mock verify_apple_token from api/controllers/o_auth.py
+    mock_verify_apple_token = mock.Mock(return_value=DUMMY_IOS_VALIDATION)
+    monkeypatch.setattr("api.routes.auth.c.verify_apple_token", mock_verify_apple_token)
+
+    res = client.post(
+        "/api/auth/apple",
+        json={"id_token": ""},
+    )
+
+    assert res.status_code == 200

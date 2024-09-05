@@ -114,16 +114,6 @@ def save_phone(
     return s.Token(access_token=create_access_token(current_user.id))
 
 
-# @router.post("/apple", status_code=status.HTTP_200_OK, response_model=s.Token)
-# def apple_auth(
-#     data: s.AppleAuth,
-#     db: Session = Depends(get_db),
-# ):
-#     """Logs in a user with Apple"""
-
-#     return c.apple_auth(data, db)
-
-
 @router.post("/apple", status_code=status.HTTP_200_OK, response_model=s.Token)
 def apple_auth(auth_data: s.AppleAuthTokenIn, db: Session = Depends(get_db)):
     log(log.INFO, "Validating apple token")
