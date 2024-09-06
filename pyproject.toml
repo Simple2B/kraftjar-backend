@@ -27,6 +27,7 @@ google-auth-httplib2 = "0.0.3"
 google-auth-oauthlib = "0.4.1"
 pre-commit = "^3.6.2"
 google-auth = "^2.34.0"
+testcontainers = {version = "^4.8.1", extras = ["postgres", "redis"]}
 
 
 [tool.poetry.group.dev.dependencies]
