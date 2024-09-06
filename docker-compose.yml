@@ -39,5 +39,32 @@ services:
     ports:
       - 127.0.0.1:${LOCAL_API_PORT:-8002}:8000
 
+  backup:
+    image: simple2b/pg-backup:1.0
+    volumes:
+      - ./backup:/backup
+    links:
+      - db
+    environment:
+      APP_ENV: production
+      SCHEDULE_DAY: ${SCHEDULE_DAY:-300}  # scheduler for every 300 days - never
+      POSTGRES_DATABASE: db
+      POSTGRES_HOST: db
+      POSTGRES_USER: ${DATABASE_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-passwd}
+      POSTGRES_EXTRA_OPTS: '--schema=public --blobs'
+      DAYS_HISTORY: 7
+      SCHEDULE_HOUR: 0
+      SCHEDULE_MINUTE: 0
+      SCHEDULE_SECOND: 0
+      S3_REGION: ${S3_REGION:-**None**}
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:-**None**}
+      S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:-**None**}
+      S3_BUCKET: ${S3_BUCKET:-**None**}
+      S3_PREFIX: ${S3_PREFIX:-**None**}
+      AWS_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:-**None**}
+      AWS_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:-**None**}
+      AWS_DEFAULT_REGION: ${S3_REGION:-**None**}
+
 volumes:
   db_data:
