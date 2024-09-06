@@ -58,9 +58,8 @@ services:
     links:
       - db
     environment:
-      # scheduler for every 3 days
       APP_ENV: production
-      SCHEDULE_DAY: ${SCHEDULE_DAY:-3}
+      SCHEDULE_DAY: 1  # scheduler for every day
       POSTGRES_DATABASE: db
       POSTGRES_HOST: db
       POSTGRES_USER: ${DATABASE_USERNAME:-postgres}
