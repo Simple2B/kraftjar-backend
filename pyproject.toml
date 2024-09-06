@@ -47,9 +47,8 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 filterwarnings = [
-    "ignore:.*cgi.*:DeprecationWarning",
     'ignore:.*werkzeug\.urls\.url.*:DeprecationWarning',
-    'ignore:.*flask\.Markup.*:DeprecationWarning',
+    'ignore:.*datetime\.datetime\.utcnow.*:DeprecationWarning',
 ]
 testpaths = ["test_flask", "test_api"]
 
