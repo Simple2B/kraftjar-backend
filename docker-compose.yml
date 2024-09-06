@@ -47,7 +47,7 @@ services:
       - db
     environment:
       APP_ENV: production
-      SCHEDULE_DAY: ${SCHEDULE_DAY:-300}  # scheduler for every 300 days - never
+      SCHEDULE_DAY: ${SCHEDULE_DAY:-31}  # scheduler for every 31 days - never
       POSTGRES_DATABASE: db
       POSTGRES_HOST: db
       POSTGRES_USER: ${DATABASE_USERNAME:-postgres}

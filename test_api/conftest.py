@@ -25,46 +25,26 @@ CFG = config()
 def db() -> Generator[orm.Session, None, None]:
     from app.database import db, get_db
 
-    db_file = "database-test.sqlite3"
+    with db.Session() as session:
+        db.Model.metadata.create_all(bind=session.bind)
 
-    if not os.path.exists(db_file):
-        with db.Session() as session:
-            db.Model.metadata.create_all(bind=session.bind)
+        from app.commands.addresses import export_addresses_from_json_file
+        from app.commands.locations import export_regions_from_json_file
+        from app.commands.service import export_services_from_json_file
+        from app.commands.user import export_users_from_json_file
+        from app.commands.job import export_jobs_from_json_file
 
-            from app.commands.addresses import export_addresses_from_json_file
-            from app.commands.job import export_jobs_from_json_file
-            from app.commands.locations import export_regions_from_json_file
-            from app.commands.service import export_services_from_json_file
-            from app.commands.user import export_users_from_json_file
+        export_services_from_json_file(with_print=False)
+        export_regions_from_json_file(with_print=False)
+        export_users_from_json_file(with_print=False)
+        export_addresses_from_json_file(with_print=False)
+        export_jobs_from_json_file(max_job_limit=10)
 
-            export_services_from_json_file(with_print=False)
-            export_regions_from_json_file(with_print=False)
-            export_users_from_json_file(with_print=False)
-            export_addresses_from_json_file(with_print=False)
-
-            def override_get_db() -> Generator:
-                yield session
-
-            app.dependency_overrides[get_db] = override_get_db
-            yield session
-    else:
-        engine = create_engine(f"sqlite:///{db_file}")
-        SessionLocal = orm.sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-        @event.listens_for(engine, "connect")
-        def on_connect(dbapi_connection, connection_record):
-            dbapi_connection.create_function("lower", 1, lambda arg: arg.lower())
-
-        with SessionLocal() as session:
-
-            def override_get_db() -> Generator:
-                yield session
-
-            app.dependency_overrides[get_db] = override_get_db
+        def override_get_db() -> Generator:
             yield session
 
-            # clean up
-            db.Model.metadata.drop_all(bind=session.bind)
+        app.dependency_overrides[get_db] = override_get_db
+        yield session
 
 
 @pytest.fixture

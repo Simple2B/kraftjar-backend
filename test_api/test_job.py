@@ -14,7 +14,7 @@ CFG = config()
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_get_jobs(client: TestClient, full_db: Session, auth_header: dict[str, str]):
     db = full_db
-    job: m.Job | None = db.scalar(sa.select(m.Job))
+    job = db.scalar(sa.select(m.Job))
     assert job
 
     job.worker_id = None  # type: ignore

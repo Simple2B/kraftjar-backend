@@ -8,6 +8,7 @@
   },
   "cSpell.words": [
     "appl",
+    "autoflush",
     "diia",
     "dotenv",
     "fastapi",
@@ -23,6 +24,7 @@
     "outerjoin",
     "pydantic",
     "pytest",
+    "sessionmaker",
     "sqlalchemy",
     "tailwindcss",
     "Videographer",
