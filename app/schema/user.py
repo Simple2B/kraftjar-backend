@@ -10,6 +10,7 @@ from .service import Service
 
 class User(BaseModel):
     id: int
+    uuid: str
     fullname: str
     phone: str = ""
     email: str
