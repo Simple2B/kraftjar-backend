@@ -67,7 +67,7 @@ def google_auth(auth_data: s.GoogleAuthIn, db: Session = Depends(get_db)):
             log(log.INFO, "[Google Auth] User [%s] not found. Creating user", id_info.email)
 
             user = m.User(
-                auth_account=[m.AuthAccount(auth_type=s.AuthType.GOOGLE, email=id_info.email)],
+                auth_accounts=[m.AuthAccount(auth_type=s.AuthType.GOOGLE, email=id_info.email)],
                 fullname=id_info.name if id_info.name else "",
                 first_name=id_info.given_name if id_info.given_name else "",
                 last_name=id_info.family_name if id_info.family_name else "",
@@ -130,7 +130,7 @@ def apple_auth(auth_data: s.AppleAuthTokenIn, db: Session = Depends(get_db)):
         log(log.INFO, "[Google Auth] User [%s] not found. Creating user", decoded_token.email)
         fullname = c.get_apple_fullname(decoded_token)
         user = m.User(
-            auth_account=[m.AuthAccount(auth_type=s.AuthType.APPLE, email=decoded_token.email)],
+            auth_accounts=[m.AuthAccount(auth_type=s.AuthType.APPLE, email=decoded_token.email)],
             fullname=fullname,
         )
         db.add(user)

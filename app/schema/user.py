@@ -15,7 +15,7 @@ class User(BaseModel):
     uuid: str
     fullname: str
     phone: str = ""
-    auth_account: list[AuthAccount] = []
+    auth_accounts: list[AuthAccount] = []
     is_deleted: bool
     phone_verified: bool
 
@@ -31,7 +31,7 @@ class UserFile(BaseModel):
     first_name: str = ""
     last_name: str = ""
     phone: str
-    auth_account: list[AuthAccount] = []
+    auth_accounts: list[AuthAccount] = []
     password: str
     location_ids: list[int] = []
     service_ids: list[int] = []
@@ -79,7 +79,7 @@ class UsersSearchOut(BaseModel):
 
 
 class UserProfileOut(User):
-    auth_account: list[AuthAccount] = []
+    auth_accounts: list[AuthAccount] = []
     owned_rates_count: int
     average_rate: float
     services: list[Service]

@@ -47,7 +47,7 @@ class User(db.Model, ModelMixin):
     phone: orm.Mapped[str] = orm.mapped_column(sa.String(32), default="")  # fill in registration form
     phone_verified: orm.Mapped[bool] = orm.mapped_column(default=False)
 
-    auth_account: orm.Mapped[list["AuthAccount"]] = orm.relationship("AuthAccount", backref="user")
+    auth_accounts: orm.Mapped[list["AuthAccount"]] = orm.relationship("AuthAccount", backref="user")
 
     password_hash: orm.Mapped[str | None] = orm.mapped_column(sa.String(256))  # fill in registration form
     created_at: orm.Mapped[datetime] = orm.mapped_column(default=datetime.utcnow)

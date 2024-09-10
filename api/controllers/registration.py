@@ -23,7 +23,7 @@ def register_user(user_data: s.RegistrationIn, db: Session) -> s.Token:
     user: m.User = m.User(
         fullname=user_data.fullname,
         phone=user_data.phone,
-        auth_account=[m.AuthAccount(auth_type=s.AuthType.BASIC, email=user_email)],
+        auth_accounts=[m.AuthAccount(auth_type=s.AuthType.BASIC, email=user_email)],
         password=user_data.password,
         is_volunteer=user_data.is_volunteer,
     )

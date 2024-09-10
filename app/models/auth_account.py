@@ -29,21 +29,5 @@ class AuthAccount(db.Model, ModelMixin):
 
     __table_args__ = (sa.UniqueConstraint("email", "auth_type", "user_id", name="uq_email_auth_type_user_id"),)
 
-    @property
-    def is_auth_by_basic(self):
-        return bool(self.auth_type == AuthType.BASIC)
-
-    @property
-    def is_auth_by_google(self):
-        return bool(self.auth_type == AuthType.GOOGLE)
-
-    @property
-    def is_auth_by_apple(self):
-        return bool(self.auth_type == AuthType.APPLE)
-
-    @property
-    def is_auth_by_diia(self):
-        return bool(self.auth_type == AuthType.DIIA)
-
     def __repr__(self):
         return f"<{self.id}: {self.email}>"

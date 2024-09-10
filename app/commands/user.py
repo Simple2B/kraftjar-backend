@@ -48,14 +48,14 @@ def write_users_in_db(users: list[s.UserFile], with_print: bool = True):
                 log(log.DEBUG, "User with phone [%s] already exists", user.phone)
                 continue
 
-            auth_account = [
+            auth_accounts = [
                 m.AuthAccount(
                     user_id=account.user_id,
                     email=account.email,
                     auth_type=account.auth_type,
                     oauth_id=account.oauth_id,
                 )
-                for account in user.auth_account
+                for account in user.auth_accounts
             ]
 
             new_user: m.User = m.User(
@@ -63,7 +63,7 @@ def write_users_in_db(users: list[s.UserFile], with_print: bool = True):
                 first_name=user.first_name,
                 last_name=user.last_name,
                 phone=user.phone,
-                auth_account=auth_account,
+                auth_accounts=auth_accounts,
                 password=user.password,
                 is_volunteer=user.is_volunteer,
                 phone_verified=True,
@@ -227,7 +227,7 @@ def export_users_from_google_spreadsheets(with_print: bool = True, in_json: bool
             s.UserFile(
                 fullname=fullname,
                 phone="+" + phone,
-                auth_account=[m.AuthAccount(email=email, auth_type=s.AuthType.BASIC)],
+                auth_accounts=[m.AuthAccount(email=email, auth_type=s.AuthType.BASIC)],
                 first_name=row[FIRST_NAME_INDEX],
                 last_name=row[LAST_NAME_INDEX],
                 location_ids=regions_ids,

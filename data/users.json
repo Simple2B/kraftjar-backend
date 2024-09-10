@@ -5,7 +5,7 @@
       "first_name": "Вікторія ",
       "last_name": "Коваленко",
       "phone": "+380994925544",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 1,
           "email": "mail1@gmail.com",
@@ -23,7 +23,7 @@
       "first_name": "Антон ",
       "last_name": "Салтиков",
       "phone": "+380663579792",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 2,
           "email": "tinkerino571@gmail.com",
@@ -41,7 +41,7 @@
       "first_name": "Кедеш ",
       "last_name": "Ернест",
       "phone": "+380634136800",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 3,
           "email": "ekedesh@gmail.com",
@@ -59,7 +59,7 @@
       "first_name": "Денис ",
       "last_name": "Редько",
       "phone": "+380681238266",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 4,
           "email": "4.@i.ua",
@@ -77,7 +77,7 @@
       "first_name": "Галина ",
       "last_name": "Юрчишин",
       "phone": "+380639030446",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 5,
           "email": "5.@bigmir.net",
@@ -95,7 +95,7 @@
       "first_name": "Юрій ",
       "last_name": "Хмелько",
       "phone": "+380443907570",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 6,
           "email": "6.@meta.ua",
@@ -113,7 +113,7 @@
       "first_name": "Олена",
       "last_name": "",
       "phone": "+380507865048",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 7,
           "email": "7.@ukr.net",
@@ -131,7 +131,7 @@
       "first_name": "Роман ",
       "last_name": "Громенко",
       "phone": "+380994123244",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 8,
           "email": "8.@gmail.com",
@@ -149,7 +149,7 @@
       "first_name": "Марія ",
       "last_name": "Загородська",
       "phone": "+380675903697",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 9,
           "email": "9.@meta.ua",
@@ -167,7 +167,7 @@
       "first_name": "Віктор ",
       "last_name": "Демидюк",
       "phone": "+380672417704",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 10,
           "email": "10.@bigmir.net",
@@ -185,7 +185,7 @@
       "first_name": "Анастасія ",
       "last_name": "Любкіна",
       "phone": "+380633985675",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 11,
           "email": "11.@i.ua",
@@ -203,7 +203,7 @@
       "first_name": "Богдан ",
       "last_name": "Несен",
       "phone": "+380681529387",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 12,
           "email": "12.@i.ua",
@@ -221,7 +221,7 @@
       "first_name": "Саранчук ",
       "last_name": "Людмила",
       "phone": "+380631504651",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 13,
           "email": "13.@gmail.com",
@@ -239,7 +239,7 @@
       "first_name": "Вадим ",
       "last_name": "Кравчук",
       "phone": "+380637846673",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 14,
           "email": "14.@i.ua",
@@ -257,7 +257,7 @@
       "first_name": "Надія ",
       "last_name": "Тиха",
       "phone": "+380442843730",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 15,
           "email": "15.@meta.ua",
@@ -275,7 +275,7 @@
       "first_name": "Дмитро ",
       "last_name": "Мільшевський",
       "phone": "+380688703041",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 16,
           "email": "16.@i.ua",
@@ -293,7 +293,7 @@
       "first_name": "Софія ",
       "last_name": "Олефіренко",
       "phone": "+380736542359",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 17,
           "email": "17.@ukr.net",
@@ -311,7 +311,7 @@
       "first_name": "Микола ",
       "last_name": "Олефіренко",
       "phone": "+380632352203",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 18,
           "email": "18.@meta.ua",
@@ -329,7 +329,7 @@
       "first_name": "Наталія ",
       "last_name": "Ільєнко\t\n",
       "phone": "+380676631208",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 19,
           "email": "19.@ukr.net",
@@ -347,7 +347,7 @@
       "first_name": "Сергій ",
       "last_name": "Архипенко",
       "phone": "+380674377195",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 20,
           "email": "20.@ukr.net",
@@ -365,7 +365,7 @@
       "first_name": "Гліб ",
       "last_name": "Матченко ",
       "phone": "+380667909021",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 21,
           "email": "21.@ukr.net",
@@ -383,7 +383,7 @@
       "first_name": "Марія ",
       "last_name": "Онещак ",
       "phone": "+380734139746",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 22,
           "email": "22.@bigmir.net",
@@ -401,7 +401,7 @@
       "first_name": "Юрій ",
       "last_name": "Танчук",
       "phone": "+380994180120",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 23,
           "email": "23.@meta.ua",
@@ -419,7 +419,7 @@
       "first_name": "Валентина ",
       "last_name": "Янченко",
       "phone": "+380635732722",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 24,
           "email": "24.@ukr.net",
@@ -437,7 +437,7 @@
       "first_name": "",
       "last_name": "",
       "phone": "+380638298744",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 25,
           "email": "25.@gmail.com",
@@ -455,7 +455,7 @@
       "first_name": "Ірина ",
       "last_name": "Онупрієнко",
       "phone": "+380688378643",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 26,
           "email": "26.@bigmir.net",
@@ -473,7 +473,7 @@
       "first_name": "Євгеній ",
       "last_name": "Дзюбенко",
       "phone": "+380638554945",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 27,
           "email": "27.@i.ua",
@@ -491,7 +491,7 @@
       "first_name": "Антон ",
       "last_name": "Мельник",
       "phone": "+380732192818",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 28,
           "email": "28.@bigmir.net",
@@ -509,7 +509,7 @@
       "first_name": "Уляна ",
       "last_name": "Грабач",
       "phone": "+380684960315",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 29,
           "email": "29.@ukr.net",
@@ -527,7 +527,7 @@
       "first_name": "Катерина ",
       "last_name": "Ющик",
       "phone": "+380632599549",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 30,
           "email": "30.@meta.ua",
@@ -545,7 +545,7 @@
       "first_name": "Анна ",
       "last_name": "Тимощук",
       "phone": "+380447340202",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 31,
           "email": "31.@bigmir.net",
@@ -563,7 +563,7 @@
       "first_name": "Віктор ",
       "last_name": "Береза",
       "phone": "+380683283309",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 32,
           "email": "32.@i.ua",
@@ -581,7 +581,7 @@
       "first_name": "Юрій ",
       "last_name": "Швець",
       "phone": "+380734848840",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 33,
           "email": "33.@bigmir.net",
@@ -599,7 +599,7 @@
       "first_name": "Дмитро ",
       "last_name": "Ємець",
       "phone": "+380683301426",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 34,
           "email": "34.@bigmir.net",
@@ -617,7 +617,7 @@
       "first_name": "Юлія ",
       "last_name": "Дзень",
       "phone": "+380997856822",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 35,
           "email": "35.@i.ua",
@@ -635,7 +635,7 @@
       "first_name": "Інна ",
       "last_name": "Мороз",
       "phone": "+380448147368",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 36,
           "email": "36.@i.ua",
@@ -653,7 +653,7 @@
       "first_name": "Аліна ",
       "last_name": "Панків",
       "phone": "+380636246465",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 37,
           "email": "37.@gmail.com",
@@ -671,7 +671,7 @@
       "first_name": "Орест ",
       "last_name": "Кондратенко",
       "phone": "+380685055458",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 38,
           "email": "38.@i.ua",
@@ -689,7 +689,7 @@
       "first_name": "Олеся ",
       "last_name": "Теремко",
       "phone": "+380664798768",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 39,
           "email": "39.@gmail.com",
@@ -707,7 +707,7 @@
       "first_name": "Світлана ",
       "last_name": "Гушко",
       "phone": "+380501922277",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 40,
           "email": "40.@bigmir.net",
@@ -725,7 +725,7 @@
       "first_name": "Олег ",
       "last_name": "Бонделюк",
       "phone": "+380666252986",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 41,
           "email": "41.@gmail.com",
@@ -743,7 +743,7 @@
       "first_name": "Богдана ",
       "last_name": "Олесків",
       "phone": "+380678894916",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 42,
           "email": "42.@bigmir.net",
@@ -761,7 +761,7 @@
       "first_name": "Марія ",
       "last_name": "Щунко",
       "phone": "+380632243070",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 43,
           "email": "43.@gmail.com",
@@ -779,7 +779,7 @@
       "first_name": "Сергій ",
       "last_name": "Лук'яненко",
       "phone": "+380509194444",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 44,
           "email": "44.@i.ua",
@@ -797,7 +797,7 @@
       "first_name": "Данило ",
       "last_name": "Грабач",
       "phone": "+380688796131",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 45,
           "email": "45.@i.ua",
@@ -815,7 +815,7 @@
       "first_name": "Надія ",
       "last_name": "Бабчук",
       "phone": "+380635808479",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 46,
           "email": "46.@meta.ua",
@@ -833,7 +833,7 @@
       "first_name": "Олег ",
       "last_name": "Мельник",
       "phone": "+380667130406",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 47,
           "email": "47.@meta.ua",
@@ -851,7 +851,7 @@
       "first_name": "Анастасія ",
       "last_name": "Левченко",
       "phone": "+380683814494",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 48,
           "email": "48.@meta.ua",
@@ -869,7 +869,7 @@
       "first_name": "Сергій ",
       "last_name": "Василенко",
       "phone": "+380638760834",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 49,
           "email": "49.@meta.ua",
@@ -887,7 +887,7 @@
       "first_name": "Петро",
       "last_name": "",
       "phone": "+380688602420",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 50,
           "email": "50.@ukr.net",
@@ -905,7 +905,7 @@
       "first_name": "Марина",
       "last_name": "",
       "phone": "+380632343309",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 51,
           "email": "51.@i.ua",
@@ -923,7 +923,7 @@
       "first_name": "",
       "last_name": "",
       "phone": "+380992737009",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 52,
           "email": "52.@meta.ua",
@@ -941,7 +941,7 @@
       "first_name": "Андрій",
       "last_name": "",
       "phone": "+380733308025",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 53,
           "email": "53.@meta.ua",
@@ -959,7 +959,7 @@
       "first_name": "Юлія",
       "last_name": "",
       "phone": "+380664144186",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 54,
           "email": "54.@gmail.com",
@@ -977,7 +977,7 @@
       "first_name": "Ольга",
       "last_name": "",
       "phone": "+380999331637",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 55,
           "email": "55.@meta.ua",
@@ -995,7 +995,7 @@
       "first_name": "Василь",
       "last_name": "",
       "phone": "+380666810154",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 56,
           "email": "56.@bigmir.net",
@@ -1013,7 +1013,7 @@
       "first_name": "Володимир",
       "last_name": "",
       "phone": "+380997801146",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 57,
           "email": "57.@bigmir.net",
@@ -1031,7 +1031,7 @@
       "first_name": "Юлія",
       "last_name": "",
       "phone": "+380673746287",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 58,
           "email": "58.@bigmir.net",
@@ -1049,7 +1049,7 @@
       "first_name": "Олена",
       "last_name": "",
       "phone": "+380666680781",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 59,
           "email": "59.@meta.ua",
@@ -1067,7 +1067,7 @@
       "first_name": "Ірина ",
       "last_name": "Ковальчук",
       "phone": "+380996008782",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 60,
           "email": "60.@gmail.com",
@@ -1085,7 +1085,7 @@
       "first_name": "Олег ",
       "last_name": "Мельник",
       "phone": "+380636522028",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 61,
           "email": "61.@gmail.com",
@@ -1103,7 +1103,7 @@
       "first_name": "Марина ",
       "last_name": "Савченко",
       "phone": "+380509023594",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 62,
           "email": "62.@i.ua",
@@ -1121,7 +1121,7 @@
       "first_name": "Петро ",
       "last_name": "Ковальов",
       "phone": "+380663193539",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 63,
           "email": "63.@meta.ua",
@@ -1139,7 +1139,7 @@
       "first_name": "Ольга ",
       "last_name": "Кузьменко",
       "phone": "+380662777590",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 64,
           "email": "64.@gmail.com",
@@ -1157,7 +1157,7 @@
       "first_name": "Андрій ",
       "last_name": "Литвиненко",
       "phone": "+380678576317",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 65,
           "email": "65.@meta.ua",
@@ -1175,7 +1175,7 @@
       "first_name": "Анастасія ",
       "last_name": "Макаренко",
       "phone": "+380682786855",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 66,
           "email": "66.@ukr.net",
@@ -1193,7 +1193,7 @@
       "first_name": "Копитко ",
       "last_name": "Віталій Якович",
       "phone": "+380739849261",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 67,
           "email": "67.@bigmir.net",
@@ -1211,7 +1211,7 @@
       "first_name": "Клименко ",
       "last_name": "Ніна Юрійвна",
       "phone": "+380506839004",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 68,
           "email": "68.@meta.ua",
@@ -1229,7 +1229,7 @@
       "first_name": "Осадча ",
       "last_name": "Юлія  Павлівна",
       "phone": "+380637567625",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 69,
           "email": "69.@ukr.net",
@@ -1247,7 +1247,7 @@
       "first_name": "Поперечна ",
       "last_name": "Ірина Андріївна",
       "phone": "+380685207567",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 70,
           "email": "70.@meta.ua",
@@ -1265,7 +1265,7 @@
       "first_name": "Лисак ",
       "last_name": "Ігор Тарасович",
       "phone": "+380508442249",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 71,
           "email": "71.@bigmir.net",
@@ -1283,7 +1283,7 @@
       "first_name": "Юрченко ",
       "last_name": "Юрій Юрійович",
       "phone": "+380504274816",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 72,
           "email": "72.@bigmir.net",
@@ -1301,7 +1301,7 @@
       "first_name": "Крапвчук ",
       "last_name": "Павло Олексанрович",
       "phone": "+380998213981",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 73,
           "email": "73.@i.ua",
@@ -1319,7 +1319,7 @@
       "first_name": "Фесенко ",
       "last_name": "Тамара Володимирівна",
       "phone": "+380992713181",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 74,
           "email": "74.@meta.ua",
@@ -1337,7 +1337,7 @@
       "first_name": "Сергій",
       "last_name": "",
       "phone": "+380737934132",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 75,
           "email": "75.@ukr.net",
@@ -1355,7 +1355,7 @@
       "first_name": "Ярослав ",
       "last_name": "Щудлик",
       "phone": "+380508353460",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 76,
           "email": "76.@bigmir.net",
@@ -1373,7 +1373,7 @@
       "first_name": "Аліна ",
       "last_name": "Сакович",
       "phone": "+380739560190",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 77,
           "email": "77.@gmail.com",
@@ -1391,7 +1391,7 @@
       "first_name": "Дмитро ",
       "last_name": "Брягін",
       "phone": "+380442826009",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 78,
           "email": "78.@gmail.com",
@@ -1409,7 +1409,7 @@
       "first_name": "Орест ",
       "last_name": "Стадник",
       "phone": "+380737250988",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 79,
           "email": "79.@i.ua",
@@ -1427,7 +1427,7 @@
       "first_name": "Олена ",
       "last_name": " Козак",
       "phone": "+380683950603",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 80,
           "email": "80.@meta.ua",
@@ -1445,7 +1445,7 @@
       "first_name": "Максим ",
       "last_name": "Глодан ",
       "phone": "+380448790060",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 81,
           "email": "81.@ukr.net",
@@ -1463,7 +1463,7 @@
       "first_name": "Анна ",
       "last_name": "Боднар",
       "phone": "+380739714391",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 82,
           "email": "82.@bigmir.net",
@@ -1481,7 +1481,7 @@
       "first_name": "Юрій ",
       "last_name": "Бушмін",
       "phone": "+380507675863",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 83,
           "email": "83.@i.ua",
@@ -1499,7 +1499,7 @@
       "first_name": "Майя ",
       "last_name": "Бушміна",
       "phone": "+380684167977",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 84,
           "email": "84.@meta.ua",
@@ -1517,7 +1517,7 @@
       "first_name": "Олена ",
       "last_name": "Бушміна",
       "phone": "+380687616624",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 85,
           "email": "85.@ukr.net",
@@ -1535,7 +1535,7 @@
       "first_name": "Олена ",
       "last_name": "Вовчак",
       "phone": "+380443077088",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 86,
           "email": "86.@gmail.com",
@@ -1553,7 +1553,7 @@
       "first_name": "Георгій ",
       "last_name": "Бушмін",
       "phone": "+380666752648",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 87,
           "email": "87.@i.ua",
@@ -1571,7 +1571,7 @@
       "first_name": "Юлія",
       "last_name": "",
       "phone": "+380997495662",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 88,
           "email": "88.@ukr.net",
@@ -1589,7 +1589,7 @@
       "first_name": "Антон",
       "last_name": "",
       "phone": "+380991544491",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 89,
           "email": "89.@meta.ua",
@@ -1607,7 +1607,7 @@
       "first_name": "Наталія",
       "last_name": "",
       "phone": "+380732380752",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 90,
           "email": "90.@gmail.com",
@@ -1625,7 +1625,7 @@
       "first_name": "Віталій",
       "last_name": "",
       "phone": "+380636509415",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 91,
           "email": "91.@ukr.net",
@@ -1643,7 +1643,7 @@
       "first_name": "Катерина",
       "last_name": "",
       "phone": "+380662702544",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 92,
           "email": "92.@i.ua",
@@ -1661,7 +1661,7 @@
       "first_name": "Євгенія ",
       "last_name": "Кирієнко",
       "phone": "+380681430947",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 93,
           "email": "93.@ukr.net",
@@ -1679,7 +1679,7 @@
       "first_name": "Микола ",
       "last_name": "Чернов",
       "phone": "+380675673478",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 94,
           "email": "nchernov@gmail.com",
@@ -1697,7 +1697,7 @@
       "first_name": "Варвара ",
       "last_name": "Щербина",
       "phone": "+380950647014",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 95,
           "email": "varvarashcherbyna7@gmail.com",
@@ -1715,7 +1715,7 @@
       "first_name": "Олесандр ",
       "last_name": "Щербина",
       "phone": "+380502564274",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 96,
           "email": "96.@meta.ua",
@@ -1733,7 +1733,7 @@
       "first_name": "Софія",
       "last_name": " Артимович",
       "phone": "+380965145456",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 97,
           "email": "sofiia.artymovych@gmail.com",
@@ -1751,7 +1751,7 @@
       "first_name": "Марина ",
       "last_name": "Грабчак",
       "phone": "+380931110246",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 98,
           "email": "mgrabchak1109@gmail.com",
@@ -1769,7 +1769,7 @@
       "first_name": "Кобрин ",
       "last_name": "Назар",
       "phone": "+380673838523",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 99,
           "email": "nazarr.kobryn@gmail.com",
@@ -1787,7 +1787,7 @@
       "first_name": "Констянтин ",
       "last_name": "Столярський",
       "phone": "+380968268714",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 100,
           "email": "saintkos117@gmail.com",
@@ -1805,7 +1805,7 @@
       "first_name": "Денис ",
       "last_name": "Бурімов",
       "phone": "+380954122379",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 101,
           "email": "denysburimov@gmail.com",
@@ -1823,7 +1823,7 @@
       "first_name": "Святослав",
       "last_name": "",
       "phone": "+380639993525",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 102,
           "email": "svyatoslav.artymovych@gmail.com ",
@@ -1841,7 +1841,7 @@
       "first_name": "Олександр ",
       "last_name": "Шевченко",
       "phone": "+380955831223",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 103,
           "email": "shevchenko.a.v.94@gmail.com",
@@ -1859,7 +1859,7 @@
       "first_name": "Тарас ",
       "last_name": "Лисак",
       "phone": "+380972865599",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 104,
           "email": "lysak.ipr@gmail.com",
@@ -1877,7 +1877,7 @@
       "first_name": "Максим ",
       "last_name": "Кузміч",
       "phone": "+380957207601",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 105,
           "email": "kuzmichmaksym1997@gmail.com",
@@ -1895,7 +1895,7 @@
       "first_name": "Василій",
       "last_name": "Хмура",
       "phone": "+380504622986",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 106,
           "email": "vkhmura@gmail.com",
@@ -1913,7 +1913,7 @@
       "first_name": "Остап",
       "last_name": "Приходько",
       "phone": "+380733490393",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 107,
           "email": "107.@i.ua",
@@ -1931,7 +1931,7 @@
       "first_name": "Марія",
       "last_name": "Новик",
       "phone": "+380675614705",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 108,
           "email": "108.@bigmir.net",
@@ -1949,7 +1949,7 @@
       "first_name": "Катя",
       "last_name": "Піскун",
       "phone": "+380507330904",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 109,
           "email": "109.@bigmir.net",
@@ -1967,7 +1967,7 @@
       "first_name": "Сергій",
       "last_name": "",
       "phone": "+380666984690",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 110,
           "email": "110.@gmail.com",
@@ -1985,7 +1985,7 @@
       "first_name": "Григорій",
       "last_name": "Худенко",
       "phone": "+380992853359",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 111,
           "email": "111.@ukr.net",
@@ -2003,7 +2003,7 @@
       "first_name": "Ірина ",
       "last_name": "Устенко",
       "phone": "+380673221495",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 112,
           "email": "112.@bigmir.net",
@@ -2021,7 +2021,7 @@
       "first_name": "Василій",
       "last_name": "",
       "phone": "+380674958747",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 113,
           "email": "113.@meta.ua",
@@ -2039,7 +2039,7 @@
       "first_name": "Соломія",
       "last_name": "",
       "phone": "+380734766179",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 114,
           "email": "114.@i.ua",
@@ -2057,7 +2057,7 @@
       "first_name": "Влад",
       "last_name": "",
       "phone": "+380445038222",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 115,
           "email": "115.@gmail.com",
@@ -2075,7 +2075,7 @@
       "first_name": "Наталія",
       "last_name": "",
       "phone": "+380994233061",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 116,
           "email": "116.@ukr.net",
@@ -2093,7 +2093,7 @@
       "first_name": "Ірина ",
       "last_name": "",
       "phone": "+380991077816",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 117,
           "email": "117.@gmail.com",
@@ -2111,7 +2111,7 @@
       "first_name": "Стефанія",
       "last_name": "Дячук",
       "phone": "+380632559855",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 118,
           "email": "118.@i.ua",
@@ -2129,7 +2129,7 @@
       "first_name": "Валентина",
       "last_name": "",
       "phone": "+380445821190",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 119,
           "email": "119.@ukr.net",
@@ -2147,7 +2147,7 @@
       "first_name": "Авдій",
       "last_name": "Закусило",
       "phone": "+380992040949",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 120,
           "email": "120.@bigmir.net",
@@ -2165,7 +2165,7 @@
       "first_name": "Люба",
       "last_name": "",
       "phone": "+380664213979",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 121,
           "email": "121.@gmail.com",
@@ -2183,7 +2183,7 @@
       "first_name": "Антон",
       "last_name": "Дудко",
       "phone": "+380501706399",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 122,
           "email": "122.@ukr.net",
@@ -2201,7 +2201,7 @@
       "first_name": "Анна ",
       "last_name": "Довгаль",
       "phone": "+380736055012",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 123,
           "email": "123.@bigmir.net",
@@ -2219,7 +2219,7 @@
       "first_name": "Інга",
       "last_name": "Журавленко",
       "phone": "+380638253867",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 124,
           "email": "124.@gmail.com",
@@ -2237,7 +2237,7 @@
       "first_name": "Гордій ",
       "last_name": "Долиняк",
       "phone": "+380681029652",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 125,
           "email": "125.@gmail.com",
@@ -2255,7 +2255,7 @@
       "first_name": "Анастасія ",
       "last_name": "",
       "phone": "+380509770596",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 126,
           "email": "126.@bigmir.net",
@@ -2273,7 +2273,7 @@
       "first_name": "Тат'яна",
       "last_name": "Зінько",
       "phone": "+380998360632",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 127,
           "email": "127.@ukr.net",
@@ -2291,7 +2291,7 @@
       "first_name": "Галина",
       "last_name": "",
       "phone": "+380738833468",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 128,
           "email": "128.@bigmir.net",
@@ -2309,7 +2309,7 @@
       "first_name": "Оксана",
       "last_name": "",
       "phone": "+380504063187",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 129,
           "email": "129.@bigmir.net",
@@ -2327,7 +2327,7 @@
       "first_name": "Віктор",
       "last_name": "",
       "phone": "+380448025170",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 130,
           "email": "130.@bigmir.net",
@@ -2345,7 +2345,7 @@
       "first_name": "Сергій",
       "last_name": "",
       "phone": "+380683242610",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 131,
           "email": "131.@meta.ua",
@@ -2363,7 +2363,7 @@
       "first_name": "Софія",
       "last_name": "",
       "phone": "+380636477374",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 132,
           "email": "132.@i.ua",
@@ -2381,7 +2381,7 @@
       "first_name": "Артем",
       "last_name": "",
       "phone": "+380733697672",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 133,
           "email": "133.@ukr.net",
@@ -2399,7 +2399,7 @@
       "first_name": "Марина ",
       "last_name": "",
       "phone": "+380509387009",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 134,
           "email": "134.@meta.ua",
@@ -2417,7 +2417,7 @@
       "first_name": "Соломія",
       "last_name": "",
       "phone": "+380448030419",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 135,
           "email": "135.@i.ua",
@@ -2435,7 +2435,7 @@
       "first_name": "Даша",
       "last_name": "",
       "phone": "+380675172351",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 136,
           "email": "136.@gmail.com",
@@ -2453,7 +2453,7 @@
       "first_name": "Леся",
       "last_name": "",
       "phone": "+380505966238",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 137,
           "email": "137.@meta.ua",
@@ -2471,7 +2471,7 @@
       "first_name": "Петро ",
       "last_name": "",
       "phone": "+380685977687",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 138,
           "email": "138.@bigmir.net",
@@ -2489,7 +2489,7 @@
       "first_name": "Павло",
       "last_name": "",
       "phone": "+380736772924",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 139,
           "email": "139.@i.ua",
@@ -2507,7 +2507,7 @@
       "first_name": "Гриша",
       "last_name": "",
       "phone": "+380636317406",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 140,
           "email": "140.@bigmir.net",
@@ -2525,7 +2525,7 @@
       "first_name": "Женя",
       "last_name": "",
       "phone": "+380737956909",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 141,
           "email": "141.@bigmir.net",
@@ -2543,7 +2543,7 @@
       "first_name": "Олександра",
       "last_name": "",
       "phone": "+380442398693",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 142,
           "email": "142.@gmail.com",
@@ -2561,7 +2561,7 @@
       "first_name": "Марія",
       "last_name": "Онисько",
       "phone": "+380667171533",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 143,
           "email": "143.@bigmir.net",
@@ -2579,7 +2579,7 @@
       "first_name": "Богдан",
       "last_name": "",
       "phone": "+380503147506",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 144,
           "email": "144.@bigmir.net",
@@ -2597,7 +2597,7 @@
       "first_name": "Констянтин",
       "last_name": "",
       "phone": "+380449416653",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 145,
           "email": "145.@ukr.net",
@@ -2615,7 +2615,7 @@
       "first_name": "Богдан",
       "last_name": "",
       "phone": "+380679411931",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 146,
           "email": "146.@ukr.net",
@@ -2633,7 +2633,7 @@
       "first_name": "Денис ",
       "last_name": "",
       "phone": "+380667785139",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 147,
           "email": "147.@bigmir.net",
@@ -2651,7 +2651,7 @@
       "first_name": "Тарас ",
       "last_name": "Зубицький",
       "phone": "+380689587051",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 148,
           "email": "148.@gmail.com",
@@ -2669,7 +2669,7 @@
       "first_name": "Євген ",
       "last_name": "Полотай",
       "phone": "+380662178273",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 149,
           "email": "149.@i.ua",
@@ -2687,7 +2687,7 @@
       "first_name": "Ірина ",
       "last_name": "Чаговець",
       "phone": "+380738463582",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 150,
           "email": "150.@bigmir.net",
@@ -2705,7 +2705,7 @@
       "first_name": "Надія",
       "last_name": "Шевчук",
       "phone": "+380673889680",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 151,
           "email": "151.@ukr.net",
@@ -2723,7 +2723,7 @@
       "first_name": "Світлана",
       "last_name": "Шматько",
       "phone": "+380736389247",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 152,
           "email": "152.@i.ua",
@@ -2741,7 +2741,7 @@
       "first_name": "Лариса",
       "last_name": "",
       "phone": "+380682895772",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 153,
           "email": "153.@bigmir.net",
@@ -2759,7 +2759,7 @@
       "first_name": "Єлена",
       "last_name": "Юркевич",
       "phone": "+380634141846",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 154,
           "email": "154.@meta.ua",
@@ -2777,7 +2777,7 @@
       "first_name": "Даша",
       "last_name": "Зубкова",
       "phone": "+380994869176",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 155,
           "email": "155.@meta.ua",
@@ -2795,7 +2795,7 @@
       "first_name": "Єва",
       "last_name": "",
       "phone": "+380503228501",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 156,
           "email": "156.@meta.ua",
@@ -2813,7 +2813,7 @@
       "first_name": "Володя",
       "last_name": "",
       "phone": "+380447255908",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 157,
           "email": "157.@ukr.net",
@@ -2831,7 +2831,7 @@
       "first_name": "Юра",
       "last_name": "",
       "phone": "+380731218121",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 158,
           "email": "158.@ukr.net",
@@ -2849,7 +2849,7 @@
       "first_name": "Іванна",
       "last_name": "",
       "phone": "+380668479124",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 159,
           "email": "159.@i.ua",
@@ -2867,7 +2867,7 @@
       "first_name": "",
       "last_name": "",
       "phone": "+380671044285",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 160,
           "email": "160.@meta.ua",
@@ -2885,7 +2885,7 @@
       "first_name": "",
       "last_name": "",
       "phone": "+380682159090",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 161,
           "email": "161.@bigmir.net",
@@ -2903,7 +2903,7 @@
       "first_name": "Борис",
       "last_name": "Бучко",
       "phone": "+380737549341",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 162,
           "email": "162.@bigmir.net",
@@ -2921,7 +2921,7 @@
       "first_name": "Слава",
       "last_name": "",
       "phone": "+380633706989",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 163,
           "email": "163.@meta.ua",
@@ -2939,7 +2939,7 @@
       "first_name": "Надія",
       "last_name": "Лісова",
       "phone": "+380638737836",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 164,
           "email": "164.@ukr.net",
@@ -2957,7 +2957,7 @@
       "first_name": "Анастасія",
       "last_name": "",
       "phone": "+380506440682",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 165,
           "email": "165.@ukr.net",
@@ -2975,7 +2975,7 @@
       "first_name": "Соломія",
       "last_name": "",
       "phone": "+380441463277",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 166,
           "email": "166.@meta.ua",
@@ -2993,7 +2993,7 @@
       "first_name": "Яна",
       "last_name": "Лубенець",
       "phone": "+380679333663",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 167,
           "email": "167.@gmail.com",
@@ -3011,7 +3011,7 @@
       "first_name": "Наташа",
       "last_name": "Швець",
       "phone": "+380996106636",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 168,
           "email": "168.@gmail.com",
@@ -3029,7 +3029,7 @@
       "first_name": "Ілля",
       "last_name": "",
       "phone": "+380442574380",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 169,
           "email": "169.@i.ua",
@@ -3047,7 +3047,7 @@
       "first_name": "Яніна",
       "last_name": "",
       "phone": "+380441405940",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 170,
           "email": "170.@meta.ua",
@@ -3065,7 +3065,7 @@
       "first_name": "Аліна",
       "last_name": "",
       "phone": "+380668529278",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 171,
           "email": "171.@gmail.com",
@@ -3083,7 +3083,7 @@
       "first_name": "Владислава",
       "last_name": "",
       "phone": "+380674991976",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 172,
           "email": "172.@meta.ua",
@@ -3101,7 +3101,7 @@
       "first_name": "Емілія",
       "last_name": "",
       "phone": "+380448252873",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 173,
           "email": "173.@meta.ua",
@@ -3119,7 +3119,7 @@
       "first_name": "Кароліна",
       "last_name": "",
       "phone": "+380507847772",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 174,
           "email": "174.@bigmir.net",
@@ -3137,7 +3137,7 @@
       "first_name": "Марта",
       "last_name": "",
       "phone": "+380507556436",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 175,
           "email": "175.@meta.ua",
@@ -3155,7 +3155,7 @@
       "first_name": "Тарас",
       "last_name": "",
       "phone": "+380684927269",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 176,
           "email": "176.@ukr.net",
@@ -3173,7 +3173,7 @@
       "first_name": "Сергій",
       "last_name": "",
       "phone": "+380443069461",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 177,
           "email": "177.@i.ua",
@@ -3191,7 +3191,7 @@
       "first_name": "Богдана",
       "last_name": "",
       "phone": "+380678127414",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 178,
           "email": "178.@ukr.net",
@@ -3209,7 +3209,7 @@
       "first_name": "Анна ",
       "last_name": "",
       "phone": "+380687033020",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 179,
           "email": "179.@bigmir.net",
@@ -3227,7 +3227,7 @@
       "first_name": "Руслана",
       "last_name": "",
       "phone": "+380992985668",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 180,
           "email": "180.@gmail.com",
@@ -3245,7 +3245,7 @@
       "first_name": "Христина",
       "last_name": "",
       "phone": "+380678300558",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 181,
           "email": "181.@i.ua",
@@ -3263,7 +3263,7 @@
       "first_name": "Ярина",
       "last_name": "",
       "phone": "+380999212393",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 182,
           "email": "182.@bigmir.net",
@@ -3281,7 +3281,7 @@
       "first_name": "Ярослава",
       "last_name": "",
       "phone": "+380739829118",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 183,
           "email": "183.@gmail.com",
@@ -3299,7 +3299,7 @@
       "first_name": "Артем",
       "last_name": "",
       "phone": "+380674818480",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 184,
           "email": "184.@meta.ua",
@@ -3317,7 +3317,7 @@
       "first_name": "Влад ",
       "last_name": "",
       "phone": "+380991361040",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 185,
           "email": "185.@bigmir.net",
@@ -3335,7 +3335,7 @@
       "first_name": "Василій",
       "last_name": "",
       "phone": "+380507806293",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 186,
           "email": "186.@gmail.com",
@@ -3353,7 +3353,7 @@
       "first_name": "Петро",
       "last_name": "",
       "phone": "+380448229873",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 187,
           "email": "187.@bigmir.net",
@@ -3371,7 +3371,7 @@
       "first_name": "Галина",
       "last_name": "",
       "phone": "+380739441523",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 188,
           "email": "188.@bigmir.net",
@@ -3389,7 +3389,7 @@
       "first_name": "Зінаїда",
       "last_name": "",
       "phone": "+380449480782",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 189,
           "email": "189.@ukr.net",
@@ -3407,7 +3407,7 @@
       "first_name": "Борис",
       "last_name": "",
       "phone": "+380731427647",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 190,
           "email": "190.@gmail.com",
@@ -3425,7 +3425,7 @@
       "first_name": "Андрій",
       "last_name": "",
       "phone": "+380674280626",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 191,
           "email": "191.@ukr.net",
@@ -3443,7 +3443,7 @@
       "first_name": "Остап",
       "last_name": "",
       "phone": "+380673126477",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 192,
           "email": "192.@gmail.com",
@@ -3461,7 +3461,7 @@
       "first_name": "Володя",
       "last_name": "",
       "phone": "+380685839890",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 193,
           "email": "193.@ukr.net",
@@ -3479,7 +3479,7 @@
       "first_name": "Маша",
       "last_name": "",
       "phone": "+380662929315",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 194,
           "email": "194.@gmail.com",
@@ -3497,7 +3497,7 @@
       "first_name": "Валентина",
       "last_name": "",
       "phone": "+380504139627",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 195,
           "email": "195.@ukr.net",
@@ -3515,7 +3515,7 @@
       "first_name": "Соня",
       "last_name": "",
       "phone": "+380444798461",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 196,
           "email": "196.@ukr.net",
@@ -3533,7 +3533,7 @@
       "first_name": "Аліна",
       "last_name": "",
       "phone": "+380633770958",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 197,
           "email": "197.@gmail.com",
@@ -3551,7 +3551,7 @@
       "first_name": "Ангеліна",
       "last_name": "",
       "phone": "+380447062165",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 198,
           "email": "198.@gmail.com",
@@ -3569,7 +3569,7 @@
       "first_name": "Олександр",
       "last_name": "",
       "phone": "+380687842599",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 199,
           "email": "199.@bigmir.net",
@@ -3587,7 +3587,7 @@
       "first_name": "Поліна",
       "last_name": "",
       "phone": "+380444707284",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 200,
           "email": "200.@gmail.com",
@@ -3605,7 +3605,7 @@
       "first_name": "Соломія",
       "last_name": "",
       "phone": "+380501479473",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 201,
           "email": "201.@gmail.com",
@@ -3623,7 +3623,7 @@
       "first_name": "Євгенія",
       "last_name": "",
       "phone": "+380689545118",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 202,
           "email": "202.@i.ua",
@@ -3641,7 +3641,7 @@
       "first_name": "Катерина",
       "last_name": "",
       "phone": "+380502539761",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 203,
           "email": "203.@meta.ua",
@@ -3659,7 +3659,7 @@
       "first_name": "Микола  ",
       "last_name": "",
       "phone": "+380997651575",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 204,
           "email": "204.@bigmir.net",
@@ -3677,7 +3677,7 @@
       "first_name": "Олег  ",
       "last_name": "",
       "phone": "+380445985748",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 205,
           "email": "205.@bigmir.net",
@@ -3695,7 +3695,7 @@
       "first_name": "Віталій",
       "last_name": "",
       "phone": "+380735080786",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 206,
           "email": "206.@bigmir.net",
@@ -3713,7 +3713,7 @@
       "first_name": "Артем",
       "last_name": "",
       "phone": "+380663561371",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 207,
           "email": "207.@meta.ua",
@@ -3731,7 +3731,7 @@
       "first_name": "Денис",
       "last_name": "",
       "phone": "+380638794669",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 208,
           "email": "208.@meta.ua",
@@ -3749,7 +3749,7 @@
       "first_name": "Антон",
       "last_name": "",
       "phone": "+380663062213",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 209,
           "email": "209.@gmail.com",
@@ -3767,7 +3767,7 @@
       "first_name": "Констянтин",
       "last_name": "",
       "phone": "+380662746369",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 210,
           "email": "210.@meta.ua",
@@ -3785,7 +3785,7 @@
       "first_name": "Віталіна",
       "last_name": "",
       "phone": "+380688999448",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 211,
           "email": "211.@ukr.net",
@@ -3803,7 +3803,7 @@
       "first_name": "Євгенія",
       "last_name": "",
       "phone": "+380676181146",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 212,
           "email": "212.@ukr.net",
@@ -3821,7 +3821,7 @@
       "first_name": "Софія",
       "last_name": "",
       "phone": "+380667843262",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 213,
           "email": "213.@bigmir.net",
@@ -3839,7 +3839,7 @@
       "first_name": "Марина",
       "last_name": "",
       "phone": "+380739004382",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 214,
           "email": "214.@ukr.net",
@@ -3857,7 +3857,7 @@
       "first_name": "Іванна",
       "last_name": "",
       "phone": "+4915141673473",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 215,
           "email": "radjessicarad@gmail.com",
@@ -3875,7 +3875,7 @@
       "first_name": "Наталія ",
       "last_name": "Хмура",
       "phone": "+380509782878",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 216,
           "email": "khmuranatalia@gmail.com",
@@ -3893,7 +3893,7 @@
       "first_name": "Гліб ",
       "last_name": "",
       "phone": "+380959998877",
-      "auth_account": [
+      "auth_accounts": [
         {
           "user_id": 217,
           "email": "217@gmail.com",
