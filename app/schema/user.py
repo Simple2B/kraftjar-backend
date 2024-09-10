@@ -78,13 +78,8 @@ class UsersSearchOut(BaseModel):
     query: str = ""
 
 
-class UserProfileOut(BaseModel):
-    id: int
-    uuid: str
-    fullname: str
-    phone: str
+class UserProfileOut(User):
     auth_account: list[AuthAccount] = []
-    is_deleted: bool
     owned_rates_count: int
     average_rate: float
     services: list[Service]

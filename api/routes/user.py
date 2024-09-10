@@ -20,15 +20,17 @@ user_router = APIRouter(prefix="/users", tags=["Users"])
 @user_router.get(
     "/me",
     status_code=status.HTTP_200_OK,
-    response_model=s.User,
+    response_model=s.UserProfileOut,
 )
 def get_current_user_profile(
+    lang: Language = Language.UA,
     current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
 ):
     """Returns the current user profile"""
 
     log(log.INFO, f"User {current_user.fullname} - {current_user.id} requested his profile")
-    return current_user
+    return c.get_user_profile(current_user.uuid, lang, db)
 
 
 @user_router.post("/search", status_code=status.HTTP_200_OK, response_model=s.UsersSearchOut)
