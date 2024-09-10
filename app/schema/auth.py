@@ -72,6 +72,7 @@ class AuthAccount(BaseModel):
         from_attributes=True,
     )
 
+
 class AuthAccountOut(BaseModel):
     email: str
     auth_type: AuthType

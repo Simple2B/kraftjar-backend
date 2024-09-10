@@ -27,7 +27,7 @@ def test_list(populate: FlaskClient):
     users = db.session.scalars(m.User.select().order_by(m.User.id).limit(USERS_COUNT)).all()
     assert len(users) == USERS_COUNT
     for user in users[:DEFAULT_PAGE_SIZE]:
-         assert user.phone in html
+        assert user.phone in html
 
     assert users[10].phone not in html
 

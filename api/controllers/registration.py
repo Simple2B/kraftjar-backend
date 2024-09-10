@@ -21,7 +21,6 @@ def register_user(user_data: s.RegistrationIn, db: Session) -> s.Token:
     if db.scalar(stmt) is not None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This email is already registered")
 
-
     user: m.User = m.User(
         fullname=user_data.fullname,
         phone=user_data.phone,

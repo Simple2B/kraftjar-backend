@@ -122,7 +122,7 @@ def apple_auth(auth_data: s.AppleAuthTokenIn, db: Session = Depends(get_db)):
 
     decoded_token = c.verify_apple_token(auth_data)
 
-    #TODO: find Apple ID and also search by oauth_id
+    # TODO: find Apple ID and also search by oauth_id
     apple_auth_filter = sa.and_(m.AuthAccount.auth_type == s.AuthType.APPLE, m.AuthAccount.email == decoded_token.email)
     user = db.scalar(sa.select(m.AuthAccount).where(apple_auth_filter))
 
@@ -130,7 +130,9 @@ def apple_auth(auth_data: s.AppleAuthTokenIn, db: Session = Depends(get_db)):
         log(log.INFO, "[Google Auth] User [%s] not found. Creating user", decoded_token.email)
         fullname = c.get_apple_fullname(decoded_token)
         user = m.User(
-            auth_accounts=[m.AuthAccount(auth_type=s.AuthType.APPLE, email=decoded_token.email, oauth_id=decoded_token.sub)],
+            auth_accounts=[
+                m.AuthAccount(auth_type=s.AuthType.APPLE, email=decoded_token.email, oauth_id=decoded_token.sub)
+            ],
             fullname=fullname,
         )
         db.add(user)
