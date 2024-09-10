@@ -56,6 +56,8 @@ def google_auth(auth_data: s.GoogleAuthIn, db: Session = Depends(get_db)):
             CFG.GOOGLE_CLIENT_ID,
         )
 
+        log(log.INFO, "Google token validated, response: %s", id_info_res)
+
         id_info = s.GoogleTokenVerification.model_validate(id_info_res)
 
         if id_info.iss not in ISSUER_WHITELIST:

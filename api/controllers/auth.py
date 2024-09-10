@@ -4,6 +4,7 @@ from jwt import PyJWKClient
 
 from app import schema as s
 from config import config
+from app.logger import log
 
 CFG = config()
 
@@ -25,6 +26,8 @@ def verify_apple_token(auth_data: s.AppleAuthTokenIn) -> s.AppleTokenVerificatio
         audience=CFG.MOBILE_APP_ID,
         algorithms=CFG.APPLE_DECODE_ALGORITHMS,
     )
+
+    log(log.INFO, "Apple token verified, response: %s", decoded_token_raw)
 
     decoded_token = s.AppleTokenVerification.model_validate(decoded_token_raw)
     return decoded_token
