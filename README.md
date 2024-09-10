@@ -49,11 +49,11 @@ yarn
 Go to `ssh s2b` and take the backup file from our server and put it in your environment:
 
 ```bash
-cp /home/runner/kraftjar/backup/db_2024-09-04T14:43:03Z.tgz .
+cp /home/runner/kraftjar/backup/db_2024-09-10T12:56:35Z.tgz .
 ```
 
 ```bash
-mv db_2024-09-04T14:43:03Z.tgz dump.tgz
+mv db_2024-09-10T12:56:35Z.tgz dump.tgz
 ```
 
 In our project, download dump.tgz:
@@ -78,16 +78,4 @@ dcupd db
 
 ```bash
 dce -T db psql < dump.sql
-```
-
-```bash
-flask fill-db-with-jobs
-```
-
-```bash
-flask create-admin
-```
-
-```bash
-flask export-users
 ```
