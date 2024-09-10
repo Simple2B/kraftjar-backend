@@ -1,5 +1,6 @@
 # Authorization schema
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
+from enum import Enum
 
 
 class Auth(BaseModel):
@@ -52,3 +53,21 @@ class AppleTokenVerification(BaseModel):
 
 class PhoneAuthIn(BaseModel):
     phone: str
+
+
+class AuthType(Enum):
+    BASIC = "basic"
+    GOOGLE = "google"
+    APPLE = "apple"
+    DIIA = "diia"
+
+
+class AuthAccount(BaseModel):
+    user_id: int
+    email: str
+    auth_type: AuthType
+    oauth_id: str = ""
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )

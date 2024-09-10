@@ -61,13 +61,13 @@ def google_auth(auth_data: s.GoogleAuthIn, db: Session = Depends(get_db)):
         if id_info.iss not in ISSUER_WHITELIST:
             raise ValueError("Wrong issuer.")
 
-        user = db.scalar(sa.select(m.User).where(sa.and_(m.User.email == id_info.email)))
+        user = db.scalar(sa.select(m.AuthAccount).where(sa.and_(m.AuthAccount.email == id_info.email)))
 
         if not user:
             log(log.INFO, "[Google Auth] User [%s] not found. Creating a guest user", id_info.email)
 
             user = m.User(
-                email=id_info.email,
+                auth_account=[m.AuthAccount(auth_type=s.AuthType.GOOGLE, email=id_info.email)],
                 fullname=id_info.name if id_info.name else "",
                 first_name=id_info.given_name if id_info.given_name else "",
                 last_name=id_info.family_name if id_info.family_name else "",
@@ -121,8 +121,8 @@ def apple_auth(auth_data: s.AppleAuthTokenIn, db: Session = Depends(get_db)):
     decoded_token = c.verify_apple_token(auth_data)
 
     user = db.scalar(
-        sa.select(m.User).where(
-            m.User.email == decoded_token.email,
+        sa.select(m.AuthAccount).where(
+            m.AuthAccount.email == decoded_token.email,
         )
     )
 
@@ -130,7 +130,7 @@ def apple_auth(auth_data: s.AppleAuthTokenIn, db: Session = Depends(get_db)):
         log(log.INFO, "[Google Auth] User [%s] not found. Creating a guest user", decoded_token.email)
         fullname = c.get_apple_fullname(decoded_token)
         user = m.User(
-            email=decoded_token.email,
+            auth_account=[m.AuthAccount(auth_type=s.AuthType.APPLE, email=decoded_token.email)],
             fullname=fullname,
         )
         db.add(user)

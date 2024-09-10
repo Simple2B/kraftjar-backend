@@ -46,6 +46,9 @@ def db() -> Generator[orm.Session, None, None]:
         app.dependency_overrides[get_db] = override_get_db
         yield session
 
+        # Clean up
+        db.Model.metadata.drop_all(bind=session.bind)
+
 
 @pytest.fixture
 def full_db(db: orm.Session) -> Generator[orm.Session, None, None]:

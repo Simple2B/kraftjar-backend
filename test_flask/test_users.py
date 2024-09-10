@@ -27,8 +27,11 @@ def test_list(populate: FlaskClient):
     users = db.session.scalars(m.User.select().order_by(m.User.id).limit(USERS_COUNT)).all()
     assert len(users) == USERS_COUNT
     for user in users[:DEFAULT_PAGE_SIZE]:
-        assert user.email in html
-    assert users[10].email not in html
+        emails = [u.email for u in user.auth_account]
+        for email in emails:
+            assert email in html
+
+    assert users[10].auth_account[0].email not in html
 
     populate.application.config["PAGE_LINKS_NUMBER"] = 6
     response = populate.get("/user/?page=6")

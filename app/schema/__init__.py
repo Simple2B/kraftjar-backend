@@ -44,6 +44,8 @@ from .auth import (
     AppleAuthenticationFullName,
     AppleTokenVerification,
     PhoneAuthIn,
+    AuthType,
+    AuthAccount,
 )
 from .registration import RegistrationIn, SetPhoneIn, ValidatePhoneIn, SetPhoneOut
 from .field import FieldCreate

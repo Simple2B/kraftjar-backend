@@ -22,11 +22,10 @@ def test_register(db: Session, client: TestClient):
     assert services
 
     USER_PHONE = "1234567890"
-    USER_EMAIL = "test_user@kraftjar.net"
     USER_FNAME = "TestFName"
     USER_LNAME = "TestLName"
     USER_PASSWORD = "test_password"
-    db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.email == USER_EMAIL))
+    db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.phone == USER_PHONE))
     if db_user:
         db.delete(db_user)
         db.commit()
@@ -34,7 +33,6 @@ def test_register(db: Session, client: TestClient):
     user_data = s.RegistrationIn(
         fullname=USER_FNAME + " " + USER_LNAME,
         phone=USER_PHONE,
-        email=USER_EMAIL,
         password=USER_PASSWORD,
         services=[s.uuid for s in services],
         locations=[loc.uuid for loc in locations],
@@ -47,24 +45,11 @@ def test_register(db: Session, client: TestClient):
     res = client.get("api/users/me", headers=header)
     assert res.status_code == status.HTTP_200_OK
 
-    # Try to register again with the same email
-    USER_PHONE2 = "999999999"
-    user_data = s.RegistrationIn(
-        fullname=USER_FNAME + " " + USER_LNAME,
-        phone=USER_PHONE2,
-        email=USER_EMAIL,
-        password=USER_PASSWORD,
-    )
-    response = client.post("/api/registration/", json=user_data.model_dump())
-    assert response.status_code == status.HTTP_409_CONFLICT
-
     # Try to register again with the same phone
-    USER_EMAIL2 = "new_email@new.york.post.org"
     USER_PHONE2 = USER_PHONE
     user_data = s.RegistrationIn(
         fullname=USER_FNAME + " " + USER_LNAME,
         phone=USER_PHONE2,
-        email=USER_EMAIL2,
         password=USER_PASSWORD,
     )
     response = client.post("/api/registration/", json=user_data.model_dump())

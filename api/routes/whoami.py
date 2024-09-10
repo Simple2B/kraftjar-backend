@@ -17,6 +17,6 @@ def whoami(
     app_version: str | None = None,
 ):
     if app_version:
-        log(log.INFO, "App version for user [%s]: [%s]", current_user.email, app_version)
+        log(log.INFO, "App version for user [%s]: [%s]", current_user.fullname, app_version)
 
     return s.WhoAmI.model_validate(current_user)

@@ -4,6 +4,7 @@ from alchemical.flask import Alchemical
 from faker import Faker
 import sqlalchemy as sa
 from sqlalchemy.orm import Session
+from app.schema.auth import AuthType
 
 from app import models as m
 from app.logger import log
@@ -37,7 +38,7 @@ def create_users(db: Session, count: int = USER_COUNT):
     for i in range(1, count + 1):
         user = m.User(
             fullname=faker.last_name(),
-            email=faker.email(),
+            auth_account=[m.AuthAccount(email=faker.email(), auth_type=AuthType.BASIC)],
             phone=faker.phone_number(),
         )
         db.add(user)

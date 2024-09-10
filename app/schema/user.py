@@ -2,6 +2,8 @@ from typing import Sequence
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
+
+from app.schema.auth import AuthAccount
 from app.schema.language import Language
 
 from .location import LocationStrings
@@ -10,15 +12,12 @@ from .service import Service
 
 class User(BaseModel):
     id: int
+    uuid: str
     fullname: str
     phone: str = ""
-    email: str
+    auth_account: list[AuthAccount] = []
     is_deleted: bool
     phone_verified: bool
-
-    google_id: str
-    apple_id: str
-    diia_id: str
 
     is_volunteer: bool
 
@@ -32,7 +31,7 @@ class UserFile(BaseModel):
     first_name: str = ""
     last_name: str = ""
     phone: str
-    email: str
+    auth_account: list[AuthAccount] = []
     password: str
     location_ids: list[int] = []
     service_ids: list[int] = []
@@ -84,7 +83,7 @@ class UserProfileOut(BaseModel):
     uuid: str
     fullname: str
     phone: str
-    email: str
+    auth_account: list[AuthAccount] = []
     is_deleted: bool
     owned_rates_count: int
     average_rate: float
