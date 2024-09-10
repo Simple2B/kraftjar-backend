@@ -3,7 +3,7 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
 
-from app.schema.auth import AuthAccount
+from app.schema.auth import AuthAccount, AuthAccountOut
 from app.schema.language import Language
 
 from .location import LocationStrings
@@ -15,7 +15,6 @@ class User(BaseModel):
     uuid: str
     fullname: str
     phone: str = ""
-    auth_accounts: list[AuthAccount] = []
     is_deleted: bool
     phone_verified: bool
 
@@ -79,7 +78,7 @@ class UsersSearchOut(BaseModel):
 
 
 class UserProfileOut(User):
-    auth_accounts: list[AuthAccount] = []
+    auth_accounts: list[AuthAccountOut] = []
     owned_rates_count: int
     average_rate: float
     services: list[Service]

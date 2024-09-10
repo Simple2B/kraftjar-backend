@@ -16,14 +16,16 @@ def register_user(user_data: s.RegistrationIn, db: Session) -> s.Token:
     if db.scalar(stmt) is not None:
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="This phone is already registered")
 
-    # optional when registering
-    # (hardcoded for now until api router will be created)
-    user_email = ""
+    # check if email is already registered
+    stmt = sa.select(m.User).where(m.User.auth_accounts.any(m.AuthAccount.email == user_data.email))
+    if db.scalar(stmt) is not None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This email is already registered")
+
 
     user: m.User = m.User(
         fullname=user_data.fullname,
         phone=user_data.phone,
-        auth_accounts=[m.AuthAccount(auth_type=s.AuthType.BASIC, email=user_email)],
+        auth_accounts=[m.AuthAccount(auth_type=s.AuthType.BASIC, email=user_data.email)],
         password=user_data.password,
         is_volunteer=user_data.is_volunteer,
     )

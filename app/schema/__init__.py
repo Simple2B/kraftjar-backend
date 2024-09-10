@@ -46,6 +46,7 @@ from .auth import (
     PhoneAuthIn,
     AuthType,
     AuthAccount,
+    AuthAccountOut,
 )
 from .registration import RegistrationIn, SetPhoneIn, ValidatePhoneIn, SetPhoneOut
 from .field import FieldCreate

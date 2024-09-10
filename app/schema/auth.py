@@ -71,3 +71,7 @@ class AuthAccount(BaseModel):
     model_config = ConfigDict(
         from_attributes=True,
     )
+
+class AuthAccountOut(BaseModel):
+    email: str
+    auth_type: AuthType
