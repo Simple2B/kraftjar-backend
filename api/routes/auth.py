@@ -64,7 +64,7 @@ def google_auth(auth_data: s.GoogleAuthIn, db: Session = Depends(get_db)):
         user = db.scalar(sa.select(m.AuthAccount).where(sa.and_(m.AuthAccount.email == id_info.email)))
 
         if not user:
-            log(log.INFO, "[Google Auth] User [%s] not found. Creating a guest user", id_info.email)
+            log(log.INFO, "[Google Auth] User [%s] not found. Creating user", id_info.email)
 
             user = m.User(
                 auth_account=[m.AuthAccount(auth_type=s.AuthType.GOOGLE, email=id_info.email)],
@@ -127,7 +127,7 @@ def apple_auth(auth_data: s.AppleAuthTokenIn, db: Session = Depends(get_db)):
     )
 
     if not user:
-        log(log.INFO, "[Google Auth] User [%s] not found. Creating a guest user", decoded_token.email)
+        log(log.INFO, "[Google Auth] User [%s] not found. Creating user", decoded_token.email)
         fullname = c.get_apple_fullname(decoded_token)
         user = m.User(
             auth_account=[m.AuthAccount(auth_type=s.AuthType.APPLE, email=decoded_token.email)],
