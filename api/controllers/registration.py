@@ -17,9 +17,16 @@ def register_user(user_data: s.RegistrationIn, db: Session) -> s.Token:
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="This phone is already registered")
 
     # check if email is already registered
-    stmt = sa.select(m.User).where(m.User.auth_accounts.any(m.AuthAccount.email == user_data.email))
-    if db.scalar(stmt) is not None:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This email is already registered")
+    # email is optional
+    if user_data.email:
+        stmt = sa.select(m.User).where(
+            sa.and_(
+                m.User.auth_accounts.any(m.AuthAccount.email == user_data.email),
+                m.AuthAccount.auth_type == s.AuthType.BASIC,
+            )
+        )
+        if db.scalar(stmt) is not None:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This email is already registered")
 
     user: m.User = m.User(
         fullname=user_data.fullname,
