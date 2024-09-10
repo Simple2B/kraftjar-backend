@@ -44,16 +44,26 @@ def write_users_in_db(users: list[s.UserFile], with_print: bool = True):
         assert session.scalar(sa.select(m.Service)), "Services table is empty. Please run `flask export-services` first"
 
         for user in users:
-            if session.scalar(sa.select(m.User).where(m.User.email == user.email)):
-                log(log.DEBUG, "User with email [%s] already exists", user.email)
+            if session.scalar(sa.select(m.User).where(m.User.phone == user.phone)):
+                log(log.DEBUG, "User with phone [%s] already exists", user.phone)
                 continue
+
+            auth_accounts = [
+                m.AuthAccount(
+                    user_id=account.user_id,
+                    email=account.email,
+                    auth_type=account.auth_type,
+                    oauth_id=account.oauth_id,
+                )
+                for account in user.auth_accounts
+            ]
 
             new_user: m.User = m.User(
                 fullname=user.fullname,
                 first_name=user.first_name,
                 last_name=user.last_name,
                 phone=user.phone,
-                email=user.email,
+                auth_accounts=auth_accounts,
                 password=user.password,
                 is_volunteer=user.is_volunteer,
                 phone_verified=True,
@@ -70,7 +80,7 @@ def write_users_in_db(users: list[s.UserFile], with_print: bool = True):
                 new_user.services.append(service)
             session.add(new_user)
             if with_print:
-                log(log.INFO, f"Created user {user.fullname} =====> {user.email} ======> {user.phone}")
+                log(log.INFO, f"Created user {user.fullname} ======> {user.phone}")
 
 
 # a function for filling the table with phones for users who do not have a phone number. Used only once
@@ -217,7 +227,7 @@ def export_users_from_google_spreadsheets(with_print: bool = True, in_json: bool
             s.UserFile(
                 fullname=fullname,
                 phone="+" + phone,
-                email=email,
+                auth_accounts=[m.AuthAccount(email=email, auth_type=s.AuthType.BASIC)],
                 first_name=row[FIRST_NAME_INDEX],
                 last_name=row[LAST_NAME_INDEX],
                 location_ids=regions_ids,

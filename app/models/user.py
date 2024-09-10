@@ -21,6 +21,7 @@ CFG = config()
 if TYPE_CHECKING:
     from .location import Location
     from .service import Service
+    from .auth_account import AuthAccount
 
 
 class User(db.Model, ModelMixin):
@@ -43,14 +44,10 @@ class User(db.Model, ModelMixin):
     first_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
     last_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
 
-    email: orm.Mapped[str] = orm.mapped_column(sa.String(128))  # fill in registration form
-
     phone: orm.Mapped[str] = orm.mapped_column(sa.String(32), default="")  # fill in registration form
     phone_verified: orm.Mapped[bool] = orm.mapped_column(default=False)
 
-    google_id: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")
-    apple_id: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")
-    diia_id: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")
+    auth_accounts: orm.Mapped[list["AuthAccount"]] = orm.relationship("AuthAccount", backref="user")
 
     password_hash: orm.Mapped[str | None] = orm.mapped_column(sa.String(256))  # fill in registration form
     created_at: orm.Mapped[datetime] = orm.mapped_column(default=datetime.utcnow)
@@ -95,16 +92,8 @@ class User(db.Model, ModelMixin):
             return user
         return None
 
-    @property
-    def is_auth_by_google(self):
-        return bool(self.google_id)
-
-    @property
-    def is_auth_by_apple(self):
-        return bool(self.apple_id)
-
     def __repr__(self):
-        return f"<{self.id}: {self.fullname},{self.email}>"
+        return f"<{self.id}: {self.fullname}>"
 
     # uses for editing user
     @property

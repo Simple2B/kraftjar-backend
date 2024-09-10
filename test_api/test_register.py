@@ -21,12 +21,12 @@ def test_register(db: Session, client: TestClient):
     services = db.scalars(sa.select(m.Service).limit(SERVICES_NUM)).all()
     assert services
 
-    USER_PHONE = "1234567890"
     USER_EMAIL = "test_user@kraftjar.net"
+    USER_PHONE = "1234567890"
     USER_FNAME = "TestFName"
     USER_LNAME = "TestLName"
     USER_PASSWORD = "test_password"
-    db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.email == USER_EMAIL))
+    db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.phone == USER_PHONE))
     if db_user:
         db.delete(db_user)
         db.commit()

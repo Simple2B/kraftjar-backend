@@ -61,13 +61,15 @@ def google_auth(auth_data: s.GoogleAuthIn, db: Session = Depends(get_db)):
         if id_info.iss not in ISSUER_WHITELIST:
             raise ValueError("Wrong issuer.")
 
-        user = db.scalar(sa.select(m.User).where(sa.and_(m.User.email == id_info.email)))
+        # TODO: find Google ID and also search by oauth_id
+        google_auth_filter = sa.and_(m.AuthAccount.auth_type == s.AuthType.GOOGLE, m.AuthAccount.email == id_info.email)
+        user = db.scalar(sa.select(m.AuthAccount).where(google_auth_filter))
 
         if not user:
             log(log.INFO, "[Google Auth] User [%s] not found. Creating user", id_info.email)
 
             user = m.User(
-                email=id_info.email,
+                auth_accounts=[m.AuthAccount(auth_type=s.AuthType.GOOGLE, email=id_info.email, oauth_id=id_info.sub)],
                 fullname=id_info.name if id_info.name else "",
                 first_name=id_info.given_name if id_info.given_name else "",
                 last_name=id_info.family_name if id_info.family_name else "",
@@ -120,17 +122,17 @@ def apple_auth(auth_data: s.AppleAuthTokenIn, db: Session = Depends(get_db)):
 
     decoded_token = c.verify_apple_token(auth_data)
 
-    user = db.scalar(
-        sa.select(m.User).where(
-            m.User.email == decoded_token.email,
-        )
-    )
+    # TODO: find Apple ID and also search by oauth_id
+    apple_auth_filter = sa.and_(m.AuthAccount.auth_type == s.AuthType.APPLE, m.AuthAccount.email == decoded_token.email)
+    user = db.scalar(sa.select(m.AuthAccount).where(apple_auth_filter))
 
     if not user:
         log(log.INFO, "[Google Auth] User [%s] not found. Creating user", decoded_token.email)
         fullname = c.get_apple_fullname(decoded_token)
         user = m.User(
-            email=decoded_token.email,
+            auth_accounts=[
+                m.AuthAccount(auth_type=s.AuthType.APPLE, email=decoded_token.email, oauth_id=decoded_token.sub)
+            ],
             fullname=fullname,
         )
         db.add(user)
