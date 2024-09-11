@@ -147,6 +147,7 @@ def register_google_account(
 
     log(log.INFO, "User [%s] successfully added Google account, email: [%s]", current_user.fullname, email)
 
+
 @user_router.delete("/auth-account/{auth_account_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_auth_account(
     auth_account_id: int,
