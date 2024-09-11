@@ -1,9 +1,12 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 import sqlalchemy as sa
 
+from google.oauth2 import id_token
+from google.auth.transport import requests
+
 import api.controllers as c
-from api.controllers.user import create_out_search_users
+from api.controllers.user import create_out_search_users, get_user_google_account
 import app.models as m
 import app.schema as s
 from api.dependency import get_current_user
@@ -108,3 +111,68 @@ def get_public_top_experts(
     ).all()
 
     return s.PublicTopExpertsOut(top_experts=create_out_search_users(experts, lang, db))
+
+
+@user_router.post("/register-google-account", status_code=status.HTTP_201_CREATED)
+def register_google_account(
+    auth_data: s.GoogleAuthIn,
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+    responses={
+        status.HTTP_409_CONFLICT: {"description": "This Google account is already in use"},
+    },
+):
+    """Register Google account for user"""
+
+    id_info_res: s.GoogleTokenVerification = id_token.verify_oauth2_token(
+        auth_data.id_token,
+        requests.Request(),
+        CFG.GOOGLE_CLIENT_ID,
+    )
+
+    email = id_info_res.email
+    oauth_id = id_info_res.sub
+
+    google_account = get_user_google_account(email, oauth_id, current_user, db)
+
+    if google_account:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This Google account is already in use")
+
+    new_google_account = m.AuthAccount(
+        user_id=current_user.id, email=email, auth_type=s.AuthType.GOOGLE, oauth_id=oauth_id
+    )
+    db.add(new_google_account)
+    db.commit()
+
+    log(log.INFO, "User [%s] successfully added Google account, email: [%s]", current_user.fullname, email)
+
+
+@user_router.post("/delete-google-account", status_code=status.HTTP_204_NO_CONTENT)
+def delete_google_account(
+    auth_data: s.GoogleAuthIn,
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Google account not found"},
+    },
+):
+    """Delete Google account for user"""
+
+    id_info_res: s.GoogleTokenVerification = id_token.verify_oauth2_token(
+        auth_data.id_token,
+        requests.Request(),
+        CFG.GOOGLE_CLIENT_ID,
+    )
+
+    email = id_info_res.email
+    oauth_id = id_info_res.sub
+
+    google_account = get_user_google_account(email, oauth_id, current_user, db)
+
+    if not google_account:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Google account not found")
+
+    google_account.is_deleted = True
+    db.commit()
+
+    log(log.INFO, "User [%s] successfully delete Google account, email: [%s]", current_user.fullname, email)

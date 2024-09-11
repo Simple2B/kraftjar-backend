@@ -4,11 +4,13 @@ import sqlalchemy as sa
 from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
+from unittest import mock
 
 from app import models as m
 from app import schema as s
 from app.schema.language import Language
 from config import config
+from test_api.test_auth import DUMMY_GOOGLE_VALIDATION
 
 CFG = config()
 
@@ -118,3 +120,34 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     assert data.top_users
     for user in data.top_users:
         assert any([query_data.query.lower() in service.name.lower() for service in user.services])
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_google_account(monkeypatch, client: TestClient, auth_header: dict[str, str], full_db: Session):
+    mock_verify_oauth2_token = mock.Mock(return_value=DUMMY_GOOGLE_VALIDATION)
+    monkeypatch.setattr("api.routes.user.id_token.verify_oauth2_token", mock_verify_oauth2_token)
+
+    data = s.GoogleAuthIn(id_token="test_token")
+
+    response = client.post("/api/users/register-google-account", headers=auth_header, json=data.model_dump())
+    assert response.status_code == status.HTTP_201_CREATED
+
+    mock_verify_oauth2_token.assert_called_once_with(
+        "test_token",
+        mock.ANY,
+        CFG.GOOGLE_CLIENT_ID,
+    )
+
+    # Test delete google account
+    response = client.post("/api/users/delete-google-account", headers=auth_header, json=data.model_dump())
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+
+    google_account_filter = sa.and_(
+        m.AuthAccount.email == DUMMY_GOOGLE_VALIDATION.email,
+        m.AuthAccount.oauth_id == DUMMY_GOOGLE_VALIDATION.sub,
+        m.AuthAccount.auth_type == s.AuthType.GOOGLE,
+    )
+
+    google_account = full_db.scalar(sa.select(m.AuthAccount).where(google_account_filter))
+    assert google_account
+    assert google_account.is_deleted is True
