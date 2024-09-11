@@ -228,3 +228,15 @@ def get_public_user_profile(user_uuid: str, lang: Language, db: Session) -> s.Pu
         locations=locations,
         owned_rates_count=db_user.owned_rates_count,
     )
+
+
+def get_user_google_account(email: str, oauth_id: str, current_user: m.User, db: Session) -> m.AuthAccount | None:
+    google_account_filter = sa.and_(
+        m.AuthAccount.email == email,
+        m.AuthAccount.oauth_id == oauth_id,
+        m.AuthAccount.user_id == current_user.id,
+        m.AuthAccount.auth_type == s.AuthType.GOOGLE,
+    )
+
+    google_account = db.scalar(sa.select(m.AuthAccount).where(google_account_filter))
+    return google_account

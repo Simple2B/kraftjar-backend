@@ -1,9 +1,13 @@
-from fastapi import APIRouter, Depends, status
+from datetime import datetime
+from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 import sqlalchemy as sa
 
+from google.oauth2 import id_token
+from google.auth.transport import requests
+
 import api.controllers as c
-from api.controllers.user import create_out_search_users
+from api.controllers.user import create_out_search_users, get_user_google_account
 import app.models as m
 import app.schema as s
 from api.dependency import get_current_user
@@ -108,3 +112,77 @@ def get_public_top_experts(
     ).all()
 
     return s.PublicTopExpertsOut(top_experts=create_out_search_users(experts, lang, db))
+
+
+@user_router.post("/register-google-account", status_code=status.HTTP_201_CREATED)
+def register_google_account(
+    auth_data: s.GoogleAuthIn,
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+    responses={
+        status.HTTP_409_CONFLICT: {"description": "This Google account is already in use"},
+    },
+):
+    """Register Google account for user"""
+
+    id_info_res: s.GoogleTokenVerification = id_token.verify_oauth2_token(
+        auth_data.id_token,
+        requests.Request(),
+        CFG.GOOGLE_CLIENT_ID,
+    )
+
+    email = id_info_res.email
+    oauth_id = id_info_res.sub
+
+    google_account = get_user_google_account(email, oauth_id, current_user, db)
+
+    if google_account:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This Google account is already in use")
+
+    new_google_account = m.AuthAccount(
+        user_id=current_user.id, email=email, auth_type=s.AuthType.GOOGLE, oauth_id=oauth_id
+    )
+    db.add(new_google_account)
+    db.commit()
+
+    log(log.INFO, "User [%s] successfully added Google account, email: [%s]", current_user.fullname, email)
+
+
+@user_router.delete("/auth-account/{auth_account_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_auth_account(
+    auth_account_id: int,
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Auth account not found"},
+    },
+):
+    """Delete auth account for user"""
+
+    auth_account_filter = sa.and_(
+        m.AuthAccount.id == auth_account_id,
+        m.AuthAccount.user_id == current_user.id,
+    )
+
+    auth_account = db.scalar(sa.select(m.AuthAccount).where(auth_account_filter))
+
+    if not auth_account:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Auth account not found")
+
+    if auth_account.auth_type == s.AuthType.BASIC:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="You can't delete basic account")
+
+    current_timestamp = datetime.now()
+
+    auth_account.is_deleted = True
+    auth_account.email = f"deleted-{current_timestamp}"
+    auth_account.oauth_id = f"deleted-{current_timestamp}"
+    db.commit()
+
+    log(
+        log.INFO,
+        "User [%s] successfully deleted auth account: [%s], phone: [%s]",
+        current_user.fullname,
+        auth_account.auth_type,
+        current_user.phone,
+    )

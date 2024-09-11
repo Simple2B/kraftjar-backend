@@ -13,10 +13,21 @@ class GoogleAuthIn(BaseModel):
 
 
 class GoogleTokenVerification(BaseModel):
+    # These six fields are included in all Google ID Tokens.
+    # The issuer, or signer, of the token. For Google-signed ID tokens, this value is https://accounts.google.com.
     iss: str
+    # authorized party, Who the token was issued to.
     azp: str
+    # The audience of the token. The value of this claim must match the application or service that uses the token to authenticate the request. For more information, see ID token aud claim.
     aud: str
+    # The subject: the ID that represents the principal making the request.
+    # (Next.js takes this field as the main user ID)
     sub: str
+    # issued at
+    iat: int
+    # expiration time
+    exp: int
+    # These seven fields are only included when the user has granted the "profile" and "email" OAuth scopes to the application.
     email: str
     email_verified: bool
     name: str | None = None
@@ -24,8 +35,6 @@ class GoogleTokenVerification(BaseModel):
     given_name: str | None = None
     family_name: str | None = None
     locale: str | None = None
-    iat: int
-    exp: int
 
 
 class AppleAuthTokenIn(BaseModel):
@@ -74,5 +83,6 @@ class AuthAccount(BaseModel):
 
 
 class AuthAccountOut(BaseModel):
+    oauth_id: str = ""
     email: str
     auth_type: AuthType
