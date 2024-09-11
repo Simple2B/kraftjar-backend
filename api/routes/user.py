@@ -147,38 +147,41 @@ def register_google_account(
 
     log(log.INFO, "User [%s] successfully added Google account, email: [%s]", current_user.fullname, email)
 
-
-@user_router.delete("/delete-google-account/{auth_account_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_google_account(
-    auth_account_id: str,
+@user_router.delete("/auth-account/{auth_account_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_auth_account(
+    auth_account_id: int,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
     responses={
-        status.HTTP_404_NOT_FOUND: {"description": "Google account not found"},
+        status.HTTP_404_NOT_FOUND: {"description": "Auth account not found"},
     },
 ):
-    """Delete Google account for user"""
+    """Delete auth account for user"""
 
-    google_account_filter = sa.and_(
-        m.AuthAccount.oauth_id == auth_account_id,
+    auth_account_filter = sa.and_(
+        m.AuthAccount.id == auth_account_id,
         m.AuthAccount.user_id == current_user.id,
     )
 
-    google_account = db.scalar(sa.select(m.AuthAccount).where(google_account_filter))
+    auth_account = db.scalar(sa.select(m.AuthAccount).where(auth_account_filter))
 
-    if not google_account:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Google account not found")
+    if not auth_account:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Auth account not found")
 
-    if google_account.auth_type == s.AuthType.BASIC:
+    if auth_account.auth_type == s.AuthType.BASIC:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="You can't delete basic account")
 
     current_timestamp = datetime.now()
 
-    google_account.is_deleted = True
-    google_account.email = f"deleted-{current_timestamp}"
-    google_account.oauth_id = f"deleted-{current_timestamp}"
+    auth_account.is_deleted = True
+    auth_account.email = f"deleted-{current_timestamp}"
+    auth_account.oauth_id = f"deleted-{current_timestamp}"
     db.commit()
 
     log(
-        log.INFO, "User [%s] successfully delete Google account, phone: [%s]", current_user.fullname, current_user.phone
+        log.INFO,
+        "User [%s] successfully deleted auth account: [%s], phone: [%s]",
+        current_user.fullname,
+        auth_account.auth_type,
+        current_user.phone,
     )

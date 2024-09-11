@@ -138,18 +138,17 @@ def test_google_account(monkeypatch, client: TestClient, auth_header: dict[str, 
         CFG.GOOGLE_CLIENT_ID,
     )
 
-    # Test delete google account
-    oauth_id = DUMMY_GOOGLE_VALIDATION.sub
-    email = DUMMY_GOOGLE_VALIDATION.email
 
-    response = client.delete(f"/api/users/delete-google-account/{oauth_id}", headers=auth_header)
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_delete_auth_account(client: TestClient, auth_header: dict[str, str], full_db: Session):
+    AUTH_ACCOUNT_ID = 1
+
+    auth_account = full_db.scalar(sa.select(m.AuthAccount).where(m.AuthAccount.id == AUTH_ACCOUNT_ID))
+    assert auth_account
+
+    response = client.delete(f"/api/users/auth-account/{auth_account.id}", headers=auth_header)
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
-    google_account_filter = sa.and_(
-        m.AuthAccount.email == email,
-        m.AuthAccount.oauth_id == oauth_id,
-        m.AuthAccount.auth_type == s.AuthType.GOOGLE,
-    )
-
-    google_account = full_db.scalar(sa.select(m.AuthAccount).where(google_account_filter))
-    assert not google_account
+    auth_account = full_db.scalar(sa.select(m.AuthAccount).where(m.AuthAccount.id == auth_account.id))
+    assert auth_account
+    assert auth_account.is_deleted is True
