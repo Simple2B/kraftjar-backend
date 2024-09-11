@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 import sqlalchemy as sa
@@ -147,9 +148,9 @@ def register_google_account(
     log(log.INFO, "User [%s] successfully added Google account, email: [%s]", current_user.fullname, email)
 
 
-@user_router.post("/delete-google-account", status_code=status.HTTP_204_NO_CONTENT)
+@user_router.delete("/delete-google-account/{auth_account_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_google_account(
-    auth_data: s.GoogleAuthIn,
+    auth_account_id: str,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
     responses={
@@ -158,21 +159,26 @@ def delete_google_account(
 ):
     """Delete Google account for user"""
 
-    id_info_res: s.GoogleTokenVerification = id_token.verify_oauth2_token(
-        auth_data.id_token,
-        requests.Request(),
-        CFG.GOOGLE_CLIENT_ID,
+    google_account_filter = sa.and_(
+        m.AuthAccount.oauth_id == auth_account_id,
+        m.AuthAccount.user_id == current_user.id,
     )
 
-    email = id_info_res.email
-    oauth_id = id_info_res.sub
-
-    google_account = get_user_google_account(email, oauth_id, current_user, db)
+    google_account = db.scalar(sa.select(m.AuthAccount).where(google_account_filter))
 
     if not google_account:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Google account not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Google account not found")
+
+    if google_account.auth_type == s.AuthType.BASIC:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="You can't delete basic account")
+
+    current_timestamp = datetime.now()
 
     google_account.is_deleted = True
+    google_account.email = f"deleted-{current_timestamp}"
+    google_account.oauth_id = f"deleted-{current_timestamp}"
     db.commit()
 
-    log(log.INFO, "User [%s] successfully delete Google account, email: [%s]", current_user.fullname, email)
+    log(
+        log.INFO, "User [%s] successfully delete Google account, phone: [%s]", current_user.fullname, current_user.phone
+    )

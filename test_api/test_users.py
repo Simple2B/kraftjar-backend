@@ -139,15 +139,17 @@ def test_google_account(monkeypatch, client: TestClient, auth_header: dict[str, 
     )
 
     # Test delete google account
-    response = client.post("/api/users/delete-google-account", headers=auth_header, json=data.model_dump())
+    oauth_id = DUMMY_GOOGLE_VALIDATION.sub
+    email = DUMMY_GOOGLE_VALIDATION.email
+
+    response = client.delete(f"/api/users/delete-google-account/{oauth_id}", headers=auth_header)
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
     google_account_filter = sa.and_(
-        m.AuthAccount.email == DUMMY_GOOGLE_VALIDATION.email,
-        m.AuthAccount.oauth_id == DUMMY_GOOGLE_VALIDATION.sub,
+        m.AuthAccount.email == email,
+        m.AuthAccount.oauth_id == oauth_id,
         m.AuthAccount.auth_type == s.AuthType.GOOGLE,
     )
 
     google_account = full_db.scalar(sa.select(m.AuthAccount).where(google_account_filter))
-    assert google_account
-    assert google_account.is_deleted is True
+    assert not google_account
