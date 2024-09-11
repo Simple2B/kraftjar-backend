@@ -10,7 +10,7 @@ from app import models as m
 from app import schema as s
 from app.schema.language import Language
 from config import config
-from test_api.test_auth import DUMMY_GOOGLE_VALIDATION
+from test_api.test_auth import DUMMY_GOOGLE_VALIDATION, DUMMY_IOS_VALIDATION
 
 CFG = config()
 
@@ -123,7 +123,7 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_google_account(monkeypatch, client: TestClient, auth_header: dict[str, str], full_db: Session):
+def test_google_account(monkeypatch, client: TestClient, auth_header: dict[str, str]):
     mock_verify_oauth2_token = mock.Mock(return_value=DUMMY_GOOGLE_VALIDATION)
     monkeypatch.setattr("api.routes.user.id_token.verify_oauth2_token", mock_verify_oauth2_token)
 
@@ -137,6 +137,17 @@ def test_google_account(monkeypatch, client: TestClient, auth_header: dict[str, 
         mock.ANY,
         CFG.GOOGLE_CLIENT_ID,
     )
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_apple_account(monkeypatch, client: TestClient, auth_header: dict[str, str]):
+    mock_verify_apple_token = mock.Mock(return_value=DUMMY_IOS_VALIDATION)
+    monkeypatch.setattr("api.routes.user.c.verify_apple_token", mock_verify_apple_token)
+
+    data = s.AppleAuthTokenIn(id_token="test_token")
+
+    response = client.post("/api/users/register-apple-account", headers=auth_header, json=data.model_dump())
+    assert response.status_code == status.HTTP_201_CREATED
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
