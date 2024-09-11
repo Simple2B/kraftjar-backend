@@ -39,11 +39,11 @@ DUMMY_IOS_VALIDATION = AppleTokenVerification(
     iat=1,
     sub="str",
     c_hash="str",
-    email="",
+    email="apple.test@example.com",
     email_verified=True,
     auth_time=1,
     nonce_supported=True,
-    fullName=None,
+    fullName=s.AppleAuthenticationFullName(givenName="Apple", familyName="Test"),
 )
 
 

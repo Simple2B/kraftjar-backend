@@ -7,7 +7,7 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 
 import api.controllers as c
-from api.controllers.user import create_out_search_users, get_user_google_account
+from api.controllers.user import create_out_search_users, get_user_auth_account
 import app.models as m
 import app.schema as s
 from api.dependency import get_current_user
@@ -134,7 +134,7 @@ def register_google_account(
     email = id_info_res.email
     oauth_id = id_info_res.sub
 
-    google_account = get_user_google_account(email, oauth_id, current_user, db)
+    google_account = get_user_auth_account(email, oauth_id, current_user, db, s.AuthType.GOOGLE)
 
     if google_account:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This Google account is already in use")
@@ -146,6 +146,36 @@ def register_google_account(
     db.commit()
 
     log(log.INFO, "User [%s] successfully added Google account, email: [%s]", current_user.fullname, email)
+
+
+@user_router.post("/register-apple-account", status_code=status.HTTP_201_CREATED)
+def register_apple_account(
+    auth_data: s.AppleAuthTokenIn,
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+    responses={
+        status.HTTP_409_CONFLICT: {"description": "This Apple account is already in use"},
+    },
+):
+    """Register Apple account for user"""
+
+    token_data: s.AppleTokenVerification = c.verify_apple_token(auth_data)
+
+    email = token_data.email
+    oauth_id = token_data.sub
+
+    apple_account = get_user_auth_account(email, oauth_id, current_user, db, s.AuthType.APPLE)
+
+    if apple_account:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This Apple account is already in use")
+
+    new_apple_account = m.AuthAccount(
+        user_id=current_user.id, email=email, auth_type=s.AuthType.APPLE, oauth_id=oauth_id
+    )
+    db.add(new_apple_account)
+    db.commit()
+
+    log(log.INFO, "User [%s] successfully added Apple account, email: [%s]", current_user.fullname, email)
 
 
 @user_router.delete("/auth-account/{auth_account_id}", status_code=status.HTTP_204_NO_CONTENT)
