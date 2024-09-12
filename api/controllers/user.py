@@ -150,6 +150,14 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
 
     return s.UserProfileOut(
         **pop_keys(db_user.__dict__, ["services", "locations"]),
+        auth_accounts=[
+            s.AuthAccountOut(
+                oauth_id=auth_account.oauth_id,
+                email=auth_account.email,
+                auth_type=s.AuthType(auth_account.auth_type),
+            )
+            for auth_account in db_user.auth_accounts
+        ],
         services=services,
         locations=locations,
         owned_rates_count=db_user.owned_rates_count,
