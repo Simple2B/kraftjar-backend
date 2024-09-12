@@ -188,7 +188,7 @@ def register_apple_account(
 
 @user_router.delete("/auth-account/{auth_account_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_auth_account(
-    auth_account_id: int,
+    auth_account_id: str,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
     responses={
@@ -198,7 +198,7 @@ def delete_auth_account(
     """Delete auth account for user"""
 
     auth_account_filter = sa.and_(
-        m.AuthAccount.id == auth_account_id,
+        m.AuthAccount.oauth_id == auth_account_id,
         m.AuthAccount.user_id == current_user.id,
     )
 

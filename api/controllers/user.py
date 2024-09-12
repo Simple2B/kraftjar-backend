@@ -157,6 +157,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
                 auth_type=s.AuthType(auth_account.auth_type),
             )
             for auth_account in db_user.auth_accounts
+            if not auth_account.is_deleted
         ],
         services=services,
         locations=locations,
