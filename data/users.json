@@ -9,8 +9,8 @@
         {
           "user_id": 1,
           "email": "mail1@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -27,8 +27,8 @@
         {
           "user_id": 2,
           "email": "tinkerino571@gmail.com",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -45,8 +45,8 @@
         {
           "user_id": 3,
           "email": "ekedesh@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -63,8 +63,8 @@
         {
           "user_id": 4,
           "email": "4.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -81,8 +81,8 @@
         {
           "user_id": 5,
           "email": "5.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -99,8 +99,8 @@
         {
           "user_id": 6,
           "email": "6.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -117,8 +117,8 @@
         {
           "user_id": 7,
           "email": "7.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -135,8 +135,8 @@
         {
           "user_id": 8,
           "email": "8.@gmail.com",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -153,8 +153,8 @@
         {
           "user_id": 9,
           "email": "9.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -171,8 +171,8 @@
         {
           "user_id": 10,
           "email": "10.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -189,8 +189,8 @@
         {
           "user_id": 11,
           "email": "11.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -207,8 +207,8 @@
         {
           "user_id": 12,
           "email": "12.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -225,8 +225,8 @@
         {
           "user_id": 13,
           "email": "13.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -243,8 +243,8 @@
         {
           "user_id": 14,
           "email": "14.@i.ua",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -261,8 +261,8 @@
         {
           "user_id": 15,
           "email": "15.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -279,8 +279,8 @@
         {
           "user_id": 16,
           "email": "16.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -297,8 +297,8 @@
         {
           "user_id": 17,
           "email": "17.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -315,8 +315,8 @@
         {
           "user_id": 18,
           "email": "18.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -333,8 +333,8 @@
         {
           "user_id": 19,
           "email": "19.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -351,8 +351,8 @@
         {
           "user_id": 20,
           "email": "20.@ukr.net",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -369,8 +369,8 @@
         {
           "user_id": 21,
           "email": "21.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -387,8 +387,8 @@
         {
           "user_id": 22,
           "email": "22.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -405,8 +405,8 @@
         {
           "user_id": 23,
           "email": "23.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -423,8 +423,8 @@
         {
           "user_id": 24,
           "email": "24.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -441,8 +441,8 @@
         {
           "user_id": 25,
           "email": "25.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -459,8 +459,8 @@
         {
           "user_id": 26,
           "email": "26.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -477,8 +477,8 @@
         {
           "user_id": 27,
           "email": "27.@i.ua",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -495,8 +495,8 @@
         {
           "user_id": 28,
           "email": "28.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -513,8 +513,8 @@
         {
           "user_id": 29,
           "email": "29.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -531,8 +531,8 @@
         {
           "user_id": 30,
           "email": "30.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -549,8 +549,8 @@
         {
           "user_id": 31,
           "email": "31.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -567,8 +567,8 @@
         {
           "user_id": 32,
           "email": "32.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -585,8 +585,8 @@
         {
           "user_id": 33,
           "email": "33.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -603,8 +603,8 @@
         {
           "user_id": 34,
           "email": "34.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -621,8 +621,8 @@
         {
           "user_id": 35,
           "email": "35.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -639,8 +639,8 @@
         {
           "user_id": 36,
           "email": "36.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -657,8 +657,8 @@
         {
           "user_id": 37,
           "email": "37.@gmail.com",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -675,8 +675,8 @@
         {
           "user_id": 38,
           "email": "38.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -693,8 +693,8 @@
         {
           "user_id": 39,
           "email": "39.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -711,8 +711,8 @@
         {
           "user_id": 40,
           "email": "40.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -729,8 +729,8 @@
         {
           "user_id": 41,
           "email": "41.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -747,8 +747,8 @@
         {
           "user_id": 42,
           "email": "42.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -765,8 +765,8 @@
         {
           "user_id": 43,
           "email": "43.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -783,8 +783,8 @@
         {
           "user_id": 44,
           "email": "44.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -801,8 +801,8 @@
         {
           "user_id": 45,
           "email": "45.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -819,8 +819,8 @@
         {
           "user_id": 46,
           "email": "46.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -837,8 +837,8 @@
         {
           "user_id": 47,
           "email": "47.@meta.ua",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -855,8 +855,8 @@
         {
           "user_id": 48,
           "email": "48.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -873,8 +873,8 @@
         {
           "user_id": 49,
           "email": "49.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -891,8 +891,8 @@
         {
           "user_id": 50,
           "email": "50.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -909,8 +909,8 @@
         {
           "user_id": 51,
           "email": "51.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -927,8 +927,8 @@
         {
           "user_id": 52,
           "email": "52.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -945,8 +945,8 @@
         {
           "user_id": 53,
           "email": "53.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -963,8 +963,8 @@
         {
           "user_id": 54,
           "email": "54.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -981,8 +981,8 @@
         {
           "user_id": 55,
           "email": "55.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -999,8 +999,8 @@
         {
           "user_id": 56,
           "email": "56.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1017,8 +1017,8 @@
         {
           "user_id": 57,
           "email": "57.@bigmir.net",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1035,8 +1035,8 @@
         {
           "user_id": 58,
           "email": "58.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1053,8 +1053,8 @@
         {
           "user_id": 59,
           "email": "59.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1071,8 +1071,8 @@
         {
           "user_id": 60,
           "email": "60.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1089,8 +1089,8 @@
         {
           "user_id": 61,
           "email": "61.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1107,8 +1107,8 @@
         {
           "user_id": 62,
           "email": "62.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1125,8 +1125,8 @@
         {
           "user_id": 63,
           "email": "63.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1143,8 +1143,8 @@
         {
           "user_id": 64,
           "email": "64.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1161,8 +1161,8 @@
         {
           "user_id": 65,
           "email": "65.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1179,8 +1179,8 @@
         {
           "user_id": 66,
           "email": "66.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1197,8 +1197,8 @@
         {
           "user_id": 67,
           "email": "67.@bigmir.net",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1215,8 +1215,8 @@
         {
           "user_id": 68,
           "email": "68.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1233,8 +1233,8 @@
         {
           "user_id": 69,
           "email": "69.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1251,8 +1251,8 @@
         {
           "user_id": 70,
           "email": "70.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1269,8 +1269,8 @@
         {
           "user_id": 71,
           "email": "71.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1287,8 +1287,8 @@
         {
           "user_id": 72,
           "email": "72.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1305,8 +1305,8 @@
         {
           "user_id": 73,
           "email": "73.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1323,8 +1323,8 @@
         {
           "user_id": 74,
           "email": "74.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1341,8 +1341,8 @@
         {
           "user_id": 75,
           "email": "75.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1359,8 +1359,8 @@
         {
           "user_id": 76,
           "email": "76.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1377,8 +1377,8 @@
         {
           "user_id": 77,
           "email": "77.@gmail.com",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1395,8 +1395,8 @@
         {
           "user_id": 78,
           "email": "78.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1413,8 +1413,8 @@
         {
           "user_id": 79,
           "email": "79.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1431,8 +1431,8 @@
         {
           "user_id": 80,
           "email": "80.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1449,8 +1449,8 @@
         {
           "user_id": 81,
           "email": "81.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1467,8 +1467,8 @@
         {
           "user_id": 82,
           "email": "82.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1485,8 +1485,8 @@
         {
           "user_id": 83,
           "email": "83.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1503,8 +1503,8 @@
         {
           "user_id": 84,
           "email": "84.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1521,8 +1521,8 @@
         {
           "user_id": 85,
           "email": "85.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1539,8 +1539,8 @@
         {
           "user_id": 86,
           "email": "86.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1557,8 +1557,8 @@
         {
           "user_id": 87,
           "email": "87.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1575,8 +1575,8 @@
         {
           "user_id": 88,
           "email": "88.@ukr.net",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1593,8 +1593,8 @@
         {
           "user_id": 89,
           "email": "89.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1611,8 +1611,8 @@
         {
           "user_id": 90,
           "email": "90.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1629,8 +1629,8 @@
         {
           "user_id": 91,
           "email": "91.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1647,8 +1647,8 @@
         {
           "user_id": 92,
           "email": "92.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1665,8 +1665,8 @@
         {
           "user_id": 93,
           "email": "93.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1683,8 +1683,8 @@
         {
           "user_id": 94,
           "email": "nchernov@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1701,8 +1701,8 @@
         {
           "user_id": 95,
           "email": "varvarashcherbyna7@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1719,8 +1719,8 @@
         {
           "user_id": 96,
           "email": "96.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1737,8 +1737,8 @@
         {
           "user_id": 97,
           "email": "sofiia.artymovych@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1755,8 +1755,8 @@
         {
           "user_id": 98,
           "email": "mgrabchak1109@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1773,8 +1773,8 @@
         {
           "user_id": 99,
           "email": "nazarr.kobryn@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1791,8 +1791,8 @@
         {
           "user_id": 100,
           "email": "saintkos117@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1809,8 +1809,8 @@
         {
           "user_id": 101,
           "email": "denysburimov@gmail.com",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1827,8 +1827,8 @@
         {
           "user_id": 102,
           "email": "svyatoslav.artymovych@gmail.com ",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1845,8 +1845,8 @@
         {
           "user_id": 103,
           "email": "shevchenko.a.v.94@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1863,8 +1863,8 @@
         {
           "user_id": 104,
           "email": "lysak.ipr@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1881,8 +1881,8 @@
         {
           "user_id": 105,
           "email": "kuzmichmaksym1997@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1899,8 +1899,8 @@
         {
           "user_id": 106,
           "email": "vkhmura@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1917,8 +1917,8 @@
         {
           "user_id": 107,
           "email": "107.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1935,8 +1935,8 @@
         {
           "user_id": 108,
           "email": "108.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1953,8 +1953,8 @@
         {
           "user_id": 109,
           "email": "109.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1971,8 +1971,8 @@
         {
           "user_id": 110,
           "email": "110.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -1989,8 +1989,8 @@
         {
           "user_id": 111,
           "email": "111.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2007,8 +2007,8 @@
         {
           "user_id": 112,
           "email": "112.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2025,8 +2025,8 @@
         {
           "user_id": 113,
           "email": "113.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2043,8 +2043,8 @@
         {
           "user_id": 114,
           "email": "114.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2061,8 +2061,8 @@
         {
           "user_id": 115,
           "email": "115.@gmail.com",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2079,8 +2079,8 @@
         {
           "user_id": 116,
           "email": "116.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2097,8 +2097,8 @@
         {
           "user_id": 117,
           "email": "117.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2115,8 +2115,8 @@
         {
           "user_id": 118,
           "email": "118.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2133,8 +2133,8 @@
         {
           "user_id": 119,
           "email": "119.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2151,8 +2151,8 @@
         {
           "user_id": 120,
           "email": "120.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2169,8 +2169,8 @@
         {
           "user_id": 121,
           "email": "121.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2187,8 +2187,8 @@
         {
           "user_id": 122,
           "email": "122.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2205,8 +2205,8 @@
         {
           "user_id": 123,
           "email": "123.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2223,8 +2223,8 @@
         {
           "user_id": 124,
           "email": "124.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2241,8 +2241,8 @@
         {
           "user_id": 125,
           "email": "125.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2259,8 +2259,8 @@
         {
           "user_id": 126,
           "email": "126.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2277,8 +2277,8 @@
         {
           "user_id": 127,
           "email": "127.@ukr.net",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2295,8 +2295,8 @@
         {
           "user_id": 128,
           "email": "128.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2313,8 +2313,8 @@
         {
           "user_id": 129,
           "email": "129.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2331,8 +2331,8 @@
         {
           "user_id": 130,
           "email": "130.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2349,8 +2349,8 @@
         {
           "user_id": 131,
           "email": "131.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2367,8 +2367,8 @@
         {
           "user_id": 132,
           "email": "132.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2385,8 +2385,8 @@
         {
           "user_id": 133,
           "email": "133.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2403,8 +2403,8 @@
         {
           "user_id": 134,
           "email": "134.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2421,8 +2421,8 @@
         {
           "user_id": 135,
           "email": "135.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2439,8 +2439,8 @@
         {
           "user_id": 136,
           "email": "136.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2457,8 +2457,8 @@
         {
           "user_id": 137,
           "email": "137.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2475,8 +2475,8 @@
         {
           "user_id": 138,
           "email": "138.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2493,8 +2493,8 @@
         {
           "user_id": 139,
           "email": "139.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2511,8 +2511,8 @@
         {
           "user_id": 140,
           "email": "140.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2529,8 +2529,8 @@
         {
           "user_id": 141,
           "email": "141.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2547,8 +2547,8 @@
         {
           "user_id": 142,
           "email": "142.@gmail.com",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2565,8 +2565,8 @@
         {
           "user_id": 143,
           "email": "143.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2583,8 +2583,8 @@
         {
           "user_id": 144,
           "email": "144.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2601,8 +2601,8 @@
         {
           "user_id": 145,
           "email": "145.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2619,8 +2619,8 @@
         {
           "user_id": 146,
           "email": "146.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2637,8 +2637,8 @@
         {
           "user_id": 147,
           "email": "147.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2655,8 +2655,8 @@
         {
           "user_id": 148,
           "email": "148.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2673,8 +2673,8 @@
         {
           "user_id": 149,
           "email": "149.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2691,8 +2691,8 @@
         {
           "user_id": 150,
           "email": "150.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2709,8 +2709,8 @@
         {
           "user_id": 151,
           "email": "151.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2727,8 +2727,8 @@
         {
           "user_id": 152,
           "email": "152.@i.ua",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2745,8 +2745,8 @@
         {
           "user_id": 153,
           "email": "153.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2763,8 +2763,8 @@
         {
           "user_id": 154,
           "email": "154.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2781,8 +2781,8 @@
         {
           "user_id": 155,
           "email": "155.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2799,8 +2799,8 @@
         {
           "user_id": 156,
           "email": "156.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2817,8 +2817,8 @@
         {
           "user_id": 157,
           "email": "157.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2835,8 +2835,8 @@
         {
           "user_id": 158,
           "email": "158.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2853,8 +2853,8 @@
         {
           "user_id": 159,
           "email": "159.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2871,8 +2871,8 @@
         {
           "user_id": 160,
           "email": "160.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2889,8 +2889,8 @@
         {
           "user_id": 161,
           "email": "161.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2907,8 +2907,8 @@
         {
           "user_id": 162,
           "email": "162.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2925,8 +2925,8 @@
         {
           "user_id": 163,
           "email": "163.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2943,8 +2943,8 @@
         {
           "user_id": 164,
           "email": "164.@ukr.net",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2961,8 +2961,8 @@
         {
           "user_id": 165,
           "email": "165.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2979,8 +2979,8 @@
         {
           "user_id": 166,
           "email": "166.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -2997,8 +2997,8 @@
         {
           "user_id": 167,
           "email": "167.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3015,8 +3015,8 @@
         {
           "user_id": 168,
           "email": "168.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3033,8 +3033,8 @@
         {
           "user_id": 169,
           "email": "169.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3051,8 +3051,8 @@
         {
           "user_id": 170,
           "email": "170.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3069,8 +3069,8 @@
         {
           "user_id": 171,
           "email": "171.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3087,8 +3087,8 @@
         {
           "user_id": 172,
           "email": "172.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3105,8 +3105,8 @@
         {
           "user_id": 173,
           "email": "173.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3123,8 +3123,8 @@
         {
           "user_id": 174,
           "email": "174.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3141,8 +3141,8 @@
         {
           "user_id": 175,
           "email": "175.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3159,8 +3159,8 @@
         {
           "user_id": 176,
           "email": "176.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3177,8 +3177,8 @@
         {
           "user_id": 177,
           "email": "177.@i.ua",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3195,8 +3195,8 @@
         {
           "user_id": 178,
           "email": "178.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3213,8 +3213,8 @@
         {
           "user_id": 179,
           "email": "179.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3231,8 +3231,8 @@
         {
           "user_id": 180,
           "email": "180.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3249,8 +3249,8 @@
         {
           "user_id": 181,
           "email": "181.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3267,8 +3267,8 @@
         {
           "user_id": 182,
           "email": "182.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3285,8 +3285,8 @@
         {
           "user_id": 183,
           "email": "183.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3303,8 +3303,8 @@
         {
           "user_id": 184,
           "email": "184.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3321,8 +3321,8 @@
         {
           "user_id": 185,
           "email": "185.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3339,8 +3339,8 @@
         {
           "user_id": 186,
           "email": "186.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3357,8 +3357,8 @@
         {
           "user_id": 187,
           "email": "187.@bigmir.net",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3375,8 +3375,8 @@
         {
           "user_id": 188,
           "email": "188.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3393,8 +3393,8 @@
         {
           "user_id": 189,
           "email": "189.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3411,8 +3411,8 @@
         {
           "user_id": 190,
           "email": "190.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3429,8 +3429,8 @@
         {
           "user_id": 191,
           "email": "191.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3447,8 +3447,8 @@
         {
           "user_id": 192,
           "email": "192.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3465,8 +3465,8 @@
         {
           "user_id": 193,
           "email": "193.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3483,8 +3483,8 @@
         {
           "user_id": 194,
           "email": "194.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3501,8 +3501,8 @@
         {
           "user_id": 195,
           "email": "195.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3519,8 +3519,8 @@
         {
           "user_id": 196,
           "email": "196.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3537,8 +3537,8 @@
         {
           "user_id": 197,
           "email": "197.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3555,8 +3555,8 @@
         {
           "user_id": 198,
           "email": "198.@gmail.com",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3573,8 +3573,8 @@
         {
           "user_id": 199,
           "email": "199.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3591,8 +3591,8 @@
         {
           "user_id": 200,
           "email": "200.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3609,8 +3609,8 @@
         {
           "user_id": 201,
           "email": "201.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3627,8 +3627,8 @@
         {
           "user_id": 202,
           "email": "202.@i.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3645,8 +3645,8 @@
         {
           "user_id": 203,
           "email": "203.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3663,8 +3663,8 @@
         {
           "user_id": 204,
           "email": "204.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3681,8 +3681,8 @@
         {
           "user_id": 205,
           "email": "205.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3699,8 +3699,8 @@
         {
           "user_id": 206,
           "email": "206.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3717,8 +3717,8 @@
         {
           "user_id": 207,
           "email": "207.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3735,8 +3735,8 @@
         {
           "user_id": 208,
           "email": "208.@meta.ua",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3753,8 +3753,8 @@
         {
           "user_id": 209,
           "email": "209.@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3771,8 +3771,8 @@
         {
           "user_id": 210,
           "email": "210.@meta.ua",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3789,8 +3789,8 @@
         {
           "user_id": 211,
           "email": "211.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3807,8 +3807,8 @@
         {
           "user_id": 212,
           "email": "212.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3825,8 +3825,8 @@
         {
           "user_id": 213,
           "email": "213.@bigmir.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3843,8 +3843,8 @@
         {
           "user_id": 214,
           "email": "214.@ukr.net",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3861,8 +3861,8 @@
         {
           "user_id": 215,
           "email": "radjessicarad@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3879,8 +3879,8 @@
         {
           "user_id": 216,
           "email": "khmuranatalia@gmail.com",
-          "auth_type": "apple",
-          "oauth_id": "gkfdujgij*UR$T*RUF(G*ghf89gfgfgfgfd"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
@@ -3897,8 +3897,8 @@
         {
           "user_id": 217,
           "email": "217@gmail.com",
-          "auth_type": "google",
-          "oauth_id": "dskf;dskfdlkfdlk94fu9sofuj9e"
+          "auth_type": "basic",
+          "oauth_id": ""
         }
       ],
       "password": "Kraftjar2024",
