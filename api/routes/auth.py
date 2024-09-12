@@ -50,7 +50,7 @@ def google_auth(auth_data: s.GoogleAuthIn, db: Session = Depends(get_db)):
     log(log.INFO, "Validating google token")
 
     try:
-        id_info_res = id_token.verify_oauth2_token(
+        id_info_res: s.GoogleTokenVerification = id_token.verify_oauth2_token(
             auth_data.id_token,
             requests.Request(),
             CFG.GOOGLE_CLIENT_ID,
@@ -63,24 +63,21 @@ def google_auth(auth_data: s.GoogleAuthIn, db: Session = Depends(get_db)):
         if id_info.iss not in ISSUER_WHITELIST:
             raise ValueError("Wrong issuer.")
 
-        # TODO: find Google ID and also search by oauth_id
-        google_auth_filter = sa.and_(m.AuthAccount.auth_type == s.AuthType.GOOGLE, m.AuthAccount.email == id_info.email)
-        user = db.scalar(sa.select(m.AuthAccount).where(google_auth_filter))
+        email = id_info_res.email
+        oauth_id = id_info_res.sub
 
-        if not user:
-            log(log.INFO, "[Google Auth] User [%s] not found. Creating user", id_info.email)
+        google_auth_filter = sa.and_(
+            m.AuthAccount.email == email,
+            m.AuthAccount.oauth_id == oauth_id,
+            m.AuthAccount.auth_type == s.AuthType.GOOGLE,
+        )
 
-            user = m.User(
-                auth_accounts=[m.AuthAccount(auth_type=s.AuthType.GOOGLE, email=id_info.email, oauth_id=id_info.sub)],
-                fullname=id_info.name if id_info.name else "",
-                first_name=id_info.given_name if id_info.given_name else "",
-                last_name=id_info.family_name if id_info.family_name else "",
-            )
-            db.add(user)
-            db.commit()
-            db.refresh(user)
+        google_auth_account = db.scalar(sa.select(m.AuthAccount).where(google_auth_filter))
 
-        return s.Token(access_token=create_access_token(user.id))
+        if not google_auth_account:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Google account not found: {email}")
+
+        return s.Token(access_token=create_access_token(google_auth_account.id))
 
     except HTTPException as e:
         raise e
@@ -122,24 +119,21 @@ def save_phone(
 def apple_auth(auth_data: s.AppleAuthTokenIn, db: Session = Depends(get_db)):
     log(log.INFO, "Validating apple token")
 
-    decoded_token = c.verify_apple_token(auth_data)
+    token_data: s.AppleTokenVerification = c.verify_apple_token(auth_data)
 
-    # TODO: find Apple ID and also search by oauth_id
-    apple_auth_filter = sa.and_(m.AuthAccount.auth_type == s.AuthType.APPLE, m.AuthAccount.email == decoded_token.email)
-    user = db.scalar(sa.select(m.AuthAccount).where(apple_auth_filter))
+    email = token_data.email
+    oauth_id = token_data.sub
 
-    if not user:
-        log(log.INFO, "[Google Auth] User [%s] not found. Creating user", decoded_token.email)
-        fullname = c.get_apple_fullname(decoded_token)
-        user = m.User(
-            auth_accounts=[
-                m.AuthAccount(auth_type=s.AuthType.APPLE, email=decoded_token.email, oauth_id=decoded_token.sub)
-            ],
-            fullname=fullname,
-        )
-        db.add(user)
-        db.commit()
-        db.refresh(user)
+    apple_auth_filter = sa.and_(
+        m.AuthAccount.email == email,
+        m.AuthAccount.oauth_id == oauth_id,
+        m.AuthAccount.auth_type == s.AuthType.APPLE,
+    )
 
-    log(log.INFO, "User [%s] found. Apple Auth succeeded", decoded_token.email)
-    return s.Token(access_token=create_access_token(user.id))
+    apple_auth_account = db.scalar(sa.select(m.AuthAccount).where(apple_auth_filter))
+
+    if not apple_auth_account:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Apple account not found: {email}")
+
+    log(log.INFO, "User [%s] found. Apple Auth succeeded", email)
+    return s.Token(access_token=create_access_token(apple_auth_account.id))
