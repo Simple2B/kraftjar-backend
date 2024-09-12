@@ -1,11 +1,10 @@
 import pytest
-from unittest import mock
 import sqlalchemy as sa
 from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from app.schema import GoogleTokenVerification, AppleTokenVerification, Token
+from app.schema import GoogleTokenVerification, AppleTokenVerification
 
 from app import models as m
 from app import schema as s
@@ -59,66 +58,3 @@ def test_auth(db: Session, client: TestClient):
     header = dict(Authorization=f"Bearer {token.access_token}")
     res = client.get("api/users/me", headers=header)
     assert res.status_code == status.HTTP_200_OK
-
-
-@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_google_auth(monkeypatch, db: Session, client: TestClient):
-    # Mock the id_token.verify_oauth2_token method
-    mock_verify_oauth2_token = mock.Mock(return_value=DUMMY_GOOGLE_VALIDATION)
-    monkeypatch.setattr("api.routes.auth.id_token.verify_oauth2_token", mock_verify_oauth2_token)
-
-    data = s.GoogleAuthIn(id_token="test_token")
-
-    # Make a request to the endpoint
-    response = client.post("/api/auth/google", json=data.model_dump())
-
-    # Check the response
-    assert response.status_code == 200
-    token = Token.model_validate(response.json())
-    assert len(token.access_token) > 0
-
-    # Check that the mock method was called with the correct arguments
-    mock_verify_oauth2_token.assert_called_once_with(
-        "test_token",
-        mock.ANY,  # requests.Request() is passed as the second argument
-        CFG.GOOGLE_CLIENT_ID,
-    )
-
-
-# Create test for Google validation with user creation and token generation when user is not in database, but token is valid
-@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_google_token_user_creation(monkeypatch, db: Session, client: TestClient):
-    # Mock the id_token.verify_oauth2_token method
-    mock_verify_oauth2_token = mock.Mock(return_value=DUMMY_GOOGLE_VALIDATION)
-    monkeypatch.setattr("api.routes.auth.id_token.verify_oauth2_token", mock_verify_oauth2_token)
-
-    data = s.GoogleAuthIn(id_token="test_token")
-
-    # Send a request to the endpoint
-    response = client.post("/api/auth/google", json=data.model_dump())
-    assert response.status_code == 200
-
-    # Check that the mock method was called with the correct arguments
-    mock_verify_oauth2_token.assert_called_once_with(
-        "test_token",
-        mock.ANY,  # requests.Request() is passed as the second argument
-        CFG.GOOGLE_CLIENT_ID,
-    )
-
-    # Check that the user was created in the database
-    response = client.post("/api/users/me")
-    assert response
-
-
-@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_apple_auth_success(monkeypatch, db: Session, client: TestClient):
-    # Mock verify_apple_token from api/controllers/o_auth.py
-    mock_verify_apple_token = mock.Mock(return_value=DUMMY_IOS_VALIDATION)
-    monkeypatch.setattr("api.routes.auth.c.verify_apple_token", mock_verify_apple_token)
-
-    res = client.post(
-        "/api/auth/apple",
-        json={"id_token": ""},
-    )
-
-    assert res.status_code == 200

@@ -138,6 +138,17 @@ def test_google_account(monkeypatch, client: TestClient, auth_header: dict[str, 
         CFG.GOOGLE_CLIENT_ID,
     )
 
+    # Test login
+    response = client.post("/api/auth/google", json=data.model_dump())
+    assert response.status_code == status.HTTP_200_OK
+
+    token = s.Token.model_validate(response.json())
+    assert len(token.access_token) > 0
+
+    # Check that the user was created in the database
+    response = client.post("/api/users/me")
+    assert response
+
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_apple_account(monkeypatch, client: TestClient, auth_header: dict[str, str]):
@@ -148,6 +159,10 @@ def test_apple_account(monkeypatch, client: TestClient, auth_header: dict[str, s
 
     response = client.post("/api/users/register-apple-account", headers=auth_header, json=data.model_dump())
     assert response.status_code == status.HTTP_201_CREATED
+
+    # Test login
+    response = client.post("/api/auth/apple", json=data.model_dump())
+    assert response.status_code == status.HTTP_200_OK
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
