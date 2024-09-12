@@ -114,14 +114,17 @@ def get_public_top_experts(
     return s.PublicTopExpertsOut(top_experts=create_out_search_users(experts, lang, db))
 
 
-@user_router.post("/register-google-account", status_code=status.HTTP_201_CREATED)
+@user_router.post(
+    "/register-google-account",
+    status_code=status.HTTP_201_CREATED,
+    responses={
+        status.HTTP_409_CONFLICT: {"description": "This Google account is already in use"},
+    },
+)
 def register_google_account(
     auth_data: s.GoogleAuthIn,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-    responses={
-        status.HTTP_409_CONFLICT: {"description": "This Google account is already in use"},
-    },
 ):
     """Register Google account for user"""
 
@@ -131,8 +134,10 @@ def register_google_account(
         CFG.GOOGLE_CLIENT_ID,
     )
 
-    email = id_info_res.email
-    oauth_id = id_info_res.sub
+    id_info = s.GoogleTokenVerification.model_validate(id_info_res)
+
+    email = id_info.email
+    oauth_id = id_info.sub
 
     google_account = get_user_auth_account(email, oauth_id, current_user, db, s.AuthType.GOOGLE)
 
@@ -148,14 +153,17 @@ def register_google_account(
     log(log.INFO, "User [%s] successfully added Google account, email: [%s]", current_user.fullname, email)
 
 
-@user_router.post("/register-apple-account", status_code=status.HTTP_201_CREATED)
+@user_router.post(
+    "/register-apple-account",
+    status_code=status.HTTP_201_CREATED,
+    responses={
+        status.HTTP_409_CONFLICT: {"description": "This Apple account is already in use"},
+    },
+)
 def register_apple_account(
     auth_data: s.AppleAuthTokenIn,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-    responses={
-        status.HTTP_409_CONFLICT: {"description": "This Apple account is already in use"},
-    },
 ):
     """Register Apple account for user"""
 

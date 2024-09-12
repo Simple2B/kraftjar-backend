@@ -43,7 +43,12 @@ def get_token(auth_data: s.Auth, db=Depends(get_db)):
     return s.Token(access_token=create_access_token(user.id))
 
 
-@router.post("/google", status_code=status.HTTP_200_OK, response_model=s.Token)
+@router.post(
+    "/google",
+    status_code=status.HTTP_200_OK,
+    response_model=s.Token,
+    responses={status.HTTP_404_NOT_FOUND: {"description": "Google account not found"}},
+)
 def google_auth(auth_data: s.GoogleAuthIn, db: Session = Depends(get_db)):
     """Validates google auth token and returns a JWT token"""
 
@@ -63,8 +68,8 @@ def google_auth(auth_data: s.GoogleAuthIn, db: Session = Depends(get_db)):
         if id_info.iss not in ISSUER_WHITELIST:
             raise ValueError("Wrong issuer.")
 
-        email = id_info_res.email
-        oauth_id = id_info_res.sub
+        email = id_info.email
+        oauth_id = id_info.sub
 
         google_auth_filter = sa.and_(
             m.AuthAccount.email == email,
@@ -116,7 +121,10 @@ def save_phone(
 
 
 @router.post("/apple", status_code=status.HTTP_200_OK, response_model=s.Token)
-def apple_auth(auth_data: s.AppleAuthTokenIn, db: Session = Depends(get_db)):
+def apple_auth(
+    auth_data: s.AppleAuthTokenIn,
+    db: Session = Depends(get_db),
+):
     log(log.INFO, "Validating apple token")
 
     token_data: s.AppleTokenVerification = c.verify_apple_token(auth_data)

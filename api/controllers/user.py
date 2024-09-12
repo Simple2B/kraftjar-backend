@@ -132,6 +132,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
     """Returns user profile"""
 
     db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.uuid == user_uuid))
+
     if not db_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 

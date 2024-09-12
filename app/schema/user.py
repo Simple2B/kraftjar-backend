@@ -86,6 +86,10 @@ class UserProfileOut(User):
 
     __hash__ = object.__hash__
 
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
 
 class PublicUserProfileOut(BaseModel):
     id: int
