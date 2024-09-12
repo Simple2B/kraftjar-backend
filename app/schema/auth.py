@@ -84,5 +84,5 @@ class AuthAccount(BaseModel):
 
 class AuthAccountOut(BaseModel):
     oauth_id: str = ""
-    email: str
+    email: str = ""
     auth_type: AuthType

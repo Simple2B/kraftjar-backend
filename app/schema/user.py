@@ -78,7 +78,7 @@ class UsersSearchOut(BaseModel):
 
 
 class UserProfileOut(User):
-    auth_accounts: list[AuthAccountOut] = []
+    auth_accounts: list[AuthAccountOut]
     owned_rates_count: int
     average_rate: float
     services: list[Service]

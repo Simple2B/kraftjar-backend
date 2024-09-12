@@ -77,12 +77,19 @@ def google_auth(auth_data: s.GoogleAuthIn, db: Session = Depends(get_db)):
             m.AuthAccount.auth_type == s.AuthType.GOOGLE,
         )
 
-        google_auth_account = db.scalar(sa.select(m.AuthAccount).where(google_auth_filter))
+        google_auth_account: m.User | None = db.scalar(sa.select(m.AuthAccount).where(google_auth_filter))
 
         if not google_auth_account:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Google account not found: {email}")
 
-        return s.Token(access_token=create_access_token(google_auth_account.id))
+        user = db.scalar(sa.select(m.User).where(m.User.id == google_auth_account.user_id))
+
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User not found: {email}")
+
+        log(log.INFO, "User [%s] found. Google Auth succeeded", user.phone)
+
+        return s.Token(access_token=create_access_token(user.id))
 
     except HTTPException as e:
         raise e
@@ -143,5 +150,10 @@ def apple_auth(
     if not apple_auth_account:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Apple account not found: {email}")
 
+    user = db.scalar(sa.select(m.User).where(m.User.id == apple_auth_account.user_id))
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User not found: {email}")
+
     log(log.INFO, "User [%s] found. Apple Auth succeeded", email)
-    return s.Token(access_token=create_access_token(apple_auth_account.id))
+    return s.Token(access_token=create_access_token(user.id))
