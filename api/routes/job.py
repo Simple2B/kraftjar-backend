@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Sequence, cast, Any
 
 import sqlalchemy as sa
@@ -41,19 +42,52 @@ def get_jobs(
     return s.JobOutList(jobs=cast(list, jobs))
 
 
-@job_router.post("/", status_code=status.HTTP_201_CREATED, response_model=s.JobOut)
+@job_router.post(
+    "/",
+    status_code=status.HTTP_201_CREATED,
+    response_model=s.JobOut,
+    responses={
+        status.HTTP_409_CONFLICT: {"description": "Selected service not found"},
+    },
+)
 def create_job(
     job: s.JobIn,
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
+    if job.service_uuid:
+        service = db.scalar(sa.select(m.Service).where(m.Service.uuid == job.service_uuid))
+        if not service:
+            log(log.ERROR, "Service [%s] not found", job.service_uuid)
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Selected service not found")
+
+    if job.location_uuid:
+        location = db.scalar(sa.select(m.Location).where(m.Location.uuid == job.location_uuid))
+        if not location:
+            log(log.ERROR, "Location [%s] not found", job.location_uuid)
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Selected location not found")
+
     new_job: m.Job = m.Job(
-        **job.model_dump(),
+        **job.model_dump(exclude={"service_uuid", "location_uuid", "start_date", "end_date"}),
         owner_id=current_user.id,
+        location_id=location.id if location else None,
+        start_date=datetime.fromisoformat(job.start_date) if job.start_date else None,
+        end_date=datetime.fromisoformat(job.end_date) if job.end_date else None,
     )
+
     db.add(new_job)
     db.commit()
+    db.refresh(new_job)
     log(log.INFO, "Created job [%s] for user [%s]", new_job.title, new_job.owner_id)
+
+    job_services = m.JobService(
+        job_id=new_job.id,
+        service_id=job.service_uuid,
+    )
+    db.add(job_services)
+    db.commit()
+    db.refresh(job_services)
+
     return new_job
 
 

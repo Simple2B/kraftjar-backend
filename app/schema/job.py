@@ -38,16 +38,29 @@ class JobOut(BaseJob):
     uuid: str
     title: str
     description: str = ""
+
     address_id: int | None = None
     location_id: int | None = None
-    time: str | None = None
+
+    start_date: datetime | None = None
+    end_date: datetime | None = None
+
     status: JobStatus
+
     is_public: bool
+    is_negotiable: bool
+    is_volunteer: bool
+
     owner_id: int
     worker_id: int | None = None
+
     created_at: datetime
     updated_at: datetime
+
     is_deleted: bool = False
+
+    # TODO: add service relation here
+    # service:
 
     model_config = ConfigDict(
         from_attributes=True,
@@ -62,13 +75,22 @@ class JobOutList(BaseModel):
     )
 
 
+# create job schema
 class JobIn(BaseModel):
+    service_uuid: str
     title: str
     description: str
-    address_id: int
-    location_id: int
-    time: str
-    is_public: bool
+
+    location_uuid: str | None = None
+
+    start_date: str | None = None
+    end_date: str | None = None
+
+    is_negotiable: bool = False
+    is_volunteer: bool = False
+
+    cost: int = 0
+    is_public: bool = True
 
     model_config = ConfigDict(
         from_attributes=True,
@@ -80,7 +102,7 @@ class JobPut(BaseModel):
     description: str | None = None
     address_id: int | None = None
     location_id: int | None = None
-    time: str | None = None
+    # time: str | None = None
     is_public: bool | None = None
 
     model_config = ConfigDict(
@@ -145,7 +167,7 @@ class JobCompletedCreate(BaseModel):
     description: str
     address_id: int | None = None
     location_id: int | None = None
-    time: str | None = ""
+    # time: str | None = ""
     status: JobStatus
     is_public: bool
     owner_id: int
