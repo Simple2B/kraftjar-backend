@@ -25,7 +25,7 @@ def test_get_user(client: TestClient, auth_header: dict[str, str], full_db: Sess
     me_user: s.User = s.User.model_validate(response.json())
     assert me_user.phone == USER_PHONE
 
-    search_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == 42))
+    search_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == 1))
     assert search_user
 
     response = client.get(f"/api/users/{search_user.uuid}", headers=auth_header)

@@ -186,14 +186,17 @@ def register_apple_account(
     log(log.INFO, "User [%s] successfully added Apple account, email: [%s]", current_user.fullname, email)
 
 
-@user_router.delete("/auth-account/{auth_account_id}", status_code=status.HTTP_204_NO_CONTENT)
+@user_router.delete(
+    "/auth-account/{auth_account_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Auth account not found"},
+    },
+)
 def delete_auth_account(
     auth_account_id: str,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-    responses={
-        status.HTTP_404_NOT_FOUND: {"description": "Auth account not found"},
-    },
 ):
     """Delete auth account for user"""
 
