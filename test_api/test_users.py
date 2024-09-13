@@ -159,15 +159,24 @@ def test_apple_account(monkeypatch, client: TestClient, auth_header: dict[str, s
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_delete_auth_account(client: TestClient, auth_header: dict[str, str], full_db: Session):
-    AUTH_ACCOUNT_ID = 1
+def test_delete_auth_account(monkeypatch, client: TestClient, auth_header: dict[str, str], full_db: Session):
+    mock_verify_oauth2_token = mock.Mock(return_value=DUMMY_GOOGLE_VALIDATION)
+    monkeypatch.setattr("api.routes.user.id_token.verify_oauth2_token", mock_verify_oauth2_token)
 
-    auth_account = full_db.scalar(sa.select(m.AuthAccount).where(m.AuthAccount.id == AUTH_ACCOUNT_ID))
-    assert auth_account
+    data = s.GoogleAuthIn(id_token="test_token")
 
-    response = client.delete(f"/api/users/auth-account/{auth_account.id}", headers=auth_header)
+    response = client.post("/api/users/register-google-account", headers=auth_header, json=data.model_dump())
+
+    assert response.status_code == status.HTTP_201_CREATED
+
+    saved_account = full_db.scalar(
+        sa.select(m.AuthAccount).where(m.AuthAccount.email == DUMMY_GOOGLE_VALIDATION.email, m.AuthAccount.user_id == 1)
+    )
+    assert saved_account
+
+    response = client.delete(f"/api/users/auth-account/{saved_account.oauth_id}", headers=auth_header)
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
-    auth_account = full_db.scalar(sa.select(m.AuthAccount).where(m.AuthAccount.id == auth_account.id))
+    auth_account = full_db.scalar(sa.select(m.AuthAccount).where(m.AuthAccount.id == saved_account.id))
     assert auth_account
     assert auth_account.is_deleted is True
