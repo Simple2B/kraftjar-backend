@@ -134,9 +134,9 @@ class JobCard(BaseModel):
     uuid: str
     title: str
     description: str
-    location: LocationStrings
     cost: float
     is_saved: bool
+    location: LocationStrings
 
     model_config = ConfigDict(
         from_attributes=True,

@@ -27,6 +27,7 @@ def create_file(
     extension: str,
     file_type: s.FileType,
     content_type_override: str | None = None,
+    file_name_url: str = "",
 ) -> m.File:
     try:
         if not file.filename:
@@ -40,8 +41,8 @@ def create_file(
         filename = f"{file_uuid}_{filename_without_spaces}"
         short_name = filename.split(".")[0]
 
-        key = f"jobs/files/{short_name}" + f".{extension}"
-        log(log.INFO, "key is %s", key)
+        key = f"{file_name_url}/{short_name}" + f".{extension}"
+        log(log.INFO, "[create_file] key is %s", key)
 
         # Create a BytesIO stream from the file bytes
 
@@ -69,16 +70,16 @@ def create_file(
         db.add(file_model)
         db.commit()
         db.refresh(file_model)
-        log(log.INFO, "file [%s] was created", file_model.name)
+        log(log.INFO, "[create_file] file [%s] was created", file_model.name)
         return file_model
     except ClientError as e:
-        log(log.ERROR, "Error uploading file to S3 - [%s]", e)
+        log(log.ERROR, "[create_file] Error uploading file to S3 - [%s]", e)
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Error while uploading file to storage",
         )
     except SQLAlchemyError as e:
-        log(log.INFO, "file [%s] was not created:\n %s", file_model.name, e)
+        log(log.INFO, "[create_file] file [%s] was not created:\n %s", file_model.name, e)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="file exists")
 
 

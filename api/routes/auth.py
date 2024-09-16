@@ -33,7 +33,11 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db=Depends
     return s.Token(access_token=create_access_token(user.id))
 
 
-@router.post("/token", status_code=status.HTTP_200_OK, response_model=s.Token)
+@router.post(
+    "/token",
+    status_code=status.HTTP_200_OK,
+    response_model=s.Token,
+)
 def get_token(auth_data: s.Auth, db=Depends(get_db)):
     """Logs in a user"""
     user = m.User.authenticate(auth_data.phone, auth_data.password, session=db)

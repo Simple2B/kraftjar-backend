@@ -41,6 +41,7 @@ def get_jobs_on_home_page(query: s.JobHomePage, current_user: m.User, db: Sessio
                 name=job.location.region[0].name_ua if query.lang == CFG.UA else job.location.region[0].name_en,
             ),
             is_saved=job in user_saved_jobs,
+            # TODO: remove location from job.__dict__ add like property in Job model
             **pop_keys(job.__dict__, ["location"]),
         )
         for job in recommended_jobs
@@ -52,6 +53,7 @@ def get_jobs_on_home_page(query: s.JobHomePage, current_user: m.User, db: Sessio
                 name=job.location.region[0].name_ua if query.lang == CFG.UA else job.location.region[0].name_en,
             ),
             is_saved=job in user_saved_jobs,
+            # TODO: remove location from job.__dict__ add like property in Job model
             **pop_keys(job.__dict__, ["location"]),
         )
         for job in jobs_near_you

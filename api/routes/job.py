@@ -64,6 +64,12 @@ def create_job(
 ):
     """Creates new job"""
 
+    service = db.scalar(sa.select(m.Service).where(m.Service.uuid == job.service_uuid))
+
+    if not service:
+        log(log.ERROR, "Service [%s] not found", job.service_uuid)
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Selected service not found")
+
     new_job: m.Job = m.Job(
         **job.model_dump(
             exclude={
@@ -92,11 +98,6 @@ def create_job(
         new_job.location_id = location.id
         log(log.INFO, "Location [%s] was added to job [%s]", location.id, new_job.id)
 
-    service = db.scalar(sa.select(m.Service).where(m.Service.uuid == job.service_uuid))
-    if not service:
-        log(log.ERROR, "Service [%s] not found", job.service_uuid)
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Selected service not found")
-
     m.JobService(job_id=new_job.id, service_id=service.id)
     db.add(new_job)
     db.commit()
@@ -105,16 +106,19 @@ def create_job(
 
     files: list[s.FileOut] = []
 
-    for file_uuid in job.file_uuids:
-        file = db.scalar(sa.select(m.File).where(m.File.uuid == file_uuid))
-        if not file:
-            log(log.ERROR, "File [%s] not found", file_uuid)
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Selected file not found")
+    # check if all files exist in db
+    db_files = db.scalars(sa.select(m.File).where(m.File.uuid.in_(job.file_uuids))).all()
 
+    if len(db_files) != len(job.file_uuids):
+        log(log.ERROR, "Not all files found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Selected file not found")
+
+    for file in db_files:
         m.JobFile(job_id=new_job.id, file_id=file.id)
         db.add(new_job)
         files.append(file)
         log(log.INFO, "File [%s] was added to job [%s]", file.id, new_job.id)
+
     db.commit()
     db.refresh(new_job)
 
@@ -164,6 +168,7 @@ def upload_job_file(
             s3_client=s3_client,
             extension=extension,
             file_type=file_type,
+            file_name_url="jobs/files",
         )
 
         log(log.INFO, "File [%s] was uploaded", file_model.uuid)

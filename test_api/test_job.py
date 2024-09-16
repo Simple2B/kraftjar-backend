@@ -50,8 +50,11 @@ def test_create_job(
         )
         assert response.status_code == 201
 
-        assert response.json()[0]["original_name"] == "image_1.jpg"
-    image_1_uuid = response.json()[0]["uuid"]
+        files_out: list[s.FileOut] = [s.FileOut.model_validate(file) for file in response.json()]
+        assert files_out
+
+        assert files_out[0].original_name == "image_1.jpg"
+    image_1_uuid = files_out[0].uuid
 
     with open("test_api/test_data/image_2.png", "rb") as image:
         response = client.post(
@@ -61,8 +64,11 @@ def test_create_job(
         )
         assert response.status_code == 201
 
-        assert response.json()[0]["original_name"] == "image_2.jpg"
-    image_2_uuid = response.json()[0]["uuid"]
+        files_out_2: list[s.FileOut] = [s.FileOut.model_validate(file) for file in response.json()]
+        assert files_out_2
+
+        assert files_out_2[0].original_name == "image_2.jpg"
+    image_2_uuid = files_out_2[0].uuid
 
     with open("test_api/test_data/image_2.png", "rb") as image:
         response = client.post(
@@ -72,8 +78,11 @@ def test_create_job(
         )
         assert response.status_code == 201
 
-        assert response.json()[0]["original_name"] == "image_3.jpg"
-    image_3_uuid = response.json()[0]["uuid"]
+        files_out_3: list[s.FileOut] = [s.FileOut.model_validate(file) for file in response.json()]
+        assert files_out_3
+
+        assert files_out_3[0].original_name == "image_3.jpg"
+    image_3_uuid = files_out_3[0].uuid
 
     # delete image_3
     response = client.delete(f"/api/jobs/file/{image_3_uuid}", headers=auth_header)

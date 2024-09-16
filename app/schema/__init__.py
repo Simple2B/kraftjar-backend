@@ -66,4 +66,4 @@ from .meest_api import (
     AddressMeestApi,
     AddressList,
 )
-from .file import FileType, File, FileIn, FileOut, DocumentOut, Files
+from .file import FileType, File, FileIn, FileOut, Files

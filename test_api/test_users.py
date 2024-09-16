@@ -174,7 +174,7 @@ def test_delete_auth_account(monkeypatch, client: TestClient, auth_header: dict[
     )
     assert saved_account
 
-    response = client.delete(f"/api/users/auth-account/{saved_account.oauth_id}", headers=auth_header)
+    response = client.delete(f"/api/users/auth-account/{saved_account.id}", headers=auth_header)
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
     auth_account = full_db.scalar(sa.select(m.AuthAccount).where(m.AuthAccount.id == saved_account.id))

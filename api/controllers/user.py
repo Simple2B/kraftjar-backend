@@ -150,7 +150,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
 
     auth_accounts: list[s.AuthAccountOut] = [
         s.AuthAccountOut(
-            oauth_id=auth_account.oauth_id,
+            id=auth_account.id,
             email=auth_account.email,
             auth_type=s.AuthType(auth_account.auth_type),
         )
@@ -159,6 +159,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
     ]
 
     return s.UserProfileOut(
+        # TODO: remove  user.__dict__ add like property in User model and use s.UserProfileOut.model_validate
         **pop_keys(db_user.__dict__, ["services", "locations", "auth_accounts"]),
         auth_accounts=auth_accounts,
         services=services,

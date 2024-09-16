@@ -12,6 +12,8 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .location import Location
+    from .address import Address
+    from .user import User
 
 
 class Job(db.Model, ModelMixin):
@@ -64,6 +66,13 @@ class Job(db.Model, ModelMixin):
     is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
 
     location: orm.Mapped["Location"] = orm.relationship()
+    address: orm.Mapped["Address"] = orm.relationship()
+
+    worker: orm.Mapped["User"] = orm.relationship(
+        "User",
+        foreign_keys=[worker_id],
+        backref="jobs",
+    )
 
     def __repr__(self):
         return f"<Job {self.title} - {self.uuid}>"

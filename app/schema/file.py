@@ -11,8 +11,8 @@ class FileType(enum.Enum):
 
 
 class File(BaseModel):
-    name: str = ""
-    original_name: str = ""
+    name: str
+    original_name: str
     type: str = FileType.IMAGE.value
     url: str
 
@@ -23,7 +23,7 @@ class File(BaseModel):
 
 class FileIn(BaseModel):
     name: str
-    file_base64: str
+    # file_base64: str
     type: str = FileType.IMAGE.value
 
     model_config = ConfigDict(
@@ -33,15 +33,6 @@ class FileIn(BaseModel):
 
 class FileOut(File):
     uuid: str
-
-    model_config = ConfigDict(
-        from_attributes=True,
-    )
-
-
-class DocumentOut(BaseModel):
-    url: str
-    title: str
 
     model_config = ConfigDict(
         from_attributes=True,
