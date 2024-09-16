@@ -25,6 +25,7 @@ def get_jobs_on_home_page(query: s.JobHomePage, current_user: m.User, db: Sessio
     )
 
     recommended_jobs: Sequence[m.Job] = db.scalars(stmt.order_by(m.Job.id)).fetchmany(CARDS_LIMIT)
+
     if query.location_uuid:
         stmt = stmt.join(m.Location).where(m.Location.uuid == query.location_uuid)
 
@@ -33,30 +34,33 @@ def get_jobs_on_home_page(query: s.JobHomePage, current_user: m.User, db: Sessio
         sa.select(m.Job).join(m.SavedJob).where(m.SavedJob.user_id == current_user.id)
     ).all()
 
+    recommended_jobs_out = [
+        s.JobCard(
+            location=s.LocationStrings(
+                uuid=job.location.uuid,
+                name=job.location.region[0].name_ua if query.lang == CFG.UA else job.location.region[0].name_en,
+            ),
+            is_saved=job in user_saved_jobs,
+            **pop_keys(job.__dict__, ["location"]),
+        )
+        for job in recommended_jobs
+    ]
+    jobs_near_you_out = [
+        s.JobCard(
+            location=s.LocationStrings(
+                uuid=job.location.uuid,
+                name=job.location.region[0].name_ua if query.lang == CFG.UA else job.location.region[0].name_en,
+            ),
+            is_saved=job in user_saved_jobs,
+            **pop_keys(job.__dict__, ["location"]),
+        )
+        for job in jobs_near_you
+    ]
+
     return s.JobsCardList(
         lang=query.lang,
-        recommended_jobs=[
-            s.JobCard(
-                location=s.LocationStrings(
-                    uuid=job.location.uuid,
-                    name=job.location.region[0].name_ua if query.lang == CFG.UA else job.location.region[0].name_en,
-                ),
-                is_saved=job in user_saved_jobs,
-                **pop_keys(job.__dict__, ["location"]),
-            )
-            for job in recommended_jobs
-        ],
-        jobs_near_you=[
-            s.JobCard(
-                location=s.LocationStrings(
-                    uuid=job.location.uuid,
-                    name=job.location.region[0].name_ua if query.lang == CFG.UA else job.location.region[0].name_en,
-                ),
-                is_saved=job in user_saved_jobs,
-                **pop_keys(job.__dict__, ["location"]),
-            )
-            for job in jobs_near_you
-        ],
+        recommended_jobs=recommended_jobs_out,
+        jobs_near_you=jobs_near_you_out,
     )
 
 
@@ -78,7 +82,7 @@ def search_jobs(query: s.JobSearchIn, me: m.User, db: Session) -> s.JobsSearchOu
         )
 
     if query.selected_services:
-        stmt = stmt.join(m.job_services).join(service_alias).where(service_alias.name.in_(query.selected_services))
+        stmt = stmt.join(m.JobService).join(service_alias).where(service_alias.name.in_(query.selected_services))
 
     if query.selected_locations:
         stmt = stmt.join(m.Location).where(m.Location.name_ua.in_(query.selected_locations))

@@ -4,9 +4,8 @@ from uuid import uuid4
 import sqlalchemy as sa
 from sqlalchemy import orm
 
-from app import schema as s
-
 from app.database import db
+from app import schema as s
 
 from .utils import ModelMixin
 from typing import TYPE_CHECKING
@@ -19,6 +18,7 @@ class Job(db.Model, ModelMixin):
     __tablename__ = "jobs"
 
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
+
     uuid: orm.Mapped[str] = orm.mapped_column(sa.String(36), default=lambda: str(uuid4()))
 
     title: orm.Mapped[str] = orm.mapped_column(sa.String(128), nullable=False)
@@ -66,4 +66,4 @@ class Job(db.Model, ModelMixin):
     location: orm.Mapped["Location"] = orm.relationship()
 
     def __repr__(self):
-        return f"<Job {self.id} {self.title} >"
+        return f"<Job {self.title} - {self.uuid}>"

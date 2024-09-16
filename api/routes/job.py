@@ -2,16 +2,21 @@ from datetime import datetime
 from typing import Sequence, cast, Any
 
 import sqlalchemy as sa
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from sqlalchemy.orm import Session
+from mypy_boto3_s3 import S3Client
 
 import api.controllers as c
-from api.controllers.job import job_statistics
+
+from api.utils import get_file_extension
 import app.models as m
 import app.schema as s
-from api.dependency import get_current_user, get_user
+from api.dependency import get_current_user, get_user, get_s3_connect
 from app.database import get_db
 from app.logger import log
+from config import config
+
+CFG = config()
 
 job_router = APIRouter(prefix="/jobs", tags=["jobs"])
 
@@ -42,12 +47,14 @@ def get_jobs(
     return s.JobOutList(jobs=cast(list, jobs))
 
 
+# user create job
 @job_router.post(
     "/",
     status_code=status.HTTP_201_CREATED,
     response_model=s.JobOut,
     responses={
         status.HTTP_409_CONFLICT: {"description": "Selected service not found"},
+        status.HTTP_404_NOT_FOUND: {"description": "Selected file not found"},
     },
 )
 def create_job(
@@ -55,11 +62,26 @@ def create_job(
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
-    if job.service_uuid:
-        service = db.scalar(sa.select(m.Service).where(m.Service.uuid == job.service_uuid))
-        if not service:
-            log(log.ERROR, "Service [%s] not found", job.service_uuid)
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Selected service not found")
+    """Creates new job"""
+
+    new_job: m.Job = m.Job(
+        **job.model_dump(
+            exclude={
+                "lang",
+                "service_uuid",
+                "location_uuid",
+                "start_date",
+                "end_date",
+                "file_uuids",
+            }
+        ),
+        owner_id=current_user.id,
+        start_date=datetime.fromisoformat(job.start_date) if job.start_date else None,
+        end_date=datetime.fromisoformat(job.end_date) if job.end_date else None,
+    )
+
+    db.add(new_job)
+    db.commit()
 
     if job.location_uuid:
         location = db.scalar(sa.select(m.Location).where(m.Location.uuid == job.location_uuid))
@@ -67,28 +89,119 @@ def create_job(
             log(log.ERROR, "Location [%s] not found", job.location_uuid)
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Selected location not found")
 
-    new_job: m.Job = m.Job(
-        **job.model_dump(exclude={"service_uuid", "location_uuid", "start_date", "end_date"}),
-        owner_id=current_user.id,
-        location_id=location.id if location else None,
-        start_date=datetime.fromisoformat(job.start_date) if job.start_date else None,
-        end_date=datetime.fromisoformat(job.end_date) if job.end_date else None,
-    )
+        new_job.location_id = location.id
+        log(log.INFO, "Location [%s] was added to job [%s]", location.id, new_job.id)
 
+    service = db.scalar(sa.select(m.Service).where(m.Service.uuid == job.service_uuid))
+    if not service:
+        log(log.ERROR, "Service [%s] not found", job.service_uuid)
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Selected service not found")
+
+    m.JobService(job_id=new_job.id, service_id=service.id)
     db.add(new_job)
     db.commit()
     db.refresh(new_job)
-    log(log.INFO, "Created job [%s] for user [%s]", new_job.title, new_job.owner_id)
+    log(log.INFO, "Service [%s] was added to job [%s]", service.id, new_job.id)
 
-    job_services = m.JobService(
-        job_id=new_job.id,
-        service_id=job.service_uuid,
-    )
-    db.add(job_services)
+    files: list[s.FileOut] = []
+
+    for file_uuid in job.file_uuids:
+        file = db.scalar(sa.select(m.File).where(m.File.uuid == file_uuid))
+        if not file:
+            log(log.ERROR, "File [%s] not found", file_uuid)
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Selected file not found")
+
+        m.JobFile(job_id=new_job.id, file_id=file.id)
+        db.add(new_job)
+        files.append(file)
+        log(log.INFO, "File [%s] was added to job [%s]", file.id, new_job.id)
     db.commit()
-    db.refresh(job_services)
+    db.refresh(new_job)
 
-    return new_job
+    job_out = s.BaseJob.model_validate(new_job)
+
+    return s.JobOut(
+        **job_out.model_dump(),
+        files=[s.FileOut.model_validate(file) for file in files],
+        service=s.Service(
+            name=service.name_ua if job.lang == CFG.UA else service.name_en,
+            uuid=service.uuid,
+        ),
+    )
+
+
+# save file when user create job
+@job_router.post(
+    "/files",
+    status_code=status.HTTP_201_CREATED,
+    response_model=list[s.FileOut],
+    responses={
+        status.HTTP_400_BAD_REQUEST: {"description": "Unknown file extension"},
+    },
+    dependencies=[Depends(get_current_user)],
+)
+def upload_job_file(
+    files: list[UploadFile] = File(...),
+    db: Session = Depends(get_db),
+    s3_client: S3Client = Depends(get_s3_connect),
+):
+    """Uploads file for new job"""
+
+    files_out: list[s.FileOut] = []
+
+    for file in files:
+        extension = get_file_extension(file)
+
+        file_type = c.get_file_type(extension)
+
+        if file_type == s.FileType.UNKNOWN:
+            log(log.ERROR, "Unknown file extension [%s]", extension)
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Unknown file extension")
+
+        file_model = c.create_file(
+            file=file,
+            db=db,
+            s3_client=s3_client,
+            extension=extension,
+            file_type=file_type,
+        )
+
+        log(log.INFO, "File [%s] was uploaded", file_model.uuid)
+
+        files_out.append(s.FileOut.model_validate(file_model))
+
+    return files_out
+
+
+# deleted file
+@job_router.delete(
+    "/file/{file_uuid}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "File not found"},
+    },
+    dependencies=[Depends(get_current_user)],
+)
+def delete_job_file(
+    file_uuid: str,
+    db: Session = Depends(get_db),
+    s3_client: S3Client = Depends(get_s3_connect),
+):
+    """Deletes file for new job"""
+
+    file: m.File | None = db.scalar(sa.select(m.File).where(m.File.uuid == file_uuid))
+
+    if not file:
+        log(log.ERROR, "File [%s] not found", file_uuid)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not found")
+
+    # delete file from s3 because new job was not created yet
+    s3_client.delete_object(Bucket=CFG.AWS_S3_BUCKET_NAME, Key=file.key)
+
+    db.delete(file)
+    db.commit()
+
+    log(log.INFO, "File was deleted")
 
 
 @job_router.put("/{job_id}", status_code=status.HTTP_200_OK, response_model=s.JobOut)
@@ -143,4 +256,4 @@ def get_public_job_statistics(
 ):
     """Get statistics for jobs per location"""
 
-    return job_statistics(db)
+    return c.job_statistics(db)

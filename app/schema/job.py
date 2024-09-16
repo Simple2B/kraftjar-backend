@@ -6,6 +6,8 @@ from pydantic import BaseModel, ConfigDict
 from config import config
 
 from .location import LocationStrings
+from .file import FileOut
+from .service import Service
 
 CFG = config()
 
@@ -20,10 +22,22 @@ class BaseJob(BaseModel):
     id: int
     uuid: str
     title: str
+    description: str = ""
+
     address_id: int | None = None
     location_id: int | None = None
+
+    start_date: datetime | None = None
+    end_date: datetime | None = None
+
     owner_id: int
     worker_id: int | None = None
+
+    status: JobStatus
+
+    is_public: bool
+    is_negotiable: bool
+    is_volunteer: bool
 
     created_at: datetime
     updated_at: datetime
@@ -35,36 +49,8 @@ class BaseJob(BaseModel):
 
 
 class JobOut(BaseJob):
-    uuid: str
-    title: str
-    description: str = ""
-
-    address_id: int | None = None
-    location_id: int | None = None
-
-    start_date: datetime | None = None
-    end_date: datetime | None = None
-
-    status: JobStatus
-
-    is_public: bool
-    is_negotiable: bool
-    is_volunteer: bool
-
-    owner_id: int
-    worker_id: int | None = None
-
-    created_at: datetime
-    updated_at: datetime
-
-    is_deleted: bool = False
-
-    # TODO: add service relation here
-    # service:
-
-    model_config = ConfigDict(
-        from_attributes=True,
-    )
+    files: list[FileOut] = []
+    service: Service | None = None
 
 
 class JobOutList(BaseModel):
@@ -77,6 +63,8 @@ class JobOutList(BaseModel):
 
 # create job schema
 class JobIn(BaseModel):
+    lang: str = CFG.UA
+
     service_uuid: str
     title: str
     description: str
@@ -91,6 +79,8 @@ class JobIn(BaseModel):
 
     cost: int = 0
     is_public: bool = True
+
+    file_uuids: list[str] = []
 
     model_config = ConfigDict(
         from_attributes=True,
@@ -145,7 +135,7 @@ class JobCard(BaseModel):
     title: str
     description: str
     location: LocationStrings
-    cost: int
+    cost: float
     is_saved: bool
 
     model_config = ConfigDict(
