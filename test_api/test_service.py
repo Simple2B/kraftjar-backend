@@ -41,3 +41,15 @@ def test_get_services(client: TestClient, full_db: Session):
     children_uuids = [s.uuid for s in first_service.children]
     for uuid in children_uuids:
         assert uuid in uuids
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_services(client: TestClient):
+    lang = CFG.UA
+    response = client.get("/api/services", params={"lang": lang})
+    assert response.status_code == status.HTTP_200_OK
+    services = response.json()
+    assert services is not None
+
+    res = [s.Service.model_validate(service) for service in services]
+    assert len(res) == len(services)
