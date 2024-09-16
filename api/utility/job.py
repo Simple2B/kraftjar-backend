@@ -42,8 +42,6 @@ def create_job(db: Session, user_id: int, is_pending=False) -> m.Job:
         title=faker.job(),
         description=faker.text(),
         owner_id=user_id,
-        # address_id=random.choice(addresses),
-        time=faker.time(),
         location_id=random.choice(locations),
         status=random.choice(statuses),
     )

@@ -1,6 +1,7 @@
 # ruff: noqa: F401
 from .admin import Admin
 from .job import (
+    BaseJob,
     JobStatus,
     JobIn,
     JobOut,
@@ -65,3 +66,4 @@ from .meest_api import (
     AddressMeestApi,
     AddressList,
 )
+from .file import FileType, File, FileIn, FileOut, Files

@@ -83,6 +83,6 @@ class AuthAccount(BaseModel):
 
 
 class AuthAccountOut(BaseModel):
-    oauth_id: str = ""
+    id: int
     email: str = ""
     auth_type: AuthType

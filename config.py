@@ -96,6 +96,13 @@ class BaseConfig(BaseSettings):
     APPLE_ISSUER: str = "https://appleid.apple.com"
     APPLE_DECODE_ALGORITHMS: list[str] = ["RS256"]
 
+    # S3
+    AWS_ACCESS_KEY: str | None
+    AWS_SECRET_KEY: str | None
+    AWS_REGION: str | None
+    AWS_S3_BUCKET_NAME: str = "kraftjar"
+    AWS_S3_BUCKET_URL: str
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.

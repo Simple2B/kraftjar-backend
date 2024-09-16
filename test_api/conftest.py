@@ -3,7 +3,9 @@ from typing import Generator
 import pytest
 from dotenv import load_dotenv
 from fastapi import status
-from sqlalchemy import event
+
+from mypy_boto3_s3 import S3Client
+from moto import mock_aws
 
 load_dotenv("test_api/test.env")
 
@@ -53,6 +55,25 @@ def db() -> Generator[orm.Session, None, None]:
 @pytest.fixture
 def full_db(db: orm.Session) -> Generator[orm.Session, None, None]:
     yield db
+
+
+@pytest.fixture
+def s3_client() -> Generator[S3Client, None, None]:
+    """Returns a mock S3 client"""
+
+    with mock_aws():
+        from api.dependency.s3_client import get_s3_connect
+        from config import config
+
+        CFG = config()
+
+        client = get_s3_connect()
+        client.create_bucket(
+            Bucket=CFG.AWS_S3_BUCKET_NAME,
+            CreateBucketConfiguration={"LocationConstraint": CFG.AWS_REGION},  # type: ignore
+        )
+
+        yield client
 
 
 @pytest.fixture

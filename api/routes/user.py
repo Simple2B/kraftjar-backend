@@ -194,14 +194,14 @@ def register_apple_account(
     },
 )
 def delete_auth_account(
-    auth_account_id: str,
+    auth_account_id: int,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     """Delete auth account for user"""
 
     auth_account_filter = sa.and_(
-        m.AuthAccount.oauth_id == auth_account_id,
+        m.AuthAccount.id == auth_account_id,
         m.AuthAccount.user_id == current_user.id,
     )
 

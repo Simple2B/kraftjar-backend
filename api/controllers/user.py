@@ -148,17 +148,20 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
     )
     locations: list[s.LocationStrings] = [s.LocationStrings(name=name, uuid=uuid) for name, uuid in regions]
 
+    auth_accounts: list[s.AuthAccountOut] = [
+        s.AuthAccountOut(
+            id=auth_account.id,
+            email=auth_account.email,
+            auth_type=s.AuthType(auth_account.auth_type),
+        )
+        for auth_account in db_user.auth_accounts
+        if not auth_account.is_deleted
+    ]
+
     return s.UserProfileOut(
-        **pop_keys(db_user.__dict__, ["services", "locations"]),
-        auth_accounts=[
-            s.AuthAccountOut(
-                oauth_id=auth_account.oauth_id,
-                email=auth_account.email,
-                auth_type=s.AuthType(auth_account.auth_type),
-            )
-            for auth_account in db_user.auth_accounts
-            if not auth_account.is_deleted
-        ],
+        # TODO: remove  user.__dict__ add like property in User model and use s.UserProfileOut.model_validate
+        **pop_keys(db_user.__dict__, ["services", "locations", "auth_accounts"]),
+        auth_accounts=auth_accounts,
         services=services,
         locations=locations,
         owned_rates_count=db_user.owned_rates_count,
