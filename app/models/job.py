@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from uuid import uuid4
 
 import sqlalchemy as sa
@@ -54,7 +54,7 @@ class Job(db.Model, ModelMixin):
 
     created_at: orm.Mapped[datetime] = orm.mapped_column(
         sa.DateTime,
-        default=datetime.utcnow,
+        default=datetime.now(UTC),
     )
 
     updated_at: orm.Mapped[sa.DateTime] = orm.mapped_column(

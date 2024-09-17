@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from uuid import uuid4
 
 import sqlalchemy as sa
@@ -32,7 +32,7 @@ class File(db.Model, ModelMixin):
     is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
 
     updated_at: orm.Mapped[datetime] = orm.mapped_column(
-        sa.DateTime, server_default=sa.func.now(), onupdate=sa.func.now()
+        sa.DateTime, default=datetime.now(UTC), server_default=sa.func.now(), onupdate=sa.func.now()
     )
 
     @property

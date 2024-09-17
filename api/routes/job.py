@@ -138,14 +138,14 @@ def create_job(
 @job_router.post(
     "/files",
     status_code=status.HTTP_201_CREATED,
-    response_model=list[s.FileOut],
+    response_model=list[str],
     responses={
         status.HTTP_400_BAD_REQUEST: {"description": "Unknown file extension"},
     },
     dependencies=[Depends(get_current_user)],
 )
 def upload_job_file(
-    files: list[UploadFile] = File(...),
+    files: list[UploadFile],
     db: Session = Depends(get_db),
     s3_client: S3Client = Depends(get_s3_connect),
 ):
@@ -175,7 +175,7 @@ def upload_job_file(
 
         files_out.append(s.FileOut.model_validate(file_model))
 
-    return files_out
+    return [file.uuid for file in files_out]
 
 
 # deleted file
