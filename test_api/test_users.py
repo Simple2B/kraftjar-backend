@@ -116,6 +116,86 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, str], db: Session):
+    # Житомирська, Львівська
+    LOCATIONS = ["7", "14"]
+
+    locations = db.execute(sa.select(m.Location).where(m.Location.id.in_(LOCATIONS))).scalars().all()
+    locations_uuid = [loc.uuid for loc in locations]
+
+    # Test query only
+    query_data = s.UsersIn(query=" Ремонт ")
+    response = client.get(f"/api/users?query={query_data.query}", headers=auth_header)
+    assert response.status_code == status.HTTP_200_OK
+    data = s.UsersOut.model_validate(response.json())
+    assert len(data.items) > 0
+
+    # Test UA
+    query_data = s.UsersIn(query="Сантехнік", lang=Language.UA, selected_locations=locations_uuid)
+    response = client.get(
+        f"/api/users?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}",
+        headers=auth_header,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data_ua = s.UsersOut.model_validate(response.json())
+    assert len(data_ua.items) > 0
+
+    # Test EN
+    query_data = s.UsersIn(query="Plumber", lang=Language.EN, selected_locations=locations_uuid)
+    response = client.get(
+        f"/api/users?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}",
+        headers=auth_header,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data_en = s.UsersOut.model_validate(response.json())
+    assert len(data_en.items) > 0
+    assert len(data_en.items) == len(data_ua.items)
+
+    # Test locations
+    query_data = s.UsersIn(selected_locations=locations_uuid)
+    response = client.get(
+        f"/api/users?selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}",
+        headers=auth_header,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = s.UsersOut.model_validate(response.json())
+    assert len(data.items) > 0
+
+    # No query params
+    response = client.get("/api/users", headers=auth_header)
+    assert response.status_code == status.HTTP_200_OK
+    data = s.UsersOut.model_validate(response.json())
+    assert len(data.items) > 0
+
+    # Empty query with spaces
+    response = client.get(f"/api/users?query={'   '}", headers=auth_header)
+    assert response.status_code == status.HTTP_200_OK
+    data = s.UsersOut.model_validate(response.json())
+    assert len(data.items) > 0
+
+    # All params
+    query_data = s.UsersIn(
+        query="Сантехнік",
+        lang=Language.UA,
+        selected_locations=locations_uuid,
+        order_by=s.UsersOrderBy.AVERAGE_RATE,
+        ascending=False,
+    )
+    response = client.get(
+        f"/api/users?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}&ascending={query_data.ascending}&order_by={query_data.order_by.value}",
+        headers=auth_header,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = s.UsersOut.model_validate(response.json())
+    assert len(data.items) > 0
+
+    # Test no results
+    query_data = s.UsersIn(query="Тест")
+    response = client.get(f"/api/users?query={query_data.query}", headers=auth_header)
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_google_account(monkeypatch, client: TestClient, auth_header: dict[str, str]):
     mock_verify_oauth2_token = mock.Mock(return_value=DUMMY_GOOGLE_VALIDATION)
     monkeypatch.setattr("api.routes.user.id_token.verify_oauth2_token", mock_verify_oauth2_token)

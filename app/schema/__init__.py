@@ -34,6 +34,9 @@ from .user import (
     PublicUsersSearchOut,
     PublicUserProfileOut,
     PublicTopExpertsOut,
+    UsersIn,
+    UsersOut,
+    UsersOrderBy,
 )
 from .whoami import WhoAmI
 from .rate import RateIn, RateOut, RateOutList
