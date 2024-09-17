@@ -45,7 +45,7 @@ def get_current_user_profile(
     responses={status.HTTP_404_NOT_FOUND: {"description": "Users not found"}},
 )
 def get_users(
-    query: str | None = Query(default="", max_length=128),
+    query: str = Query(default="", max_length=128),
     lang: Language = Language.UA,
     selected_locations: Annotated[list[str] | None, Query()] = None,
     order_by: s.UsersOrderBy = s.UsersOrderBy.AVERAGE_RATE,
@@ -55,13 +55,15 @@ def get_users(
 ):
     """Get users by query params"""
 
+    u = db.execute(sa.select(m.User).where(m.User.id==3)).scalar_one_or_none()
+
     db_users = sa.select(m.User).where(m.User.is_deleted.is_(False), m.User.id != current_user.id)
 
     # TODO: All Ukraine select
     if selected_locations or current_user.locations:
         db_users = c.filter_users_by_locations(selected_locations, db, current_user, db_users)
 
-    users = c.filter_and_order_users(query, lang, db, current_user, db_users, order_by)
+    users = c.filter_and_order_users(query, lang, db, u, db_users, order_by)
 
     if not users:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Users not found")

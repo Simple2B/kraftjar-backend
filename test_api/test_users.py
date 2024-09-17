@@ -161,7 +161,7 @@ def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, st
     data = s.UsersOut.model_validate(response.json())
     assert len(data.items) > 0
 
-    # No query params (None)
+    # No query params
     response = client.get("/api/users", headers=auth_header)
     assert response.status_code == status.HTTP_200_OK
     data = s.UsersOut.model_validate(response.json())

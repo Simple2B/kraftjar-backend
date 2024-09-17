@@ -272,13 +272,13 @@ def filter_users_by_locations(
 
 
 def filter_and_order_users(
-    query: str | None, lang: Language, db: Session, current_user: m.User, db_users: sa.Select, order_by: s.UsersOrderBy
+    query: str, lang: Language, db: Session, current_user: m.User, db_users: sa.Select, order_by: s.UsersOrderBy
 ):
     """Filters and orders users by query params"""
 
-    if query is not None and query.strip():
-        query = query.strip()
+    query = query.strip()
 
+    if query:
         if lang == Language.UA:
             name_lang_query = m.Service.name_ua.ilike(f"%{query}%")
         else:
