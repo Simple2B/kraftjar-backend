@@ -255,3 +255,54 @@ def get_user_auth_account(
 
     auth_account = db.scalar(sa.select(m.AuthAccount).where(auth_account_filter))
     return auth_account
+
+
+def filter_users_by_locations(
+    selected_locations: list[str] | None, db: Session, current_user: m.User, db_users: sa.Select
+):
+    if selected_locations:
+        locations = db.execute(sa.select(m.Location).where(m.Location.uuid.in_(selected_locations))).scalars().all()
+        db_users = db_users.where(m.User.locations.any(m.Location.uuid.in_([loc.uuid for loc in locations])))
+    else:
+        db_users = db_users.where(
+            m.User.locations.any(m.Location.uuid.in_([loc.uuid for loc in current_user.locations]))
+        )
+
+    return db_users
+
+
+def filter_and_order_users(
+    query: str | None, lang: Language, db: Session, current_user: m.User, db_users: sa.Select, order_by: s.UsersOrderBy
+):
+    """Filters and orders users by query params"""
+
+    if query is not None and query.strip():
+        query = query.strip()
+
+        if lang == Language.UA:
+            name_lang_query = m.Service.name_ua.ilike(f"%{query}%")
+        else:
+            name_lang_query = m.Service.name_en.ilike(f"%{query}%")
+
+        services = db.execute(sa.select(m.Service).where(name_lang_query)).scalars().all()
+        db_users = db_users.where(m.User.services.any(m.Service.id.in_([s.id for s in services])))
+
+    if order_by == s.UsersOrderBy.AVERAGE_RATE:
+        users = db.execute(db_users.order_by(m.User.average_rate.desc())).scalars().all()
+    elif order_by == s.UsersOrderBy.OWNED_RATES_COUNT:
+        users = db.execute(db_users).scalars().all()
+        users = sorted(users, key=lambda user: user.owned_rates_count, reverse=True)
+    elif order_by == s.UsersOrderBy.NEAR:
+        users = (
+            db.execute(
+                db_users.order_by(
+                    m.User.locations.any(m.Location.id.in_([loc.id for loc in current_user.locations])).desc()
+                )
+            )
+            .scalars()
+            .all()
+        )
+    else:
+        users = db.execute(db_users).scalars().all()
+
+    return users
