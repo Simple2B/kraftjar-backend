@@ -50,11 +50,9 @@ def test_create_job(
         )
         assert response.status_code == 201
 
-        files_out: list[s.FileOut] = [s.FileOut.model_validate(file) for file in response.json()]
+        files_out: list[str] = [uuid for uuid in response.json()]
         assert files_out
-
-        assert files_out[0].original_name == "image_1.jpg"
-    image_1_uuid = files_out[0].uuid
+    image_1_uuid = files_out[0]
 
     with open("test_api/test_data/image_2.png", "rb") as image:
         response = client.post(
@@ -62,13 +60,9 @@ def test_create_job(
             headers=auth_header,
             files={"files": ("image_2.jpg", image, "image/npg")},
         )
+
         assert response.status_code == 201
-
-        files_out_2: list[s.FileOut] = [s.FileOut.model_validate(file) for file in response.json()]
-        assert files_out_2
-
-        assert files_out_2[0].original_name == "image_2.jpg"
-    image_2_uuid = files_out_2[0].uuid
+    image_2 = [uuid for uuid in response.json()]
 
     with open("test_api/test_data/image_2.png", "rb") as image:
         response = client.post(
@@ -77,15 +71,11 @@ def test_create_job(
             files={"files": ("image_3.jpg", image, "image/npg")},
         )
         assert response.status_code == 201
-
-        files_out_3: list[s.FileOut] = [s.FileOut.model_validate(file) for file in response.json()]
-        assert files_out_3
-
-        assert files_out_3[0].original_name == "image_3.jpg"
-    image_3_uuid = files_out_3[0].uuid
+        assert response.json()
+        files_out_3 = [uuid for uuid in response.json()]
 
     # delete image_3
-    response = client.delete(f"/api/jobs/file/{image_3_uuid}", headers=auth_header)
+    response = client.delete(f"/api/jobs/file/{files_out_3[0]}", headers=auth_header)
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
     user = db.scalar(sa.select(m.User))
@@ -104,7 +94,7 @@ def test_create_job(
         location_uuid=location.uuid,
         start_date="2024-09-13T15:23:20.911Z",
         end_date="2024-09-13T15:23:25.960Z",
-        file_uuids=[image_1_uuid, image_2_uuid],
+        file_uuids=[image_1_uuid, image_2[0]],
     )
 
     response = client.post("/api/jobs", headers=auth_header, json=new_job.model_dump())
@@ -116,4 +106,4 @@ def test_create_job(
     assert job.location_id == location.id
     assert job.owner_id == user.id
     assert job.files[0].uuid == image_1_uuid
-    assert job.files[1].uuid == image_2_uuid
+    assert job.files[1].uuid == image_2[0]
