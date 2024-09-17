@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Sequence, cast, Any
 
 import sqlalchemy as sa
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile
 from sqlalchemy.orm import Session
 from mypy_boto3_s3 import S3Client
 
