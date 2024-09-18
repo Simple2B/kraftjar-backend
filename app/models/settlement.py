@@ -1,11 +1,12 @@
 from typing import TYPE_CHECKING
-import enum
 from datetime import datetime
 
 import sqlalchemy as sa
 from sqlalchemy import orm
 
 from app.database import db
+
+from app.schema.location import Type
 
 from .utils import ModelMixin
 
@@ -15,12 +16,6 @@ if TYPE_CHECKING:
 
 class Settlement(db.Model, ModelMixin):
     __tablename__ = "settlements"
-
-    class Type(enum.Enum):
-        REGION_CENTER = "region_center"
-        RAYON_CENTER = "rayon_center"
-        CITY = "city"
-        VILLAGE = "village"
 
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
     location_id: orm.Mapped[int] = orm.mapped_column(sa.ForeignKey("locations.id"))

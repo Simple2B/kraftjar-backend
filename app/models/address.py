@@ -19,13 +19,16 @@ class Address(db.Model, ModelMixin):
     street_id: orm.Mapped[str] = orm.mapped_column(sa.String(36))
     city_id: orm.Mapped[str] = orm.mapped_column(sa.String(36))
 
+    # name ua
     line1: orm.Mapped[str] = orm.mapped_column(sa.String(255))
+    # name en
     line2: orm.Mapped[str] = orm.mapped_column(sa.String(255))
 
     # вул. парк пл. ст. просп. пров. шосе...
     street_type_ua: orm.Mapped[str] = orm.mapped_column(sa.String(36), server_default="", default="")
     street_type_en: orm.Mapped[str] = orm.mapped_column(sa.String(36), server_default="", default="")
 
+    # it is not use now
     postcode: orm.Mapped[str] = orm.mapped_column(sa.String(255))
     city: orm.Mapped[str] = orm.mapped_column(sa.String(255))
 
