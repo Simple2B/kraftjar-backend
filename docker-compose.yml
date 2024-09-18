@@ -41,6 +41,7 @@ services:
 
   backup:
     image: simple2b/pg-backup:1.0
+    restart: always
     volumes:
       - ./backup:/backup
     links:

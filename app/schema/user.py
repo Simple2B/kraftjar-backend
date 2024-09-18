@@ -1,7 +1,7 @@
 from typing import Sequence
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict
-
+from enum import Enum
 
 from app.schema.auth import AuthAccount, AuthAccountOut
 from app.schema.language import Language
@@ -75,6 +75,28 @@ class UsersSearchOut(BaseModel):
     top_users: list[UserSearchOut] = []
     near_users: list[UserSearchOut] = []
     query: str = ""
+
+
+class UsersOrderBy(Enum):
+    NEAR = "near"
+    AVERAGE_RATE = "average_rate"
+    OWNED_RATES_COUNT = "owned_rates_count"
+
+
+class UsersIn(BaseModel):
+    lang: Language = Language.UA
+    selected_locations: list[str] = []  # list of uuids - selected locations
+    query: str = ""
+    order_by: UsersOrderBy = UsersOrderBy.AVERAGE_RATE
+    ascending: bool = True
+
+
+class UsersOut(BaseModel):
+    items: list[UserSearchOut]
+    # user_locations: list[LocationStrings] = [] part of /me
+
+    # TODO: must be separated (another endpoint)
+    # locations: list[LocationStrings] = []
 
 
 class UserProfileOut(User):

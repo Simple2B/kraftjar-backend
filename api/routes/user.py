@@ -1,5 +1,6 @@
 from datetime import datetime
-from fastapi import APIRouter, Depends, status, HTTPException
+from typing import Annotated
+from fastapi import APIRouter, Depends, Query, status, HTTPException
 from sqlalchemy.orm import Session
 import sqlalchemy as sa
 
@@ -35,6 +36,42 @@ def get_current_user_profile(
 
     log(log.INFO, f"User {current_user.fullname} - {current_user.id} requested his profile")
     return c.get_user_profile(current_user.uuid, lang, db)
+
+
+@user_router.get(
+    "/",
+    status_code=status.HTTP_200_OK,
+    response_model=s.UsersOut,
+    responses={status.HTTP_404_NOT_FOUND: {"description": "Users not found"}},
+)
+def get_users(
+    query: str = Query(default="", max_length=128),
+    lang: Language = Language.UA,
+    selected_locations: Annotated[list[str] | None, Query()] = None,
+    order_by: s.UsersOrderBy = s.UsersOrderBy.AVERAGE_RATE,
+    ascending: bool = True,
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Get users by query params"""
+
+    db_users = sa.select(m.User).where(m.User.is_deleted.is_(False), m.User.id != current_user.id)
+
+    # TODO: All Ukraine select
+    if selected_locations or current_user.locations:
+        db_users = c.filter_users_by_locations(selected_locations, db, current_user, db_users)
+
+    users = c.filter_and_order_users(query, lang, db, current_user, db_users, order_by)
+
+    if not users:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Users not found")
+
+    if not ascending:
+        users = users[::-1]
+
+    users_out = create_out_search_users(users, lang, db)
+
+    return s.UsersOut(items=users_out)
 
 
 @user_router.post("/search", status_code=status.HTTP_200_OK, response_model=s.UsersSearchOut)
