@@ -7,6 +7,8 @@ from sqlalchemy import orm
 from app.database import db
 from app import schema as s
 
+from .job_services import job_services
+
 from .utils import ModelMixin
 from typing import TYPE_CHECKING
 
@@ -14,6 +16,7 @@ if TYPE_CHECKING:
     from .location import Location
     from .address import Address
     from .user import User
+    from .service import Service
 
 
 class Job(db.Model, ModelMixin):
@@ -67,6 +70,12 @@ class Job(db.Model, ModelMixin):
 
     location: orm.Mapped["Location"] = orm.relationship()
     address: orm.Mapped["Address"] = orm.relationship()
+
+    services: orm.Mapped[list["Service"]] = orm.relationship(
+        "Service",
+        secondary=job_services,
+        back_populates="jobs",
+    )
 
     worker: orm.Mapped["User"] = orm.relationship(
         "User",
