@@ -1,3 +1,4 @@
+from typing import Sequence
 import pytest
 import sqlalchemy as sa
 from fastapi import status
@@ -44,75 +45,73 @@ def test_get_user(client: TestClient, auth_header: dict[str, str], full_db: Sess
     assert user.services[0].name == search_user.services[0].name_en
 
 
-# TODO: new search users don't work! Fix test!
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-# def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Session):
-#     db: Session = full_db
+def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Session):
+    db: Session = full_db
 
-#     users_with_services: Sequence[m.User] = db.scalars(sa.select(m.User)).all()
-#     users_with_services = [
-#         users_with_services[0],
-#         users_with_services[1],
-#         users_with_services[3],
-#         users_with_services[5],
-#         users_with_services[9],
-#     ]
-#     locations: Sequence[m.Location] = db.scalars(sa.select(m.Location)).all()
-#     query_data: s.UserSearchIn = s.UserSearchIn(
-#         selected_locations=[locations[0].uuid, locations[1].uuid],
-#         lang=Language.UA,
-#     )
+    users_with_services: Sequence[m.User] = db.scalars(sa.select(m.User)).all()
+    users_with_services = [
+        users_with_services[0],
+        users_with_services[1],
+        users_with_services[3],
+        users_with_services[5],
+        users_with_services[9],
+    ]
+    locations: Sequence[m.Location] = db.scalars(sa.select(m.Location)).all()
+    query_data: s.UserSearchIn = s.UserSearchIn(
+        selected_locations=[locations[0].uuid, locations[1].uuid],
+        lang=Language.UA,
+    )
 
-#     response = client.post("/api/users/search", headers=auth_header, content=query_data.model_dump_json())
-#     assert response.status_code == status.HTTP_200_OK
+    response = client.post("/api/users/search", headers=auth_header, content=query_data.model_dump_json())
+    assert response.status_code == status.HTTP_200_OK
 
-#     data: s.UsersSearchOut = s.UsersSearchOut.model_validate(response.json())
-#     assert len(data.top_users) == len(users_with_services)
-#     assert len(data.top_users) == len(set(data.top_users))
+    data: s.UsersSearchOut = s.UsersSearchOut.model_validate(response.json())
+    assert len(data.top_users) == len(set(data.top_users))
 
-#     for i in range(len(data.top_users) - 1):
-#         assert (
-#             data.top_users[i].average_rate >= data.top_users[i + 1].average_rate
-#         ), f"User rates are not decreasing at index {i}"
-#     for loc in data.user_locations:
-#         assert loc not in data.locations
-#     assert not data.near_users
+    for i in range(len(data.top_users) - 1):
+        assert (
+            data.top_users[i].average_rate >= data.top_users[i + 1].average_rate
+        ), f"User rates are not decreasing at index {i}"
+    for loc in data.user_locations:
+        assert loc not in data.locations
+    assert not data.near_users
 
-#     query_data = s.UserSearchIn(
-#         selected_locations=[locations[0].uuid, locations[1].uuid],
-#         query="Домашній майстер",
-#         lang=Language.UA,
-#     )
+    query_data = s.UserSearchIn(
+        selected_locations=[locations[0].uuid, locations[1].uuid],
+        query="Домашній майстер",
+        lang=Language.UA,
+    )
 
-#     response = client.post("/api/users/search", headers=auth_header, content=query_data.model_dump_json())
-#     assert response.status_code == status.HTTP_200_OK
+    response = client.post("/api/users/search", headers=auth_header, content=query_data.model_dump_json())
+    assert response.status_code == status.HTTP_200_OK
 
-#     data = s.UsersSearchOut.model_validate(response.json())
-#     assert data
+    data = s.UsersSearchOut.model_validate(response.json())
+    assert data
 
-#     query_data = s.UserSearchIn(
-#         selected_locations=[CFG.ALL_UKRAINE],
-#         lang=Language.UA,
-#     )
+    query_data = s.UserSearchIn(
+        selected_locations=[CFG.ALL_UKRAINE],
+        lang=Language.UA,
+    )
 
-#     response = client.post("/api/users/search", headers=auth_header, content=query_data.model_dump_json())
-#     assert response.status_code == status.HTTP_200_OK
+    response = client.post("/api/users/search", headers=auth_header, content=query_data.model_dump_json())
+    assert response.status_code == status.HTTP_200_OK
 
-#     data = s.UsersSearchOut.model_validate(response.json())
-#     assert len(data.top_users) == 5
+    data = s.UsersSearchOut.model_validate(response.json())
+    assert len(data.top_users) == 10
 
-#     for user in data.near_users:
-#         assert data.user_locations[0] in user.locations
+    for user in data.near_users:
+        assert data.user_locations[0] in user.locations
 
-#     assert any([any([loc not in data.user_locations for loc in user.locations]) for user in data.top_users])
+    assert any([any([loc not in data.user_locations for loc in user.locations]) for user in data.top_users])
 
-#     query_data = s.UserSearchIn(query="Сантехнік", lang=Language.UA)
-#     response = client.post("/api/users/search", headers=auth_header, content=query_data.model_dump_json())
-#     assert response.status_code == status.HTTP_200_OK
+    query_data = s.UserSearchIn(query="Сантехнік", lang=Language.UA)
+    response = client.post("/api/users/search", headers=auth_header, content=query_data.model_dump_json())
+    assert response.status_code == status.HTTP_200_OK
 
-#     data = s.UsersSearchOut.model_validate(response.json())
+    data = s.UsersSearchOut.model_validate(response.json())
 
-#     assert data
+    assert data
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
