@@ -19,7 +19,17 @@ from .job import (
     PublicJobDict,
 )
 from .application import ApplicationIn, ApplicationOut, ApplicationOutList, ApplicationPut
-from .location import Location, LocationsIn, LocationsOut, Region, RegionsFile, LocationStrings
+from .location import (
+    Type,
+    Location,
+    LocationsIn,
+    LocationsOut,
+    Region,
+    RegionsFile,
+    LocationStrings,
+    LocationOut,
+    LocationsFile,
+)
 from .pagination import Pagination
 from .token import Token, TokenData
 from .user import (
@@ -67,3 +77,4 @@ from .meest_api import (
     AddressList,
 )
 from .file import FileType, File, FileIn, FileOut, Files
+from .city import City, CityIn, CityOut, CitiesFile, CityAddressesOut
