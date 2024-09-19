@@ -59,7 +59,7 @@ def write_jobs_in_db(jobs: list[s.JobCompletedCreate]):
                 address_id=job.address_id,
                 location_id=job.location_id,
                 # time=job.time,
-                status=job.status,
+                status=job.status.value,
                 is_public=job.is_public,
                 owner_id=job.owner_id,
                 worker_id=job.worker_id,
@@ -200,19 +200,6 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
 
         status = row[STATUS_INDEX]
         assert status, f"The status {status} is empty"
-
-        if status == s.JobStatus.PENDING.value:
-            status = s.JobStatus.PENDING
-        elif status == s.JobStatus.IN_PROGRESS.value:
-            status = s.JobStatus.IN_PROGRESS
-        elif status == s.JobStatus.COMPLETED.value:
-            status = s.JobStatus.COMPLETED
-        elif status == s.JobStatus.ON_CONFIRMATION.value:
-            status = s.JobStatus.ON_CONFIRMATION
-        elif status == s.JobStatus.CANCELED.value:
-            status = s.JobStatus.CANCELED
-        else:
-            raise Exception(f"Unknown status {status}")
 
         jobs.append(
             s.JobCompletedCreate(

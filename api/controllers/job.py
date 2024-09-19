@@ -21,7 +21,7 @@ def get_jobs_on_home_page(query: s.JobHomePage, current_user: m.User, db: Sessio
         sa.and_(
             m.Job.is_deleted.is_(False),
             m.Job.is_public.is_(True),
-            m.Job.status == s.JobStatus.PENDING,
+            m.Job.status == s.JobStatus.PENDING.value,
         )
     )
 
@@ -72,7 +72,7 @@ def search_jobs(query: s.JobSearchIn, me: m.User, db: Session) -> s.JobsSearchOu
         sa.and_(
             m.Job.is_deleted.is_(False),
             m.Job.is_public.is_(True),
-            m.Job.status == s.JobStatus.PENDING,
+            m.Job.status == s.JobStatus.PENDING.value,
         )
     )
 

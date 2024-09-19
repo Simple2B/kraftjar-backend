@@ -39,7 +39,7 @@ class Job(db.Model, ModelMixin):
     # TODO: may be needed in the future
     # time: orm.Mapped[str] = orm.mapped_column(sa.String(128), nullable=False)
 
-    status: orm.Mapped[str] = orm.mapped_column(sa.Enum(s.JobStatus), default=s.JobStatus.PENDING)
+    status: orm.Mapped[str] = orm.mapped_column(sa.String(36), default=s.JobStatus.PENDING.value)
 
     is_public: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=True)
 

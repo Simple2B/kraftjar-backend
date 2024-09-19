@@ -67,7 +67,7 @@ def get_jobs_all(
 
     db_jobs = sa.select(m.Job).where(
         m.Job.is_deleted.is_(False),
-        m.Job.status == s.JobStatus.PENDING,
+        m.Job.status == s.JobStatus.PENDING.value,
         m.Job.is_public.is_(True),
         m.Job.owner_id != current_user.id,
     )
