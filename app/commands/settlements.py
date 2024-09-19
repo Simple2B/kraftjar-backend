@@ -34,9 +34,9 @@ def get_settlements_from_meest_api(with_print: bool = True):
             api_settlement_type = settlement.data.t_ua
 
             if api_settlement_type == CFG.API_VILLAGE:
-                type = m.Settlement.Type.VILLAGE
+                type = m.Settlement.type.VILLAGE
             elif api_settlement_type == CFG.API_CITY:
-                type = m.Settlement.Type.CITY
+                type = m.Settlement.type.CITY
             else:
                 log(log.ERROR, f"Unknown type: {api_settlement_type}")
 
