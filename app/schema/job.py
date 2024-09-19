@@ -3,6 +3,7 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
 
+from app.schema.language import Language
 from config import config
 
 from .location import LocationStrings
@@ -16,6 +17,8 @@ class JobStatus(enum.Enum):
     PENDING = "pending"
     IN_PROGRESS = "in_progress"
     COMPLETED = "completed"
+    ON_CONFIRMATION = "on_confirmation"
+    CANCELED = "canceled"
 
 
 class BaseJob(BaseModel):
@@ -167,6 +170,10 @@ class JobCompletedCreate(BaseModel):
     is_deleted: bool = False
     rate_worker: int
     rate_owner: int
+    start_date: datetime
+    end_date: datetime | None = None
+    cost: float
+    services: list[str] = []
 
     model_config = ConfigDict(
         from_attributes=True,
@@ -192,3 +199,37 @@ class PublicJobStatistics(BaseModel):
 
 class PublicJobDict(BaseModel):
     statistics: dict[int, PublicJobStatistics]
+
+
+class JobsOrderBy(enum.Enum):
+    NEAR = "near"
+    START_DATE = "start_date"
+    COST = "cost"
+
+
+class JobsIn(BaseModel):
+    lang: Language = Language.UA
+    selected_locations: list[str] = []  # list of uuids - selected locations
+    query: str = ""
+    order_by: JobsOrderBy = JobsOrderBy.START_DATE
+    ascending: bool = True
+
+
+class JobOutput(BaseModel):
+    uuid: str
+    title: str
+    description: str
+    cost: float
+    start_date: datetime
+    end_date: datetime | None = None
+    created_at: datetime
+    location: LocationStrings | None = None
+    services: list[Service]
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class JobsOut(BaseModel):
+    items: list[JobOutput]

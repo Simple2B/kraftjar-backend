@@ -1,8 +1,8 @@
 from datetime import datetime
-from typing import Sequence, cast, Any
+from typing import Annotated, Any
 
 import sqlalchemy as sa
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile
+from fastapi import APIRouter, Depends, HTTPException, Query, status, UploadFile
 from sqlalchemy.orm import Session
 from mypy_boto3_s3 import S3Client
 
@@ -14,6 +14,7 @@ import app.schema as s
 from api.dependency import get_current_user, get_user, get_s3_connect
 from app.database import get_db
 from app.logger import log
+from app.schema.language import Language
 from config import config
 
 CFG = config()
@@ -34,17 +35,57 @@ def get_job(
     return job
 
 
-@job_router.get("/", status_code=status.HTTP_200_OK, response_model=s.JobOutList)
+# @job_router.get("/", status_code=status.HTTP_200_OK, response_model=s.JobOutList)
+# def get_jobs(
+#     db: Session = Depends(get_db),
+#     # get cur_user
+#     current_user: m.User | None = Depends(get_user),
+# ):
+#     query = sa.select(m.Job)
+#     if current_user:
+#         query = query.where(m.Job.user_id == current_user.id)
+#     jobs: Sequence[m.Job] = db.scalars(query).all()
+#     return s.JobOutList(jobs=cast(list, jobs))
+
+
+@job_router.get(
+    "/",
+    status_code=status.HTTP_200_OK,
+    response_model=s.JobsOut,
+    responses={status.HTTP_404_NOT_FOUND: {"description": "Jobs not found"}},
+)
 def get_jobs(
+    query: str = Query(default="", max_length=128),
+    lang: Language = Language.UA,
+    selected_locations: Annotated[list[str] | None, Query()] = None,
+    order_by: s.JobsOrderBy = s.JobsOrderBy.START_DATE,
+    ascending: bool = True,
+    current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-    # get cur_user
-    current_user: m.User | None = Depends(get_user),
 ):
-    query = sa.select(m.Job)
-    if current_user:
-        query = query.where(m.Job.user_id == current_user.id)
-    jobs: Sequence[m.Job] = db.scalars(query).all()
-    return s.JobOutList(jobs=cast(list, jobs))
+    """Get jobs by query params"""
+
+    db_jobs = sa.select(m.Job).where(
+        m.Job.is_deleted.is_(False),
+        m.Job.status == s.JobStatus.PENDING.value,
+        m.Job.is_public.is_(True),
+        m.Job.owner_id != current_user.id,
+    )
+
+    if selected_locations or current_user.locations:
+        db_jobs = c.filter_jobs_by_locations(selected_locations, db, current_user, db_jobs)
+
+    jobs = c.filter_and_order_jobs(query, lang, db, current_user, db_jobs, order_by)
+
+    if not jobs:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Jobs not found")
+
+    if not ascending:
+        jobs = jobs[::-1]
+
+    jobs_out = c.create_out_search_jobs(jobs, lang, db)
+
+    return s.JobsOut(items=jobs_out)
 
 
 # user create job
