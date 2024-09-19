@@ -10,7 +10,6 @@ from api.dependency.user import get_current_user
 from app import models as m
 from app.database import get_db
 from app.logger import log
-from app import schema as s
 from config import config
 
 CFG = config()
@@ -30,7 +29,7 @@ def get_locations(query: s.LocationsIn, db: Session = Depends(get_db)):
 @location_router.get(
     "/address",
     status_code=status.HTTP_200_OK,
-    response_model=s.CitiesAddresses,
+    response_model=list[s.CityAddresse],
     dependencies=[Depends(get_current_user)],
 )
 def get_address(
@@ -50,7 +49,7 @@ def get_address(
     for word in wordList:
         if len(word) >= 3:
             cities: Sequence[m.Settlement] = db.scalars(
-                sa.select(m.Settlement).where(cities_lang_column.ilike(f"%{word}%"))
+                sa.select(m.Settlement).where(cities_lang_column == wordList[0])
             ).all()
             cities_ids = [city.city_id for city in cities]
 
@@ -68,17 +67,20 @@ def get_address(
                     )
                 )
 
-    cities_addresses_list
-
     city_addresses_out: list[s.CityAddresse] = []
 
-    # for city_addresses in cities_addresses_list:
-    #     city_addresses
-    # city_addresses_out.append(
-    #     s.CityAddresse(
-    #         uuid=city_addresses.addresses.uuid,
-    #         city_addresses=f"{city_addresses.city.name_ua}, {city_addresses.addresses.street_type_ua} {city_addresses.addresses.line1}",
-    #     )
-    # )
+    for city_address in cities_addresses_list:
+        for address in city_address.addresses:
+            if (
+                re.search(rf"\b{re.escape(word.lower())}\b", city_address.city.name_ua.lower())
+                or re.search(rf"\b{re.escape(word.lower())}\b", address.street_type_ua.lower())
+                or re.search(rf"\b{re.escape(word.lower())}\b", address.line1.lower())
+            ):
+                city_addresses_out.append(
+                    s.CityAddresse(
+                        uuid=address.uuid,
+                        city_addresses=f"{city_address.city.name_ua}, {address.street_type_ua} {address.line1}",
+                    )
+                )
 
     return city_addresses_out
