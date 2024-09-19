@@ -23,6 +23,30 @@ def get_locations(query: s.LocationsIn, db: Session = Depends(get_db)):
 
 
 @location_router.get(
+    "/all",
+    status_code=status.HTTP_200_OK,
+    response_model=s.LocationsListOut,
+)
+def get_all_locations(
+    lang: s.Language = s.Language.UA,
+    db: Session = Depends(get_db),
+):
+    """Returns all locations"""
+
+    db_locations = db.scalars(sa.select(m.Location)).all()
+
+    locations_out = [
+        s.LocationStrings(
+            name=location.region[0].name_ua if lang == s.Language.UA else location.region[0].name_en,
+            uuid=location.uuid,
+        )
+        for location in db_locations
+    ]
+
+    return s.LocationsListOut(locations=locations_out)
+
+
+@location_router.get(
     "/address",
     status_code=status.HTTP_200_OK,
     response_model=list[s.CityAddressesOut],

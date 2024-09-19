@@ -116,6 +116,7 @@ def test_get_jobs_by_query_params(client: TestClient, auth_header: dict[str, str
     LOCATIONS = ["7", "14"]
 
     locations = db.execute(sa.select(m.Location).where(m.Location.id.in_(LOCATIONS))).scalars().all()
+    assert locations
     locations_uuid = [loc.uuid for loc in locations]
 
     # Test query only
