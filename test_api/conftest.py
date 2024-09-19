@@ -13,7 +13,7 @@ load_dotenv("test_api/test.env")
 import os
 
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, orm, select
+from sqlalchemy import orm, select
 
 from api import app
 from app import models as m
@@ -30,17 +30,21 @@ def db() -> Generator[orm.Session, None, None]:
     with db.Session() as session:
         db.Model.metadata.create_all(bind=session.bind)
 
+        from app.commands.locations import export_test_locations_from_json_file
         from app.commands.addresses import export_addresses_from_json_file
+        from app.commands.cities import export_cities_from_json_file
         from app.commands.locations import export_regions_from_json_file
         from app.commands.service import export_services_from_json_file
         from app.commands.user import export_users_from_json_file
         from app.commands.job import export_jobs_from_json_file
 
+        # export_test_locations_from_json_file(with_print=False)
         export_services_from_json_file(with_print=False)
         export_regions_from_json_file(with_print=False)
         export_users_from_json_file(with_print=False)
+        export_cities_from_json_file(with_print=False)
         export_addresses_from_json_file(with_print=False)
-        export_jobs_from_json_file(max_job_limit=10)
+        export_jobs_from_json_file(max_job_limit=25)
 
         def override_get_db() -> Generator:
             yield session

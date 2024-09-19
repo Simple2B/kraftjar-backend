@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class AddressBase(BaseModel):
@@ -12,6 +12,10 @@ class AddressBase(BaseModel):
     street_type_ua: str = ""
     street_type_en: str = ""
 
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
 
 class AddressesFile(BaseModel):
     addresses: list[AddressBase]
@@ -21,5 +25,9 @@ class AddressIn(BaseModel):
     pass
 
 
-class AddressOut(BaseModel):
-    pass
+class AddressOut(AddressBase):
+    uuid: str
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
