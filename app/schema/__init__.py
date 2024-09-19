@@ -80,4 +80,4 @@ from .meest_api import (
     AddressList,
 )
 from .file import FileType, File, FileIn, FileOut, Files
-from .city import City, CityIn, CityOut, CitiesFile, CityAddressesOut
+from .city import City, CityIn, CityOut, CitiesFile, CityAddressesOut, CityAddresse, CitiesAddresses

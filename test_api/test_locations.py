@@ -50,3 +50,8 @@ def test_get_address(
     assert response_out[0].addresses
     assert response_out[0].city.city_id == response_out[0].addresses[0].city_id
     assert response_out[0].city.city_id == response_out[0].addresses[1].city_id
+
+    response = client.get(
+        "/api/locations/address", params={"lang": s.Language.UA.value, "query": ""}, headers=auth_header
+    )
+    assert response.status_code == status.HTTP_200_OK
