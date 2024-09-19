@@ -17,6 +17,10 @@ from .job import (
     JobsFile,
     PublicJobStatistics,
     PublicJobDict,
+    JobOutput,
+    JobsOut,
+    JobsOrderBy,
+    JobsIn,
 )
 from .application import ApplicationIn, ApplicationOut, ApplicationOutList, ApplicationPut
 from .location import (

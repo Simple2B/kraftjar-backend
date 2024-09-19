@@ -7,7 +7,13 @@ from sqlalchemy import orm
 from app.database import db
 from app.schema.service import ServiceDB
 
+from .job_services import job_services
+
 from .utils import ModelMixin
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .job import Job
 
 
 class Service(db.Model, ModelMixin):
@@ -29,6 +35,8 @@ class Service(db.Model, ModelMixin):
         onupdate=sa.func.now(),
     )
     is_deleted: orm.Mapped[bool] = orm.mapped_column(default=False)
+
+    jobs: orm.Mapped[list["Job"]] = orm.relationship("Job", secondary=job_services, back_populates="services")
 
     @property
     def parent(self) -> ServiceDB | None:
