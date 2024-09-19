@@ -131,6 +131,9 @@ def filter_jobs_by_locations(
     selected_locations: list[str] | None, db: Session, current_user: m.User, db_jobs: sa.Select
 ):
     if selected_locations:
+        if CFG.ALL_UKRAINE in selected_locations:
+            return db_jobs
+
         locations = db.execute(sa.select(m.Location).where(m.Location.uuid.in_(selected_locations))).scalars().all()
         db_jobs = db_jobs.where(m.Job.location.has(m.Location.uuid.in_([loc.uuid for loc in locations])))
     else:
@@ -185,10 +188,14 @@ def create_out_search_jobs(db_jobs: Sequence[m.Job], lang: Language, db: Session
             for service in db_job.services
         ]
 
-        location = s.LocationStrings(
-            name=db_job.location.region[0].name_ua if lang == Language.UA else db_job.location.region[0].name_en,
-            uuid=db_job.location.uuid,
-        )
+        # None == All Ukraine
+        location = None
+
+        if db_job.location is not None:
+            location = s.LocationStrings(
+                name=db_job.location.region[0].name_ua if lang == Language.UA else db_job.location.region[0].name_en,
+                uuid=db_job.location.uuid,
+            )
 
         jobs.append(
             s.JobOutput(

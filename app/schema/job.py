@@ -223,7 +223,7 @@ class JobOutput(BaseModel):
     start_date: datetime
     end_date: datetime | None = None
     created_at: datetime
-    location: LocationStrings
+    location: LocationStrings | None = None
     services: list[Service]
 
     model_config = ConfigDict(

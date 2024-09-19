@@ -120,7 +120,7 @@ def test_get_jobs_by_query_params(client: TestClient, auth_header: dict[str, str
 
     # Test query only
     query_data = s.JobsIn(query=" Ремонт ")
-    response = client.get(f"/api/jobs/all/?query={query_data.query}", headers=auth_header)
+    response = client.get(f"/api/jobs?query={query_data.query}", headers=auth_header)
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsOut.model_validate(response.json())
     assert len(data.items) > 0
@@ -128,7 +128,7 @@ def test_get_jobs_by_query_params(client: TestClient, auth_header: dict[str, str
     # Test UA
     query_data = s.JobsIn(query="Сантехнік", lang=Language.UA, selected_locations=locations_uuid)
     response = client.get(
-        f"/api/jobs/all/?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}",
+        f"/api/jobs?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}",
         headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
@@ -138,7 +138,7 @@ def test_get_jobs_by_query_params(client: TestClient, auth_header: dict[str, str
     # Test EN
     query_data = s.JobsIn(query="Plumber", lang=Language.EN, selected_locations=locations_uuid)
     response = client.get(
-        f"/api/jobs/all/?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}",
+        f"/api/jobs?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}",
         headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
@@ -149,21 +149,28 @@ def test_get_jobs_by_query_params(client: TestClient, auth_header: dict[str, str
     # Test locations
     query_data = s.JobsIn(selected_locations=locations_uuid)
     response = client.get(
-        f"/api/jobs/all/?selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}",
+        f"/api/jobs?selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}",
         headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsOut.model_validate(response.json())
     assert len(data.items) > 0
 
+    # All Ukraine
+    query_data = s.JobsIn(selected_locations=locations_uuid)
+    response = client.get(f"/api/jobs?selected_locations={CFG.ALL_UKRAINE}", headers=auth_header)
+    assert response.status_code == status.HTTP_200_OK
+    data = s.JobsOut.model_validate(response.json())
+    assert len(data.items) > 0
+
     # No query params
-    response = client.get("/api/jobs/all/", headers=auth_header)
+    response = client.get("/api/jobs", headers=auth_header)
     assert response.status_code == status.HTTP_200_OK
     no_params_data = s.JobsOut.model_validate(response.json())
     assert len(no_params_data.items) > 0
 
     # Empty query with spaces
-    response = client.get(f"/api/jobs/all/?query={'   '}", headers=auth_header)
+    response = client.get(f"/api/jobs?query={'   '}", headers=auth_header)
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsOut.model_validate(response.json())
     assert len(data.items) > 0
@@ -178,7 +185,7 @@ def test_get_jobs_by_query_params(client: TestClient, auth_header: dict[str, str
         ascending=False,
     )
     response = client.get(
-        f"/api/jobs/all/?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}&ascending={query_data.ascending}&order_by={query_data.order_by.value}",
+        f"/api/jobs?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}&ascending={query_data.ascending}&order_by={query_data.order_by.value}",
         headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
@@ -187,5 +194,5 @@ def test_get_jobs_by_query_params(client: TestClient, auth_header: dict[str, str
 
     # Test no results
     query_data = s.JobsIn(query="Тест")
-    response = client.get(f"/api/jobs/all/?query={query_data.query}", headers=auth_header)
+    response = client.get(f"/api/jobs?query={query_data.query}", headers=auth_header)
     assert response.status_code == status.HTTP_404_NOT_FOUND

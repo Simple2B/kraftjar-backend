@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Annotated, Sequence, cast, Any
+from typing import Annotated, Any
 
 import sqlalchemy as sa
 from fastapi import APIRouter, Depends, HTTPException, Query, status, UploadFile
@@ -35,26 +35,26 @@ def get_job(
     return job
 
 
-@job_router.get("/", status_code=status.HTTP_200_OK, response_model=s.JobOutList)
-def get_jobs(
-    db: Session = Depends(get_db),
-    # get cur_user
-    current_user: m.User | None = Depends(get_user),
-):
-    query = sa.select(m.Job)
-    if current_user:
-        query = query.where(m.Job.user_id == current_user.id)
-    jobs: Sequence[m.Job] = db.scalars(query).all()
-    return s.JobOutList(jobs=cast(list, jobs))
+# @job_router.get("/", status_code=status.HTTP_200_OK, response_model=s.JobOutList)
+# def get_jobs(
+#     db: Session = Depends(get_db),
+#     # get cur_user
+#     current_user: m.User | None = Depends(get_user),
+# ):
+#     query = sa.select(m.Job)
+#     if current_user:
+#         query = query.where(m.Job.user_id == current_user.id)
+#     jobs: Sequence[m.Job] = db.scalars(query).all()
+#     return s.JobOutList(jobs=cast(list, jobs))
 
 
 @job_router.get(
-    "/all/",
+    "/",
     status_code=status.HTTP_200_OK,
     response_model=s.JobsOut,
     responses={status.HTTP_404_NOT_FOUND: {"description": "Jobs not found"}},
 )
-def get_jobs_all(
+def get_jobs(
     query: str = Query(default="", max_length=128),
     lang: Language = Language.UA,
     selected_locations: Annotated[list[str] | None, Query()] = None,
@@ -72,7 +72,6 @@ def get_jobs_all(
         m.Job.owner_id != current_user.id,
     )
 
-    # TODO: All Ukraine select
     if selected_locations or current_user.locations:
         db_jobs = c.filter_jobs_by_locations(selected_locations, db, current_user, db_jobs)
 
