@@ -6,7 +6,7 @@ from sqlalchemy import orm
 
 from app.database import db
 
-from app.schema.location import Type
+from app.schema.location import SettlementType
 
 from .utils import ModelMixin
 
@@ -26,7 +26,9 @@ class Settlement(db.Model, ModelMixin):
     # Класифікатор об'єктів адміністративно-територіального устрою України
     kt: orm.Mapped[str] = orm.mapped_column(sa.String(36))
 
-    type: orm.Mapped[Type] = orm.mapped_column(sa.Enum(Type))
+    type: orm.Mapped[str] = orm.mapped_column(
+        default=SettlementType.CITY.value, server_default=SettlementType.CITY.value
+    )
 
     name_ua: orm.Mapped[str] = orm.mapped_column(sa.String(128))
     name_en: orm.Mapped[str] = orm.mapped_column(sa.String(128))

@@ -20,7 +20,7 @@ from .job import (
 )
 from .application import ApplicationIn, ApplicationOut, ApplicationOutList, ApplicationPut
 from .location import (
-    Type,
+    SettlementType,
     Location,
     LocationsIn,
     LocationsOut,

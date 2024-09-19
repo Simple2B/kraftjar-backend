@@ -37,7 +37,7 @@ def export_cities_from_json_file(with_print: bool = True):
                 district_id=city.district_id,
                 city_id=city.city_id,
                 kt=city.kt,
-                type=s.Type(city.type),
+                type=s.SettlementType.CITY.value,
                 name_ua=city.name_ua,
                 name_en=city.name_en,
             )

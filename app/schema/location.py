@@ -2,7 +2,7 @@ import enum
 from pydantic import BaseModel, ConfigDict
 
 
-class Type(enum.Enum):
+class SettlementType(enum.Enum):
     REGION_CENTER = "region_center"
     RAYON_CENTER = "rayon_center"
     CITY = "city"
