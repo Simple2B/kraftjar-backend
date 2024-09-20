@@ -165,27 +165,41 @@ def register_google_account(
 ):
     """Register Google account for user"""
 
-    id_info_res: s.GoogleTokenVerification = id_token.verify_oauth2_token(
-        auth_data.id_token,
-        requests.Request(),
-        CFG.GOOGLE_CLIENT_ID,
-    )
+    try:
+        id_info_res: s.GoogleTokenVerification = id_token.verify_oauth2_token(
+            auth_data.id_token,
+            requests.Request(),
+            CFG.GOOGLE_CLIENT_ID,
+        )
 
-    id_info = s.GoogleTokenVerification.model_validate(id_info_res)
+        log(log.INFO, "id_info_res: [%s]", id_info_res)
 
-    email = id_info.email
-    oauth_id = id_info.sub
+        id_info = s.GoogleTokenVerification.model_validate(id_info_res)
 
-    google_account = get_user_auth_account(email, oauth_id, db, s.AuthType.GOOGLE)
+        email = id_info.email
+        oauth_id = id_info.sub
 
-    if google_account:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This Google account is already in use")
+        google_account = get_user_auth_account(email, oauth_id, db, s.AuthType.GOOGLE)
 
-    new_google_account = m.AuthAccount(
-        user_id=current_user.id, email=email, auth_type=s.AuthType.GOOGLE, oauth_id=oauth_id
-    )
-    db.add(new_google_account)
-    db.commit()
+        log(log.INFO, "google_account: [%s]", google_account)
+
+        if google_account:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This Google account is already in use")
+
+        new_google_account = m.AuthAccount(
+            user_id=current_user.id, email=email, auth_type=s.AuthType.GOOGLE, oauth_id=oauth_id
+        )
+        log(log.INFO, "new_google_account: [%s]", new_google_account)
+        db.add(new_google_account)
+        db.commit()
+
+    except HTTPException as e:
+        log(log.ERROR, "Google auth failed: %s", e)
+        raise e
+
+    except ValueError as e:
+        log(log.ERROR, "Invalid token: %s", e)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid token")
 
     log(log.INFO, "User [%s] successfully added Google account, email: [%s]", current_user.fullname, email)
 

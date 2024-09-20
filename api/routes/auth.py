@@ -96,6 +96,7 @@ def google_auth(auth_data: s.GoogleAuthIn, db: Session = Depends(get_db)):
         return s.Token(access_token=create_access_token(user.id))
 
     except HTTPException as e:
+        log(log.ERROR, "Google auth failed: %s", e)
         raise e
 
     except ValueError as e:
