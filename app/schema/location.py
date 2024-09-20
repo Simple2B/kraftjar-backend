@@ -1,6 +1,8 @@
 import enum
 from pydantic import BaseModel, ConfigDict
 
+from app.schema.language import Language
+
 
 class SettlementType(enum.Enum):
     REGION_CENTER = "region_center"
@@ -59,3 +61,11 @@ class LocationOut(BaseModel):
 
 class LocationsFile(BaseModel):
     locations: list[LocationOut]
+
+
+class LocationsListIn(BaseModel):
+    lang: Language
+
+
+class LocationsListOut(BaseModel):
+    locations: list[LocationStrings]

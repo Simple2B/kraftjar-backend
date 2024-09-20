@@ -6,6 +6,7 @@ import sqlalchemy as sa
 
 from app import schema as s
 from app import models as m
+from app.schema.language import Language
 from config import config
 
 
@@ -51,3 +52,20 @@ def test_get_address(
     )
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == []
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_get_all_locations(client: TestClient, full_db: Session):
+    db = full_db
+
+    query_data = s.LocationsListIn(lang=Language.UA)
+
+    response = client.get(f"/api/locations/all?lang={query_data.lang.value}")
+    assert response.status_code == status.HTTP_200_OK
+
+    data = s.LocationsListOut.model_validate(response.json())
+    assert data.locations
+
+    db_locations = db.scalars(sa.select(m.Location)).all()
+    assert db_locations
+    assert len(data.locations) == len(db_locations)

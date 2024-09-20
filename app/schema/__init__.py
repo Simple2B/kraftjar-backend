@@ -33,6 +33,8 @@ from .location import (
     LocationStrings,
     LocationOut,
     LocationsFile,
+    LocationsListIn,
+    LocationsListOut,
 )
 from .pagination import Pagination
 from .token import Token, TokenData
