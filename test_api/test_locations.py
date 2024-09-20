@@ -69,4 +69,3 @@ def test_get_all_locations(client: TestClient, full_db: Session):
     db_locations = db.scalars(sa.select(m.Location)).all()
     assert db_locations
     assert len(data.locations) == len(db_locations)
-
