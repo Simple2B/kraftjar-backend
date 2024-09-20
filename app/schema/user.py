@@ -105,6 +105,8 @@ class UserProfileOut(User):
     average_rate: float
     services: list[Service]
     locations: list[LocationStrings]
+    completed_jobs_count: int
+    announced_jobs_count: int
 
     __hash__ = object.__hash__
 

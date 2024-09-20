@@ -158,6 +158,26 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
         if not auth_account.is_deleted
     ]
 
+    completed_jobs_count = db.scalar(
+        sa.select(sa.func.count(m.Job.id)).where(
+            sa.and_(
+                m.Job.is_deleted.is_(False),
+                m.Job.worker_id == db_user.id,
+                m.Job.status == s.JobStatus.COMPLETED.value,
+            )
+        )
+    )
+
+    announced_jobs_count = db.scalar(
+        sa.select(sa.func.count(m.Job.id)).where(
+            sa.and_(
+                m.Job.is_deleted.is_(False),
+                m.Job.owner_id == db_user.id,
+                m.Job.status == s.JobStatus.PENDING.value,
+            )
+        )
+    )
+
     return s.UserProfileOut(
         # TODO: remove  user.__dict__ add like property in User model and use s.UserProfileOut.model_validate
         **pop_keys(db_user.__dict__, ["services", "locations", "auth_accounts"]),
@@ -165,6 +185,8 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
         services=services,
         locations=locations,
         owned_rates_count=db_user.owned_rates_count,
+        completed_jobs_count=completed_jobs_count if completed_jobs_count else 0,
+        announced_jobs_count=announced_jobs_count if announced_jobs_count else 0,
     )
 
 
