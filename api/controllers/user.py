@@ -265,13 +265,10 @@ def get_public_user_profile(user_uuid: str, lang: Language, db: Session) -> s.Pu
     )
 
 
-def get_user_auth_account(
-    email: str, oauth_id: str, current_user: m.User, db: Session, auth_type: s.AuthType
-) -> m.AuthAccount | None:
+def get_user_auth_account(email: str, oauth_id: str, db: Session, auth_type: s.AuthType) -> m.AuthAccount | None:
     auth_account_filter = sa.and_(
         m.AuthAccount.email == email,
         m.AuthAccount.oauth_id == oauth_id,
-        m.AuthAccount.user_id == current_user.id,
         m.AuthAccount.auth_type == auth_type,
     )
 
