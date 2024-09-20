@@ -176,7 +176,7 @@ def register_google_account(
     email = id_info.email
     oauth_id = id_info.sub
 
-    google_account = get_user_auth_account(email, oauth_id, current_user, db, s.AuthType.GOOGLE)
+    google_account = get_user_auth_account(email, oauth_id, db, s.AuthType.GOOGLE)
 
     if google_account:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This Google account is already in use")
@@ -209,7 +209,7 @@ def register_apple_account(
     email = token_data.email
     oauth_id = token_data.sub
 
-    apple_account = get_user_auth_account(email, oauth_id, current_user, db, s.AuthType.APPLE)
+    apple_account = get_user_auth_account(email, oauth_id, db, s.AuthType.APPLE)
 
     if apple_account:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This Apple account is already in use")
