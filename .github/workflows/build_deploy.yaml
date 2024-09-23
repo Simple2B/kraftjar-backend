@@ -123,11 +123,13 @@ jobs:
           username: ${{ env.DEPLOY_USER_NAME }}
           key: ${{ env.DEPLOY_SSH_KEY }}
           port: ${{ env.DEPLOY_SSH_PORT }}
+          envs: GOOGLE_CLIENT_ID
           script: |
             export GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+            echo $env
 
-            cd ~/kraftjar &&
-            mv docker-compose.staging.yaml docker-compose.yaml &&
+            cd ~/kraftjar
+            mv docker-compose.staging.yaml docker-compose.yaml
+            docker login -u ${{ env.DOCKER_LOGIN }} -p ${{ env.DOCKER_ACCESS_TOKEN }} &&
             docker compose pull &&
-            docker compose up -d &&
-            docker system prune -f
+            docker compose up -d
