@@ -98,7 +98,7 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     assert response.status_code == status.HTTP_200_OK
 
     data = s.UsersSearchOut.model_validate(response.json())
-    assert len(data.top_users) == 10
+    assert len(data.top_users) == 5
 
     for user in data.near_users:
         assert data.user_locations[0] in user.locations
@@ -117,7 +117,7 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, str], db: Session):
     # Житомирська, Львівська
-    LOCATIONS = ["7", "14"]
+    LOCATIONS = ["14", "1", "2"]
 
     locations = db.execute(sa.select(m.Location).where(m.Location.id.in_(LOCATIONS))).scalars().all()
     locations_uuid = [loc.uuid for loc in locations]
@@ -130,7 +130,7 @@ def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, st
     assert len(data.items) > 0
 
     # Test UA
-    query_data = s.UsersIn(query="Сантехнік", lang=Language.UA, selected_locations=locations_uuid)
+    query_data = s.UsersIn(query="Освіта", lang=Language.UA, selected_locations=locations_uuid)
     response = client.get(
         f"/api/users?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}",
         headers=auth_header,
@@ -140,7 +140,7 @@ def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, st
     assert len(data_ua.items) > 0
 
     # Test EN
-    query_data = s.UsersIn(query="Plumber", lang=Language.EN, selected_locations=locations_uuid)
+    query_data = s.UsersIn(query="Education", lang=Language.EN, selected_locations=locations_uuid)
     response = client.get(
         f"/api/users?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}",
         headers=auth_header,
@@ -153,7 +153,7 @@ def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, st
     # Test locations
     query_data = s.UsersIn(selected_locations=locations_uuid)
     response = client.get(
-        f"/api/users?selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}",
+        f"/api/users?selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}&selected_locations={query_data.selected_locations[2]}",
         headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
@@ -174,14 +174,14 @@ def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, st
 
     # All params
     query_data = s.UsersIn(
-        query="Сантехнік",
+        query="Освіта",
         lang=Language.UA,
         selected_locations=locations_uuid,
         order_by=s.UsersOrderBy.AVERAGE_RATE,
         ascending=False,
     )
     response = client.get(
-        f"/api/users?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}&ascending={query_data.ascending}&order_by={query_data.order_by.value}",
+        f"/api/users?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}&selected_locations={query_data.selected_locations[2]}&ascending={query_data.ascending}&order_by={query_data.order_by.value}",
         headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
