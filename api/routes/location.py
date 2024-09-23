@@ -70,41 +70,38 @@ def get_address(
 
     cities_addresses_list: list[s.CityAddressesOut] = []
     wordList = re.sub(CFG.RE_WORD, " ", query).split()
-    for word in wordList:
-        if len(word) >= 3:
-            cities: Sequence[m.Settlement] = db.scalars(
-                sa.select(m.Settlement).where(cities_lang_column == wordList[0])
-            ).all()
-            cities_ids = [city.city_id for city in cities]
 
-            log(log.INFO, "Found %s cities", len(cities))
+    cities: Sequence[m.Settlement] = db.scalars(sa.select(m.Settlement).where(cities_lang_column == wordList[0])).all()
 
-            cities_addresses = db.scalars(sa.select(m.Address).where((m.Address.city_id.in_(cities_ids)))).all()
+    cities_ids = [city.city_id for city in cities]
 
-            for city in cities:
-                city_addresses = [address for address in cities_addresses if address.city_id == city.city_id]
+    log(log.INFO, "Found %s cities", len(cities))
 
-                cities_addresses_list.append(
-                    s.CityAddressesOut(
-                        city=s.City.model_validate(city),
-                        addresses=[s.AddressOut.model_validate(address) for address in city_addresses],
-                    )
-                )
+    cities_addresses = db.scalars(sa.select(m.Address).where((m.Address.city_id.in_(cities_ids)))).all()
+
+    for city in cities:
+        city_addresses = [address for address in cities_addresses if address.city_id == city.city_id]
+
+        cities_addresses_list.append(
+            s.CityAddressesOut(
+                city=s.City.model_validate(city),
+                addresses=[s.AddressOut.model_validate(address) for address in city_addresses],
+            )
+        )
 
     city_addresses_out: list[s.CityAddresse] = []
+    for word in wordList:
+        if len(word) >= 3:
+            for city_address in cities_addresses_list:
+                for address in city_address.addresses:
+                    search_address_out = f"{city_address.city.name_ua}{address.street_type_ua}{address.line1}"
 
-    for city_address in cities_addresses_list:
-        for address in city_address.addresses:
-            if (
-                re.search(rf"\b{re.escape(word.lower())}\b", city_address.city.name_ua.lower())
-                or re.search(rf"\b{re.escape(word.lower())}\b", address.street_type_ua.lower())
-                or re.search(rf"\b{re.escape(word.lower())}\b", address.line1.lower())
-            ):
-                city_addresses_out.append(
-                    s.CityAddresse(
-                        uuid=address.uuid,
-                        city_addresses=f"{city_address.city.name_ua}, {address.street_type_ua} {address.line1}",
-                    )
-                )
+                    if word.lower() in search_address_out.lower() and search_address_out not in city_addresses_out:
+                        city_addresses_out.append(
+                            s.CityAddresse(
+                                uuid=address.uuid,
+                                city_addresses=f"{city_address.city.name_ua}, {address.street_type_ua} {address.line1}",
+                            )
+                        )
 
     return city_addresses_out
