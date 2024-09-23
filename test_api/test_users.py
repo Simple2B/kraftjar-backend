@@ -195,7 +195,7 @@ def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, st
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_google_account(monkeypatch, client: TestClient, auth_header: dict[str, str]):
+def test_google_account(monkeypatch, client: TestClient, auth_header: dict[str, str], db: Session):
     mock_verify_oauth2_token = mock.Mock(return_value=DUMMY_GOOGLE_VALIDATION)
     monkeypatch.setattr("api.routes.user.id_token.verify_oauth2_token", mock_verify_oauth2_token)
 
@@ -203,6 +203,24 @@ def test_google_account(monkeypatch, client: TestClient, auth_header: dict[str, 
 
     response = client.post("/api/users/register-google-account", headers=auth_header, json=data.model_dump())
     assert response.status_code == status.HTTP_201_CREATED
+
+    account = db.scalars(sa.select(m.AuthAccount).where(m.AuthAccount.email == DUMMY_GOOGLE_VALIDATION.email)).first()
+    assert account
+
+    mock_verify_oauth2_token.assert_called_once_with(
+        "test_token",
+        mock.ANY,
+        CFG.GOOGLE_CLIENT_ID,
+    )
+
+    data = s.GoogleAuthIn(id_token="test_token")
+
+    # Test register same google account
+    mock_verify_oauth2_token = mock.Mock(return_value=DUMMY_GOOGLE_VALIDATION)
+    monkeypatch.setattr("api.routes.user.id_token.verify_oauth2_token", mock_verify_oauth2_token)
+
+    response = client.post("/api/users/register-google-account", headers=auth_header, json=data.model_dump())
+    assert response.status_code == status.HTTP_409_CONFLICT
 
     mock_verify_oauth2_token.assert_called_once_with(
         "test_token",
@@ -223,7 +241,7 @@ def test_google_account(monkeypatch, client: TestClient, auth_header: dict[str, 
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_apple_account(monkeypatch, client: TestClient, auth_header: dict[str, str]):
+def test_apple_account(monkeypatch, client: TestClient, auth_header: dict[str, str], db: Session):
     mock_verify_apple_token = mock.Mock(return_value=DUMMY_IOS_VALIDATION)
     monkeypatch.setattr("api.routes.user.c.verify_apple_token", mock_verify_apple_token)
 
@@ -231,6 +249,13 @@ def test_apple_account(monkeypatch, client: TestClient, auth_header: dict[str, s
 
     response = client.post("/api/users/register-apple-account", headers=auth_header, json=data.model_dump())
     assert response.status_code == status.HTTP_201_CREATED
+
+    account = db.scalars(sa.select(m.AuthAccount).where(m.AuthAccount.email == DUMMY_IOS_VALIDATION.email)).first()
+    assert account
+
+    # Test register same apple account
+    response = client.post("/api/users/register-apple-account", headers=auth_header, json=data.model_dump())
+    assert response.status_code == status.HTTP_409_CONFLICT
 
     # Test login
     response = client.post("/api/auth/apple", json=data.model_dump())
