@@ -17,7 +17,7 @@ def test_who_am_i(
     db: Session,
     auth_header: dict[str, str],
 ):
-    user: m.User | None = db.scalar(select(m.User))
+    user: m.User | None = db.scalar(select(m.User).order_by(m.User.id))
     assert user
     response = client.get("api/whoami/user", headers=auth_header)
     assert response.status_code == status.HTTP_200_OK

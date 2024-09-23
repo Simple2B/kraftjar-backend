@@ -18,6 +18,9 @@ class Rayon(db.Model, ModelMixin):
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
     location_id: orm.Mapped[int] = orm.mapped_column(sa.ForeignKey("locations.id"))
 
+    # From Meest Express Public API
+    district_id: orm.Mapped[str] = orm.mapped_column(sa.String(36))
+
     name_ua: orm.Mapped[str] = orm.mapped_column(sa.String(128))
     name_en: orm.Mapped[str] = orm.mapped_column(sa.String(128))
 

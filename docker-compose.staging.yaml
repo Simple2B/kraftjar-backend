@@ -39,6 +39,7 @@ services:
       APP_ENV: production
       IS_API: 'true'
       ALCHEMICAL_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-passwd}@db:5432/db
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
     env_file:
       - .env
     depends_on:
@@ -51,17 +52,18 @@ services:
 
   backup:
     image: simple2b/pg-backup:1.0
-    restart: unless-stopped
+    restart: always
+    volumes:
+      - ./backup:/backup
     links:
       - db
     environment:
-      # scheduler for every 3 days
       APP_ENV: production
-      SCHEDULE_DAY: ${SCHEDULE_DAY:-3}
+      SCHEDULE_DAY: 1  # scheduler for every day
       POSTGRES_DATABASE: db
       POSTGRES_HOST: db
       POSTGRES_USER: ${DATABASE_USERNAME:-postgres}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-password}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-passwd}
       POSTGRES_EXTRA_OPTS: '--schema=public --blobs'
       DAYS_HISTORY: 7
       SCHEDULE_HOUR: 0

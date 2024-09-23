@@ -21,20 +21,19 @@ user_route = Blueprint("user", __name__, url_prefix="/user")
 @user_route.route("/", methods=["GET"])
 @login_required
 def get_all():
-    q = request.args.get("q", type=str, default=None)
-    query = m.User.select().where(m.User.is_deleted.is_(False)).order_by(m.User.id)
-    count_query = sa.select(sa.func.count()).select_from(m.User).where(m.User.is_deleted.is_(False))
-    if q:
+    search_query = request.args.get("q", type=str, default=None)
+    query = m.User.select().order_by(m.User.id)
+    count_query = sa.select(sa.func.count()).select_from(m.User)
+
+    if search_query:
         query = (
             m.User.select()
-            .where(m.User.fullname.ilike(f"{q}%") | m.User.email.ilike(f"{q}%"))
-            .where(m.User.is_deleted.is_(False))
+            .where(m.User.fullname.like(f"{search_query}%") | m.User.phone.like(f"{search_query}%"))
             .order_by(m.User.id)
         )
         count_query = (
             sa.select(sa.func.count())
-            .where(m.User.fullname.ilike(f"{q}%") | m.User.email.ilike(f"{q}%"))
-            .where(m.User.is_deleted.is_(False))
+            .where(m.User.fullname.like(f"{search_query}%") | m.User.phone.like(f"{search_query}%"))
             .select_from(m.User)
         )
 
@@ -44,11 +43,12 @@ def get_all():
             query.offset((pagination.page - 1) * pagination.per_page).limit(pagination.per_page)
         ).scalars()
     )
+
     return render_template(
         "user/users.html",
         users=users,
         page=pagination,
-        search_query=q,
+        search_query=search_query,
     )
 
 

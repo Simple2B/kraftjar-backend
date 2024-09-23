@@ -43,3 +43,39 @@ flask db upgrade
 ```bash
 yarn
 ```
+
+## Commands to get data into your local db:
+
+Go to `ssh s2b` and take the backup file from our server and put it in your environment:
+
+```bash
+cp /home/runner/kraftjar/backup/db_2024-09-19T14:08:36Z.tgz .
+```
+
+```bash
+mv db_2024-09-19T14:08:36Z.tgz dump.tgz
+```
+
+In our project, download dump.tgz:
+
+```bash
+scp s2b:dump.tgz .
+```
+
+```bash
+tar xvzf dump.tgz
+```
+
+Clear db and fill with data:
+
+```bash
+dcdn -v db
+```
+
+```bash
+dcupd db
+```
+
+```bash
+dce -T db psql < dump.sql
+```

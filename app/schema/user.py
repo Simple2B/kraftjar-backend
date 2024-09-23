@@ -1,7 +1,9 @@
 from typing import Sequence
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict
+from enum import Enum
 
+from app.schema.auth import AuthAccount, AuthAccountOut
 from app.schema.language import Language
 
 from .location import LocationStrings
@@ -10,12 +12,16 @@ from .service import Service
 
 class User(BaseModel):
     id: int
+    uuid: str
     fullname: str
     first_name: str
     last_name: str
     phone: str
     email: str
     is_deleted: bool
+    phone_verified: bool
+
+    is_volunteer: bool
 
     model_config = ConfigDict(
         from_attributes=True,
@@ -27,7 +33,7 @@ class UserFile(BaseModel):
     first_name: str = ""
     last_name: str = ""
     phone: str
-    email: str
+    auth_accounts: list[AuthAccount] = []
     password: str
     location_ids: list[int] = []
     service_ids: list[int] = []
@@ -74,19 +80,42 @@ class UsersSearchOut(BaseModel):
     query: str = ""
 
 
-class UserProfileOut(BaseModel):
-    id: int
-    uuid: str
-    fullname: str
-    phone: str
-    email: str
-    is_deleted: bool
+class UsersOrderBy(Enum):
+    NEAR = "near"
+    AVERAGE_RATE = "average_rate"
+    OWNED_RATES_COUNT = "owned_rates_count"
+
+
+class UsersIn(BaseModel):
+    lang: Language = Language.UA
+    selected_locations: list[str] = []  # list of uuids - selected locations
+    query: str = ""
+    order_by: UsersOrderBy = UsersOrderBy.AVERAGE_RATE
+    ascending: bool = True
+
+
+class UsersOut(BaseModel):
+    items: list[UserSearchOut]
+    # user_locations: list[LocationStrings] = [] part of /me
+
+    # TODO: must be separated (another endpoint)
+    # locations: list[LocationStrings] = []
+
+
+class UserProfileOut(User):
+    auth_accounts: list[AuthAccountOut] = []
     owned_rates_count: int
     average_rate: float
     services: list[Service]
     locations: list[LocationStrings]
+    completed_jobs_count: int
+    announced_jobs_count: int
 
     __hash__ = object.__hash__
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
 
 
 class PublicUserProfileOut(BaseModel):

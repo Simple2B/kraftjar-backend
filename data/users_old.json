@@ -1,0 +1,3203 @@
+{
+  "users": [
+    {
+      "fullname": "Вікторія Коваленко",
+      "first_name": "Вікторія ",
+      "last_name": "Коваленко",
+      "phone": "+380994925544",
+      "email": "mail1@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        3,
+        4
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Антон Салтиков",
+      "first_name": "Антон ",
+      "last_name": "Салтиков",
+      "phone": "+380663579792",
+      "email": "tinkerino571@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Кедеш Ернест",
+      "first_name": "Кедеш ",
+      "last_name": "Ернест",
+      "phone": "+380634136800",
+      "email": "ekedesh@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        15
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Денис Редько",
+      "first_name": "Денис ",
+      "last_name": "Редько",
+      "phone": "+380681238266",
+      "email": "4.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Галина Юрчишин",
+      "first_name": "Галина ",
+      "last_name": "Юрчишин",
+      "phone": "+380639030446",
+      "email": "5.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        53
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Юрій Хмелько",
+      "first_name": "Юрій ",
+      "last_name": "Хмелько",
+      "phone": "+380443907570",
+      "email": "6.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Олена",
+      "first_name": "Олена",
+      "last_name": "",
+      "phone": "+380507865048",
+      "email": "7.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14,
+        1
+      ],
+      "service_ids": [
+        68
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Роман Громенко",
+      "first_name": "Роман ",
+      "last_name": "Громенко",
+      "phone": "+380994123244",
+      "email": "8.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Марія Загородська",
+      "first_name": "Марія ",
+      "last_name": "Загородська",
+      "phone": "+380675903697",
+      "email": "9.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Віктор Демидюк",
+      "first_name": "Віктор ",
+      "last_name": "Демидюк",
+      "phone": "+380672417704",
+      "email": "10.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1,
+        2
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Анастасія Любкіна",
+      "first_name": "Анастасія ",
+      "last_name": "Любкіна",
+      "phone": "+380633985675",
+      "email": "11.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        97,
+        57
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Богдан Несен",
+      "first_name": "Богдан ",
+      "last_name": "Несен",
+      "phone": "+380681529387",
+      "email": "12.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        87
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Саранчук Людмила",
+      "first_name": "Саранчук ",
+      "last_name": "Людмила",
+      "phone": "+380631504651",
+      "email": "13.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Вадим Кравчук",
+      "first_name": "Вадим ",
+      "last_name": "Кравчук",
+      "phone": "+380637846673",
+      "email": "14.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        9,
+        68
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Надія Тиха",
+      "first_name": "Надія ",
+      "last_name": "Тиха",
+      "phone": "+380442843730",
+      "email": "15.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Дмитро Мільшевський",
+      "first_name": "Дмитро ",
+      "last_name": "Мільшевський",
+      "phone": "+380688703041",
+      "email": "16.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        3,
+        6
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Софія Олефіренко",
+      "first_name": "Софія ",
+      "last_name": "Олефіренко",
+      "phone": "+380736542359",
+      "email": "17.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Микола Олефіренко",
+      "first_name": "Микола ",
+      "last_name": "Олефіренко",
+      "phone": "+380632352203",
+      "email": "18.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        10,
+        12
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Наталія Ільєнко\t\n",
+      "first_name": "Наталія ",
+      "last_name": "Ільєнко\t\n",
+      "phone": "+380676631208",
+      "email": "19.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        3,
+        12,
+        4
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Сергій Архипенко",
+      "first_name": "Сергій ",
+      "last_name": "Архипенко",
+      "phone": "+380674377195",
+      "email": "20.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        70,
+        71
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Гліб Матченко ",
+      "first_name": "Гліб ",
+      "last_name": "Матченко ",
+      "phone": "+380667909021",
+      "email": "21.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        53,
+        5
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Марія Онещак ",
+      "first_name": "Марія ",
+      "last_name": "Онещак ",
+      "phone": "+380734139746",
+      "email": "22.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        70,
+        71
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Юрій Танчук",
+      "first_name": "Юрій ",
+      "last_name": "Танчук",
+      "phone": "+380994180120",
+      "email": "23.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        42
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Валентина Янченко",
+      "first_name": "Валентина ",
+      "last_name": "Янченко",
+      "phone": "+380635732722",
+      "email": "24.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        4
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Онуфрій",
+      "first_name": "",
+      "last_name": "",
+      "phone": "+380638298744",
+      "email": "25.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        7
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Ірина Онупрієнко",
+      "first_name": "Ірина ",
+      "last_name": "Онупрієнко",
+      "phone": "+380688378643",
+      "email": "26.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        4
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Євгеній Дзюбенко",
+      "first_name": "Євгеній ",
+      "last_name": "Дзюбенко",
+      "phone": "+380638554945",
+      "email": "27.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        70
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Антон Мельник",
+      "first_name": "Антон ",
+      "last_name": "Мельник",
+      "phone": "+380732192818",
+      "email": "28.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        84,
+        7
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Уляна Грабач",
+      "first_name": "Уляна ",
+      "last_name": "Грабач",
+      "phone": "+380684960315",
+      "email": "29.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        53,
+        12
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Катерина Ющик",
+      "first_name": "Катерина ",
+      "last_name": "Ющик",
+      "phone": "+380632599549",
+      "email": "30.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        53
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Анна Тимощук",
+      "first_name": "Анна ",
+      "last_name": "Тимощук",
+      "phone": "+380447340202",
+      "email": "31.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        25,
+        23,
+        23
+      ],
+      "service_ids": [
+        85
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Віктор Береза",
+      "first_name": "Віктор ",
+      "last_name": "Береза",
+      "phone": "+380683283309",
+      "email": "32.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        5
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Юрій Швець",
+      "first_name": "Юрій ",
+      "last_name": "Швець",
+      "phone": "+380734848840",
+      "email": "33.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1,
+        14
+      ],
+      "service_ids": [
+        50,
+        12
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Дмитро Ємець",
+      "first_name": "Дмитро ",
+      "last_name": "Ємець",
+      "phone": "+380683301426",
+      "email": "34.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        5
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Юлія Дзень",
+      "first_name": "Юлія ",
+      "last_name": "Дзень",
+      "phone": "+380997856822",
+      "email": "35.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        4
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Інна Мороз",
+      "first_name": "Інна ",
+      "last_name": "Мороз",
+      "phone": "+380448147368",
+      "email": "36.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        4
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Аліна Панків",
+      "first_name": "Аліна ",
+      "last_name": "Панків",
+      "phone": "+380636246465",
+      "email": "37.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        3
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Орест Кондратенко",
+      "first_name": "Орест ",
+      "last_name": "Кондратенко",
+      "phone": "+380685055458",
+      "email": "38.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1,
+        2
+      ],
+      "service_ids": [
+        13
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Олеся Теремко",
+      "first_name": "Олеся ",
+      "last_name": "Теремко",
+      "phone": "+380664798768",
+      "email": "39.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        27,
+        28
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Світлана Гушко",
+      "first_name": "Світлана ",
+      "last_name": "Гушко",
+      "phone": "+380501922277",
+      "email": "40.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        4,
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Олег Бонделюк",
+      "first_name": "Олег ",
+      "last_name": "Бонделюк",
+      "phone": "+380666252986",
+      "email": "41.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        86
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Богдана Олесків",
+      "first_name": "Богдана ",
+      "last_name": "Олесків",
+      "phone": "+380678894916",
+      "email": "42.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        5
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Марія Щунко",
+      "first_name": "Марія ",
+      "last_name": "Щунко",
+      "phone": "+380632243070",
+      "email": "43.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        87
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Сергій Лук'яненко",
+      "first_name": "Сергій ",
+      "last_name": "Лук'яненко",
+      "phone": "+380509194444",
+      "email": "44.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2
+      ],
+      "service_ids": [
+        3,
+        12
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Данило Грабач",
+      "first_name": "Данило ",
+      "last_name": "Грабач",
+      "phone": "+380688796131",
+      "email": "45.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        88
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Надія Бабчук",
+      "first_name": "Надія ",
+      "last_name": "Бабчук",
+      "phone": "+380635808479",
+      "email": "46.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        90
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Олег Мельник",
+      "first_name": "Олег ",
+      "last_name": "Мельник",
+      "phone": "+380667130406",
+      "email": "47.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        9,
+        5
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Анастасія Левченко",
+      "first_name": "Анастасія ",
+      "last_name": "Левченко",
+      "phone": "+380683814494",
+      "email": "48.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Сергій Василенко",
+      "first_name": "Сергій ",
+      "last_name": "Василенко",
+      "phone": "+380638760834",
+      "email": "49.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        91,
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Петро",
+      "first_name": "Петро",
+      "last_name": "",
+      "phone": "+380688602420",
+      "email": "50.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Марина",
+      "first_name": "Марина",
+      "last_name": "",
+      "phone": "+380632343309",
+      "email": "51.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2
+      ],
+      "service_ids": [
+        3
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Прокофія",
+      "first_name": "",
+      "last_name": "",
+      "phone": "+380992737009",
+      "email": "52.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        3
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Андрій",
+      "first_name": "Андрій",
+      "last_name": "",
+      "phone": "+380733308025",
+      "email": "53.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        3
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Юлія",
+      "first_name": "Юлія",
+      "last_name": "",
+      "phone": "+380664144186",
+      "email": "54.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        56
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Ольга",
+      "first_name": "Ольга",
+      "last_name": "",
+      "phone": "+380999331637",
+      "email": "55.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        15
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Василь",
+      "first_name": "Василь",
+      "last_name": "",
+      "phone": "+380666810154",
+      "email": "56.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Володимир",
+      "first_name": "Володимир",
+      "last_name": "",
+      "phone": "+380997801146",
+      "email": "57.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1,
+        2
+      ],
+      "service_ids": [
+        3,
+        55
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Юлія",
+      "first_name": "Юлія",
+      "last_name": "",
+      "phone": "+380673746287",
+      "email": "58.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        8,
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Олена",
+      "first_name": "Олена",
+      "last_name": "",
+      "phone": "+380666680781",
+      "email": "59.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        27
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Ірина Ковальчук",
+      "first_name": "Ірина ",
+      "last_name": "Ковальчук",
+      "phone": "+380996008782",
+      "email": "60.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        75
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Олег Мельник",
+      "first_name": "Олег ",
+      "last_name": "Мельник",
+      "phone": "+380636522028",
+      "email": "61.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Марина Савченко",
+      "first_name": "Марина ",
+      "last_name": "Савченко",
+      "phone": "+380509023594",
+      "email": "62.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        3
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Петро Ковальов",
+      "first_name": "Петро ",
+      "last_name": "Ковальов",
+      "phone": "+380663193539",
+      "email": "63.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1,
+        2
+      ],
+      "service_ids": [
+        12
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Ольга Кузьменко",
+      "first_name": "Ольга ",
+      "last_name": "Кузьменко",
+      "phone": "+380662777590",
+      "email": "64.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        93
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Андрій Литвиненко",
+      "first_name": "Андрій ",
+      "last_name": "Литвиненко",
+      "phone": "+380678576317",
+      "email": "65.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2,
+        7
+      ],
+      "service_ids": [
+        7
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Анастасія Макаренко",
+      "first_name": "Анастасія ",
+      "last_name": "Макаренко",
+      "phone": "+380682786855",
+      "email": "66.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        70
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Копитко Віталій Якович",
+      "first_name": "Копитко ",
+      "last_name": "Віталій Якович",
+      "phone": "+380739849261",
+      "email": "67.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        53
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Клименко Ніна Юрійвна",
+      "first_name": "Клименко ",
+      "last_name": "Ніна Юрійвна",
+      "phone": "+380506839004",
+      "email": "68.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        53,
+        70
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Осадча Юлія  Павлівна",
+      "first_name": "Осадча ",
+      "last_name": "Юлія  Павлівна",
+      "phone": "+380637567625",
+      "email": "69.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        94
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Поперечна Ірина Андріївна",
+      "first_name": "Поперечна ",
+      "last_name": "Ірина Андріївна",
+      "phone": "+380685207567",
+      "email": "70.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2,
+        1
+      ],
+      "service_ids": [
+        94,
+        95
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Лисак Ігор Тарасович",
+      "first_name": "Лисак ",
+      "last_name": "Ігор Тарасович",
+      "phone": "+380508442249",
+      "email": "71.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Юрченко Юрій Юрійович",
+      "first_name": "Юрченко ",
+      "last_name": "Юрій Юрійович",
+      "phone": "+380504274816",
+      "email": "72.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        11
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Крапвчук Павло Олексанрович",
+      "first_name": "Крапвчук ",
+      "last_name": "Павло Олексанрович",
+      "phone": "+380998213981",
+      "email": "73.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Фесенко Тамара Володимирівна",
+      "first_name": "Фесенко ",
+      "last_name": "Тамара Володимирівна",
+      "phone": "+380992713181",
+      "email": "74.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        94
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Сергій",
+      "first_name": "Сергій",
+      "last_name": "",
+      "phone": "+380737934132",
+      "email": "75.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        9,
+        11
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Ярослав Щудлик",
+      "first_name": "Ярослав ",
+      "last_name": "Щудлик",
+      "phone": "+380508353460",
+      "email": "76.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        27,
+        28,
+        29,
+        32
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Аліна Сакович",
+      "first_name": "Аліна ",
+      "last_name": "Сакович",
+      "phone": "+380739560190",
+      "email": "77.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        70
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Дмитро Брягін",
+      "first_name": "Дмитро ",
+      "last_name": "Брягін",
+      "phone": "+380442826009",
+      "email": "78.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Орест Стадник",
+      "first_name": "Орест ",
+      "last_name": "Стадник",
+      "phone": "+380737250988",
+      "email": "79.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        15,
+        70
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Олена  Козак",
+      "first_name": "Олена ",
+      "last_name": " Козак",
+      "phone": "+380683950603",
+      "email": "80.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        15,
+        12
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Максим Глодан ",
+      "first_name": "Максим ",
+      "last_name": "Глодан ",
+      "phone": "+380448790060",
+      "email": "81.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        27,
+        70
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Анна Боднар",
+      "first_name": "Анна ",
+      "last_name": "Боднар",
+      "phone": "+380739714391",
+      "email": "82.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        3
+      ],
+      "service_ids": [
+        70
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Юрій Бушмін",
+      "first_name": "Юрій ",
+      "last_name": "Бушмін",
+      "phone": "+380507675863",
+      "email": "83.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        8
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Майя Бушміна",
+      "first_name": "Майя ",
+      "last_name": "Бушміна",
+      "phone": "+380684167977",
+      "email": "84.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        15
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Олена Бушміна",
+      "first_name": "Олена ",
+      "last_name": "Бушміна",
+      "phone": "+380687616624",
+      "email": "85.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        19
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Олена Вовчак",
+      "first_name": "Олена ",
+      "last_name": "Вовчак",
+      "phone": "+380443077088",
+      "email": "86.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        7
+      ],
+      "service_ids": [
+        10,
+        12
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Георгій Бушмін",
+      "first_name": "Георгій ",
+      "last_name": "Бушмін",
+      "phone": "+380666752648",
+      "email": "87.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        87
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Юлія",
+      "first_name": "Юлія",
+      "last_name": "",
+      "phone": "+380997495662",
+      "email": "88.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        8,
+        15
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Антон",
+      "first_name": "Антон",
+      "last_name": "",
+      "phone": "+380991544491",
+      "email": "89.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        96
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Наталія",
+      "first_name": "Наталія",
+      "last_name": "",
+      "phone": "+380732380752",
+      "email": "90.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        4,
+        12
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Віталій",
+      "first_name": "Віталій",
+      "last_name": "",
+      "phone": "+380636509415",
+      "email": "91.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Катерина",
+      "first_name": "Катерина",
+      "last_name": "",
+      "phone": "+380662702544",
+      "email": "92.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        9,
+        12
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Євгенія Кирієнко",
+      "first_name": "Євгенія ",
+      "last_name": "Кирієнко",
+      "phone": "+380681430947",
+      "email": "93.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        1
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Микола Чернов",
+      "first_name": "Микола ",
+      "last_name": "Чернов",
+      "phone": "+380675673478",
+      "email": "nchernov@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        1,
+        15,
+        88,
+        97
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Варвара Щербина",
+      "first_name": "Варвара ",
+      "last_name": "Щербина",
+      "phone": "+380950647014",
+      "email": "varvarashcherbyna7@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Олександр Щербина",
+      "first_name": "Олесандр ",
+      "last_name": "Щербина",
+      "phone": "+380502564274",
+      "email": "96.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        12,
+        5,
+        15,
+        70,
+        71,
+        8
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Софія Артимович",
+      "first_name": "Софія",
+      "last_name": " Артимович",
+      "phone": "+380965145456",
+      "email": "sofiia.artymovych@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        99
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Марина Грабчак",
+      "first_name": "Марина ",
+      "last_name": "Грабчак",
+      "phone": "+380931110246",
+      "email": "mgrabchak1109@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        3
+      ],
+      "service_ids": [
+        8,
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Кобрин Назар",
+      "first_name": "Кобрин ",
+      "last_name": "Назар",
+      "phone": "+380673838523",
+      "email": "nazarr.kobryn@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        10
+      ],
+      "service_ids": [
+        86
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Констянтин Столярський",
+      "first_name": "Констянтин ",
+      "last_name": "Столярський",
+      "phone": "+380968268714",
+      "email": "saintkos117@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        21
+      ],
+      "service_ids": [
+        46
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Денис Бурімов",
+      "first_name": "Денис ",
+      "last_name": "Бурімов",
+      "phone": "+380954122379",
+      "email": "denysburimov@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        24
+      ],
+      "service_ids": [
+        46
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Святослав",
+      "first_name": "Святослав",
+      "last_name": "",
+      "phone": "+380639993525",
+      "email": "svyatoslav.artymovych@gmail.com ",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        46
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Олександр Шевченко",
+      "first_name": "Олександр ",
+      "last_name": "Шевченко",
+      "phone": "+380955831223",
+      "email": "shevchenko.a.v.94@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        99
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Тарас Лисак",
+      "first_name": "Тарас ",
+      "last_name": "Лисак",
+      "phone": "+380972865599",
+      "email": "lysak.ipr@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        46,
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Максим Кузмич",
+      "first_name": "Максим ",
+      "last_name": "Кузміч",
+      "phone": "+380957207601",
+      "email": "kuzmichmaksym1997@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        46
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Василій Хмура",
+      "first_name": "Василій",
+      "last_name": "Хмура",
+      "phone": "+380504622986",
+      "email": "vkhmura@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Остап Приходько",
+      "first_name": "Остап",
+      "last_name": "Приходько",
+      "phone": "+380733490393",
+      "email": "107.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        15,
+        88,
+        90
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Марія Новик",
+      "first_name": "Марія",
+      "last_name": "Новик",
+      "phone": "+380675614705",
+      "email": "108.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        15,
+        55,
+        9,
+        91
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Катя Піскун",
+      "first_name": "Катя",
+      "last_name": "Піскун",
+      "phone": "+380507330904",
+      "email": "109.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        15,
+        91
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Сергій ",
+      "first_name": "Сергій",
+      "last_name": "",
+      "phone": "+380666984690",
+      "email": "110.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        15
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Григорій Худенко",
+      "first_name": "Григорій",
+      "last_name": "Худенко",
+      "phone": "+380992853359",
+      "email": "111.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        15
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Ірина Устенко",
+      "first_name": "Ірина ",
+      "last_name": "Устенко",
+      "phone": "+380673221495",
+      "email": "112.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        15
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Василій ",
+      "first_name": "Василій",
+      "last_name": "",
+      "phone": "+380674958747",
+      "email": "113.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        15,
+        2,
+        3,
+        55,
+        91
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Соломія",
+      "first_name": "Соломія",
+      "last_name": "",
+      "phone": "+380734766179",
+      "email": "114.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        15,
+        55,
+        90,
+        91
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Влад",
+      "first_name": "Влад",
+      "last_name": "",
+      "phone": "+380445038222",
+      "email": "115.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        15,
+        9,
+        98
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Наталія",
+      "first_name": "Наталія",
+      "last_name": "",
+      "phone": "+380994233061",
+      "email": "116.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        15
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Ірина",
+      "first_name": "Ірина ",
+      "last_name": "",
+      "phone": "+380991077816",
+      "email": "117.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        15,
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Стефанія Дячук",
+      "first_name": "Стефанія",
+      "last_name": "Дячук",
+      "phone": "+380632559855",
+      "email": "118.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        15
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Валентина",
+      "first_name": "Валентина",
+      "last_name": "",
+      "phone": "+380445821190",
+      "email": "119.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        15,
+        19,
+        92
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Авдій Закусило",
+      "first_name": "Авдій",
+      "last_name": "Закусило",
+      "phone": "+380992040949",
+      "email": "120.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        53,
+        11,
+        74,
+        88
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Люба ",
+      "first_name": "Люба",
+      "last_name": "",
+      "phone": "+380664213979",
+      "email": "121.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        53,
+        88
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Антон Дутко",
+      "first_name": "Антон",
+      "last_name": "Дудко",
+      "phone": "+380501706399",
+      "email": "122.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        53
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Анна Довгаль",
+      "first_name": "Анна ",
+      "last_name": "Довгаль",
+      "phone": "+380736055012",
+      "email": "123.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        53,
+        2,
+        11
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Інга Журавленко",
+      "first_name": "Інга",
+      "last_name": "Журавленко",
+      "phone": "+380638253867",
+      "email": "124.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Гордій Долиняк",
+      "first_name": "Гордій ",
+      "last_name": "Долиняк",
+      "phone": "+380681029652",
+      "email": "125.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        53
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Анастасія ",
+      "first_name": "Анастасія ",
+      "last_name": "",
+      "phone": "+380509770596",
+      "email": "126.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Тат'яна Зінько",
+      "first_name": "Тат'яна",
+      "last_name": "Зінько",
+      "phone": "+380998360632",
+      "email": "127.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        53
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Галина",
+      "first_name": "Галина",
+      "last_name": "",
+      "phone": "+380738833468",
+      "email": "128.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        5
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Оксана",
+      "first_name": "Оксана",
+      "last_name": "",
+      "phone": "+380504063187",
+      "email": "129.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Віктор",
+      "first_name": "Віктор",
+      "last_name": "",
+      "phone": "+380448025170",
+      "email": "130.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Сергій ",
+      "first_name": "Сергій",
+      "last_name": "",
+      "phone": "+380683242610",
+      "email": "131.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Софія",
+      "first_name": "Софія",
+      "last_name": "",
+      "phone": "+380636477374",
+      "email": "132.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Артем",
+      "first_name": "Артем",
+      "last_name": "",
+      "phone": "+380733697672",
+      "email": "133.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Марина",
+      "first_name": "Марина ",
+      "last_name": "",
+      "phone": "+380509387009",
+      "email": "134.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2,
+        1
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Соломія",
+      "first_name": "Соломія",
+      "last_name": "",
+      "phone": "+380448030419",
+      "email": "135.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2,
+        1
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Даша ",
+      "first_name": "Даша",
+      "last_name": "",
+      "phone": "+380675172351",
+      "email": "136.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Леся",
+      "first_name": "Леся",
+      "last_name": "",
+      "phone": "+380505966238",
+      "email": "137.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Петро  ",
+      "first_name": "Петро ",
+      "last_name": "",
+      "phone": "+380685977687",
+      "email": "138.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Павло",
+      "first_name": "Павло",
+      "last_name": "",
+      "phone": "+380736772924",
+      "email": "139.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Гриша",
+      "first_name": "Гриша",
+      "last_name": "",
+      "phone": "+380636317406",
+      "email": "140.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Женя",
+      "first_name": "Женя",
+      "last_name": "",
+      "phone": "+380737956909",
+      "email": "141.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2
+      ],
+      "service_ids": [
+        9,
+        87
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Олександра",
+      "first_name": "Олександра",
+      "last_name": "",
+      "phone": "+380442398693",
+      "email": "142.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Онисько Марія  Федірівна",
+      "first_name": "Марія",
+      "last_name": "Онисько",
+      "phone": "+380667171533",
+      "email": "143.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Надя",
+      "first_name": "Богдан",
+      "last_name": "",
+      "phone": "+380503147506",
+      "email": "144.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Констянтин",
+      "first_name": "Констянтин",
+      "last_name": "",
+      "phone": "+380449416653",
+      "email": "145.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        7
+      ],
+      "service_ids": [
+        10
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Богдан",
+      "first_name": "Богдан",
+      "last_name": "",
+      "phone": "+380679411931",
+      "email": "146.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        7
+      ],
+      "service_ids": [
+        10
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Денис  ",
+      "first_name": "Денис ",
+      "last_name": "",
+      "phone": "+380667785139",
+      "email": "147.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        7
+      ],
+      "service_ids": [
+        10
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Тарас  Зубицький ",
+      "first_name": "Тарас ",
+      "last_name": "Зубицький",
+      "phone": "+380689587051",
+      "email": "148.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        7
+      ],
+      "service_ids": [
+        10
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Євген Полотай",
+      "first_name": "Євген ",
+      "last_name": "Полотай",
+      "phone": "+380662178273",
+      "email": "149.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        7
+      ],
+      "service_ids": [
+        10
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Ірина Чаговець",
+      "first_name": "Ірина ",
+      "last_name": "Чаговець",
+      "phone": "+380738463582",
+      "email": "150.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        7
+      ],
+      "service_ids": [
+        10
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Надія Шевчук",
+      "first_name": "Надія",
+      "last_name": "Шевчук",
+      "phone": "+380673889680",
+      "email": "151.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        7
+      ],
+      "service_ids": [
+        10
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Світлана Шматько",
+      "first_name": "Світлана",
+      "last_name": "Шматько",
+      "phone": "+380736389247",
+      "email": "152.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        7
+      ],
+      "service_ids": [
+        10
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Лариса ",
+      "first_name": "Лариса",
+      "last_name": "",
+      "phone": "+380682895772",
+      "email": "153.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        7
+      ],
+      "service_ids": [
+        10
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Єлена Юркевич",
+      "first_name": "Єлена",
+      "last_name": "Юркевич",
+      "phone": "+380634141846",
+      "email": "154.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        7
+      ],
+      "service_ids": [
+        10
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Даша Зубкова",
+      "first_name": "Даша",
+      "last_name": "Зубкова",
+      "phone": "+380994869176",
+      "email": "155.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        7
+      ],
+      "service_ids": [
+        10
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Єва",
+      "first_name": "Єва",
+      "last_name": "",
+      "phone": "+380503228501",
+      "email": "156.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        10
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Володя ",
+      "first_name": "Володя",
+      "last_name": "",
+      "phone": "+380447255908",
+      "email": "157.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        53
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Юра",
+      "first_name": "Юра",
+      "last_name": "",
+      "phone": "+380731218121",
+      "email": "158.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        53
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Іванна ",
+      "first_name": "Іванна",
+      "last_name": "",
+      "phone": "+380668479124",
+      "email": "159.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        53
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Дар'я ",
+      "first_name": "",
+      "last_name": "",
+      "phone": "+380671044285",
+      "email": "160.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        53
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Юля Подоляк",
+      "first_name": "",
+      "last_name": "",
+      "phone": "+380682159090",
+      "email": "161.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        53
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Борис Бучко",
+      "first_name": "Борис",
+      "last_name": "Бучко",
+      "phone": "+380737549341",
+      "email": "162.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        53
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Слава ",
+      "first_name": "Слава",
+      "last_name": "",
+      "phone": "+380633706989",
+      "email": "163.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Надія Лісова",
+      "first_name": "Надія",
+      "last_name": "Лісова",
+      "phone": "+380638737836",
+      "email": "164.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Анастасія",
+      "first_name": "Анастасія",
+      "last_name": "",
+      "phone": "+380506440682",
+      "email": "165.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Соломія",
+      "first_name": "Соломія",
+      "last_name": "",
+      "phone": "+380441463277",
+      "email": "166.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        25
+      ],
+      "service_ids": [
+        85
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Яна Лубенець",
+      "first_name": "Яна",
+      "last_name": "Лубенець",
+      "phone": "+380679333663",
+      "email": "167.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        25
+      ],
+      "service_ids": [
+        85
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Наташа Швець",
+      "first_name": "Наташа",
+      "last_name": "Швець",
+      "phone": "+380996106636",
+      "email": "168.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        23
+      ],
+      "service_ids": [
+        85
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Ілля ",
+      "first_name": "Ілля",
+      "last_name": "",
+      "phone": "+380442574380",
+      "email": "169.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        25
+      ],
+      "service_ids": [
+        85
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Яніна",
+      "first_name": "Яніна",
+      "last_name": "",
+      "phone": "+380441405940",
+      "email": "170.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        23
+      ],
+      "service_ids": [
+        85
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Аліна ",
+      "first_name": "Аліна",
+      "last_name": "",
+      "phone": "+380668529278",
+      "email": "171.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        23
+      ],
+      "service_ids": [
+        85
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Владислава",
+      "first_name": "Владислава",
+      "last_name": "",
+      "phone": "+380674991976",
+      "email": "172.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        23
+      ],
+      "service_ids": [
+        85
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Емілія",
+      "first_name": "Емілія",
+      "last_name": "",
+      "phone": "+380448252873",
+      "email": "173.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        23
+      ],
+      "service_ids": [
+        85
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Кароліна",
+      "first_name": "Кароліна",
+      "last_name": "",
+      "phone": "+380507847772",
+      "email": "174.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        23
+      ],
+      "service_ids": [
+        85
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Марта",
+      "first_name": "Марта",
+      "last_name": "",
+      "phone": "+380507556436",
+      "email": "175.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        23
+      ],
+      "service_ids": [
+        85
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Тарас",
+      "first_name": "Тарас",
+      "last_name": "",
+      "phone": "+380684927269",
+      "email": "176.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        5
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Сергій",
+      "first_name": "Сергій",
+      "last_name": "",
+      "phone": "+380443069461",
+      "email": "177.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        21
+      ],
+      "service_ids": [
+        5
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Богдана",
+      "first_name": "Богдана",
+      "last_name": "",
+      "phone": "+380678127414",
+      "email": "178.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        4
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Анна",
+      "first_name": "Анна ",
+      "last_name": "",
+      "phone": "+380687033020",
+      "email": "179.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        4
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Руслана",
+      "first_name": "Руслана",
+      "last_name": "",
+      "phone": "+380992985668",
+      "email": "180.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        4
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Христина",
+      "first_name": "Христина",
+      "last_name": "",
+      "phone": "+380678300558",
+      "email": "181.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        4
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Ярина",
+      "first_name": "Ярина",
+      "last_name": "",
+      "phone": "+380999212393",
+      "email": "182.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        4
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Ярослав  ",
+      "first_name": "Ярослава",
+      "last_name": "",
+      "phone": "+380739829118",
+      "email": "183.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Артем",
+      "first_name": "Артем",
+      "last_name": "",
+      "phone": "+380674818480",
+      "email": "184.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Влад",
+      "first_name": "Влад ",
+      "last_name": "",
+      "phone": "+380991361040",
+      "email": "185.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Василій",
+      "first_name": "Василій",
+      "last_name": "",
+      "phone": "+380507806293",
+      "email": "186.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        2
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Петро",
+      "first_name": "Петро",
+      "last_name": "",
+      "phone": "+380448229873",
+      "email": "187.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Галина",
+      "first_name": "Галина",
+      "last_name": "",
+      "phone": "+380739441523",
+      "email": "188.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Зінаїда",
+      "first_name": "Зінаїда",
+      "last_name": "",
+      "phone": "+380449480782",
+      "email": "189.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        16
+      ],
+      "service_ids": [
+        9
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Борис  ",
+      "first_name": "Борис",
+      "last_name": "",
+      "phone": "+380731427647",
+      "email": "190.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        93
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Андрій",
+      "first_name": "Андрій",
+      "last_name": "",
+      "phone": "+380674280626",
+      "email": "191.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        93
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Остап  ",
+      "first_name": "Остап",
+      "last_name": "",
+      "phone": "+380673126477",
+      "email": "192.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        93
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Володя ",
+      "first_name": "Володя",
+      "last_name": "",
+      "phone": "+380685839890",
+      "email": "193.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        93
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Маша",
+      "first_name": "Маша",
+      "last_name": "",
+      "phone": "+380662929315",
+      "email": "194.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2
+      ],
+      "service_ids": [
+        95
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Валентина",
+      "first_name": "Валентина",
+      "last_name": "",
+      "phone": "+380504139627",
+      "email": "195.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        2
+      ],
+      "service_ids": [
+        95
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Соня",
+      "first_name": "Соня",
+      "last_name": "",
+      "phone": "+380444798461",
+      "email": "196.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        95
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Аліна",
+      "first_name": "Аліна",
+      "last_name": "",
+      "phone": "+380633770958",
+      "email": "197.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        95
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Ангеліна",
+      "first_name": "Ангеліна",
+      "last_name": "",
+      "phone": "+380447062165",
+      "email": "198.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        95
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Олександр",
+      "first_name": "Олександр",
+      "last_name": "",
+      "phone": "+380687842599",
+      "email": "199.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        95
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Поліна",
+      "first_name": "Поліна",
+      "last_name": "",
+      "phone": "+380444707284",
+      "email": "200.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        95
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Соломія",
+      "first_name": "Соломія",
+      "last_name": "",
+      "phone": "+380501479473",
+      "email": "201.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        95
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Євгенія  ",
+      "first_name": "Євгенія",
+      "last_name": "",
+      "phone": "+380689545118",
+      "email": "202.@i.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        95
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Катерина",
+      "first_name": "Катерина",
+      "last_name": "",
+      "phone": "+380502539761",
+      "email": "203.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        95
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Микола  ",
+      "first_name": "Микола  ",
+      "last_name": "",
+      "phone": "+380997651575",
+      "email": "204.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        11
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Олег  ",
+      "first_name": "Олег  ",
+      "last_name": "",
+      "phone": "+380445985748",
+      "email": "205.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        11
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Віталій",
+      "first_name": "Віталій",
+      "last_name": "",
+      "phone": "+380735080786",
+      "email": "206.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        11
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Артем ",
+      "first_name": "Артем",
+      "last_name": "",
+      "phone": "+380663561371",
+      "email": "207.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        11
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Денис",
+      "first_name": "Денис",
+      "last_name": "",
+      "phone": "+380638794669",
+      "email": "208.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        11
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Антон",
+      "first_name": "Антон",
+      "last_name": "",
+      "phone": "+380663062213",
+      "email": "209.@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        11
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Констянтин",
+      "first_name": "Констянтин",
+      "last_name": "",
+      "phone": "+380662746369",
+      "email": "210.@meta.ua",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        14
+      ],
+      "service_ids": [
+        11
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Віталіна",
+      "first_name": "Віталіна",
+      "last_name": "",
+      "phone": "+380688999448",
+      "email": "211.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        8
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Євгенія",
+      "first_name": "Євгенія",
+      "last_name": "",
+      "phone": "+380676181146",
+      "email": "212.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        8
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Софія",
+      "first_name": "Софія",
+      "last_name": "",
+      "phone": "+380667843262",
+      "email": "213.@bigmir.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        8
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Марина",
+      "first_name": "Марина",
+      "last_name": "",
+      "phone": "+380739004382",
+      "email": "214.@ukr.net",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        8
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Іванна ",
+      "first_name": "Іванна",
+      "last_name": "",
+      "phone": "+4915141673473",
+      "email": "radjessicarad@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        18
+      ],
+      "service_ids": [
+        7
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Наталія Хмура",
+      "first_name": "Наталія ",
+      "last_name": "Хмура",
+      "phone": "+380509782878",
+      "email": "khmuranatalia@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [],
+      "service_ids": [
+        8
+      ],
+      "is_volunteer": false
+    },
+    {
+      "fullname": "Гліб",
+      "first_name": "Гліб ",
+      "last_name": "",
+      "phone": "+380959998877",
+      "email": "217@gmail.com",
+      "password": "Kraftjar2024",
+      "location_ids": [
+        1
+      ],
+      "service_ids": [
+        46
+      ],
+      "is_volunteer": false
+    }
+  ]
+}

@@ -1,9 +1,18 @@
+import re
+from typing import Sequence
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
+import sqlalchemy as sa
 
 import app.schema as s
 from api import controllers as c
+from api.dependency.user import get_current_user
+from app import models as m
 from app.database import get_db
+from app.logger import log
+from config import config
+
+CFG = config()
 
 location_router = APIRouter(prefix="/locations", tags=["Location"])
 
@@ -15,3 +24,84 @@ location_router = APIRouter(prefix="/locations", tags=["Location"])
 )
 def get_locations(query: s.LocationsIn, db: Session = Depends(get_db)):
     return c.get_locations(query, db)
+
+
+@location_router.get(
+    "/all",
+    status_code=status.HTTP_200_OK,
+    response_model=s.LocationsListOut,
+)
+def get_all_locations(
+    lang: s.Language = s.Language.UA,
+    db: Session = Depends(get_db),
+):
+    """Returns all locations"""
+
+    db_locations = db.scalars(sa.select(m.Location)).all()
+
+    locations_out = [
+        s.LocationStrings(
+            name=location.region[0].name_ua if lang == s.Language.UA else location.region[0].name_en,
+            uuid=location.uuid,
+        )
+        for location in db_locations
+    ]
+
+    return s.LocationsListOut(locations=locations_out)
+
+
+@location_router.get(
+    "/address",
+    status_code=status.HTTP_200_OK,
+    response_model=list[s.CityAddresse],
+    dependencies=[Depends(get_current_user)],
+)
+def get_address(
+    query: str = "",
+    lang: s.Language = s.Language.UA,
+    db: Session = Depends(get_db),
+):
+    """Returns the address"""
+
+    if not query:
+        return []
+
+    cities_lang_column = m.Settlement.name_ua if lang == s.Language.UA else m.Settlement.name_en
+
+    cities_addresses_list: list[s.CityAddressesOut] = []
+    wordList = re.sub(CFG.RE_WORD, " ", query).split()
+
+    cities: Sequence[m.Settlement] = db.scalars(sa.select(m.Settlement).where(cities_lang_column == wordList[0])).all()
+
+    cities_ids = [city.city_id for city in cities]
+
+    log(log.INFO, "Found %s cities", len(cities))
+
+    cities_addresses = db.scalars(sa.select(m.Address).where((m.Address.city_id.in_(cities_ids)))).all()
+
+    for city in cities:
+        city_addresses = [address for address in cities_addresses if address.city_id == city.city_id]
+
+        cities_addresses_list.append(
+            s.CityAddressesOut(
+                city=s.City.model_validate(city),
+                addresses=[s.AddressOut.model_validate(address) for address in city_addresses],
+            )
+        )
+
+    city_addresses_out: list[s.CityAddresse] = []
+    for word in wordList:
+        if len(word) >= 3:
+            for city_address in cities_addresses_list:
+                for address in city_address.addresses:
+                    search_address_out = f"{city_address.city.name_ua}{address.street_type_ua}{address.line1}"
+
+                    if word.lower() in search_address_out.lower() and search_address_out not in city_addresses_out:
+                        city_addresses_out.append(
+                            s.CityAddresse(
+                                uuid=address.uuid,
+                                city_addresses=f"{city_address.city.name_ua}, {address.street_type_ua} {address.line1}",
+                            )
+                        )
+
+    return city_addresses_out

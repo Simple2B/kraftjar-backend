@@ -63,11 +63,45 @@ class BaseConfig(BaseSettings):
     SPREADSHEET_ID: str = "1Hw5Oh9vtwuPUYJkSGo0uGikRbHeiM52SNdUxwXFU3hQ"
 
     ALL_UKRAINE: str = "all-ukraine"
-    RE_WORD: str = "[^\w]"
+    RE_WORD: str = r"[^\w]"
 
     TEST_USER_PASSWORD: str = "Kraftjar2024"
 
     USER_CAROUSEL_LIMIT: int = 16
+
+    # Meest Public API
+    SUCCESS_STATUS: int = 1
+    REGIONS_API_URL: str = "https://publicapi.meest.com/geo_regions"
+    RAYONS_API_URL: str = "https://publicapi.meest.com/geo_districts"
+    SETTLEMENTS_API_URL: str = "https://publicapi.meest.com/geo_localities"
+    ADDRESSES_API_URL: str = "https://publicapi.meest.com/geo_streets"
+
+    # Preventing DDOS on Meest API
+    DELAY_TIME: int = 1
+
+    # Meest Public API types name
+    API_CITY: str = "місто"
+    API_VILLAGE: str = "село"
+
+    # ID from our db, model Region
+    KYIV_ID: int = 1
+
+    MOBILE_APP_ID: str = "net.kraftjar.app"
+
+    # GOOGLE AUTH
+    GOOGLE_CLIENT_ID: str = ""
+
+    # APPLE AUTH
+    APPLE_PUBLIC_KEY_URL: str = "https://appleid.apple.com/auth/keys"
+    APPLE_ISSUER: str = "https://appleid.apple.com"
+    APPLE_DECODE_ALGORITHMS: list[str] = ["RS256"]
+
+    # S3
+    AWS_ACCESS_KEY: str | None
+    AWS_SECRET_KEY: str | None
+    AWS_REGION: str | None
+    AWS_S3_BUCKET_NAME: str = "kraftjar"
+    AWS_S3_BUCKET_URL: str
 
     @staticmethod
     def configure(app):

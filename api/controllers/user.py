@@ -103,7 +103,7 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
         stmt = stmt.where(m.Service.uuid.in_([service.uuid for service in services]))
 
     stmt = stmt.join(m.user_locations).join(m.Location)
-    if CFG.ALL_UKRAINE in query.selected_locations:
+    if CFG.ALL_UKRAINE in query.selected_locations or not query.selected_locations:
         near_users: Sequence[m.User] = db.scalars(
             stmt.where(m.Location.uuid.in_([location.uuid for location in user_locations]))
         ).all()
@@ -132,6 +132,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
     """Returns user profile"""
 
     db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.uuid == user_uuid))
+
     if not db_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
@@ -147,11 +148,45 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
     )
     locations: list[s.LocationStrings] = [s.LocationStrings(name=name, uuid=uuid) for name, uuid in regions]
 
+    auth_accounts: list[s.AuthAccountOut] = [
+        s.AuthAccountOut(
+            id=auth_account.id,
+            email=auth_account.email,
+            auth_type=s.AuthType(auth_account.auth_type),
+        )
+        for auth_account in db_user.auth_accounts
+        if not auth_account.is_deleted
+    ]
+
+    completed_jobs_count = db.scalar(
+        sa.select(sa.func.count(m.Job.id)).where(
+            sa.and_(
+                m.Job.is_deleted.is_(False),
+                m.Job.worker_id == db_user.id,
+                m.Job.status == s.JobStatus.COMPLETED.value,
+            )
+        )
+    )
+
+    announced_jobs_count = db.scalar(
+        sa.select(sa.func.count(m.Job.id)).where(
+            sa.and_(
+                m.Job.is_deleted.is_(False),
+                m.Job.owner_id == db_user.id,
+                m.Job.status == s.JobStatus.PENDING.value,
+            )
+        )
+    )
+
     return s.UserProfileOut(
-        **pop_keys(db_user.__dict__, ["services", "locations"]),
+        # TODO: remove  user.__dict__ add like property in User model and use s.UserProfileOut.model_validate
+        **pop_keys(db_user.__dict__, ["services", "locations", "auth_accounts"]),
+        auth_accounts=auth_accounts,
         services=services,
         locations=locations,
         owned_rates_count=db_user.owned_rates_count,
+        completed_jobs_count=completed_jobs_count if completed_jobs_count else 0,
+        announced_jobs_count=announced_jobs_count if announced_jobs_count else 0,
     )
 
 
@@ -228,3 +263,65 @@ def get_public_user_profile(user_uuid: str, lang: Language, db: Session) -> s.Pu
         locations=locations,
         owned_rates_count=db_user.owned_rates_count,
     )
+
+
+def get_user_auth_account(email: str, oauth_id: str, db: Session, auth_type: s.AuthType) -> m.AuthAccount | None:
+    auth_account_filter = sa.and_(
+        m.AuthAccount.email == email,
+        m.AuthAccount.oauth_id == oauth_id,
+        m.AuthAccount.auth_type == auth_type,
+    )
+
+    auth_account = db.scalar(sa.select(m.AuthAccount).where(auth_account_filter))
+    return auth_account
+
+
+def filter_users_by_locations(
+    selected_locations: list[str] | None, db: Session, current_user: m.User, db_users: sa.Select
+):
+    if selected_locations:
+        locations = db.execute(sa.select(m.Location).where(m.Location.uuid.in_(selected_locations))).scalars().all()
+        db_users = db_users.where(m.User.locations.any(m.Location.uuid.in_([loc.uuid for loc in locations])))
+    else:
+        db_users = db_users.where(
+            m.User.locations.any(m.Location.uuid.in_([loc.uuid for loc in current_user.locations]))
+        )
+
+    return db_users
+
+
+def filter_and_order_users(
+    query: str, lang: Language, db: Session, current_user: m.User, db_users: sa.Select, order_by: s.UsersOrderBy
+):
+    """Filters and orders users by query params"""
+
+    query = query.strip()
+
+    if query:
+        if lang == Language.UA:
+            name_lang_query = m.Service.name_ua.ilike(f"%{query}%")
+        else:
+            name_lang_query = m.Service.name_en.ilike(f"%{query}%")
+
+        services = db.execute(sa.select(m.Service).where(name_lang_query)).scalars().all()
+        db_users = db_users.where(m.User.services.any(m.Service.id.in_([s.id for s in services])))
+
+    if order_by == s.UsersOrderBy.AVERAGE_RATE:
+        users = db.execute(db_users.order_by(m.User.average_rate.desc())).scalars().all()
+    elif order_by == s.UsersOrderBy.OWNED_RATES_COUNT:
+        users = db.execute(db_users).scalars().all()
+        users = sorted(users, key=lambda user: user.owned_rates_count, reverse=True)
+    elif order_by == s.UsersOrderBy.NEAR:
+        users = (
+            db.execute(
+                db_users.order_by(
+                    m.User.locations.any(m.Location.id.in_([loc.id for loc in current_user.locations])).desc()
+                )
+            )
+            .scalars()
+            .all()
+        )
+    else:
+        users = db.execute(db_users).scalars().all()
+
+    return users

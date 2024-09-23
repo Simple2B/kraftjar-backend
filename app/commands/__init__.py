@@ -75,22 +75,18 @@ def init(app: Flask):
         print("done")
 
     @app.cli.command()
-    def export_addresses():
-        """Fill addresses with data from json file"""
-        from .addresses import export_addresses_from_json_file
-
-        export_addresses_from_json_file()
-        print("done")
-
-    @app.cli.command()
-    def export_services_regions_addresses():
-        """Fill services, regions, addresses with data from json file"""
+    def export_test_services_regions_addresses_cities():
+        """Fill services, regions, cities, addresses with data from json file"""
+        from .locations import export_test_locations_from_json_file
+        from .cities import export_cities_from_json_file
         from .addresses import export_addresses_from_json_file
         from .locations import export_regions_from_json_file
         from .service import export_services_from_json_file
 
+        export_test_locations_from_json_file()
         export_services_from_json_file()
         export_regions_from_json_file()
+        export_cities_from_json_file()
         export_addresses_from_json_file()
 
         print("done")
@@ -171,4 +167,51 @@ def init(app: Flask):
         from .rate import fix_users_average_rate
 
         fix_users_average_rate()
+        print("done")
+
+    @app.cli.command()
+    def get_rayons():
+        """Get rayons from Meest Express Public API"""
+        from .rayons import get_rayons_from_meest_api
+
+        get_rayons_from_meest_api()
+        print("done")
+
+    @app.cli.command()
+    def get_settlements():
+        """Get settlements from Meest Express Public API"""
+        from .settlements import get_settlements_from_meest_api
+
+        get_settlements_from_meest_api()
+        print("done")
+
+    @app.cli.command()
+    @click.argument("lower_limit", type=int)
+    @click.argument("upper_limit", type=int)
+    def get_addresses(lower_limit: int, upper_limit: int):
+        """Get addresses from Meest Express Public API"""
+        from .addresses_api import get_addresses_from_meest_api
+
+        get_addresses_from_meest_api(lower_limit, upper_limit)
+        print("done")
+
+    @app.cli.command()
+    @click.argument("lower_limit", type=int)
+    @click.argument("upper_limit", type=int)
+    def update_addresses(lower_limit: int, upper_limit: int):
+        """Update addresses from Meest Express Public API"""
+        from .update_addresses_api import update_addresses_from_meest_api
+
+        update_addresses_from_meest_api(lower_limit, upper_limit)
+        print("done")
+
+    @app.cli.command()
+    @click.argument("region_id", type=int, required=False, default=10)
+    @click.argument("district_id", type=str, required=False, default="a1e9f9b8-41b9-11df-907f-00215aee3ebe")
+    @click.argument("city_id", type=str, required=False, default="91fc81db-266d-11e7-80fd-1c98ec135263")
+    def filter_addresses(region_id: int, district_id: str, city_id: str):
+        """Filter addresses"""
+        from .filter import filter_addresses
+
+        filter_addresses(region_id, district_id, city_id)
         print("done")

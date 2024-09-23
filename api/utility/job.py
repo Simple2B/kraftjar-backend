@@ -35,20 +35,18 @@ def create_job(db: Session, user_id: int, is_pending=False) -> m.Job:
 
     locations: Sequence[int] = db.scalars(select(m.Location.id)).all()
 
-    statuses = [s.JobStatus.PENDING] if is_pending else list(s.JobStatus)
+    statuses = [s.JobStatus.PENDING.value] if is_pending else list(s.JobStatus)
     # random titles, services, locations in ukrainian
 
     job: m.Job = m.Job(
         title=faker.job(),
         description=faker.text(),
         owner_id=user_id,
-        # address_id=random.choice(addresses),
-        time=faker.time(),
         location_id=random.choice(locations),
         status=random.choice(statuses),
     )
 
-    if job.status != s.JobStatus.PENDING:
+    if job.status != s.JobStatus.PENDING.value:
         job.worker_id = random.choice(db.scalars(select(m.User.id).where(m.User.id != user_id)).all())
 
     db.add(job)

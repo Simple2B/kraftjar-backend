@@ -14,6 +14,8 @@ env:
   DEPLOY_SSH_PORT: ${{ secrets.SSH_PORT }}
   DOCKER_ACCESS_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
+  GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+
 jobs:
   on-develop-branch-check:
     runs-on: Linux
@@ -121,9 +123,13 @@ jobs:
           username: ${{ env.DEPLOY_USER_NAME }}
           key: ${{ env.DEPLOY_SSH_KEY }}
           port: ${{ env.DEPLOY_SSH_PORT }}
+          envs: GOOGLE_CLIENT_ID
           script: |
-            cd ~/kraftjar &&
-            mv docker-compose.staging.yaml docker-compose.yaml &&
+            export GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+            echo $env
+
+            cd ~/kraftjar
+            mv docker-compose.staging.yaml docker-compose.yaml
+            docker login -u ${{ env.DOCKER_LOGIN }} -p ${{ env.DOCKER_ACCESS_TOKEN }} &&
             docker compose pull &&
-            docker compose up -d &&
-            docker system prune -f
+            docker compose up -d
