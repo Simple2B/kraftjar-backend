@@ -165,19 +165,6 @@ def register_google_account(
 ):
     """Register Google account for user"""
 
-    log(log.INFO, "auth_data = [%s]", auth_data)
-    log(log.INFO, "current_user = [%s]", current_user.fullname, current_user.id)
-
-    log(log.INFO, "auth_data.id_token = [%s]", auth_data.id_token)
-    log(log.INFO, "requests.Request() = [%s]", requests.Request())
-    log(log.INFO, "requests.Request() = [%s]", requests.Request().session if requests.Request() else "No Request")
-    log(
-        log.INFO,
-        "requests.Request() = [%s]",
-        requests.Request().session.adapters if requests.Request().session else "No session",
-    )
-    log(log.INFO, "CFG.GOOGLE_CLIENT_ID = [%s]", CFG.GOOGLE_CLIENT_ID)
-
     try:
         id_info_res: s.GoogleTokenVerification = id_token.verify_oauth2_token(
             auth_data.id_token,
