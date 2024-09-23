@@ -44,7 +44,6 @@ class CreateUserForm(FlaskForm):
     fullname = StringField("fullname", [DataRequired()])
     first_name = StringField("first_name", [DataRequired()])
     last_name = StringField("last_name", [DataRequired()])
-    email = StringField("email", [DataRequired(), Email()])
     phone = StringField("phone", [DataRequired()])
     password = PasswordField("Password", validators=[DataRequired(), Length(6, 30)])
     password_confirmation = PasswordField(
@@ -60,11 +59,6 @@ class CreateUserForm(FlaskForm):
         query = m.User.select().where(m.User.fullname == field.data)
         if db.session.scalar(query) is not None:
             raise ValidationError("This username is taken.")
-
-    def validate_email(self, field):
-        query = m.User.select().where(m.User.email == field.data)
-        if db.session.scalar(query) is not None:
-            raise ValidationError("This email is already registered.")
 
     def validate_phone(self, field):
         query = m.User.select().where(m.User.phone == field.data)

@@ -109,7 +109,6 @@ def create():
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             phone=form.phone.data,
-            email=form.email.data,
             password=form.password.data,
         )
         u.save()

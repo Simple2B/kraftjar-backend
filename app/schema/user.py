@@ -17,7 +17,6 @@ class User(BaseModel):
     first_name: str
     last_name: str
     phone: str
-    email: str
     is_deleted: bool
     phone_verified: bool
 

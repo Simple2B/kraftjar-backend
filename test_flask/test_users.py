@@ -66,7 +66,6 @@ def test_create_new_user(populate: FlaskClient):
             fullname="John Doe",
             first_name="John",
             last_name="Doe",
-            email="test@test.com",
             phone="1234567890",
             password="password",
             password_confirmation="password",
@@ -75,4 +74,3 @@ def test_create_new_user(populate: FlaskClient):
     )
     assert response
     assert response.status_code == 302
-    assert db.session.scalar(m.User.select().where(m.User.email == "test@test.com"))
