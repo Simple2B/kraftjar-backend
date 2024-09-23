@@ -3,6 +3,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.expression import Executable
 
+from api.utils import password_validation
 from app import models as m
 from app import schema as s
 from app.logger import log
@@ -27,6 +28,8 @@ def register_user(user_data: s.RegistrationIn, db: Session) -> s.Token:
         )
         if db.scalar(stmt) is not None:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This email is already registered")
+
+    password_validation(user_data.password)
 
     user: m.User = m.User(
         fullname=user_data.fullname,
