@@ -78,6 +78,7 @@ def test_save_service_form(populate: FlaskClient):
     res = client.post(
         f"/service/{service.uuid}/edit?q={name}",
         data={
+            "service_uuid": service.uuid,
             "name_ua": "test_ua",
             "name_en": "test_en",
             "parent_id": 56,

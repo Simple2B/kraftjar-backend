@@ -50,3 +50,13 @@ def test_delete_user(populate: FlaskClient):
     response = populate.delete("/admin/delete/1")
     assert response.status_code == 200
     assert db.session.scalar(m.Admin.select().where(m.Admin.id == 1)).is_deleted
+
+
+def test_restore_admin(populate: FlaskClient):
+    login(populate)
+    response = populate.delete("/admin/delete/1")
+    assert response.status_code == 200
+    assert db.session.scalar(m.Admin.select().where(m.Admin.id == 1)).is_deleted
+    response = populate.post("/admin/restore/1")
+    assert response.status_code == 200
+    assert not db.session.scalar(m.Admin.select().where(m.Admin.id == 1)).is_deleted

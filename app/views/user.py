@@ -63,11 +63,12 @@ def save():
             log(log.ERROR, "Not found user by id : [%s]", form.user_id.data)
             flash("Cannot save user data", "danger")
             return redirect(url_for("user.get_all"))
-        u.fullname = form.fullname.data
-        u.phone = form.phone.data
+        u.fullname = form.fullname.data.strip()
+        u.first_name = form.first_name.data.strip()
+        u.last_name = form.last_name.data.strip()
+        u.phone = form.phone.data.strip()
         # form.is_deleted.data is always False
-        u.is_deleted = form.is_deleted.data
-        u.email = form.email.data
+        u.email = form.email.data.strip()
         if form.password.data.strip("*\n "):
             u.password = form.password.data
         u.save()
@@ -96,3 +97,25 @@ def delete(id: int):
     log(log.INFO, "User deleted. User: [%s]", u)
     flash("User deleted!", "success")
     return "ok", 200
+
+
+@user_route.route("/create", methods=["POST"])
+@login_required
+def create():
+    form: f.CreateUserForm = f.CreateUserForm()
+    if form.validate_on_submit():
+        u = m.User(
+            fullname=form.fullname.data,
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            phone=form.phone.data,
+            password=form.password.data,
+        )
+        u.save()
+        log(log.INFO, "User [%s] created", u)
+        return redirect(url_for("user.get_all"))
+
+    else:
+        log(log.ERROR, "User create errors: [%s]", form.errors)
+        flash(f"{form.errors}", "danger")
+        return redirect(url_for("user.get_all"))

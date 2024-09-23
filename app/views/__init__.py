@@ -4,3 +4,4 @@ from .auth import auth_blueprint
 from .main import main_blueprint
 from .service import service_route
 from .user import user_route
+from .region import region_route
