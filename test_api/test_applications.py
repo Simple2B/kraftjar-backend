@@ -81,8 +81,6 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     assert response.status_code == status.HTTP_200_OK
     app_list_out = s.ApplicationOutList.model_validate(response.json())
     assert app_list_out
-    # 3 applications: 1 from worker, 2 from another workers
-    # APPLICATIONS_COUNT = db.scalar(sa.select(sa.func.count(m.Application.id)).where(m.Application.job_id.in_([1,2,3])))
     assert len(app_list_out.data) == len(workers_list)
 
     # Update application with status ACCEPTED
