@@ -49,3 +49,11 @@ class ApplicationPutIn(BaseModel):
 
 class ApplicationPutOut(BaseModel):
     application: ApplicationOut
+
+
+class ApplicationListIn(BaseModel):
+    job_id: int
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )

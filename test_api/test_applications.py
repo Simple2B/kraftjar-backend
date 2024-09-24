@@ -34,12 +34,19 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     response = client.post("/api/applications", headers=auth_header, content=data.model_dump_json())
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
-    # create application
+    # Create application
     data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=worker.id, job_id=job.id)
     response = client.post("/api/applications", headers=auth_header, content=data.model_dump_json())
     assert response.status_code == status.HTTP_201_CREATED
     application_data = s.ApplicationOut.model_validate(response.json())
     assert application_data
+
+    # Get application
+    response = client.get(f"/api/applications/{application_data.id}", headers=auth_header)
+    assert response.status_code == status.HTTP_200_OK
+    app_data_out = s.ApplicationOut.model_validate(response.json())
+    assert app_data_out
+    assert app_data_out.id == application_data.id
 
     # Another users apply to the same job
     another_worker_one: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == 2))
@@ -48,8 +55,8 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=another_worker_one.id, job_id=job.id)
     response = client.post("/api/applications", headers=auth_header, content=data.model_dump_json())
     assert response.status_code == status.HTTP_201_CREATED
-    application_data = s.ApplicationOut.model_validate(response.json())
-    assert application_data
+    another_app = s.ApplicationOut.model_validate(response.json())
+    assert another_app
 
     another_worker_two: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == 3))
     assert another_worker_two
@@ -57,10 +64,20 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=another_worker_two.id, job_id=job.id)
     response = client.post("/api/applications", headers=auth_header, content=data.model_dump_json())
     assert response.status_code == status.HTTP_201_CREATED
-    application_data = s.ApplicationOut.model_validate(response.json())
-    assert application_data
+    another_app = s.ApplicationOut.model_validate(response.json())
+    assert another_app
 
-    # update application with status ACCEPTED
+    # Get applications list
+    app_list = s.ApplicationListIn(job_id=job.id)
+    response = client.get(f"/api/applications/list/{app_list.job_id}", headers=auth_header)
+    assert response.status_code == status.HTTP_200_OK
+    app_list_out = s.ApplicationOutList.model_validate(response.json())
+    assert app_list_out
+    # 3 applications: 1 from worker, 2 from another workers
+    APPLICATIONS_COUNT = 3
+    assert len(app_list_out.data) == APPLICATIONS_COUNT
+
+    # Update application with status ACCEPTED
     # current_user == job owner
     mock_current_user = db.scalar(sa.select(m.User).where(m.User.id == job.owner_id))
     assert mock_current_user
@@ -76,7 +93,7 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     data_app = data_out.application
     assert data_app.status == m.ApplicationStatus.ACCEPTED
 
-    # another applications should be rejected
+    # Another applications should be rejected
     another_job_applications = db.scalars(
         sa.select(m.Application).where(m.Application.job_id == data_app.job_id, m.Application.id != data_app.id)
     ).all()
@@ -100,3 +117,15 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
         f"/api/applications/{application_data.id}", headers=auth_header, content=data_put.model_dump_json()
     )
     assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    # Delete application
+    # current_user == worker
+    mock_current_user = db.scalar(sa.select(m.User).where(m.User.id == application_data.worker_id))
+    assert mock_current_user
+    app.dependency_overrides[get_current_user] = lambda: mock_current_user
+
+    response = client.delete(f"/api/applications/{application_data.id}", headers=auth_header)
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    deleted_app = db.scalar(sa.select(m.Application).where(m.Application.id == application_data.id))
+    assert deleted_app
+    assert deleted_app.is_deleted

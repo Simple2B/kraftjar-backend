@@ -19,23 +19,25 @@ def get_application(
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
-    application: m.Application | None = db.scalar(sa.select(m.Application).where(m.Application.id == application_id))
+    application: m.Application | None = db.scalar(
+        sa.select(m.Application).where(m.Application.is_deleted.is_(False), m.Application.id == application_id)
+    )
     if not application:
         log(log.ERROR, "Application [%s] not found", application_id)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Application not found")
+
     return application
 
 
-@application_router.get("/", status_code=status.HTTP_200_OK, response_model=s.ApplicationOutList)
+@application_router.get("/list/{job_id}", status_code=status.HTTP_200_OK, response_model=s.ApplicationOutList)
 def get_applications(
+    job_id: int,
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
-    query = (
-        sa.select(m.Application)
-        .join(m.Job, sa.or_(m.Application.worker_id == current_user.id, m.Job.owner_id == current_user.id))
-        .filter(m.Application.job_id == m.Job.id)
-    )
+    """Get applications list by job id"""
+
+    query = sa.select(m.Application).where(m.Application.is_deleted.is_(False), m.Application.job_id == job_id)
 
     applications: Sequence[m.Application] = db.scalars(query).all()
     return s.ApplicationOutList(data=cast(list, applications))
@@ -83,7 +85,14 @@ def create_application(
     return application
 
 
-@application_router.put("/{application_id}", status_code=status.HTTP_200_OK, response_model=s.ApplicationPutOut)
+@application_router.put(
+    "/{application_id}",
+    status_code=status.HTTP_200_OK,
+    response_model=s.ApplicationPutOut,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Application not found"},
+    },
+)
 def update_application(
     application_id: int,
     data: s.ApplicationPutIn,
@@ -94,7 +103,9 @@ def update_application(
         log(log.ERROR, "Status is required")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Status is required")
 
-    application: m.Application | None = db.scalar(sa.select(m.Application).where(m.Application.id == application_id))
+    application: m.Application | None = db.scalar(
+        sa.select(m.Application).where(m.Application.is_deleted.is_(False), m.Application.id == application_id)
+    )
 
     if not application:
         log(log.ERROR, "Application [%s] not found", application_id)
@@ -104,34 +115,64 @@ def update_application(
         log(log.ERROR, "Application [%s] is already completed", application_id)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Application is already completed")
 
-    job_owner_id: int | None = db.scalar(sa.select(m.Job.owner_id).where(m.Job.id == application.job_id))
-    if not job_owner_id:
+    job = db.scalar(sa.select(m.Job).where(m.Job.id == application.job_id))
+    if not job:
         log(log.ERROR, "Job [%s] not found", application.job_id)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
 
     # Check permissions
-    is_update_not_allowed = current_user.id not in [job_owner_id, application.worker_id]
+    is_update_not_allowed = current_user.id not in [job.owner_id, application.worker_id]
     # worker can't update application
     is_worker_not_allowed_to_update = (
         current_user.id == application.worker_id and application.type == m.ApplicationType.APPLY
     )
     # owner can't update application
-    is_owner_not_allowed_to_update = current_user.id == job_owner_id and application.type == m.ApplicationType.INVITE
+    is_owner_not_allowed_to_update = current_user.id == job.owner_id and application.type == m.ApplicationType.INVITE
 
     if any([is_update_not_allowed, is_worker_not_allowed_to_update, is_owner_not_allowed_to_update]):
         log(log.ERROR, "User [%s] is not allowed to update application [%s]", current_user.id, application.id)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User is not allowed to update application")
 
-    db.execute(sa.update(m.Application).where(m.Application.id == application_id).values(status=data.status))
+    application.status = data.status
     log(log.INFO, "Updated application [%s] with status: [%s]", application_id, data.status.name)
 
     if data.status == m.ApplicationStatus.ACCEPTED:
         c.reject_applications(db, application)
 
-        db.execute(sa.update(m.Job).where(m.Job.id == application.job_id).values(status=s.JobStatus.IN_PROGRESS.value))
+        job.status = s.JobStatus.IN_PROGRESS.value
+        job.worker_id = application.worker_id
         log(log.INFO, "Updated job [%s] status to IN_PROGRESS", application.job_id)
 
     db.commit()
     log(log.INFO, "Successfully updated application [%s]", application_id)
 
     return s.ApplicationPutOut(application=application)
+
+
+@application_router.delete(
+    "/{application_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Application not found"},
+    },
+)
+def delete_application(
+    application_id: int,
+    db: Session = Depends(get_db),
+    current_user: m.User = Depends(get_current_user),
+):
+    application: m.Application | None = db.scalar(
+        sa.select(m.Application).where(m.Application.is_deleted.is_(False), m.Application.id == application_id)
+    )
+
+    if not application:
+        log(log.ERROR, "Application [%s] not found", application_id)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Application not found")
+
+    if application.worker_id != current_user.id:
+        log(log.ERROR, "User [%s] is not allowed to delete application [%s]", current_user.id, application.id)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User is not allowed to delete application")
+
+    application.is_deleted = True
+    db.commit()
+    log(log.INFO, "Worker [%s] successfully deleted application [%s]", current_user.id, application_id)
