@@ -16,16 +16,24 @@ CFG = config()
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_applications(client: TestClient, auth_header: dict[str, str], db: Session):
-    worker: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == 1))
-    assert worker
+    USERS_TEST_COUNT = 3
+    workers_list = db.scalars(sa.select(m.User).where(m.User.is_deleted.is_(False))).all()[:USERS_TEST_COUNT]
+    assert len(workers_list) == USERS_TEST_COUNT
+
+    main_worker = workers_list[0]
 
     job: m.Job | None = db.scalar(
-        sa.select(m.Job).where(m.Job.worker_id == worker.id, m.Job.status == s.JobStatus.PENDING.value)
+        sa.select(m.Job).where(m.Job.worker_id == main_worker.id, m.Job.status == s.JobStatus.PENDING.value)
     )
     assert job
 
+    # current_user == main worker
+    mock_current_user = db.scalar(sa.select(m.User).where(m.User.id == main_worker.id))
+    assert mock_current_user
+    app.dependency_overrides[get_current_user] = lambda: mock_current_user
+
     # worker can't invite himself
-    data = s.ApplicationIn(type=m.ApplicationType.INVITE, worker_id=worker.id, job_id=job.id)
+    data = s.ApplicationIn(type=m.ApplicationType.INVITE, worker_id=main_worker.id, job_id=job.id)
     response = client.post("/api/applications", headers=auth_header, content=data.model_dump_json())
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
@@ -35,7 +43,7 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
     # Create application
-    data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=worker.id, job_id=job.id)
+    data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=main_worker.id, job_id=job.id)
     response = client.post("/api/applications", headers=auth_header, content=data.model_dump_json())
     assert response.status_code == status.HTTP_201_CREATED
     application_data = s.ApplicationOut.model_validate(response.json())
@@ -49,7 +57,7 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     assert app_data_out.id == application_data.id
 
     # Another users apply to the same job
-    another_worker_one: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == 2))
+    another_worker_one: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == workers_list[1].id))
     assert another_worker_one
 
     data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=another_worker_one.id, job_id=job.id)
@@ -58,7 +66,7 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     another_app = s.ApplicationOut.model_validate(response.json())
     assert another_app
 
-    another_worker_two: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == 3))
+    another_worker_two: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == workers_list[2].id))
     assert another_worker_two
 
     data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=another_worker_two.id, job_id=job.id)
@@ -74,8 +82,8 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     app_list_out = s.ApplicationOutList.model_validate(response.json())
     assert app_list_out
     # 3 applications: 1 from worker, 2 from another workers
-    APPLICATIONS_COUNT = 3
-    assert len(app_list_out.data) == APPLICATIONS_COUNT
+    # APPLICATIONS_COUNT = db.scalar(sa.select(sa.func.count(m.Application.id)).where(m.Application.job_id.in_([1,2,3])))
+    assert len(app_list_out.data) == len(workers_list)
 
     # Update application with status ACCEPTED
     # current_user == job owner
