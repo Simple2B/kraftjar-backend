@@ -11,6 +11,9 @@ from .oauth2 import create_access_token
 
 
 def register_user(user_data: s.RegistrationIn, db: Session) -> s.Token:
+    # validate password
+    password = s.RegistrationIn.password_validation(user_data.password)
+
     # check if phone is already registered
     stmt: Executable = sa.select(m.User).where(m.User.phone == user_data.phone)
     if db.scalar(stmt) is not None:
@@ -27,9 +30,6 @@ def register_user(user_data: s.RegistrationIn, db: Session) -> s.Token:
         )
         if db.scalar(stmt) is not None:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This email is already registered")
-
-    # validate password
-    password = s.RegistrationIn.password_validation(user_data.password)
 
     user: m.User = m.User(
         fullname=user_data.fullname,
