@@ -236,6 +236,61 @@ def register_apple_account(
 
     log(log.INFO, "User [%s] successfully added Apple account, email: [%s]", current_user.fullname, email)
 
+@user_router.put(
+    "/",
+    status_code=status.HTTP_200_OK,
+    response_model=s.UserPut,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "User not found"},
+    },
+)
+def update_user(
+    user_data: s.UserPut,
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Update user profile"""
+
+    if user_data.fullname:
+        current_user.fullname = user_data.fullname
+
+    if user_data.description:
+        current_user.description = user_data.description
+
+    auth_acc_filter = sa.and_(m.AuthAccount.user_id == current_user.id, m.AuthAccount.auth_type == s.AuthType.BASIC)
+    basic_auth_account = db.scalar(sa.select(m.AuthAccount).where(auth_acc_filter))
+    if not basic_auth_account:
+        log(log.ERROR, "User [%s] has no basic auth account", current_user.id)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Basic auth account not found")
+
+    if user_data.email:
+        basic_auth_account.email = user_data.email
+
+    if user_data.services:
+        for service_uuid in user_data.services:
+            service: m.Service | None = db.scalar(sa.select(m.Service).where(m.Service.uuid == service_uuid))
+            if not service:
+                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Service not found")
+            current_user.services.append(service)
+
+    if user_data.locations:
+        for location_uuid in user_data.locations:
+            location: m.Location | None = db.scalar(sa.select(m.Location).where(m.Location.uuid == location_uuid))
+            if not location:
+                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Location not found")
+            current_user.locations.append(location)
+
+    db.commit()
+    log(log.INFO, "User [%s] successfully updated profile", current_user.fullname)
+
+    return s.UserPut(
+        fullname=current_user.fullname,
+        email=basic_auth_account.email,
+        description=current_user.description,
+        locations=[loc.uuid for loc in current_user.locations],
+        services=[s.uuid for s in current_user.services],
+    )
+
 
 @user_router.delete(
     "/auth-account/{auth_account_id}",

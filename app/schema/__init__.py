@@ -53,6 +53,7 @@ from .user import (
     UsersIn,
     UsersOut,
     UsersOrderBy,
+    UserPut,
 )
 from .whoami import WhoAmI
 from .rate import RateIn, RateOut, RateOutList

@@ -43,6 +43,7 @@ class User(db.Model, ModelMixin):
     fullname: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")  # fill in registration form
     first_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
     last_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
+    description: orm.Mapped[str] = orm.mapped_column(sa.String(512), default="", server_default="")
 
     phone: orm.Mapped[str] = orm.mapped_column(sa.String(32), default="")  # fill in registration form
     phone_verified: orm.Mapped[bool] = orm.mapped_column(default=False)
