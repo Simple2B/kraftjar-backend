@@ -3,7 +3,6 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.expression import Executable
 
-from api.utils import password_validation
 from app import models as m
 from app import schema as s
 from app.logger import log
