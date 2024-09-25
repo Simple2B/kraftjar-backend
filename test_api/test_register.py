@@ -25,7 +25,7 @@ def test_register(db: Session, client: TestClient):
     USER_PHONE = "1234567890"
     USER_FNAME = "TestFName"
     USER_LNAME = "TestLName"
-    USER_PASSWORD = "test_password"
+    USER_PASSWORD = "Test_password1"
     db_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.phone == USER_PHONE))
     if db_user:
         db.delete(db_user)
