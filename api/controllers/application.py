@@ -11,7 +11,7 @@ from app.logger import log
 CFG = config()
 
 
-def reject_applications(db: Session, application: m.Application):
+def reject_other_not_accepted_applications(db: Session, application: m.Application):
     """Reject all other applications for the same job."""
 
     job_applications: Sequence[m.Application] = db.scalars(
@@ -26,4 +26,4 @@ def reject_applications(db: Session, application: m.Application):
         for job_app in job_applications:
             job_app.status = m.ApplicationStatus.REJECTED
 
-        log(log.INFO, "Rejected applications count: [%s]", len(job_applications))
+    log(log.INFO, "Rejected applications count: [%s]", len(job_applications))

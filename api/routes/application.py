@@ -29,7 +29,7 @@ def get_application(
     return application
 
 
-@application_router.get("/list/{job_id}", status_code=status.HTTP_200_OK, response_model=s.ApplicationOutList)
+@application_router.get("/", status_code=status.HTTP_200_OK, response_model=s.ApplicationOutList)
 def get_applications(
     job_id: int,
     db: Session = Depends(get_db),
@@ -99,10 +99,6 @@ def update_application(
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
-    if not data.status:
-        log(log.ERROR, "Status is required")
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Status is required")
-
     application: m.Application | None = db.scalar(
         sa.select(m.Application).where(m.Application.is_deleted.is_(False), m.Application.id == application_id)
     )
@@ -137,7 +133,7 @@ def update_application(
     log(log.INFO, "Updated application [%s] with status: [%s]", application_id, data.status.name)
 
     if data.status == m.ApplicationStatus.ACCEPTED:
-        c.reject_applications(db, application)
+        c.reject_other_not_accepted_applications(db, application)
 
         job.status = s.JobStatus.IN_PROGRESS.value
         job.worker_id = application.worker_id

@@ -40,7 +40,7 @@ class ApplicationIn(BaseModel):
 
 
 class ApplicationPutIn(BaseModel):
-    status: ApplicationStatus | None = None
+    status: ApplicationStatus
 
     model_config = ConfigDict(
         from_attributes=True,
@@ -49,11 +49,3 @@ class ApplicationPutIn(BaseModel):
 
 class ApplicationPutOut(BaseModel):
     application: ApplicationOut
-
-
-class ApplicationListIn(BaseModel):
-    job_id: int
-
-    model_config = ConfigDict(
-        from_attributes=True,
-    )

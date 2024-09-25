@@ -76,8 +76,7 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     assert another_app
 
     # Get applications list
-    app_list = s.ApplicationListIn(job_id=job.id)
-    response = client.get(f"/api/applications/list/{app_list.job_id}", headers=auth_header)
+    response = client.get(f"/api/applications?job_id={job.id}", headers=auth_header)
     assert response.status_code == status.HTTP_200_OK
     app_list_out = s.ApplicationOutList.model_validate(response.json())
     assert app_list_out
