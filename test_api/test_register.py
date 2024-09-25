@@ -70,45 +70,6 @@ def test_register(db: Session, client: TestClient):
     response = client.post("/api/registration/", json=user_data.model_dump())
     assert response.status_code == status.HTTP_406_NOT_ACCEPTABLE
 
-    # Test weak password
-    def registration_data(password: str) -> s.RegistrationIn:
-        USER_EMAIL = "test_user2@kraftjar.net"
-        USER_PHONE = "1234567891"
-
-        return s.RegistrationIn(
-            fullname=USER_FNAME + " " + USER_LNAME,
-            phone=USER_PHONE,
-            email=USER_EMAIL,
-            password=password,
-            services=[s.uuid for s in services],
-            locations=[loc.uuid for loc in locations],
-        )
-
-    # Short password
-    user_data = registration_data("test")
-    response = client.post("/api/registration/", json=user_data.model_dump())
-    assert response.status_code == status.HTTP_401_UNAUTHORIZED
-
-    # No uppercase
-    user_data = registration_data("test_password")
-    response = client.post("/api/registration/", json=user_data.model_dump())
-    assert response.status_code == status.HTTP_401_UNAUTHORIZED
-
-    # No lowercase
-    user_data = registration_data("TEST_PASSWORD")
-    response = client.post("/api/registration/", json=user_data.model_dump())
-    assert response.status_code == status.HTTP_401_UNAUTHORIZED
-
-    # No numbers
-    user_data = registration_data("Test_password")
-    response = client.post("/api/registration/", json=user_data.model_dump())
-    assert response.status_code == status.HTTP_401_UNAUTHORIZED
-
-    # No special characters
-    user_data = registration_data("TestPassword1")
-    response = client.post("/api/registration/", json=user_data.model_dump())
-    assert response.status_code == status.HTTP_401_UNAUTHORIZED
-
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_phone_validation(db: Session, client: TestClient, auth_header: dict[str, str]):

@@ -29,13 +29,14 @@ def register_user(user_data: s.RegistrationIn, db: Session) -> s.Token:
         if db.scalar(stmt) is not None:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This email is already registered")
 
-    password_validation(user_data.password)
+    # validate password
+    password = s.RegistrationIn.password_validation(user_data.password)
 
     user: m.User = m.User(
         fullname=user_data.fullname,
         phone=user_data.phone,
         auth_accounts=[m.AuthAccount(auth_type=s.AuthType.BASIC, email=user_data.email)],
-        password=user_data.password,
+        password=password,
         is_volunteer=user_data.is_volunteer,
     )
     db.add(user)
