@@ -11,6 +11,9 @@ from .oauth2 import create_access_token
 
 
 def register_user(user_data: s.RegistrationIn, db: Session) -> s.Token:
+    # validate password
+    password = s.RegistrationIn.password_validation(user_data.password)
+
     # check if phone is already registered
     stmt: Executable = sa.select(m.User).where(m.User.phone == user_data.phone)
     if db.scalar(stmt) is not None:
@@ -32,7 +35,7 @@ def register_user(user_data: s.RegistrationIn, db: Session) -> s.Token:
         fullname=user_data.fullname,
         phone=user_data.phone,
         auth_accounts=[m.AuthAccount(auth_type=s.AuthType.BASIC, email=user_data.email)],
-        password=user_data.password,
+        password=password,
         is_volunteer=user_data.is_volunteer,
     )
     db.add(user)
