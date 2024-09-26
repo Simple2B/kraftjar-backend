@@ -236,6 +236,7 @@ def register_apple_account(
 
     log(log.INFO, "User [%s] successfully added Apple account, email: [%s]", current_user.fullname, email)
 
+
 @user_router.put(
     "/",
     status_code=status.HTTP_200_OK,
@@ -290,6 +291,40 @@ def update_user(
         locations=[loc.uuid for loc in current_user.locations],
         services=[s.uuid for s in current_user.services],
     )
+
+
+@user_router.delete(
+    "/",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "User not found"},
+    },
+)
+def delete_user(
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Delete user profile"""
+
+    current_timestamp = datetime.now()
+
+    current_user.is_deleted = True
+    current_user.phone = f"deleted-{current_timestamp}"
+    current_user.fullname = f"deleted-{current_timestamp}"
+
+    auth_acc_filter = sa.and_(m.AuthAccount.user_id == current_user.id)
+    auth_accounts = db.scalars(sa.select(m.AuthAccount).where(auth_acc_filter)).all()
+    if not auth_accounts:
+        log(log.ERROR, "User [%s] has no auth accounts, at least basic account should be present", current_user.id)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Auth accounts not found")
+
+    for auth_account in auth_accounts:
+        auth_account.is_deleted = True
+        auth_account.email = f"deleted-{current_timestamp}"
+        auth_account.oauth_id = f"deleted-{current_timestamp}"
+
+    db.commit()
+    log(log.INFO, "User [%s] successfully deleted profile", current_user.fullname)
 
 
 @user_router.delete(

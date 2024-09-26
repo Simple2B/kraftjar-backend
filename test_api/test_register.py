@@ -72,20 +72,19 @@ def test_register(db: Session, client: TestClient, auth_header: dict[str, str]):
     response = client.post("/api/registration/", json=user_data.model_dump())
     assert response.status_code == status.HTTP_406_NOT_ACCEPTABLE
 
-    # Update user profile
     current_user = db.scalar(sa.select(m.User).where(m.User.phone == USER_PHONE))
     assert current_user
-
     app.dependency_overrides[get_current_user] = lambda: current_user
 
-    user_data = s.UserPut(
+    # Update user profile
+    user_update_data = s.UserPut(
         fullname="New Name",
         email="new.email@test.com",
         description="New description",
         services=[s.uuid for s in current_user.services],
         locations=[loc.uuid for loc in current_user.locations],
     )
-    response = client.put(f"/api/users", headers=auth_header, json=user_data.model_dump())
+    response = client.put("/api/users", headers=auth_header, json=user_update_data.model_dump())
     assert response.status_code == status.HTTP_200_OK
 
     data = s.UserPut.model_validate(response.json())
@@ -96,7 +95,19 @@ def test_register(db: Session, client: TestClient, auth_header: dict[str, str]):
 
     auth_acc_filter = sa.and_(m.AuthAccount.user_id == current_user.id, m.AuthAccount.auth_type == s.AuthType.BASIC)
     basic_auth_account = db.scalar(sa.select(m.AuthAccount).where(auth_acc_filter))
-    assert basic_auth_account.email == user_data.email
+    assert basic_auth_account
+    assert basic_auth_account.email == user_update_data.email
+
+    # Delete user
+    response = client.delete("/api/users", headers=auth_header)
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    deleted_user = db.scalar(sa.select(m.User).where(m.User.id == current_user.id))
+    assert deleted_user
+    assert deleted_user.is_deleted
+
+    auth_acc_filter = sa.and_(m.AuthAccount.user_id == current_user.id)
+    auth_accounts = db.scalars(sa.select(m.AuthAccount).where(auth_acc_filter)).all()
+    assert all(acc.is_deleted for acc in auth_accounts)
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
