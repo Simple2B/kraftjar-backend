@@ -252,20 +252,11 @@ def update_user(
 ):
     """Update user profile"""
 
-    if user_data.fullname:
-        current_user.fullname = user_data.fullname
-
-    if user_data.description:
-        current_user.description = user_data.description
-
     basic_auth = current_user.basic_auth_account
 
     if not basic_auth:
         log(log.ERROR, "User [%s] has no basic auth account", current_user.id)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Basic auth account not found")
-
-    if user_data.email:
-        basic_auth.email = user_data.email
 
     if user_data.services:
         for service_uuid in user_data.services:
@@ -280,6 +271,15 @@ def update_user(
             if not location:
                 raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Location not found")
             current_user.locations.append(location)
+
+    if user_data.fullname:
+        current_user.fullname = user_data.fullname
+
+    if user_data.description:
+        current_user.description = user_data.description
+
+    if user_data.email:
+        basic_auth.email = user_data.email
 
     db.commit()
     log(log.INFO, "User [%s] successfully updated profile", current_user.fullname)
@@ -306,15 +306,15 @@ def delete_user(
 ):
     """Delete user profile"""
 
+    if not current_user.auth_accounts:
+        log(log.ERROR, "User [%s] has no auth accounts, at least basic account should be present", current_user.id)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Auth accounts not found")
+
     current_timestamp = datetime.now()
 
     current_user.is_deleted = True
     current_user.phone = f"deleted-{current_timestamp}"
     current_user.fullname = f"deleted-{current_timestamp}"
-
-    if not current_user.auth_accounts:
-        log(log.ERROR, "User [%s] has no auth accounts, at least basic account should be present", current_user.id)
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Auth accounts not found")
 
     for auth_account in current_user.auth_accounts:
         auth_account.is_deleted = True

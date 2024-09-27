@@ -74,12 +74,12 @@ class User(db.Model, ModelMixin):
         raise ValueError("Basic auth account not found")
 
     @property
-    def google_auth_account(self):
-        return next((acc for acc in self.auth_accounts if acc.auth_type == AuthType.GOOGLE), None)
+    def google_auth_accounts(self):
+        return [acc for acc in self.auth_accounts if acc.auth_type == AuthType.GOOGLE]
 
     @property
-    def apple_auth_account(self):
-        return next((acc for acc in self.auth_accounts if acc.auth_type == AuthType.APPLE), None)
+    def apple_auth_accounts(self):
+        return [acc for acc in self.auth_accounts if acc.auth_type == AuthType.APPLE]
 
     @property
     def owned_rates_count(self) -> int:
