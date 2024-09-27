@@ -93,8 +93,7 @@ def test_register(db: Session, client: TestClient, auth_header: dict[str, str]):
     assert data.services == [s.uuid for s in current_user.services]
     assert data.locations == [loc.uuid for loc in current_user.locations]
 
-    auth_acc_filter = sa.and_(m.AuthAccount.user_id == current_user.id, m.AuthAccount.auth_type == s.AuthType.BASIC)
-    basic_auth_account = db.scalar(sa.select(m.AuthAccount).where(auth_acc_filter))
+    basic_auth_account = current_user.basic_auth_account
     assert basic_auth_account
     assert basic_auth_account.email == user_update_data.email
 
@@ -105,9 +104,11 @@ def test_register(db: Session, client: TestClient, auth_header: dict[str, str]):
     assert deleted_user
     assert deleted_user.is_deleted
 
-    auth_acc_filter = sa.and_(m.AuthAccount.user_id == current_user.id)
-    auth_accounts = db.scalars(sa.select(m.AuthAccount).where(auth_acc_filter)).all()
+    auth_accounts = current_user.auth_accounts
     assert all(acc.is_deleted for acc in auth_accounts)
+
+    # reset user dependency
+    app.dependency_overrides[get_current_user] = get_current_user
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")

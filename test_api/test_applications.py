@@ -134,3 +134,6 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     deleted_app = db.scalar(sa.select(m.Application).where(m.Application.id == application_data.id))
     assert deleted_app
     assert deleted_app.is_deleted
+
+    # reset user dependency
+    app.dependency_overrides[get_current_user] = get_current_user
