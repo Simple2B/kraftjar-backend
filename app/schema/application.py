@@ -39,9 +39,13 @@ class ApplicationIn(BaseModel):
     )
 
 
-class ApplicationPut(BaseModel):
-    status: ApplicationStatus | None = None
+class ApplicationPutIn(BaseModel):
+    status: ApplicationStatus
 
     model_config = ConfigDict(
         from_attributes=True,
     )
+
+
+class ApplicationPutOut(BaseModel):
+    application: ApplicationOut
