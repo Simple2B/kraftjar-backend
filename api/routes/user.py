@@ -237,6 +237,94 @@ def register_apple_account(
     log(log.INFO, "User [%s] successfully added Apple account, email: [%s]", current_user.fullname, email)
 
 
+@user_router.put(
+    "/",
+    status_code=status.HTTP_200_OK,
+    response_model=s.UserPut,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "User not found"},
+    },
+)
+def update_user(
+    user_data: s.UserPut,
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Update user profile"""
+
+    basic_auth = current_user.basic_auth_account
+
+    if not basic_auth:
+        log(log.ERROR, "User [%s] has no basic auth account", current_user.id)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Basic auth account not found")
+
+    if user_data.services:
+        for service_uuid in user_data.services:
+            service: m.Service | None = db.scalar(sa.select(m.Service).where(m.Service.uuid == service_uuid))
+            if not service:
+                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Service not found")
+            current_user.services.append(service)
+
+    if user_data.locations:
+        for location_uuid in user_data.locations:
+            location: m.Location | None = db.scalar(sa.select(m.Location).where(m.Location.uuid == location_uuid))
+            if not location:
+                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Location not found")
+            current_user.locations.append(location)
+
+    if user_data.fullname:
+        current_user.fullname = user_data.fullname
+
+    if user_data.description:
+        current_user.description = user_data.description
+
+    if user_data.email:
+        basic_auth.email = user_data.email
+
+    db.commit()
+    log(log.INFO, "User [%s] successfully updated profile", current_user.fullname)
+
+    return s.UserPut(
+        fullname=current_user.fullname,
+        email=basic_auth.email,
+        description=current_user.description,
+        locations=[loc.uuid for loc in current_user.locations],
+        services=[s.uuid for s in current_user.services],
+    )
+
+
+@user_router.delete(
+    "/",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "User not found"},
+    },
+)
+def delete_user(
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Delete user profile"""
+
+    if not current_user.auth_accounts:
+        log(log.ERROR, "User [%s] has no auth accounts, at least basic account should be present", current_user.id)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Auth accounts not found")
+
+    current_timestamp = datetime.now()
+
+    current_user.is_deleted = True
+    current_user.phone = f"deleted-{current_timestamp}"
+    current_user.fullname = f"deleted-{current_timestamp}"
+
+    for auth_account in current_user.auth_accounts:
+        auth_account.is_deleted = True
+        auth_account.email = f"deleted-{current_timestamp}"
+        auth_account.oauth_id = f"deleted-{current_timestamp}"
+
+    db.commit()
+    log(log.INFO, "User [%s] successfully deleted profile", current_user.fullname)
+
+
 @user_router.delete(
     "/auth-account/{auth_account_id}",
     status_code=status.HTTP_204_NO_CONTENT,
@@ -251,12 +339,7 @@ def delete_auth_account(
 ):
     """Delete auth account for user"""
 
-    auth_account_filter = sa.and_(
-        m.AuthAccount.id == auth_account_id,
-        m.AuthAccount.user_id == current_user.id,
-    )
-
-    auth_account = db.scalar(sa.select(m.AuthAccount).where(auth_account_filter))
+    auth_account = next((acc for acc in current_user.auth_accounts if acc.id == auth_account_id), None)
 
     if not auth_account:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Auth account not found")

@@ -1,6 +1,6 @@
 from typing import Sequence
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr
 from enum import Enum
 
 from app.schema.auth import AuthAccount, AuthAccountOut
@@ -19,6 +19,7 @@ class User(BaseModel):
     phone: str
     is_deleted: bool
     phone_verified: bool
+    description: str
 
     is_volunteer: bool
 
@@ -140,3 +141,11 @@ class PublicUsersSearchOut(BaseModel):
 
 class PublicTopExpertsOut(BaseModel):
     top_experts: list[UserSearchOut]
+
+
+class UserPut(BaseModel):
+    fullname: str = ""
+    email: EmailStr | str = ""
+    description: str = ""
+    locations: list[str] = []
+    services: list[str] = []

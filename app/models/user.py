@@ -8,6 +8,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.database import db
 from app.logger import log
+from app.schema.auth import AuthType
 from app.schema.user import User as u
 from config import config
 
@@ -43,6 +44,7 @@ class User(db.Model, ModelMixin):
     fullname: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")  # fill in registration form
     first_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
     last_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
+    description: orm.Mapped[str] = orm.mapped_column(sa.String(512), default="", server_default="")
 
     phone: orm.Mapped[str] = orm.mapped_column(sa.String(32), default="")  # fill in registration form
     phone_verified: orm.Mapped[bool] = orm.mapped_column(default=False)
@@ -63,6 +65,21 @@ class User(db.Model, ModelMixin):
     # Relationships
     services: orm.Mapped[list["Service"]] = orm.relationship(secondary=user_services)
     locations: orm.Mapped[list["Location"]] = orm.relationship(secondary=user_locations)
+
+    @property
+    def basic_auth_account(self):
+        for acc in self.auth_accounts:
+            if acc.auth_type == AuthType.BASIC:
+                return acc
+        raise ValueError("Basic auth account not found")
+
+    @property
+    def google_auth_accounts(self):
+        return [acc for acc in self.auth_accounts if acc.auth_type == AuthType.GOOGLE]
+
+    @property
+    def apple_auth_accounts(self):
+        return [acc for acc in self.auth_accounts if acc.auth_type == AuthType.APPLE]
 
     @property
     def owned_rates_count(self) -> int:
