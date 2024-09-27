@@ -70,6 +70,7 @@ def get_jobs(
         m.Job.status == s.JobStatus.PENDING.value,
         m.Job.is_public.is_(True),
         m.Job.owner_id != current_user.id,
+        m.Job.worker_id != current_user.id,
     )
 
     if selected_locations or current_user.locations:

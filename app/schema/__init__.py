@@ -22,7 +22,13 @@ from .job import (
     JobsOrderBy,
     JobsIn,
 )
-from .application import ApplicationIn, ApplicationOut, ApplicationOutList, ApplicationPut
+from .application import (
+    ApplicationIn,
+    ApplicationOut,
+    ApplicationOutList,
+    ApplicationPutIn,
+    ApplicationPutOut,
+)
 from .location import (
     SettlementType,
     Location,
