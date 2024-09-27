@@ -258,14 +258,14 @@ def update_user(
     if user_data.description:
         current_user.description = user_data.description
 
-    auth_acc_filter = sa.and_(m.AuthAccount.user_id == current_user.id, m.AuthAccount.auth_type == s.AuthType.BASIC)
-    basic_auth_account = db.scalar(sa.select(m.AuthAccount).where(auth_acc_filter))
-    if not basic_auth_account:
+    basic_auth = current_user.basic_auth_account
+
+    if not basic_auth:
         log(log.ERROR, "User [%s] has no basic auth account", current_user.id)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Basic auth account not found")
 
     if user_data.email:
-        basic_auth_account.email = user_data.email
+        basic_auth.email = user_data.email
 
     if user_data.services:
         for service_uuid in user_data.services:
@@ -286,7 +286,7 @@ def update_user(
 
     return s.UserPut(
         fullname=current_user.fullname,
-        email=basic_auth_account.email,
+        email=basic_auth.email,
         description=current_user.description,
         locations=[loc.uuid for loc in current_user.locations],
         services=[s.uuid for s in current_user.services],
@@ -312,13 +312,11 @@ def delete_user(
     current_user.phone = f"deleted-{current_timestamp}"
     current_user.fullname = f"deleted-{current_timestamp}"
 
-    auth_acc_filter = sa.and_(m.AuthAccount.user_id == current_user.id)
-    auth_accounts = db.scalars(sa.select(m.AuthAccount).where(auth_acc_filter)).all()
-    if not auth_accounts:
+    if not current_user.auth_accounts:
         log(log.ERROR, "User [%s] has no auth accounts, at least basic account should be present", current_user.id)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Auth accounts not found")
 
-    for auth_account in auth_accounts:
+    for auth_account in current_user.auth_accounts:
         auth_account.is_deleted = True
         auth_account.email = f"deleted-{current_timestamp}"
         auth_account.oauth_id = f"deleted-{current_timestamp}"
@@ -341,12 +339,7 @@ def delete_auth_account(
 ):
     """Delete auth account for user"""
 
-    auth_account_filter = sa.and_(
-        m.AuthAccount.id == auth_account_id,
-        m.AuthAccount.user_id == current_user.id,
-    )
-
-    auth_account = db.scalar(sa.select(m.AuthAccount).where(auth_account_filter))
+    auth_account = next((acc for acc in current_user.auth_accounts if acc.id == auth_account_id), None)
 
     if not auth_account:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Auth account not found")
