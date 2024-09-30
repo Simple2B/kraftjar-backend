@@ -91,9 +91,9 @@ def get_settlements(
 
     for settlement in settlements:
         if settlement.type == s.SettlementType.CITY.name:
-            type = "м. "
+            type = "м. " if lang == s.Language.UA else "c. "
         elif settlement.type == s.SettlementType.VILLAGE.name:
-            type = "с. "
+            type = "с. " if lang == s.Language.UA else "v. "
         else:
             type = ""
 
