@@ -21,6 +21,6 @@ def get_file_extension(file: UploadFile):
 
 
 def mark_as_deleted():
-    current_timestamp = datetime.now().strftime("%y-%m-%d_%H:%M:%S")
+    current_timestamp = datetime.now().strftime("%y-%m-%d_%H:%M:%S:%f")
 
     return f"deleted-{current_timestamp}"

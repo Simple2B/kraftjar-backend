@@ -317,6 +317,8 @@ def delete_user(
     current_user.fullname = deleted_mark
 
     for auth_account in current_user.auth_accounts:
+        deleted_mark = mark_as_deleted()
+
         auth_account.is_deleted = True
         auth_account.email = deleted_mark
         auth_account.oauth_id = deleted_mark
