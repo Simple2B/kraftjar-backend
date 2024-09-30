@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import Annotated
 from fastapi import APIRouter, Depends, Query, status, HTTPException
 from sqlalchemy.orm import Session
@@ -9,6 +8,7 @@ from google.auth.transport import requests
 
 import api.controllers as c
 from api.controllers.user import create_out_search_users, get_user_auth_account
+from api.utils import mark_as_deleted
 import app.models as m
 import app.schema as s
 from api.dependency import get_current_user
@@ -310,16 +310,16 @@ def delete_user(
         log(log.ERROR, "User [%s] has no auth accounts, at least basic account should be present", current_user.id)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Auth accounts not found")
 
-    current_timestamp = datetime.now()
+    deleted_mark = mark_as_deleted()
 
     current_user.is_deleted = True
-    current_user.phone = f"deleted-{current_timestamp}"
-    current_user.fullname = f"deleted-{current_timestamp}"
+    current_user.phone = deleted_mark
+    current_user.fullname = deleted_mark
 
     for auth_account in current_user.auth_accounts:
         auth_account.is_deleted = True
-        auth_account.email = f"deleted-{current_timestamp}"
-        auth_account.oauth_id = f"deleted-{current_timestamp}"
+        auth_account.email = deleted_mark
+        auth_account.oauth_id = deleted_mark
 
     db.commit()
     log(log.INFO, "User [%s] successfully deleted profile", current_user.fullname)
@@ -347,11 +347,11 @@ def delete_auth_account(
     if auth_account.auth_type == s.AuthType.BASIC:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="You can't delete basic account")
 
-    current_timestamp = datetime.now()
+    deleted_mark = mark_as_deleted()
 
     auth_account.is_deleted = True
-    auth_account.email = f"deleted-{current_timestamp}"
-    auth_account.oauth_id = f"deleted-{current_timestamp}"
+    auth_account.email = deleted_mark
+    auth_account.oauth_id = deleted_mark
     db.commit()
 
     log(

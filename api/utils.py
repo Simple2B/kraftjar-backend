@@ -1,3 +1,4 @@
+from datetime import datetime
 import filetype
 from fastapi import UploadFile, HTTPException, status
 from fastapi.routing import APIRoute
@@ -17,3 +18,9 @@ def get_file_extension(file: UploadFile):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Extension not found")
 
     return extension
+
+
+def mark_as_deleted():
+    current_timestamp = datetime.now().strftime("%y-%m-%d_%H:%M:%S")
+
+    return f"deleted-{current_timestamp}"
