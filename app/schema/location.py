@@ -69,3 +69,46 @@ class LocationsListIn(BaseModel):
 
 class LocationsListOut(BaseModel):
     locations: list[LocationStrings]
+
+
+class Rayon(BaseModel):
+    location_id: int
+    district_id: str
+    name_ua: str
+    name_en: str
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class RayonsList(BaseModel):
+    rayons: list[Rayon]
+
+
+class Settlement(BaseModel):
+    uuid: str
+    location: str
+
+
+class SettlementsListOut(BaseModel):
+    settlements: list[Settlement]
+
+
+class AddressIn(BaseModel):
+    uuid: str
+    query: str
+    lang: Language
+
+
+class AddressOutput(BaseModel):
+    uuid: str
+    name: str
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class AddressesListOut(BaseModel):
+    addresses: list[AddressOutput]

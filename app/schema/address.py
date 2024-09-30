@@ -21,10 +21,6 @@ class AddressesFile(BaseModel):
     addresses: list[AddressBase]
 
 
-class AddressIn(BaseModel):
-    pass
-
-
 class AddressOut(AddressBase):
     uuid: str
 

@@ -1,6 +1,6 @@
 import re
 from typing import Sequence
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 import sqlalchemy as sa
 
@@ -51,57 +51,110 @@ def get_all_locations(
 
 
 @location_router.get(
-    "/address",
+    "/settlements",
     status_code=status.HTTP_200_OK,
-    response_model=list[s.CityAddresse],
+    response_model=s.SettlementsListOut,
     dependencies=[Depends(get_current_user)],
 )
-def get_address(
+def get_settlements(
     query: str = "",
     lang: s.Language = s.Language.UA,
     db: Session = Depends(get_db),
 ):
-    """Returns the address"""
+    """Returns the settlements"""
 
     if not query:
-        return []
+        log(log.ERROR, "Query is empty")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Query is empty")
 
-    cities_lang_column = m.Settlement.name_ua if lang == s.Language.UA else m.Settlement.name_en
-
-    cities_addresses_list: list[s.CityAddressesOut] = []
     wordList = re.sub(CFG.RE_WORD, " ", query).split()
 
-    cities: Sequence[m.Settlement] = db.scalars(sa.select(m.Settlement).where(cities_lang_column == wordList[0])).all()
+    settlements_name_lang = m.Settlement.name_ua if lang == s.Language.UA else m.Settlement.name_en
+    lookups = [settlements_name_lang.ilike(f"%{keyword}%") for keyword in wordList]
 
-    cities_ids = [city.city_id for city in cities]
+    # City first
+    type_order = sa.desc(m.Settlement.type == s.SettlementType.CITY.name)
+    settlements: Sequence[m.Settlement] = db.scalars(sa.select(m.Settlement).where(*lookups).order_by(type_order)).all()
 
-    log(log.INFO, "Found %s cities", len(cities))
+    if not settlements:
+        log(log.INFO, "Settlements not found by query [%s]", query)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Settlements not found")
 
-    cities_addresses = db.scalars(sa.select(m.Address).where((m.Address.city_id.in_(cities_ids)))).all()
+    rayons_ids = [settlement.district_id for settlement in settlements]
 
-    for city in cities:
-        city_addresses = [address for address in cities_addresses if address.city_id == city.city_id]
+    rayons = db.scalars(sa.select(m.Rayon).where(m.Rayon.district_id.in_(rayons_ids))).all()
+    if not rayons:
+        log(log.INFO, "Rayons not found by query [%s]", query)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Rayons not found")
 
-        cities_addresses_list.append(
-            s.CityAddressesOut(
-                city=s.City.model_validate(city),
-                addresses=[s.AddressOut.model_validate(address) for address in city_addresses],
+    settlements_data_out = []
+
+    for settlement in settlements:
+        if settlement.type == s.SettlementType.CITY.name:
+            type = "м. "
+        elif settlement.type == s.SettlementType.VILLAGE.name:
+            type = "с. "
+        else:
+            type = ""
+
+        rayon = [rayon for rayon in rayons if rayon.district_id == settlement.district_id][0]
+        rayon_name = rayon.name_ua
+        region_name = rayon.location.region[0].name_ua
+
+        settlements_data_out.append(
+            s.Settlement(
+                uuid=settlement.city_id,
+                location=f"{type}{settlement.name_ua}, район {rayon_name}, {region_name}",
             )
         )
 
-    city_addresses_out: list[s.CityAddresse] = []
-    for word in wordList:
-        if len(word) >= 3:
-            for city_address in cities_addresses_list:
-                for address in city_address.addresses:
-                    search_address_out = f"{city_address.city.name_ua}{address.street_type_ua}{address.line1}"
+    return s.SettlementsListOut(settlements=settlements_data_out)
 
-                    if word.lower() in search_address_out.lower() and search_address_out not in city_addresses_out:
-                        city_addresses_out.append(
-                            s.CityAddresse(
-                                uuid=address.uuid,
-                                city_addresses=f"{city_address.city.name_ua}, {address.street_type_ua} {address.line1}",
-                            )
-                        )
 
-    return city_addresses_out
+@location_router.get(
+    "/addresses",
+    status_code=status.HTTP_200_OK,
+    response_model=s.AddressesListOut,
+    dependencies=[Depends(get_current_user)],
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Addresses not found"},
+    },
+)
+def get_addresses(
+    query: str = "",
+    uuid: str = "",
+    lang: s.Language = s.Language.UA,
+    db: Session = Depends(get_db),
+):
+    """Returns the addresses by settlement uuid"""
+
+    if not query:
+        log(log.ERROR, "Query is empty")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Query is empty")
+
+    if not uuid:
+        log(log.ERROR, "UUID must be provided")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="UUID must be provided")
+
+    wordList = re.sub(CFG.RE_WORD, " ", query).split()
+    is_ua_lang = lang == s.Language.UA
+
+    address_name_lang = m.Address.line1 if is_ua_lang else m.Address.line2
+
+    lookups = [address_name_lang.ilike(f"%{keyword}%") for keyword in wordList]
+    address_filter = sa.and_(*lookups, m.Address.city_id == uuid)
+    addresses: Sequence[m.Address] = db.scalars(sa.select(m.Address).where(address_filter)).all()
+
+    if not addresses:
+        log(log.INFO, "Addresses not found by query [%s]", query)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Addresses not found")
+
+    addresses_list: list[s.AddressOutput] = []
+
+    for address in addresses:
+        name_lang = address.line1 if is_ua_lang else address.line2
+        type_lang = address.street_type_ua if is_ua_lang else address.line2
+
+        addresses_list.append(s.AddressOutput(uuid=address.street_id, name=f"{type_lang.lower()} {name_lang}"))
+
+    return s.AddressesListOut(addresses=addresses_list)

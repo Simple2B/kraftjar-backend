@@ -75,18 +75,20 @@ def init(app: Flask):
         print("done")
 
     @app.cli.command()
-    def export_test_services_regions_addresses_cities():
-        """Fill services, regions, cities, addresses with data from json file"""
+    def export_test_data_from_json():
+        """Fill services, regions, rayons, cities, addresses with data from json file"""
         from .locations import export_test_locations_from_json_file
         from .cities import export_cities_from_json_file
         from .addresses import export_addresses_from_json_file
         from .locations import export_regions_from_json_file
         from .service import export_services_from_json_file
+        from .rayons_json import export_rayons_from_json_file
 
         export_test_locations_from_json_file()
         export_services_from_json_file()
         export_regions_from_json_file()
         export_cities_from_json_file()
+        export_rayons_from_json_file()
         export_addresses_from_json_file()
 
         print("done")
