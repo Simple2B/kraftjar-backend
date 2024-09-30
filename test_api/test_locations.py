@@ -27,34 +27,6 @@ def test_get_locations(client: TestClient, full_db: Session):
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_get_address(
-    client: TestClient,
-    db: Session,
-    auth_header: dict[str, str],
-):
-    QUERY = "Воловець"
-    response = client.get(
-        "/api/locations/address", params={"lang": s.Language.UA.value, "query": QUERY}, headers=auth_header
-    )
-    assert response.status_code == status.HTTP_200_OK
-    assert response.json()
-    res = response.json()
-
-    response_out: list[s.CityAddresse] = [s.CityAddresse.model_validate(city_adresse) for city_adresse in res]
-    assert response_out
-    assert response_out[0].city_addresses
-    assert response_out[0].uuid
-    assert QUERY in response_out[0].city_addresses
-    assert QUERY in response_out[1].city_addresses
-
-    response = client.get(
-        "/api/locations/address", params={"lang": s.Language.UA.value, "query": ""}, headers=auth_header
-    )
-    assert response.status_code == status.HTTP_200_OK
-    assert response.json() == []
-
-
-@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_get_all_locations(client: TestClient, full_db: Session):
     db = full_db
 
@@ -69,3 +41,50 @@ def test_get_all_locations(client: TestClient, full_db: Session):
     db_locations = db.scalars(sa.select(m.Location)).all()
     assert db_locations
     assert len(data.locations) == len(db_locations)
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_get_addresses(client: TestClient, auth_header: dict[str, str], full_db: Session):
+    # Test get settlements
+    QUERY = "Воловець"
+    response = client.get(
+        "/api/locations/settlements", params={"lang": s.Language.UA.value, "query": QUERY}, headers=auth_header
+    )
+    assert response.status_code == status.HTTP_200_OK
+    settlement_data = s.SettlementsListOut.model_validate(response.json())
+    assert settlement_data
+    settlement = settlement_data.settlements[0]
+    assert settlement.uuid
+    assert f"м. {QUERY}" in settlement.location
+
+    # Test not found
+    response = client.get(
+        "/api/locations/settlements", params={"lang": s.Language.UA.value, "query": "Test"}, headers=auth_header
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    # Test get streets by settlement uuid
+    address = full_db.scalars(sa.select(m.Address).where(m.Address.city_id == settlement.uuid)).first()
+    assert address
+
+    QUERY = "Водна"
+    query_data = s.AddressIn(uuid=address.city_id, query=QUERY, lang=Language.UA)
+    response = client.get(
+        "/api/locations/addresses",
+        params={"query": query_data.query, "uuid": query_data.uuid, "lang": query_data.lang.value},
+        headers=auth_header,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    address_data = s.AddressesListOut.model_validate(response.json())
+    assert address_data
+    assert address_data.addresses[0].uuid
+    assert address_data.addresses[0].name == f"вул. {query_data.query}"
+
+    # Test not found
+    query_data = s.AddressIn(uuid=address.city_id, query="Test", lang=Language.UA)
+    response = client.get(
+        "/api/locations/addresses",
+        params={"query": query_data.query, "uuid": query_data.uuid, "lang": query_data.lang.value},
+        headers=auth_header,
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND

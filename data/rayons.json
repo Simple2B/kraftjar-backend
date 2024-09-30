@@ -1,0 +1,3430 @@
+{
+    "rayons": [
+        {
+            "location_id": 10,
+            "district_id": "a1e9f9b8-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0406\u0432\u0430\u043d\u043e-\u0424\u0440\u0430\u043d\u043a\u0456\u0432\u0441\u044c\u043a",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "acb6de84-14c9-11ee-80bd-000c2961d091",
+            "name_ua": "\u0406\u0432\u0430\u043d\u043e-\u0424\u0440\u0430\u043d\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "6b07f7f6-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043e\u0433\u043e\u0440\u043e\u0434\u0447\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "8067acf2-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043e\u043b\u0435\u0445\u0456\u0432",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "78f453dc-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0435\u0440\u0445\u043e\u0432\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "78f4540c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u0430\u043b\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "903ccae3-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u043e\u0440\u043e\u0434\u0435\u043d\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "710c2777-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u043e\u043b\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "710c27d6-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u043b\u0443\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "64024bc2-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u043b\u043e\u043c\u0438\u0439\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "56302932-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0441\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "78f453dd-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u0430\u0434\u0432\u0456\u0440\u043d\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "6b07f7f2-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u043e\u0433\u0430\u0442\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "78f453ac-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u043e\u0436\u043d\u044f\u0442\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "6b07f885-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043d\u044f\u0442\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "710c27e5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0438\u0441\u043c\u0435\u043d\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "8a199cbf-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u043b\u0443\u043c\u0430\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 10,
+            "district_id": "a1e9f9cf-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u042f\u0440\u0435\u043c\u0447\u0435",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "64024bca-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0406\u043b\u043b\u0456\u043d\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "4ffc4bd0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0430\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "6b07f874-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0435\u0440\u0448\u0430\u0434\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "4ffc4bc3-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0456\u043d\u043d\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "a1e9f9b4-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0456\u043d\u043d\u0438\u0446\u044f",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "8067ad56-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u0430\u0439\u0441\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "78f453f7-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0416\u043c\u0435\u0440\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "6b07f841-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u043b\u0438\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "710c2755-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0437\u044f\u0442\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "5d31122b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0438\u0436\u043e\u043f\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "6b07f811-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0456\u0442\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "231fda9d-db59-11e8-80d7-1c98ec135261",
+            "name_ua": "\u041b\u0430\u0434\u0438\u0436\u0438\u043d",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "78f453e6-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0438\u043f\u043e\u0432\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "6b07f89c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u043e\u0433\u0438\u043b\u0456\u0432-\u041f\u043e\u0434\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "63a4b4fb-3f54-11e0-94a2-00215aee3ebe",
+            "name_ua": "\u041c\u043e\u0433\u0438\u043b\u0456\u0432-\u041f\u043e\u0434\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439 (\u041c\u0456\u0441\u0442\u043e)",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "710c272d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0443\u0440\u043e\u0432\u0430\u043d\u043e\u043a\u0443\u0440\u0438\u043b\u043e\u0432\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "6b07f84e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u0435\u043c\u0438\u0440\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "6b07f867-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u0440\u0430\u0442\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "8067acf1-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0456\u0449\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "4ffc4bd1-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u043e\u0433\u0440\u0435\u0431\u0438\u0449\u0435\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "5d31126c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0435\u043f\u043b\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "903cca8e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0438\u0432\u0440\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "5d31126d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u043e\u043c\u0430\u0448\u043f\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "710c27cf-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0440\u043e\u0441\u0442\u044f\u043d\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "78f45403-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0443\u043b\u044c\u0447\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "46f64743-db59-11e8-80d7-1c98ec135261",
+            "name_ua": "\u0425\u043c\u0456\u043b\u044c\u043d\u0438\u043a",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "710c27ed-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0425\u043c\u0456\u043b\u044c\u043d\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "6b07f7f7-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0435\u0440\u043d\u0456\u0432\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "78f453a8-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0435\u0447\u0435\u043b\u044c\u043d\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "8a199cea-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0428\u0430\u0440\u0433\u043e\u0440\u043e\u0434\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 3,
+            "district_id": "5d311276-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u042f\u043c\u043f\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "78f453f9-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0406\u0432\u0430\u043d\u0438\u0447\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "5d3111ad-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u043e\u043b\u043e\u0434\u0438\u043c\u0438\u0440-\u0412\u043e\u043b\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "4de64d35-cb2d-11ea-80e1-00215aee3ebc",
+            "name_ua": "\u0412\u043e\u043b\u043e\u0434\u0438\u043c\u0438\u0440-\u0412\u043e\u043b\u0438\u043d\u0441\u044c\u043a\u0438\u0439 (\u041c\u0456\u0441\u0442\u043e)",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "710c27d0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u043e\u0440\u043e\u0445\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "710c273a-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0456\u0432\u0435\u0440\u0446\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "8067ad73-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u043c\u0456\u043d\u044c-\u041a\u0430\u0448\u0438\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "64024b18-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0432\u0435\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "78f45401-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u043e\u043a\u0430\u0447\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "5394b32d-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0443\u0446\u044c\u043a",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "5d31126e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0443\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "710c27e2-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u044e\u0431\u0435\u0448\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "710c27d9-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u044e\u0431\u043e\u043c\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "710c27d5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0430\u043d\u0435\u0432\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "5394b340-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u0432\u043e\u043b\u0438\u043d\u0441\u044c\u043a",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "8a199cd9-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u0430\u0442\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "78f4539b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u043e\u0436\u0438\u0449\u0435\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "903cca8c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0442\u0430\u0440\u043e\u0432\u0438\u0436\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "78f4542e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0443\u0440\u0456\u0439\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 4,
+            "district_id": "bad3ac39-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0428\u0430\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "5d3112a9-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0410\u043f\u043e\u0441\u0442\u043e\u043b\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "a1e9f9b0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0456\u043b\u044c\u043d\u043e\u0433\u0456\u0440\u0441\u044c\u043a",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "4ffc4b9b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0430\u0441\u0438\u043b\u044c\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "4ffc4bcc-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0435\u0440\u0445\u043d\u044c\u043e\u0434\u043d\u0456\u043f\u0440\u043e\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "d00d3b5d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u043d\u0456\u043f\u0440\u043e",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "6b07f886-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u043d\u0456\u043f\u0440\u043e\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "d00d3b87-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0416\u043e\u0432\u0442\u0456 \u0412\u043e\u0434\u0438",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "d00d3b5c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u043c`\u044f\u043d\u0441\u044c\u043a\u0435",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "6b07f871-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u043c`\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "4ffc4b7d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0438\u0432\u0438\u0439 \u0420\u0456\u0433",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "903ccaa5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0438\u0432\u043e\u0440\u0456\u0437\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "4ffc4bd2-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0438\u043d\u0438\u0447\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "8a199ced-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0430\u0433\u0434\u0430\u043b\u0438\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "5394b330-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0430\u0440\u0433\u0430\u043d\u0435\u0446\u044c",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "5d31122e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0435\u0436\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "8067ad5c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u0456\u043a\u043e\u043f\u043e\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "5d311210-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u043c\u043e\u0441\u043a\u043e\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "78f453f0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f`\u044f\u0442\u0438\u0445\u0430\u0442\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "8067acc5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0430\u0432\u043b\u043e\u0433\u0440\u0430\u0434\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "5394b34d-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0435\u0440\u0448\u043e\u0442\u0440\u0430\u0432\u0435\u043d\u0441\u044c\u043a",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "bad3ac3c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0435\u0442\u0440\u0438\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "8a199ccb-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0435\u0442\u0440\u043e\u043f\u0430\u0432\u043b\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "5d311211-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u043e\u043a\u0440\u043e\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "bad3ac27-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u043e\u043a\u0440\u043e\u0432\u0441\u044c\u043a\u0438\u0439 (\u041e\u0440\u0434\u0436\u043e\u043d\u0456\u043a\u0456\u0434\u0437\u0435)",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "903ccaaa-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0438\u043d\u0435\u043b\u044c\u043d\u0438\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "5d3112a6-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043e\u043b\u043e\u043d\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "4ffc4b90-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043e\u0444\u0456\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "fbfb8c1d-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0435\u0440\u043d\u0456\u0432\u043a\u0430",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "9b486f93-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u043e\u043c\u0430\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "64024bc5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0426\u0430\u0440\u0438\u0447\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "5d311212-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0428\u0438\u0440\u043e\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 5,
+            "district_id": "903ccaab-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u042e\u0440`\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "5d3111ae-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0410\u043c\u0432\u0440\u043e\u0441\u0456\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "64024b25-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0430\u0445\u043c\u0443\u0442\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "40c05e81-cb4c-11ea-80e1-00215aee3ebc",
+            "name_ua": "\u0411\u043e\u0439\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "5d311216-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043e\u0439\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439 (\u0422\u0435\u043b\u044c\u043c\u0430\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439)",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "5d311213-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0435\u043b\u0438\u043a\u043e\u043d\u043e\u0432\u043e\u0441\u0456\u043b\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "5d3111c2-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u043e\u043b\u043d\u043e\u0432\u0430\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "bad3ac34-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u043e\u0440\u043b\u0456\u0432\u043a\u0430",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "97574e99-14f0-11ee-80bd-000c2961d091",
+            "name_ua": "\u0413\u043e\u0440\u043b\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "bad3ac53-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u0435\u0431\u0430\u043b\u044c\u0446\u0435\u0432\u0435",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "64024b26-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u0437\u0435\u0440\u0436\u0438\u043d\u0441\u044c\u043a",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "78f453f8-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u043e\u0431\u0440\u043e\u043f\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "78f45412-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u043e\u043d\u0435\u0446\u044c\u043a",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "a6eec0a0-14f0-11ee-80bd-000c2961d091",
+            "name_ua": "\u0414\u043e\u043d\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "d00d3b68-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u0440\u0443\u0436\u043a\u0456\u0432\u043a\u0430",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "bfcf175d-14f0-11ee-80bd-000c2961d091",
+            "name_ua": "\u041a\u0430\u043b\u044c\u043c\u0456\u0443\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "64024b21-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0441\u0442\u044f\u043d\u0442\u0438\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "78f453f1-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0430\u043c\u0430\u0442\u043e\u0440\u0441\u044c\u043a",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "cc049175-14c9-11ee-80bd-000c2961d091",
+            "name_ua": "\u041a\u0440\u0430\u043c\u0430\u0442\u043e\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "a1e9f9b1-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0435\u0441\u0442\u043e\u0432\u043a\u0430 (\u041a\u0456\u0440\u043e\u0432\u0441\u044c\u043a\u0435)",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "d00d3b66-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0438\u043c\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "56302a77-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0430\u043a\u0456\u0457\u0432\u043a\u0430",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "4ffc4c14-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0430\u043d\u0433\u0443\u0448\u0441\u044c\u043a\u0438\u0439 (\u041f\u0435\u0440\u0448\u043e\u0442\u0440\u0430\u0432\u043d\u0435\u0432\u0438\u0439)",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "5d31126f-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0430\u0440`\u0457\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "bad3ac2e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0430\u0440\u0456\u0443\u043f\u043e\u043b\u044c",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "cbaa7f34-14f0-11ee-80bd-000c2961d091",
+            "name_ua": "\u041c\u0430\u0440\u0456\u0443\u043f\u043e\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "a5388eb2-db65-11df-9197-00215aee3ebe",
+            "name_ua": "\u041d\u0456\u043a\u043e\u043b\u044c\u0441\u044c\u043a\u0438\u0439 (\u0412\u043e\u043b\u043e\u0434\u0430\u0440\u0441\u044c\u043a\u0438\u0439)",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "710c2756-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u0430\u0437\u043e\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "a5388eb5-db65-11df-9197-00215aee3ebe",
+            "name_ua": "\u041e\u043b\u0435\u043a\u0441\u0430\u043d\u0434\u0440\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "bad3ac40-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u043e\u043a\u0440\u043e\u0432\u0441\u044c\u043a\u0438\u0439 (\u041a\u0440\u0430\u0441\u043d\u043e\u0430\u0440\u043c\u0456\u0439)",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "a1e9f9ae-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0435\u043b\u0438\u0434\u043e\u0432\u0435",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "5d311214-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043b\u043e\u0432`\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "5d311215-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043d\u0456\u0436\u043d\u0435",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "bad3ac2b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0442\u0430\u0440\u043e\u0431\u0435\u0448\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "bad3ac25-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0425\u0430\u0440\u0446\u0438\u0437\u044c\u043a",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "5394b34c-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0438\u0441\u0442\u044f\u043a\u043e\u0432\u0435 (\u0422\u043e\u0440\u0435\u0437)",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "903ccad2-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0428\u0430\u0445\u0442\u0430\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 6,
+            "district_id": "4ffc4b8c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u042f\u0441\u0438\u043d\u0443\u0432\u0430\u0442\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "5d31120f-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0404\u043c\u0456\u043b\u044c\u0447\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "5d311237-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0410\u043d\u0434\u0440\u0443\u0448\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "6b07f8b3-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0430\u0440\u0430\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "4ffc4bad-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0435\u0440\u0434\u0438\u0447\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "8a199cda-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0440\u0443\u0441\u0438\u043b\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "d00d3b86-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0416\u0438\u0442\u043e\u043c\u0438\u0440",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "6b07f8c7-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0416\u0438\u0442\u043e\u043c\u0438\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "710c27f0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0440\u043e\u0441\u0442\u0435\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "78f4540a-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0440\u043e\u0441\u0442\u0438\u0448\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "8067acbf-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0443\u0433\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "4ffc4b9d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u044e\u0431\u0430\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "6b07f8cf-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0430\u043b\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "6b07f825-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u0430\u0440\u043e\u0434\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "6b07f8cb-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u0433\u0440\u0430\u0434-\u0412\u043e\u043b\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "78f453e3-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u0432\u0440\u0443\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "78f453fe-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u043b\u0435\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "5d311239-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u043e\u043f\u0456\u043b\u044c\u043d\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "5d311217-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0443\u043b\u0438\u043d\u0441\u044c\u043a\u0438\u0439 (\u0427\u0435\u0440\u0432\u043e\u043d\u043e\u0430\u0440\u043c\u0456\u0439\u0441",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "78f453e7-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u0430\u0434\u043e\u043c\u0438\u0448\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "5394b34e-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u043e\u043c\u0430\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "78f4539e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u0443\u0436\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "a1e9f9c1-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0425\u043e\u0440\u043e\u0448\u0456\u0432\u0441\u044c\u043a\u0438\u0439 (\u0412\u043e\u043b\u043e\u0434\u0430\u0440\u0441\u044c\u043a-\u0412\u043e\u043b\u0438\u043d\u0441\u044c\u043a\u0438\u0439)",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "5d311218-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0435\u0440\u043d\u044f\u0445\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 7,
+            "district_id": "6b07f7f3-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0443\u0434\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 8,
+            "district_id": "64024aed-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0406\u0440\u0448\u0430\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 8,
+            "district_id": "6b07f815-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0435\u0440\u0435\u0433\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 8,
+            "district_id": "8a199cf5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0435\u043b\u0438\u043a\u043e\u0431\u0435\u0440\u0435\u0437\u043d\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 8,
+            "district_id": "78f4542f-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0438\u043d\u043e\u0433\u0440\u0430\u0434\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 8,
+            "district_id": "4ffc4b65-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u043e\u043b\u043e\u0432\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 8,
+            "district_id": "903cca64-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0456\u0436\u0433\u0456\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 8,
+            "district_id": "6b07f7eb-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0443\u043a\u0430\u0447\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 8,
+            "district_id": "a1e9f9b3-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0435\u0440\u0435\u0447\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 8,
+            "district_id": "78f453ea-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u0430\u0445\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 8,
+            "district_id": "710c27f5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0432\u0430\u043b\u044f\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 8,
+            "district_id": "710c274c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u044f\u0447\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 8,
+            "district_id": "fbfb8c23-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u0423\u0436\u0433\u043e\u0440\u043e\u0434",
+            "name_en": ""
+        },
+        {
+            "location_id": 8,
+            "district_id": "5d311219-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0423\u0436\u0433\u043e\u0440\u043e\u0434\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 8,
+            "district_id": "78f45396-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0425\u0443\u0441\u0442\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 8,
+            "district_id": "fbfb8c2b-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u043e\u043f",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "78f45406-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0456\u043b\u044c\u043c\u0430\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "5d31120e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0435\u0440\u0434\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "5d311270-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0456\u043b\u044c\u043d\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "6b07f889-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0430\u0441\u0438\u043b\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "903ccace-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0435\u043b\u0438\u043a\u043e\u0431\u0456\u043b\u043e\u0437\u0435\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "4ffc4b7e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0435\u0441\u0435\u043b\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "903ccaac-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u0443\u043b\u044f\u0439\u043f\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "4ffc4c15-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0415\u043d\u0435\u0440\u0433\u043e\u0434\u0430\u0440",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "0c6de87a-41ba-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u0430\u043f\u043e\u0440\u0456\u0436\u0436\u044f",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "4ffc4b83-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u0430\u043f\u043e\u0440\u0456\u0437\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "78f45418-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u043c`\u044f\u043d\u0441\u044c\u043a\u043e-\u0414\u043d\u0456\u043f\u0440\u043e\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "64024b6c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0435\u043b\u0456\u0442\u043e\u043f\u043e\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "6b07f8cc-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0438\u0445\u0430\u0439\u043b\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "6b07f8ce-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u043c\u0438\u043a\u043e\u043b\u0430\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "78f453fa-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u0440\u0456\u0445\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "6b07f88d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u043e\u043b\u043e\u0433\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "8067acc6-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0440\u0438\u0430\u0437\u043e\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "6b07f8a0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0440\u0438\u043c\u043e\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "4ffc4c10-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u043e\u0437\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "6b07f88c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u043e\u043a\u043c\u0430\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "f933344a-db4e-11df-9197-00215aee3ebe",
+            "name_ua": "\u0427\u0435\u0440\u043d\u0456\u0433\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 9,
+            "district_id": "64024b83-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u042f\u043a\u0438\u043c\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "8067accd-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043b\u0430\u0433\u043e\u0432\u0456\u0449\u0435\u043d\u0441\u044c\u043a\u0438\u0439 (\u0423\u043b\u044c\u044f\u043d\u0456\u0432\u0441",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "78f453a0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043e\u0431\u0440\u0438\u043d\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "8a199cee-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0456\u043b\u044c\u0448\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "6b07f89d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u0430\u0439\u0432\u043e\u0440\u043e\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "9b486f58-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u043e\u043b\u043e\u0432\u0430\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "5d31121b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u043e\u0431\u0440\u043e\u0432\u0435\u043b\u0438\u0447\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "f9333449-db4e-11df-9197-00215aee3ebe",
+            "name_ua": "\u0414\u043e\u043b\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "8067acc8-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u043d\u0430\u043c`\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "a1e9f9a9-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u043c\u043f\u0430\u043d\u0456\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "0c6de8b4-41ba-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u043e\u043f\u0438\u0432\u043d\u0438\u0446\u044c\u043a\u0438\u0439 (\u041a\u0456\u0440\u043e\u0432\u043e\u0433\u0440\u0430\u0434)",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "4ffc4be0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u043e\u043f\u0438\u0432\u043d\u0438\u0446\u044c\u043a\u0438\u0439 (\u041a\u0456\u0440\u043e\u0432\u043e\u0433\u0440\u0430\u0434\u0441\u044c\u043a\u0438\u0439)",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "710c27e6-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0430\u043b\u043e\u0432\u0438\u0441\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "78f453fd-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u0433\u043e\u0440\u043e\u0434\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "a1e9f9b2-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u0430\u0440\u0445\u0430\u043d\u0433\u0435\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "5d31121c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u043c\u0438\u0440\u0433\u043e\u0440\u043e\u0434\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "903ccaad-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u0443\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "6b07f89e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u043b\u0435\u043a\u0441\u0430\u043d\u0434\u0440\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "5d31121d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u043b\u0435\u043a\u0441\u0430\u043d\u0434\u0440\u0456\u0439\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "903ccab2-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u043d\u0443\u0444\u0440\u0456\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "6b07f876-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0435\u0442\u0440\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "903ccacc-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0432\u0456\u0442\u043b\u043e\u0432\u043e\u0434\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 11,
+            "district_id": "710c27e7-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0423\u0441\u0442\u0438\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "78f45428-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0406\u0432\u0430\u043d\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "903cca8d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0406\u0440\u043f\u0456\u043d\u044c",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "78f453c9-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0456\u043b\u043e\u0446\u0435\u0440\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "6b07f8d4-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0430\u0440\u0438\u0448\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "78f453e5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043e\u0433\u0443\u0441\u043b\u0430\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "5d31121a-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043e\u0440\u0438\u0441\u043f\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "6b07f7e6-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043e\u0440\u043e\u0434\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "78f45436-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0440\u043e\u0432\u0430\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "804761f4-14c9-11ee-80bd-000c2961d091",
+            "name_ua": "\u0411\u0443\u0447\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "271f789c-72ed-11df-b112-00215aee3ebe",
+            "name_ua": "\u0412\u0430\u0441\u0438\u043b\u044c\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "4ffc4b58-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0438\u0448\u0433\u043e\u0440\u043e\u0434\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "710c27ee-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u043e\u043b\u043e\u0434\u0430\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "64024b08-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u0433\u0443\u0440\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "6b07f882-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u0433\u0430\u0440\u043b\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "78f453fb-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0438\u0454\u0432\u043e-\u0421\u0432\u044f\u0442\u043e\u0448\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "e672324c-4237-11e3-9df6-003048d2b473",
+            "name_ua": "\u041a\u0438\u0457\u0432",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "8067ad64-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0430\u043a\u0430\u0440\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "bad3ac43-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0438\u0440\u043e\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "9b486f5b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u0431\u0443\u0445\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "a1e9f9ab-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0435\u0440\u0435\u044f\u0441\u043b\u0430\u0432-\u0425\u043c\u0435\u043b\u044c\u043d\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "a1e9f9bf-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u043e\u043b\u0456\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "78f453d5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u043e\u043a\u0438\u0442\u043d\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "5d31126b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043a\u0432\u0438\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "fbfb8c15-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043b\u0430\u0432\u0443\u0442\u0438\u0447",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "5d311271-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0442\u0430\u0432\u0438\u0449\u0435\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "8067acbe-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0430\u0440\u0430\u0449\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "903cca7a-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0435\u0442\u0456\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "8067ad6a-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0424\u0430\u0441\u0442\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 2,
+            "district_id": "8067acc7-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u042f\u0433\u043e\u0442\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 12,
+            "district_id": "64024b16-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0456\u043b\u043e\u0433\u0456\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "5d311191-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0410\u043b\u0447\u0435\u0432\u0441\u044c\u043a",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "e57e3c46-14f0-11ee-80bd-000c2961d091",
+            "name_ua": "\u0410\u043b\u0447\u0435\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "5d31128f-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0410\u043d\u0442\u0440\u0430\u0446\u0438\u0442\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "6b07f8b1-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0456\u043b\u043e\u0432\u043e\u0434\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "78f45400-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0456\u043b\u043e\u043a\u0443\u0440\u0430\u043a\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "8a199ce1-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0440\u044f\u043d\u043a\u0430",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "64024b68-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u043e\u0432\u0436\u0430\u043d\u0441\u044c\u043a\u0438\u0439 (\u0421\u0432\u0435\u0440\u0434\u043b\u043e\u0432\u0441\u044c\u043a\u0438\u0439)",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "56302a75-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u0434\u0456\u0457\u0432\u043a\u0430 (\u0421\u0442\u0430\u0445\u0430\u043d\u043e\u0432)",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "903ccac0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0430\u0441\u043d\u0438\u0439 \u041b\u0443\u0447 (\u0425\u0440\u0443\u0441\u0442\u0430\u043b\u044c\u043d\u0438\u0439)",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "6b07f8b2-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0435\u043c\u0456\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "5394b32c-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0438\u0441\u0438\u0447\u0430\u043d\u0441\u044c\u043a",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "d00d3b53-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0443\u0433\u0430\u043d\u0441\u044c\u043a",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "02564337-14f1-11ee-80bd-000c2961d091",
+            "name_ua": "\u041b\u0443\u0433\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "78f453ee-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0443\u0442\u0443\u0433\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "4ffc4c24-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0456\u043b\u043e\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "8067ad54-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0430\u0440\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "710c2728-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u0430\u0439\u0434\u0430\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "710c27e8-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u043f\u0441\u043a\u043e\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "bad3ac28-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0435\u0440\u0432\u043e\u043c\u0430\u0439\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "4ffc4bef-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0435\u0440\u0435\u0432\u0430\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "710c27ec-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u043e\u043f\u0430\u0441\u043d\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "0f18e268-14f1-11ee-80bd-000c2961d091",
+            "name_ua": "\u0420\u043e\u0432\u0435\u043d\u044c\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "5d31121e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u043e\u0432\u0435\u043d\u044c\u043a\u0438",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "fbfb8c0f-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u0443\u0431\u0456\u0436\u043d\u0435",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "28dbba30-14f1-11ee-80bd-000c2961d091",
+            "name_ua": "\u0421\u0454\u0432\u0454\u0440\u043e\u0434\u043e\u043d\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "8067ad65-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0454\u0432\u0435\u0440\u043e\u0434\u043e\u043d\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "9b486f7b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0432\u0430\u0442\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "9b486f88-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043b\u043e\u0432`\u044f\u043d\u043e\u0441\u0435\u0440\u0431\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "78f45402-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043e\u0440\u043e\u043a\u0438\u043d\u0441\u044c\u043a\u0438\u0439 (\u041a\u0440\u0430\u0441\u043d\u043e\u0434\u043e\u043d\u0441\u044c\u043a\u0438\u0439)",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "64024b22-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0442\u0430\u043d\u0438\u0447\u043d\u043e-\u041b\u0443\u0433\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "6b07f83b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0442\u0430\u0440\u043e\u0431\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "5d311263-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0440\u043e\u0457\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 13,
+            "district_id": "3cb4c6c4-14f1-11ee-80bd-000c2961d091",
+            "name_ua": "\u0429\u0430\u0441\u0442\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "8067ad5d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043e\u0440\u0438\u0441\u043b\u0430\u0432",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "710c2722-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0440\u043e\u0434\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "5d31121f-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0443\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "f9333448-db4e-11df-9197-00215aee3ebe",
+            "name_ua": "\u0413\u043e\u0440\u043e\u0434\u043e\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "78f453c7-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u0440\u043e\u0433\u043e\u0431\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "5d311272-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0416\u0438\u0434\u0430\u0447\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "64024b1e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0416\u043e\u0432\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "6b07f8b5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u043e\u043b\u043e\u0447\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "6b07f8a6-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u043c`\u044f\u043d\u043a\u0430-\u0411\u0443\u0437\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "8a199cde-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u044c\u0432\u0456\u0432",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "992ee172-14c9-11ee-80bd-000c2961d091",
+            "name_ua": "\u041b\u044c\u0432\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "f9333446-db4e-11df-9197-00215aee3ebe",
+            "name_ua": "\u041c\u0438\u043a\u043e\u043b\u0430\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "64024b0e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u043e\u0441\u0442\u0438\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "710c2734-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0435\u0440\u0435\u043c\u0438\u0448\u043b\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "710c2705-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0443\u0441\u0442\u043e\u043c\u0438\u0442\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "6b07f7ec-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u0430\u0434\u0435\u0445\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "64024bd0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0430\u043c\u0431\u0456\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "9b486f70-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043a\u043e\u043b\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "710c277a-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043e\u043a\u0430\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "64024bd1-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0442\u0430\u0440\u043e\u0441\u0430\u043c\u0431\u0456\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "6b07f8a7-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0442\u0440\u0438\u0439\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "fbfb8c20-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0440\u0443\u0441\u043a\u0430\u0432\u0435\u0446\u044c",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "6b07f80d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0443\u0440\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "bad3ac26-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0435\u0440\u0432\u043e\u043d\u043e\u0433\u0440\u0430\u0434",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "5b33762c-14c9-11ee-80bd-000c2961d091",
+            "name_ua": "\u0427\u0435\u0440\u0432\u043e\u043d\u043e\u0433\u0440\u0430\u0434\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 14,
+            "district_id": "710c27c5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u042f\u0432\u043e\u0440\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "8a199cd2-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0404\u043b\u0430\u043d\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "4ffc4bc4-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0410\u0440\u0431\u0443\u0437\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "710c273c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0430\u0448\u0442\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "5d3111d5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0435\u0440\u0435\u0437\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "710c27f1-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0435\u0440\u0435\u0437\u043d\u0435\u0433\u0443\u0432\u0430\u0442\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "5d311280-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0440\u0430\u0442\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "6b07f8d8-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0456\u0442\u043e\u0432\u0441\u044c\u043a\u0438\u0439 (\u0416\u043e\u0432\u0442\u043d\u0435\u0432\u0438\u0439)",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "8067ad55-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0435\u0441\u0435\u043b\u0438\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "56302966-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u043e\u0437\u043d\u0435\u0441\u0435\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "4ffc4bd3-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0440\u0430\u0434\u0456\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "5630292b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u043e\u043c\u0430\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "903ccadc-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u0437\u0430\u043d\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "6b07f804-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0438\u0432\u043e\u043e\u0437\u0435\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "5394b334-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0438\u043a\u043e\u043b\u0430\u0457\u0432",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "5d3111a9-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0438\u043a\u043e\u043b\u0430\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "6b07f8c5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u0431\u0443\u0437\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "5d311273-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u043e\u0434\u0435\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "78f4541a-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u0447\u0430\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "4ffc4b6a-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0435\u0440\u0432\u043e\u043c\u0430\u0439\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "64024b8b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043d\u0456\u0433\u0443\u0440\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 15,
+            "district_id": "fbfb8c33-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u042e\u0436\u043d\u043e\u0443\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "4ffc4bd5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0406\u0432\u0430\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "6b07f800-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0406\u0437\u043c\u0430\u0457\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "5d3111cc-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0410\u043d\u0430\u043d\u044c\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "64024b48-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0410\u0440\u0446\u0438\u0437\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "74ed79f8-3dc9-11ef-80c5-000c2961d091",
+            "name_ua": "\u0411\u0456\u043b\u0433\u043e\u0440\u043e\u0434-\u0414\u043d\u0456\u0441\u0442\u0440\u043e\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "4ffc4b84-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0456\u043b\u044f\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "5d31122c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0430\u043b\u0442\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "5d3111d6-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0435\u0440\u0435\u0437\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "6b07f8a2-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043e\u043b\u0433\u0440\u0430\u0434\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "78f45420-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0435\u043b\u0438\u043a\u043e\u043c\u0438\u0445\u0430\u0439\u043b\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "78f45411-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u0430\u0445\u0430\u0440\u0456\u0432\u0441\u044c\u043a\u0438\u0439 (\u0424\u0440\u0443\u043d\u0437\u0456\u0432\u0441\u044c\u043a\u0438\u0439)",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "903ccab3-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0456\u043b\u0456\u0439\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "710c273d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0434\u0438\u043c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "78f4540e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0438\u043c\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "4ffc4bae-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u044e\u0431\u0430\u0448\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "f9333445-db4e-11df-9197-00215aee3ebe",
+            "name_ua": "\u041c\u0438\u043a\u043e\u043b\u0430\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "4ffc4bd4-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u0432\u0456\u0434\u0456\u043e\u043f\u043e\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "4ffc4b7f-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u0432\u0456\u0434\u0456\u043e\u043f\u043e\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "5394b336-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u0434\u0435\u0441\u0430",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "4658e3ed-14c9-11ee-80bd-000c2961d091",
+            "name_ua": "\u041e\u0434\u0435\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "5d311274-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u043a\u043d\u044f\u043d\u0441\u044c\u043a\u0438\u0439 (\u041a\u0440\u0430\u0441\u043d\u043e\u043e\u043a\u043d\u044f\u043d\u0441\u044c",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "8a199cc3-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u043e\u0434\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439 (\u041a\u043e\u0442\u043e\u0432\u0441\u044c\u043a\u0438\u0439)",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "d00d3b62-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u0435\u043d\u0456\u0439\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "78f453bc-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u043e\u0437\u0434\u0456\u043b\u044c\u043d\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "6b07f835-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0430\u0432\u0440\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "78f4541b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0430\u0440\u0430\u0442\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "710c27df-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0430\u0440\u0443\u0442\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "6b07f828-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0430\u0442\u0430\u0440\u0431\u0443\u043d\u0430\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "903cca7c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u043e\u0440\u043d\u043e\u043c\u043e\u0440\u0441\u044c\u043a (\u0406\u043b\u043b\u0456\u0447\u0456\u0432\u0441\u044c\u043a)",
+            "name_en": ""
+        },
+        {
+            "location_id": 16,
+            "district_id": "8a199ccd-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0428\u0438\u0440\u044f\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "6b07f807-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0435\u043b\u0438\u043a\u043e\u0431\u0430\u0433\u0430\u0447\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "710c27fb-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u0430\u0434\u044f\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "6b07f7ed-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u043b\u043e\u0431\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "d00d3b59-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u043e\u0440\u0456\u0448\u043d\u0456 \u041f\u043b\u0430\u0432\u043d\u0456 (\u041a\u043e\u043c\u0441\u043e\u043c\u043e\u043b\u044c\u0441\u044c\u043a)",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "710c27e9-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u0440\u0435\u0431\u0456\u043d\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "5d311220-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u0438\u043a\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "64024b20-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u0456\u043d\u044c\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "78f45409-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u0440\u043b\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "78f453f6-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0431\u0435\u043b\u044f\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "8a199cd5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0437\u0435\u043b\u044c\u0449\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "78f4540b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0442\u0435\u043b\u0435\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "5394b316-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0435\u043c\u0435\u043d\u0447\u0443\u043a",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "78f453f4-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0435\u043c\u0435\u043d\u0447\u0443\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "710c275c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u043e\u0445\u0432\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "710c27ea-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0443\u0431\u0435\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "4ffc4b59-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0430\u0448\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "6b07f85d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0438\u0440\u0433\u043e\u0440\u043e\u0434\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "5d311221-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u0441\u0430\u043d\u0436\u0430\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "903ccadf-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u0440\u0436\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "710c27fc-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0438\u0440\u044f\u0442\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "fbfb8c05-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u043e\u043b\u0442\u0430\u0432\u0430",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "4ffc4b23-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u043e\u043b\u0442\u0430\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "8a199cd1-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u0435\u0448\u0435\u0442\u0438\u043b\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "f9333443-db4e-11df-9197-00215aee3ebe",
+            "name_ua": "\u0421\u0435\u043c\u0435\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "5d311222-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0425\u043e\u0440\u043e\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "78f45404-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u043e\u0440\u043d\u0443\u0445\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "64024b23-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0443\u0442\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 17,
+            "district_id": "6b07f8b4-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0428\u0438\u0448\u0430\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "6b07f87f-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0435\u0440\u0435\u0437\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "baa8187f-14c9-11ee-80bd-000c2961d091",
+            "name_ua": "\u0412\u0430\u0440\u0430\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "5394b31c-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0430\u0440\u0430\u0448 (\u041a\u0443\u0437\u043d\u0435\u0446\u043e\u0432\u0441\u044c\u043a)",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "5d311275-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u043e\u043b\u043e\u0434\u0438\u043c\u0438\u0440\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "5d311236-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u043e\u0449\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "78f453a1-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u0435\u043c\u0438\u0434\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "710c27c9-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u0443\u0431\u0435\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "710c27d3-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u0443\u0431\u0440\u043e\u0432\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "8067ad6b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u0430\u0440\u0456\u0447\u043d\u0435\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "78f453ec-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u0434\u043e\u043b\u0431\u0443\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "8067acc9-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0440\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "6b07f824-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0441\u0442\u043e\u043f\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "64024b50-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u043b\u0438\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "710c2723-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u0441\u0442\u0440\u043e\u0437\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "fbfb8c0d-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u0456\u0432\u043d\u0435",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "5d31128d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u0456\u0432\u043d\u0435\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "6b07f8b7-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u0430\u0434\u0438\u0432\u0438\u043b\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "710c27ff-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u043e\u043a\u0438\u0442\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 18,
+            "district_id": "903cca87-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0430\u0440\u043d\u0435\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "78f453eb-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0456\u043b\u043e\u043f\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "78f453e4-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0443\u0440\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "8a199cd0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0435\u043b\u0438\u043a\u043e\u043f\u0438\u0441\u0430\u0440\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "6b07f89f-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u043b\u0443\u0445\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "710c27d4-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u043d\u043e\u0442\u043e\u043f\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "8a199cce-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0430\u0441\u043d\u043e\u043f\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "56302a8d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u043e\u043b\u0435\u0432\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "78f453e0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0435\u0431\u0435\u0434\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "6b07f84c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0438\u043f\u043e\u0432\u043e\u0434\u043e\u043b\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "78f453b0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u0435\u0434\u0440\u0438\u0433\u0430\u0439\u043b\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "6b07f855-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u0445\u0442\u0438\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "78f4542c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0443\u0442\u0438\u0432\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "5d3111d0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u043e\u043c\u0435\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "903ccacd-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0435\u0440\u0435\u0434\u0438\u043d\u043e-\u0411\u0443\u0434\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "9b486f64-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0443\u043c\u0438",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "710c2706-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0443\u043c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "f9333441-db4e-11df-9197-00215aee3ebe",
+            "name_ua": "\u0422\u0440\u043e\u0441\u0442\u044f\u043d\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "8067acca-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0428\u043e\u0441\u0442\u043a\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 19,
+            "district_id": "a5388eb3-db65-11df-9197-00215aee3ebe",
+            "name_ua": "\u042f\u043c\u043f\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "710c27ce-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0435\u0440\u0435\u0436\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "6b07f7e7-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043e\u0440\u0449\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "6b07f802-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0443\u0447\u0430\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "903ccab8-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u0443\u0441\u044f\u0442\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "710c274e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u0430\u043b\u0456\u0449\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "6b07f82a-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u0431\u0430\u0440\u0430\u0437\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "78f453a6-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u0431\u043e\u0440\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "4ffc4b85-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0437\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "710c273f-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0435\u043c\u0435\u043d\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "710c27d1-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0430\u043d\u043e\u0432\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "903ccaca-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u043e\u043d\u0430\u0441\u0442\u0438\u0440\u0438\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "8067accb-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0456\u0434\u0432\u043e\u043b\u043e\u0447\u0438\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "78f453ff-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0456\u0434\u0433\u0430\u0454\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "6b07f803-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0435\u0440\u0435\u0431\u043e\u0432\u043b\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "bad3ac18-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0435\u0440\u043d\u043e\u043f\u0456\u043b\u044c",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "5d3111de-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0435\u0440\u043d\u043e\u043f\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "6b07f826-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u043e\u0440\u0442\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 20,
+            "district_id": "5d311238-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0428\u0443\u043c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "8a199ccc-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0406\u0437\u044e\u043c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "5d311224-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0430\u043b\u0430\u043a\u043b\u0456\u0439\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "6b07f8d0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0430\u0440\u0432\u0456\u043d\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "56302a6a-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043b\u0438\u0437\u043d\u044e\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "8067acdb-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043e\u0433\u043e\u0434\u0443\u0445\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "710c272e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043e\u0440\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "6b07f8b9-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0430\u043b\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "5d311225-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0435\u043b\u0438\u043a\u043e\u0431\u0443\u0440\u043b\u0443\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "78f453f5-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u043e\u0432\u0447\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "903ccad6-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u0432\u043e\u0440\u0456\u0447\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "710c275b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u0435\u0440\u0433\u0430\u0447\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "4ffc4b24-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u0430\u0447\u0435\u043f\u0438\u043b\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "78f4540f-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u043c\u0456\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "f9333447-db4e-11df-9197-00215aee3ebe",
+            "name_ua": "\u0417\u043e\u043b\u043e\u0447\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "5d311226-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0435\u0433\u0438\u0447\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "5d311235-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u043b\u043e\u043c\u0430\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "6b07f88a-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0430\u0441\u043d\u043e\u0433\u0440\u0430\u0434\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "903cca9b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0430\u0441\u043d\u043e\u043a\u0443\u0442\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "a1e9f9af-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0443\u043f`\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "64024b28-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u043e\u0437\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "78f45410-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u0432\u043e\u0434\u043e\u043b\u0430\u0437\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "f9333440-db4e-11df-9197-00215aee3ebe",
+            "name_ua": "\u041f\u0435\u0440\u0432\u043e\u043c\u0430\u0439\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "64024b24-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0435\u0447\u0435\u043d\u0456\u0437\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "5d3112a7-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0430\u0445\u043d\u043e\u0432\u0449\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "fbfb8c27-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u0425\u0430\u0440\u043a\u0456\u0432",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "64024bc4-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0425\u0430\u0440\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "6b07f822-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0443\u0433\u0443\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 21,
+            "district_id": "64024b06-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0428\u0435\u0432\u0447\u0435\u043d\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "f933343f-db4e-11df-9197-00215aee3ebe",
+            "name_ua": "\u0406\u0432\u0430\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "78f453fc-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0456\u043b\u043e\u0437\u0435\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "78f453a7-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0435\u0440\u0438\u0441\u043b\u0430\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "903ccad1-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0435\u043b\u0438\u043a\u043e\u043b\u0435\u043f\u0435\u0442\u0438\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "78f453e8-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0435\u043b\u0438\u043a\u043e\u043e\u043b\u0435\u043a\u0441\u0430\u043d\u0434\u0440\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "64024bcd-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0435\u0440\u0445\u043d\u044c\u043e\u0440\u043e\u0433\u0430\u0447\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "64024b41-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0438\u0441\u043e\u043a\u043e\u043f\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "64024b7b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u0435\u043d\u0456\u0447\u0435\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "78f453bb-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u043e\u043b\u043e\u043f\u0440\u0438\u0441\u0442\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "903ccacf-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u043e\u0440\u043d\u043e\u0441\u0442\u0430\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "64024bc9-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u043b\u0430\u043d\u0447\u0430\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "64024b40-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u0445\u043e\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "5d3111d7-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u0438\u0436\u043d\u044c\u043e\u0441\u0456\u0440\u043e\u0433\u043e\u0437\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "d00d3b5e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u0430 \u041a\u0430\u0445\u043e\u0432\u043a\u0430",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "78f4540d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u0432\u043e\u0440\u043e\u043d\u0446\u043e\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "903ccab4-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u0442\u0440\u043e\u0457\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "4ffc4b68-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041e\u043b\u0435\u0448\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "5d311277-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043a\u0430\u0434\u043e\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "5d311278-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0425\u0435\u0440\u0441\u043e\u043d",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "df426eee-14c9-11ee-80bd-000c2961d091",
+            "name_ua": "\u0425\u0435\u0440\u0441\u043e\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 22,
+            "district_id": "64024b5d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0430\u043f\u043b\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "78f453ef-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0406\u0437\u044f\u0441\u043b\u0430\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "f933343e-db4e-11df-9197-00215aee3ebe",
+            "name_ua": "\u0411\u0456\u043b\u043e\u0433\u0456\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "4ffc4bd6-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0456\u043d\u044c\u043a\u043e\u0432\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "4ffc4b9e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u043e\u043b\u043e\u0447\u0438\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "6b07f86f-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u043e\u0440\u043e\u0434\u043e\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "8067accc-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u0435\u0440\u0430\u0436\u043d\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "6b07f884-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u0443\u043d\u0430\u0454\u0432\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "4ffc4b69-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u043c`\u044f\u043d\u0435\u0446\u044c-\u041f\u043e\u0434\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "5d31127e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0440\u0430\u0441\u0438\u043b\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "78f453f2-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0435\u0442\u0438\u0447\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "5394b33e-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u0435\u0442\u0456\u0448\u0438\u043d",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "5d311279-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u0443\u0448\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "78f453f3-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u043e\u043b\u043e\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "710c2737-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043b\u0430\u0432\u0443\u0442\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "6b07f80c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0442\u0430\u0440\u043e\u043a\u043e\u0441\u0442\u044f\u043d\u0442\u0438\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "4ffc4bdb-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0442\u0430\u0440\u043e\u0441\u0438\u043d\u044f\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "6b07f823-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0435\u043e\u0444\u0456\u043f\u043e\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "5d31122a-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0425\u043c\u0435\u043b\u044c\u043d\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "5d311227-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0435\u043c\u0435\u0440\u043e\u0432\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "78f453e9-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0428\u0435\u043f\u0435\u0442\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 23,
+            "district_id": "5d31127d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u042f\u0440\u043c\u043e\u043b\u0438\u043d\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "8a199cec-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u043e\u0440\u043e\u0434\u0438\u0449\u0435\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "710c2753-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0414\u0440\u0430\u0431\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "710c273e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0416\u0430\u0448\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "6b07f805-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u0432\u0435\u043d\u0438\u0433\u043e\u0440\u043e\u0434\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "5d311268-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u043e\u043b\u043e\u0442\u043e\u043d\u0456\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "78f453aa-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "8a199cd8-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0430\u0442\u0435\u0440\u0438\u043d\u043e\u043f\u0456\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "8a199cd7-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0440\u0441\u0443\u043d\u044c-\u0428\u0435\u0432\u0447\u0435\u043d\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "8a199cc4-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041b\u0438\u0441\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "6b07f808-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0430\u043d\u044c\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "4ffc4b9c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u043e\u043d\u0430\u0441\u0442\u0438\u0440\u0438\u0449\u0435\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "6b07f870-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043c\u0456\u043b\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "78f453ed-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0430\u043b\u044c\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "5d31127a-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0423\u043c\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "6b07f806-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0425\u0440\u0438\u0441\u0442\u0438\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "5394b345-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0435\u0440\u043a\u0430\u0441\u0438",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "6b07f834-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0435\u0440\u043a\u0430\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "8067ad70-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0438\u0433\u0438\u0440\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "6b07f852-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u043e\u0440\u043d\u043e\u0431\u0430\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 24,
+            "district_id": "5d31127b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0428\u043f\u043e\u043b\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 25,
+            "district_id": "64024bce-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0438\u0436\u043d\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 25,
+            "district_id": "6b07f84d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u0435\u0440\u0446\u0430\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 25,
+            "district_id": "6b07f810-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u043b\u0438\u0431\u043e\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 25,
+            "district_id": "70234316-14c9-11ee-80bd-000c2961d091",
+            "name_ua": "\u0414\u043d\u0456\u0441\u0442\u0440\u043e\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 25,
+            "district_id": "64024bcb-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0417\u0430\u0441\u0442\u0430\u0432\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 25,
+            "district_id": "710c27cd-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0456\u0446\u043c\u0430\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 25,
+            "district_id": "64024bcc-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0435\u043b\u044c\u043c\u0435\u043d\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 25,
+            "district_id": "6b07f88b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u043e\u0441\u0435\u043b\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 25,
+            "district_id": "bad3ac1b-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0443\u0442\u0438\u043b\u044c\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 25,
+            "district_id": "78f45405-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043e\u043a\u0438\u0440\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 25,
+            "district_id": "64024b4f-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0442\u043e\u0440\u043e\u0436\u0438\u043d\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 25,
+            "district_id": "5d3111c1-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0425\u043e\u0442\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 25,
+            "district_id": "921543d8-fd74-11ee-80c5-000c2961d091",
+            "name_ua": "\u0427\u0435\u0440\u043d\u0456\u0432\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 25,
+            "district_id": "fbfb8c29-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0435\u0440\u043d\u0456\u0432\u0446\u0456",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "5d311228-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0406\u0447\u043d\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "710c271d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u0430\u0445\u043c\u0430\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "78f45407-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043e\u0431\u0440\u043e\u0432\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "78f453a2-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0411\u043e\u0440\u0437\u043d\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "5d31127c-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0412\u0430\u0440\u0432\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "5d31119f-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0413\u043e\u0440\u043e\u0434\u043d\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "78f453ad-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0437\u0435\u043b\u0435\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "64024b87-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0440\u043e\u043f\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "78f45408-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u043e\u0440\u044e\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "4ffc4b8d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041a\u0443\u043b\u0438\u043a\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "710c27ef-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041c\u0435\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "710c275d-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u0456\u0436\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "710c27fa-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0432\u0433\u043e\u0440\u043e\u0434-\u0421\u0456\u0432\u0435\u0440\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "4ffc4bd7-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041d\u043e\u0441\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "78f453ca-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u041f\u0440\u0438\u043b\u0443\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "903ccad0-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0420\u0456\u043f\u043a\u0438\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "64024b42-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0435\u043c\u0435\u043d\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "903ccad9-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043d\u043e\u0432\u0441\u044c\u043a\u0438\u0439 (\u041a\u043e\u043b. \u0429\u043e\u0440\u0441\u044c\u043a\u0438\u0439)",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "4ffc4b8e-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u043e\u0441\u043d\u0438\u0446\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "903ccabc-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0421\u0440\u0456\u0431\u043d\u044f\u043d\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "710c27eb-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0422\u0430\u043b\u0430\u043b\u0430\u0457\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "5394b31b-41be-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0435\u0440\u043d\u0456\u0433\u0456\u0432",
+            "name_en": ""
+        },
+        {
+            "location_id": 26,
+            "district_id": "5d311229-41b9-11df-907f-00215aee3ebe",
+            "name_ua": "\u0427\u0435\u0440\u043d\u0456\u0433\u0456\u0432\u0441\u044c\u043a\u0438\u0439",
+            "name_en": ""
+        }
+    ]
+}

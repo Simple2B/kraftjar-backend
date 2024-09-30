@@ -36,12 +36,3 @@ class CityOut(City):
 class CityAddressesOut(BaseModel):
     city: City
     addresses: list[AddressOut]
-
-
-class CityAddresse(BaseModel):
-    uuid: str
-    city_addresses: str
-
-
-class CitiesAddresses(BaseModel):
-    cities_addresses: list[CityAddresse]

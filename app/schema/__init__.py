@@ -41,6 +41,13 @@ from .location import (
     LocationsFile,
     LocationsListIn,
     LocationsListOut,
+    Rayon,
+    RayonsList,
+    Settlement,
+    SettlementsListOut,
+    AddressIn,
+    AddressOutput,
+    AddressesListOut,
 )
 from .pagination import Pagination
 from .token import Token, TokenData
@@ -79,7 +86,7 @@ from .registration import RegistrationIn, SetPhoneIn, ValidatePhoneIn, SetPhoneO
 from .field import FieldCreate
 from .exception import NotFound
 from .service import Service, ServicesIn, ServicesOut, ServiceData, ServiceDataFile, ServiceDB
-from .address import AddressBase, AddressesFile, AddressIn, AddressOut
+from .address import AddressBase, AddressesFile, AddressOut
 from .language import Language
 
 from .meest_api import (
@@ -93,4 +100,4 @@ from .meest_api import (
     AddressList,
 )
 from .file import FileType, File, FileIn, FileOut, Files
-from .city import City, CityIn, CityOut, CitiesFile, CityAddressesOut, CityAddresse, CitiesAddresses
+from .city import City, CityIn, CityOut, CitiesFile, CityAddressesOut
