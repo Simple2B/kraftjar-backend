@@ -65,7 +65,7 @@ def get_settlements(
 
     if not query:
         log(log.ERROR, "Query is empty")
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Query is empty")
+        return []
 
     wordList = re.sub(CFG.RE_WORD, " ", query).split()
 
