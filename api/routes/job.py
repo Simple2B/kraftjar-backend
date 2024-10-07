@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Annotated, Any
+from typing import Annotated, Any, List, Union
 
 import sqlalchemy as sa
 from fastapi import APIRouter, Depends, HTTPException, Query, status, UploadFile
@@ -57,7 +57,7 @@ def get_job(
 def get_jobs(
     query: str = Query(default="", max_length=128),
     lang: Language = Language.UA,
-    selected_locations: Annotated[list[str] | None, Query()] = None,
+    selected_locations: Annotated[Union[List[str], None], Query()] = None,
     order_by: s.JobsOrderBy = s.JobsOrderBy.START_DATE,
     ascending: bool = True,
     current_user: m.User = Depends(get_current_user),
