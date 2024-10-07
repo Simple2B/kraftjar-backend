@@ -65,12 +65,16 @@ def get_jobs(
 ):
     """Get jobs by query params"""
 
-    db_jobs = sa.select(m.Job).where(
-        m.Job.is_deleted.is_(False),
-        m.Job.status == s.JobStatus.PENDING.value,
-        m.Job.is_public.is_(True),
-        m.Job.owner_id != current_user.id,
-        m.Job.worker_id != current_user.id,
+    db_jobs = (
+        sa.select(m.Job)
+        .where(
+            m.Job.is_deleted.is_(False),
+            m.Job.status == s.JobStatus.PENDING.value,
+            m.Job.is_public.is_(True),
+            m.Job.owner_id != current_user.id,
+            m.Job.worker_id != current_user.id,
+        )
+        .order_by(m.Job.created_at.desc())
     )
 
     if selected_locations or current_user.locations:
@@ -89,7 +93,6 @@ def get_jobs(
     return s.JobsOut(items=jobs_out)
 
 
-# user create job
 @job_router.post(
     "/",
     status_code=status.HTTP_201_CREATED,
@@ -104,6 +107,7 @@ def create_job(
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
+    # user create job
     """Creates new job"""
 
     service = db.scalar(sa.select(m.Service).where(m.Service.uuid == job.service_uuid))
@@ -165,6 +169,8 @@ def create_job(
     db.refresh(new_job)
 
     job_out = s.BaseJob.model_validate(new_job)
+
+    log(log.INFO, "Job [%s] was created", new_job.id)
 
     return s.JobOut(
         **job_out.model_dump(),
