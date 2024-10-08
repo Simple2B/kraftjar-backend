@@ -72,7 +72,8 @@ class JobIn(BaseModel):
     title: str
     description: str
 
-    location_uuid: str | None = None
+    settlement_uuid: str | None = None
+    address_uuid: str | None = None
 
     start_date: str | None = None
     end_date: str | None = None

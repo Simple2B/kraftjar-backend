@@ -117,7 +117,8 @@ def create_job(
             exclude={
                 "lang",
                 "service_uuid",
-                "location_uuid",
+                "settlement_uuid",
+                "address_uuid",
                 "start_date",
                 "end_date",
                 "file_uuids",
@@ -131,17 +132,26 @@ def create_job(
     db.add(new_job)
     db.commit()
 
-    if job.location_uuid:
-        location = db.scalar(sa.select(m.Location).where(m.Location.uuid == job.location_uuid))
+    if job.settlement_uuid:
+        location = db.scalar(sa.select(m.Settlement).where(m.Settlement.city_id == job.settlement_uuid))
         if not location:
-            log(log.ERROR, "Location [%s] not found", job.location_uuid)
+            log(log.ERROR, "Settlement [%s] not found", job.settlement_uuid)
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Selected location not found")
 
-        new_job.location_id = location.id
-        log(log.INFO, "Location [%s] was added to job [%s]", location.id, new_job.id)
+        new_job.location_id = location.location_id
+        log(log.INFO, "Settlement [%s] was added to job [%s]", location.id, new_job.id)
 
-    m.JobService(job_id=new_job.id, service_id=service.id)
-    db.add(new_job)
+    if job.address_uuid:
+        address = db.scalar(sa.select(m.Address).where(m.Address.street_id == job.address_uuid))
+        if not address:
+            log(log.ERROR, "Address [%s] not found", job.address_uuid)
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Selected address not found")
+
+        new_job.address_id = address.id
+        log(log.INFO, "Address [%s] was added to job [%s]", address.id, new_job.id)
+
+    new_job_service = m.JobService(job_id=new_job.id, service_id=service.id)
+    db.add_all([new_job_service, new_job])
     db.commit()
     db.refresh(new_job)
     log(log.INFO, "Service [%s] was added to job [%s]", service.id, new_job.id)
