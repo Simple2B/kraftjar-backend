@@ -205,13 +205,14 @@ class JobsOrderBy(enum.Enum):
     NEAR = "near"
     START_DATE = "start_date"
     COST = "cost"
+    CREATED_AT = "created_at"
 
 
 class JobsIn(BaseModel):
     lang: Language = Language.UA
     selected_locations: list[str] = []  # list of uuids - selected locations
     query: str = ""
-    order_by: JobsOrderBy = JobsOrderBy.START_DATE
+    order_by: JobsOrderBy = JobsOrderBy.CREATED_AT
     ascending: bool = True
 
 

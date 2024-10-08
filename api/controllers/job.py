@@ -157,7 +157,10 @@ def filter_and_order_jobs(
 
         db_jobs = db_jobs.where(sa.or_(m.Job.title.ilike(f"%{query}%"), search_by_service))
 
-    if order_by == s.JobsOrderBy.START_DATE:
+    # TODO: Finalize default ordering
+    if order_by == s.JobsOrderBy.CREATED_AT:
+        users = db.execute(db_jobs.order_by(m.Job.created_at.desc())).scalars().all()
+    elif order_by == s.JobsOrderBy.START_DATE:
         users = db.execute(db_jobs.order_by(m.Job.start_date.desc())).scalars().all()
     elif order_by == s.JobsOrderBy.COST:
         users = db.execute(db_jobs.order_by(m.Job.cost.desc())).scalars().all()

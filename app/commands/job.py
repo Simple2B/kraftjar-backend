@@ -8,6 +8,7 @@ from app import models as m
 from app import schema as s
 from app.database import db
 from app.logger import log
+from app.schema.job import JobStatus
 from config import config
 
 from .utility import SEARCH_IDS, authorized_user_in_google_spreadsheets
@@ -87,21 +88,22 @@ def write_jobs_in_db(jobs: list[s.JobCompletedCreate]):
 
                 session.add(new_job_service)
 
-            rate_worker: m.Rate = m.Rate(
-                message="Mocked rate",
-                gives_id=new_job.owner_id,
-                receiver_id=new_job.worker_id,
-                job_id=new_job.id,
-                rate=job.rate_worker,
+            if new_job.status == JobStatus.COMPLETED.value:
+                rate_worker: m.Rate = m.Rate(
+                    message="Mocked rate",
+                    gives_id=new_job.owner_id,
+                    receiver_id=new_job.worker_id,
+                    job_id=new_job.id,
+                    rate=job.rate_worker,
+                )
+                rate_owner: m.Rate = m.Rate(
+                    message="Mocked rate",
+                    gives_id=new_job.worker_id,
+                    receiver_id=new_job.owner_id,
+                    job_id=new_job.id,
+                    rate=job.rate_owner,
             )
-            rate_owner: m.Rate = m.Rate(
-                message="Mocked rate",
-                gives_id=new_job.worker_id,
-                receiver_id=new_job.owner_id,
-                job_id=new_job.id,
-                rate=job.rate_owner,
-            )
-            session.add_all([rate_worker, rate_owner])
+                session.add_all([rate_worker, rate_owner])
 
             log(log.DEBUG, "Job with title [%s] created", job.title)
 
@@ -154,7 +156,6 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
         assert owner_id, f"The owner {owner_id} is missing"
 
         worker_id = row[WORKER_ID_INDEX]
-        assert worker_id, f"The worker {worker_id} is missing"
 
         title = row[TITLE_INDEX]
         description = row[DESCRIPTION_INDEX]
@@ -211,9 +212,9 @@ def export_jobs_from_google_spreadsheets(with_print: bool = True, in_json: bool 
                 status=status,
                 is_public=True,
                 owner_id=owner_id,
-                worker_id=worker_id,
-                created_at=datetime.strptime(TEST_DATA, "%d.%m.%Y"),
-                updated_at=datetime.strptime(TEST_DATA, "%d.%m.%Y"),
+                worker_id=worker_id if worker_id else None,
+                created_at=datetime.strptime(created_at, "%d.%m.%Y"),
+                updated_at=datetime.strptime(created_at, "%d.%m.%Y"),
                 is_deleted=False,
                 rate_owner=rate_owner,
                 rate_worker=rate_worker,

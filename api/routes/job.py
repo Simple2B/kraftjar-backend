@@ -22,15 +22,15 @@ CFG = config()
 job_router = APIRouter(prefix="/jobs", tags=["jobs"])
 
 
-@job_router.get("/{job_id}", status_code=status.HTTP_200_OK, response_model=s.JobOut)
+@job_router.get("/{job_uuid}", status_code=status.HTTP_200_OK, response_model=s.JobOut)
 def get_job(
-    job_id: int,
+    job_uuid: str,
     db: Session = Depends(get_db),
     current_user: m.User | None = Depends(get_user),
 ):
-    job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.id == job_id))
+    job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.uuid == job_uuid))
     if not job:
-        log(log.ERROR, "Job [%s] not found", job_id)
+        log(log.ERROR, "Job [%s] not found", job_uuid)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
     return job
 
@@ -58,23 +58,19 @@ def get_jobs(
     query: str = Query(default="", max_length=128),
     lang: Language = Language.UA,
     selected_locations: Annotated[Union[List[str], None], Query()] = None,
-    order_by: s.JobsOrderBy = s.JobsOrderBy.START_DATE,
+    order_by: s.JobsOrderBy = s.JobsOrderBy.CREATED_AT,
     ascending: bool = True,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     """Get jobs by query params"""
 
-    db_jobs = (
-        sa.select(m.Job)
-        .where(
-            m.Job.is_deleted.is_(False),
-            m.Job.status == s.JobStatus.PENDING.value,
-            m.Job.is_public.is_(True),
-            m.Job.owner_id != current_user.id,
-            m.Job.worker_id != current_user.id,
-        )
-        .order_by(m.Job.created_at.desc())
+    db_jobs = sa.select(m.Job).where(
+        m.Job.is_deleted.is_(False),
+        m.Job.status == s.JobStatus.PENDING.value,
+        m.Job.is_public.is_(True),
+        m.Job.worker_id.is_(None),
+        m.Job.owner_id != current_user.id,
     )
 
     if selected_locations or current_user.locations:
