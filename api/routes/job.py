@@ -125,7 +125,7 @@ def create_job(
             }
         ),
         owner_id=current_user.id,
-        start_date=datetime.fromisoformat(job.start_date) if job.start_date else None,
+        start_date=datetime.fromisoformat(job.start_date) if job.start_date else datetime.now(),
         end_date=datetime.fromisoformat(job.end_date) if job.end_date else None,
     )
 
