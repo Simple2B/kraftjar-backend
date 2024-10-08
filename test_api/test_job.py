@@ -5,7 +5,8 @@ import sqlalchemy as sa
 from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
-
+from api import app
+from api.dependency.user import get_current_user
 from app import models as m
 from app import schema as s
 from app.schema.language import Language
@@ -92,7 +93,8 @@ def test_create_job(
         service_uuid=service.uuid,
         title="Test Job",
         description="Test Description",
-        location_uuid=location.uuid,
+        settlement_uuid=location.uuid,
+        address_uuid="",
         start_date="2024-09-13T15:23:20.911Z",
         end_date="2024-09-13T15:23:25.960Z",
         file_uuids=[image_1_uuid, image_2[0]],
@@ -108,6 +110,28 @@ def test_create_job(
     assert job.owner_id == user.id
     assert job.files[0].uuid == image_1_uuid
     assert job.files[1].uuid == image_2[0]
+
+    # Get job
+    response = client.get(f"/api/jobs/{job.uuid}")
+    assert response.status_code == status.HTTP_200_OK
+    job_data = s.JobOut.model_validate(response.json())
+    assert job_data.uuid == job.uuid
+
+    # Another user should see the job in the main list
+    mock_current_user = db.scalar(sa.select(m.User).where(m.User.id == 5))
+    assert mock_current_user
+    app.dependency_overrides[get_current_user] = lambda: mock_current_user
+
+    query_data = s.JobsIn(query=job.title)
+    response = client.get(
+        "/api/jobs", params={"query": query_data.query, "selected_locations": ["all-ukraine"]}, headers=auth_header
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = s.JobsOut.model_validate(response.json())
+    assert data.items[0].title == job.title
+
+    # reset user dependency
+    app.dependency_overrides[get_current_user] = get_current_user
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
