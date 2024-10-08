@@ -102,7 +102,7 @@ def write_jobs_in_db(jobs: list[s.JobCompletedCreate]):
                     receiver_id=new_job.owner_id,
                     job_id=new_job.id,
                     rate=job.rate_owner,
-            )
+                )
                 session.add_all([rate_worker, rate_owner])
 
             log(log.DEBUG, "Job with title [%s] created", job.title)
