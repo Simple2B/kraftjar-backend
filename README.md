@@ -49,11 +49,11 @@ yarn
 Go to `ssh s2b` and take the backup file from our server and put it in your environment:
 
 ```bash
-cp /home/runner/kraftjar/backup/db_2024-09-19T14:08:36Z.tgz .
+cp /home/runner/kraftjar/backup/db_2024-10-08T11:53:25Z.tgz .
 ```
 
 ```bash
-mv db_2024-09-19T14:08:36Z.tgz dump.tgz
+mv db_2024-10-08T11:53:25Z.tgz dump.tgz
 ```
 
 In our project, download dump.tgz:
