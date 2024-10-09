@@ -117,7 +117,8 @@ def test_create_job(
     # Get job
     response = client.get(f"/api/jobs/{job.uuid}")
     assert response.status_code == status.HTTP_200_OK
-    job_data = s.JobOut.model_validate(response.json())
+    job_data = s.JobInfo.model_validate(response.json())
+    assert job_data
     assert job_data.uuid == job.uuid
 
     # Another user should see the job in the main list

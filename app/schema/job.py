@@ -56,6 +56,23 @@ class JobOut(BaseJob):
     service: Service | None = None
 
 
+class JobInfo(BaseModel):
+    uuid: str
+    title: str
+    location: str
+    address: str | None = None
+    services: list[str]
+    onwer_name: str
+    owner_uuid: str
+    owner_average_rate: float
+    owner_rates_count: int
+    start_date: datetime | None = None
+    end_date: datetime | None = None
+    cost: float | None = None
+    description: str
+    files: list[str]
+
+
 class JobOutList(BaseModel):
     jobs: list[JobOut]
 
