@@ -23,7 +23,7 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     main_worker = workers_list[0]
 
     job: m.Job | None = db.scalar(
-        sa.select(m.Job).where(m.Job.worker_id == main_worker.id, m.Job.status == s.JobStatus.PENDING.value)
+        sa.select(m.Job).where(m.Job.worker_id.is_(None), m.Job.status == s.JobStatus.PENDING.value)
     )
     assert job
 
