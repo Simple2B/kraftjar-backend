@@ -86,15 +86,18 @@ def test_create_job(
     service = db.scalar(sa.select(m.Service))
     assert service
 
-    location = db.scalar(sa.select(m.Location))
-    assert location
+    sattlement = db.scalar(sa.select(m.Settlement))
+    assert sattlement
+
+    address = db.scalar(sa.select(m.Address))
+    assert address
 
     new_job = s.JobIn(
         service_uuid=service.uuid,
         title="Test Job",
         description="Test Description",
-        settlement_uuid=location.uuid,
-        address_uuid="",
+        settlement_uuid=sattlement.city_id,
+        address_uuid=address.street_id,
         start_date="2024-09-13T15:23:20.911Z",
         end_date="2024-09-13T15:23:25.960Z",
         file_uuids=[image_1_uuid, image_2[0]],
@@ -106,7 +109,7 @@ def test_create_job(
     assert job
     assert job.title == new_job.title
     assert job.description == new_job.description
-    assert job.location_id == location.id
+    assert job.location_id == sattlement.location_id
     assert job.owner_id == user.id
     assert job.files[0].uuid == image_1_uuid
     assert job.files[1].uuid == image_2[0]
@@ -132,6 +135,13 @@ def test_create_job(
 
     # reset user dependency
     app.dependency_overrides[get_current_user] = get_current_user
+
+    # Delete job
+    response = client.delete(f"/api/jobs/{job.uuid}", headers=auth_header)
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    deleted_job = db.scalar(sa.select(m.Job).where(m.Job.uuid == job.uuid))
+    assert deleted_job
+    assert deleted_job.is_deleted
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
