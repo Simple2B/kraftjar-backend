@@ -316,3 +316,29 @@ def get_public_job_statistics(
     """Get statistics for jobs per location"""
 
     return c.job_statistics(db)
+
+
+@job_router.delete(
+    "/{job_uuid}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={status.HTTP_404_NOT_FOUND: {"description": "Job not found"}},
+)
+def delete_job(
+    job_uuid: str,
+    db: Session = Depends(get_db),
+    current_user: m.User = Depends(get_current_user),
+):
+    job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.uuid == job_uuid))
+
+    if not job:
+        log(log.ERROR, "Job [%s] not found", job_uuid)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
+
+    if job.owner_id != current_user.id:
+        log(log.ERROR, "User [%s] does not own job [%s]", current_user.id, job.id)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User does not own job")
+
+    job.is_deleted = True
+    db.commit()
+
+    log(log.INFO, "Job [%s] was deleted", job.id)
