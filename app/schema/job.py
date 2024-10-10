@@ -247,7 +247,6 @@ class JobOutput(BaseModel):
     created_at: datetime
     location: LocationStrings | None = None
     services: list[Service]
-    is_favorite: bool
 
     model_config = ConfigDict(
         from_attributes=True,
