@@ -71,6 +71,8 @@ class JobInfo(BaseModel):
     cost: float | None = None
     description: str
     files: list[str]
+    is_volunteer: bool
+    is_negotiable: bool
 
 
 class JobOutList(BaseModel):

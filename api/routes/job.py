@@ -72,6 +72,8 @@ def get_job(
         cost=job.cost,
         description=job.description,
         files=files,
+        is_volunteer=job.is_volunteer,
+        is_negotiable=job.is_negotiable,
     )
 
 
