@@ -180,7 +180,7 @@ def filter_and_order_jobs(
     return users
 
 
-def create_out_search_jobs(db_jobs: Sequence[m.Job], lang: Language, db: Session) -> list[s.JobOutput]:
+def create_out_search_jobs(db_jobs: Sequence[m.Job], lang: Language, current_user: m.User) -> list[s.JobOutput]:
     """Creates list of JobOutput from db jobs"""
 
     jobs: list[s.JobOutput] = []
@@ -205,6 +205,7 @@ def create_out_search_jobs(db_jobs: Sequence[m.Job], lang: Language, db: Session
                 **pop_keys(db_job.__dict__, ["services", "location"]),
                 services=services,
                 location=location,
+                is_favorite=db_job in current_user.favorite_jobs,
             )
         )
     return jobs

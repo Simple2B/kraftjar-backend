@@ -178,15 +178,46 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
         )
     )
 
+    favorite_jobs: list[s.UserFavoriteJob] = []
+
+    for job in db_user.favorite_jobs:
+        location = "Вся Україна"
+        if job.location:
+            location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
+
+        address = None
+        if job.address:
+            lang_name = job.address.line1 if lang == Language.UA else job.address.line2
+            lang_type = job.address.street_type_ua if lang == Language.UA else job.address.street_type_en
+            address = f"{lang_type} {lang_name}"
+
+        favorite_jobs.append(
+            s.UserFavoriteJob(
+                job_uuid=job.uuid,
+                title=job.title,
+                location=location,
+                address=address,
+                cost=job.cost,
+                start_date=job.start_date,
+                is_volunteer=job.is_volunteer,
+                is_negotiable=job.is_negotiable,
+                owner=s.UserShortInfo(
+                    uuid=db_user.uuid,
+                    fullname=f"{db_user.first_name} {db_user.last_name[0]}.",
+                ),
+            )
+        )
+
     return s.UserProfileOut(
         # TODO: remove  user.__dict__ add like property in User model and use s.UserProfileOut.model_validate
-        **pop_keys(db_user.__dict__, ["services", "locations", "auth_accounts"]),
+        **pop_keys(db_user.__dict__, ["favorite_jobs", "services", "locations", "auth_accounts"]),
         auth_accounts=auth_accounts,
         services=services,
         locations=locations,
         owned_rates_count=db_user.owned_rates_count,
         completed_jobs_count=completed_jobs_count if completed_jobs_count else 0,
         announced_jobs_count=announced_jobs_count if announced_jobs_count else 0,
+        favorite_jobs=favorite_jobs,
     )
 
 

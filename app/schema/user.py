@@ -102,6 +102,31 @@ class UsersOut(BaseModel):
     # locations: list[LocationStrings] = []
 
 
+class UserShortInfo(BaseModel):
+    uuid: str
+    fullname: str
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class UserFavoriteJob(BaseModel):
+    job_uuid: str
+    title: str
+    location: str
+    address: str | None = None
+    cost: float | None = None
+    start_date: datetime | None = None
+    owner: UserShortInfo
+    is_volunteer: bool
+    is_negotiable: bool
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
 class UserProfileOut(User):
     auth_accounts: list[AuthAccountOut] = []
     owned_rates_count: int
@@ -110,6 +135,7 @@ class UserProfileOut(User):
     locations: list[LocationStrings]
     completed_jobs_count: int
     announced_jobs_count: int
+    favorite_jobs: list[UserFavoriteJob] = []
 
     __hash__ = object.__hash__
 

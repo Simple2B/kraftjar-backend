@@ -363,3 +363,36 @@ def delete_auth_account(
         auth_account.auth_type,
         current_user.phone,
     )
+
+
+@user_router.put(
+    "/favorite-job/{job_uuid}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Job not found"},
+    },
+)
+def update_favorite_jobs(
+    job_uuid: str,
+    db: Session = Depends(get_db),
+    current_user: m.User = Depends(get_current_user),
+):
+    """Add or remove job from favorite list"""
+
+    job = db.scalar(sa.select(m.Job).where(m.Job.uuid == job_uuid))
+
+    if not job:
+        log(log.ERROR, "Job [%s] not found", job_uuid)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
+
+    if job.owner_id == current_user.id:
+        log(log.ERROR, "User [%s] can't add his own job to favorite list", current_user.id)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User can't add his own job to favorite list")
+
+    if job not in current_user.favorite_jobs:
+        current_user.favorite_jobs.append(job)
+    else:
+        current_user.favorite_jobs.remove(job)
+
+    db.commit()
+    log(log.INFO, "User [%s] successfully updated favorite job list", current_user.id)

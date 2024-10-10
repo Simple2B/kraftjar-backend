@@ -68,6 +68,8 @@ from .user import (
     UsersOut,
     UsersOrderBy,
     UserPut,
+    UserFavoriteJob,
+    UserShortInfo,
 )
 from .whoami import WhoAmI
 from .rate import RateIn, RateOut, RateOutList

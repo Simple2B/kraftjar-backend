@@ -5,6 +5,8 @@ from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 from unittest import mock
+from api import app
+from api.dependency.user import get_current_user
 
 from app import models as m
 from app import schema as s
@@ -284,3 +286,42 @@ def test_delete_auth_account(monkeypatch, client: TestClient, auth_header: dict[
     auth_account = full_db.scalar(sa.select(m.AuthAccount).where(m.AuthAccount.id == saved_account.id))
     assert auth_account
     assert auth_account.is_deleted is True
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_update_favorite_jobs(client: TestClient, auth_header: dict[str, str], db: Session):
+    CURRENT_USER = 1
+    mock_current_user = db.scalar(sa.select(m.User).where(m.User.id == CURRENT_USER))
+    assert mock_current_user
+    app.dependency_overrides[get_current_user] = lambda: mock_current_user
+
+    job = db.scalar(sa.select(m.Job).where(m.Job.status == s.JobStatus.PENDING.value))
+    assert job
+
+    # Add to favorite
+    response = client.put(f"/api/users/favorite-job/{job.uuid}", headers=auth_header)
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    assert job in mock_current_user.favorite_jobs
+
+    # Check that another user doesn't have this job in favorites
+    another_user = db.scalar(sa.select(m.User).where(m.User.id != CURRENT_USER))
+    assert another_user
+    assert job not in another_user.favorite_jobs
+
+    # Remove from favorite
+    response = client.put(f"/api/users/favorite-job/{job.uuid}", headers=auth_header)
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    assert job not in mock_current_user.favorite_jobs
+
+    # Job owner can't add his job to favorites
+    mock_owner = db.scalar(sa.select(m.User).where(m.User.id == job.owner_id))
+    assert mock_owner
+    app.dependency_overrides[get_current_user] = lambda: mock_owner
+
+    own_job = db.scalar(sa.select(m.Job).where(m.Job.owner_id == mock_owner.id))
+    assert own_job
+    response = client.put(f"/api/users/favorite-job/{own_job.uuid}", headers=auth_header)
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    # reset user dependency
+    app.dependency_overrides[get_current_user] = get_current_user
