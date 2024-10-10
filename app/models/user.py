@@ -15,6 +15,7 @@ from config import config
 from .rates import Rate
 from .user_locations import user_locations
 from .user_services import user_services
+from .favorite_jobs import favorite_jobs
 from .utils import ModelMixin
 
 CFG = config()
@@ -23,6 +24,7 @@ if TYPE_CHECKING:
     from .location import Location
     from .service import Service
     from .auth_account import AuthAccount
+    from .job import Job
 
 
 class User(db.Model, ModelMixin):
@@ -65,6 +67,7 @@ class User(db.Model, ModelMixin):
     # Relationships
     services: orm.Mapped[list["Service"]] = orm.relationship(secondary=user_services)
     locations: orm.Mapped[list["Location"]] = orm.relationship(secondary=user_locations)
+    favorite_jobs: orm.Mapped[list["Job"]] = orm.relationship(secondary=favorite_jobs)
 
     @property
     def basic_auth_account(self):

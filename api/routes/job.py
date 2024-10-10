@@ -114,7 +114,7 @@ def get_jobs(
     if not ascending:
         jobs = jobs[::-1]
 
-    jobs_out = c.create_out_search_jobs(jobs, lang, db)
+    jobs_out = c.create_out_search_jobs(jobs, lang, current_user)
 
     return s.JobsOut(items=jobs_out)
 
