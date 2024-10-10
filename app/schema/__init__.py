@@ -70,6 +70,7 @@ from .user import (
     UserPut,
     UserFavoriteJob,
     UserShortInfo,
+    UserFavoriteExpert,
 )
 from .whoami import WhoAmI
 from .rate import RateIn, RateOut, RateOutList

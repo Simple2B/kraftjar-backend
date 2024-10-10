@@ -16,7 +16,9 @@ CFG = config()
 service_alias = aliased(m.Service)
 
 
-def create_out_search_users(db_users: Sequence[m.User], lang: Language, db: Session) -> list[s.UserSearchOut]:
+def create_out_search_users(
+    db_users: Sequence[m.User], lang: Language, db: Session, me: m.User | None = None
+) -> list[s.UserSearchOut]:
     """Creates list of UserSearchOut from db users"""
 
     users: list[s.UserSearchOut] = []
@@ -39,6 +41,7 @@ def create_out_search_users(db_users: Sequence[m.User], lang: Language, db: Sess
                 services=services,
                 locations=locations,
                 owned_rates_count=db_user.owned_rates_count,
+                is_favorite=db_user in me.favorite_experts if me else False,
             )
         )
     return users
@@ -122,8 +125,8 @@ def search_users(query: s.UserSearchIn, me: m.User, db: Session) -> s.UsersSearc
         locations=[_ for _ in db_locations],
         user_locations=[_ for _ in user_locations],
         selected_locations=query.selected_locations,
-        top_users=create_out_search_users(top_users, query.lang, db),
-        near_users=create_out_search_users(near_users, query.lang, db),
+        top_users=create_out_search_users(top_users, query.lang, db, me),
+        near_users=create_out_search_users(near_users, query.lang, db, me),
         query=query.query,
     )
 
@@ -178,10 +181,13 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
         )
     )
 
+    ALL_UKRAINE = "Вся Україна" if lang == Language.UA else "All Ukraine"
+
     favorite_jobs: list[s.UserFavoriteJob] = []
 
     for job in db_user.favorite_jobs:
-        location = "Вся Україна"
+        location = ALL_UKRAINE
+
         if job.location:
             location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
 
@@ -208,9 +214,26 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
             )
         )
 
+    favorite_expert: list[s.UserFavoriteExpert] = []
+
+    for expert in db_user.favorite_experts:
+        expert_locations = []
+
+        if expert.locations:
+            for loc in expert.locations:
+                expert_locations.append(loc.region[0].name_ua if lang == Language.UA else loc.region[0].name_en)
+
+        favorite_expert.append(
+            s.UserFavoriteExpert(
+                uuid=expert.uuid,
+                fullname=expert.fullname,
+                locations=expert_locations if expert_locations else [ALL_UKRAINE],
+            )
+        )
+
     return s.UserProfileOut(
         # TODO: remove  user.__dict__ add like property in User model and use s.UserProfileOut.model_validate
-        **pop_keys(db_user.__dict__, ["favorite_jobs", "services", "locations", "auth_accounts"]),
+        **pop_keys(db_user.__dict__, ["favorite_jobs", "favorite_experts", "services", "locations", "auth_accounts"]),
         auth_accounts=auth_accounts,
         services=services,
         locations=locations,
@@ -218,6 +241,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
         completed_jobs_count=completed_jobs_count if completed_jobs_count else 0,
         announced_jobs_count=announced_jobs_count if announced_jobs_count else 0,
         favorite_jobs=favorite_jobs,
+        favorite_experts=favorite_expert,
     )
 
 
