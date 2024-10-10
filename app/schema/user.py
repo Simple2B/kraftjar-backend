@@ -60,6 +60,7 @@ class UserSearchOut(BaseModel):
     average_rate: float
     services: list[Service]
     locations: list[LocationStrings]
+    is_favorite: bool
 
     __hash__ = object.__hash__
 
@@ -127,6 +128,12 @@ class UserFavoriteJob(BaseModel):
     )
 
 
+class UserFavoriteExpert(BaseModel):
+    uuid: str
+    fullname: str
+    locations: list[str]
+
+
 class UserProfileOut(User):
     auth_accounts: list[AuthAccountOut] = []
     owned_rates_count: int
@@ -136,6 +143,7 @@ class UserProfileOut(User):
     completed_jobs_count: int
     announced_jobs_count: int
     favorite_jobs: list[UserFavoriteJob] = []
+    favorite_experts: list[UserFavoriteExpert] = []
 
     __hash__ = object.__hash__
 

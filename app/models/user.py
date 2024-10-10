@@ -16,6 +16,7 @@ from .rates import Rate
 from .user_locations import user_locations
 from .user_services import user_services
 from .favorite_jobs import favorite_jobs
+from .favorite_experts import favorite_experts
 from .utils import ModelMixin
 
 CFG = config()
@@ -68,6 +69,13 @@ class User(db.Model, ModelMixin):
     services: orm.Mapped[list["Service"]] = orm.relationship(secondary=user_services)
     locations: orm.Mapped[list["Location"]] = orm.relationship(secondary=user_locations)
     favorite_jobs: orm.Mapped[list["Job"]] = orm.relationship(secondary=favorite_jobs)
+    favorite_experts: orm.Mapped[list["User"]] = orm.relationship(
+        "User",
+        secondary=favorite_experts,
+        primaryjoin=id == favorite_experts.c.user_id,
+        secondaryjoin=id == favorite_experts.c.expert_id,
+        backref="expert_of",
+    )
 
     @property
     def basic_auth_account(self):

@@ -18,3 +18,4 @@ from .auth_account import AuthAccount
 from .job_services import JobService
 from .job_files import JobFile
 from .favorite_jobs import favorite_jobs
+from .favorite_experts import favorite_experts

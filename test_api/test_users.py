@@ -309,7 +309,7 @@ def test_update_favorite_jobs(client: TestClient, auth_header: dict[str, str], d
     assert job not in another_user.favorite_jobs
 
     # Remove from favorite
-    response = client.put(f"/api/users/favorite-job/{job.uuid}", headers=auth_header)
+    response = client.delete(f"/api/users/favorite-job/{job.uuid}", headers=auth_header)
     assert response.status_code == status.HTTP_204_NO_CONTENT
     assert job not in mock_current_user.favorite_jobs
 
@@ -321,6 +321,39 @@ def test_update_favorite_jobs(client: TestClient, auth_header: dict[str, str], d
     own_job = db.scalar(sa.select(m.Job).where(m.Job.owner_id == mock_owner.id))
     assert own_job
     response = client.put(f"/api/users/favorite-job/{own_job.uuid}", headers=auth_header)
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    # reset user dependency
+    app.dependency_overrides[get_current_user] = get_current_user
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_update_favorite_experts(client: TestClient, auth_header: dict[str, str], db: Session):
+    CURRENT_USER = 1
+    mock_current_user = db.scalar(sa.select(m.User).where(m.User.id == CURRENT_USER))
+    assert mock_current_user
+    app.dependency_overrides[get_current_user] = lambda: mock_current_user
+
+    expert = db.scalar(sa.select(m.User).where(m.User.id != mock_current_user.id))
+    assert expert
+
+    # Add to favorite
+    response = client.put(f"/api/users/favorite-expert/{expert.uuid}", headers=auth_header)
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    assert expert in mock_current_user.favorite_experts
+
+    # Check that another user doesn't have this expert in favorites
+    another_user = db.scalar(sa.select(m.User).where(m.User.id != CURRENT_USER))
+    assert another_user
+    assert expert not in another_user.favorite_experts
+
+    # Remove from favorite
+    response = client.delete(f"/api/users/favorite-expert/{expert.uuid}", headers=auth_header)
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    assert expert not in mock_current_user.favorite_experts
+
+    # User can't add himself to favorite list
+    response = client.put(f"/api/users/favorite-expert/{mock_current_user.uuid}", headers=auth_header)
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
     # reset user dependency

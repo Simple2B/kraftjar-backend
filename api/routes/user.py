@@ -377,7 +377,41 @@ def update_favorite_jobs(
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
-    """Add or remove job from favorite list"""
+    """Add job to the favorite list"""
+
+    job = db.scalar(sa.select(m.Job).where(m.Job.uuid == job_uuid))
+
+    if not job:
+        log(log.ERROR, "Job [%s] not found", job_uuid)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
+
+    if job.owner_id == current_user.id:
+        log(log.ERROR, "User [%s] can't add his own job to favorite list", current_user.id)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User can't add his own job to favorite list")
+
+    if job in current_user.favorite_jobs:
+        log(log.INFO, "User [%s] already has job [%s] in favorite list", current_user.id, job_uuid)
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Job already in favorite list")
+
+    current_user.favorite_jobs.append(job)
+
+    db.commit()
+    log(log.INFO, "User [%s] successfully updated favorite job list", current_user.id)
+
+
+@user_router.delete(
+    "/favorite-job/{job_uuid}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Job not found"},
+    },
+)
+def delete_favorite_jobs(
+    job_uuid: str,
+    db: Session = Depends(get_db),
+    current_user: m.User = Depends(get_current_user),
+):
+    """Remove job from favorite list"""
 
     job = db.scalar(sa.select(m.Job).where(m.Job.uuid == job_uuid))
 
@@ -390,9 +424,78 @@ def update_favorite_jobs(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User can't add his own job to favorite list")
 
     if job not in current_user.favorite_jobs:
-        current_user.favorite_jobs.append(job)
-    else:
-        current_user.favorite_jobs.remove(job)
+        log(log.INFO, "User [%s] doesn't have job [%s] in favorite list", current_user.id, job_uuid)
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Job not in favorite list")
+
+    current_user.favorite_jobs.remove(job)
 
     db.commit()
     log(log.INFO, "User [%s] successfully updated favorite job list", current_user.id)
+
+
+@user_router.put(
+    "/favorite-expert/{expert_uuid}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Job not found"},
+    },
+)
+def update_favorite_experts(
+    expert_uuid: str,
+    db: Session = Depends(get_db),
+    current_user: m.User = Depends(get_current_user),
+):
+    """Add experts to the favorite list"""
+
+    expert = db.scalar(sa.select(m.User).where(m.User.uuid == expert_uuid))
+
+    if not expert:
+        log(log.ERROR, "User [%s] not found", expert_uuid)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    if expert.id == current_user.id:
+        log(log.ERROR, "User [%s] can't add himself to favorite list", current_user.id)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User can't add himself to favorite list")
+
+    if expert in current_user.favorite_experts:
+        log(log.INFO, "User [%s] already has expert [%s] in favorite list", current_user.id, expert_uuid)
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Expert already in favorite list")
+
+    current_user.favorite_experts.append(expert)
+
+    db.commit()
+    log(log.INFO, "User [%s] successfully updated favorite experts list", current_user.id)
+
+
+@user_router.delete(
+    "/favorite-expert/{expert_uuid}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Job not found"},
+    },
+)
+def delete_favorite_experts(
+    expert_uuid: str,
+    db: Session = Depends(get_db),
+    current_user: m.User = Depends(get_current_user),
+):
+    """Remove experts from favorite list"""
+
+    expert = db.scalar(sa.select(m.User).where(m.User.uuid == expert_uuid))
+
+    if not expert:
+        log(log.ERROR, "User [%s] not found", expert_uuid)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    if expert.id == current_user.id:
+        log(log.ERROR, "User [%s] can't add himself to favorite list", current_user.id)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User can't add himself to favorite list")
+
+    if expert not in current_user.favorite_experts:
+        log(log.INFO, "User [%s] doesn't have expert [%s] in favorite list", current_user.id, expert_uuid)
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Expert not in favorite list")
+
+    current_user.favorite_experts.remove(expert)
+
+    db.commit()
+    log(log.INFO, "User [%s] successfully updated favorite experts list", current_user.id)
