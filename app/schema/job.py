@@ -73,6 +73,7 @@ class JobInfo(BaseModel):
     files: list[str]
     is_volunteer: bool
     is_negotiable: bool
+    worker_uuid: str | None = None
 
 
 class JobOutList(BaseModel):
@@ -246,6 +247,7 @@ class JobOutput(BaseModel):
     created_at: datetime
     location: LocationStrings | None = None
     services: list[Service]
+    is_favorite: bool
 
     model_config = ConfigDict(
         from_attributes=True,

@@ -74,6 +74,7 @@ def get_job(
         files=files,
         is_volunteer=job.is_volunteer,
         is_negotiable=job.is_negotiable,
+        worker_uuid=job.worker.uuid if job.worker else None,
     )
 
 
