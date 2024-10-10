@@ -309,7 +309,7 @@ def test_update_favorite_jobs(client: TestClient, auth_header: dict[str, str], d
     assert job not in another_user.favorite_jobs
 
     # Remove from favorite
-    response = client.put(f"/api/users/favorite-job/{job.uuid}", headers=auth_header)
+    response = client.delete(f"/api/users/favorite-job/{job.uuid}", headers=auth_header)
     assert response.status_code == status.HTTP_204_NO_CONTENT
     assert job not in mock_current_user.favorite_jobs
 
@@ -348,7 +348,7 @@ def test_update_favorite_experts(client: TestClient, auth_header: dict[str, str]
     assert expert not in another_user.favorite_experts
 
     # Remove from favorite
-    response = client.put(f"/api/users/favorite-expert/{expert.uuid}", headers=auth_header)
+    response = client.delete(f"/api/users/favorite-expert/{expert.uuid}", headers=auth_header)
     assert response.status_code == status.HTTP_204_NO_CONTENT
     assert expert not in mock_current_user.favorite_experts
 
