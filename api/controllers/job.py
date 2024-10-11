@@ -279,7 +279,7 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
         location=job_location,
         address=job_address,
         services=service_names,
-        onwer_name=job_owner.fullname,
+        owner_name=job_owner.fullname,
         owner_uuid=job_owner.uuid,
         owner_average_rate=job_owner.average_rate,
         owner_rates_count=job_owner.owned_rates_count,

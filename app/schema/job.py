@@ -81,7 +81,7 @@ class JobInfo(BaseModel):
     location: str
     address: str | None = None
     services: list[str]
-    onwer_name: str
+    owner_name: str
     owner_uuid: str
     owner_average_rate: float
     owner_rates_count: int
