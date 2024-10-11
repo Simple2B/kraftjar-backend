@@ -8,6 +8,7 @@ from app.database import db
 from app import schema as s
 
 from .job_services import job_services
+from .job_applications import job_applications
 
 from .utils import ModelMixin
 from typing import TYPE_CHECKING
@@ -17,6 +18,7 @@ if TYPE_CHECKING:
     from .address import Address
     from .user import User
     from .service import Service
+    from .application import Application
 
 
 class Job(db.Model, ModelMixin):
@@ -82,6 +84,8 @@ class Job(db.Model, ModelMixin):
         foreign_keys=[worker_id],
         backref="jobs",
     )
+
+    applications: orm.Mapped[list["Application"]] = orm.relationship(secondary=job_applications)
 
     def __repr__(self):
         return f"<Job {self.title} - {self.uuid}>"
