@@ -214,13 +214,15 @@ def create_out_search_jobs(db_jobs: Sequence[m.Job], lang: Language, current_use
 
 
 def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.JobInfo:
+    ALL_UKRAINE = "Вся Україна" if lang == Language.UA else "All Ukraine"
+
     service_names = []
 
     if job.services:
         for service in job.services:
             service_names.append(service.name_ua if lang == Language.UA else service.name_en)
 
-    job_location = "Вся Україна"
+    job_location = ALL_UKRAINE
     if job.location:
         job_location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
 
@@ -242,7 +244,7 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
                 log(log.ERROR, "Worker [%s] not found", application.worker_id)
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Worker not found")
 
-            app_location = "Вся Україна"
+            app_location = ALL_UKRAINE
 
             if worker.locations:
                 app_location = (
