@@ -232,3 +232,65 @@ def test_get_jobs_by_query_params(client: TestClient, auth_header: dict[str, str
     query_data = s.JobsIn(query="Тест")
     response = client.get(f"/api/jobs?query={query_data.query}", headers=auth_header)
     assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db: Session):
+    job: m.Job | None = db.scalar(
+        sa.select(m.Job).where(m.Job.worker_id.is_(None), m.Job.status == s.JobStatus.PENDING.value)
+    )
+    assert job
+
+    # Create application
+    app_data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=1, job_id=job.id)
+    response = client.post("/api/applications", headers=auth_header, content=app_data.model_dump_json())
+    assert response.status_code == status.HTTP_201_CREATED
+
+    # Test pending jobs
+    response = client.get(
+        "/api/jobs/jobs-by-status/", params={"job_status": s.JobStatus.PENDING.value}, headers=auth_header
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = s.JobsByStatusList.model_validate(response.json())
+    assert data.owner
+    assert data.worker
+    assert not data.archived
+
+    # Test in progress jobs
+    response = client.get(
+        "/api/jobs/jobs-by-status/", params={"job_status": s.JobStatus.IN_PROGRESS.value}, headers=auth_header
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = s.JobsByStatusList.model_validate(response.json())
+    assert data.owner
+    assert data.worker
+    assert not data.archived
+
+    # Test confirmaion jobs (not completed yet == in progress)
+    response = client.get(
+        "/api/jobs/jobs-by-status/", params={"job_status": s.JobStatus.ON_CONFIRMATION.value}, headers=auth_header
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = s.JobsByStatusList.model_validate(response.json())
+    assert data.owner
+    assert data.worker
+    assert not data.archived
+
+    # Test archived jobs
+    response = client.get(
+        "/api/jobs/jobs-by-status/", params={"job_status": s.JobStatus.CANCELED.value}, headers=auth_header
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = s.JobsByStatusList.model_validate(response.json())
+    assert not data.owner
+    assert not data.worker
+    assert data.archived
+
+    response = client.get(
+        "/api/jobs/jobs-by-status/", params={"job_status": s.JobStatus.COMPLETED.value}, headers=auth_header
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = s.JobsByStatusList.model_validate(response.json())
+    assert not data.owner
+    assert not data.worker
+    assert data.archived

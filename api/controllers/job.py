@@ -4,6 +4,7 @@ from fastapi import HTTPException, status
 import sqlalchemy as sa
 from sqlalchemy.orm import Session, aliased
 
+from api.utils import format_location_string
 import app.models as m
 import app.schema as s
 from app.schema.language import Language
@@ -293,3 +294,127 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
         worker_uuid=job.worker.uuid if job.worker else None,
         applications=applications,
     )
+
+
+def get_pending_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Language, db: Session):
+    as_owner_jobs = []
+    as_worker_jobs = []
+
+    for job in db_jobs:
+        if job.owner_id == current_user.id and job.status == s.JobStatus.PENDING.value:
+            job_location, job_address = format_location_string(job.location, job.address, lang)
+
+            as_owner_jobs.append(
+                s.JobByStatus(
+                    uuid=job.uuid,
+                    title=job.title,
+                    location=job_location,
+                    address=job_address,
+                    start_date=job.start_date,
+                    end_date=job.end_date,
+                    cost=job.cost,
+                )
+            )
+
+    applications = db.scalars(
+        sa.select(m.Application).where(
+            m.Application.worker_id == current_user.id, m.Application.status == m.ApplicationStatus.PENDING
+        )
+    ).all()
+
+    if applications:
+        app_jobs_ids = [a.job_id for a in applications]
+        jobs = [job for job in db_jobs if job.id in app_jobs_ids]
+
+        for job in jobs:
+            job_location, job_address = format_location_string(job.location, job.address, lang)
+
+            as_worker_jobs.append(
+                s.JobByStatus(
+                    uuid=job.uuid,
+                    title=job.title,
+                    location=job_location,
+                    address=job_address,
+                    start_date=job.start_date,
+                    end_date=job.end_date,
+                    cost=job.cost,
+                )
+            )
+
+    return (as_owner_jobs, as_worker_jobs)
+
+
+def get_in_progress_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Language):
+    as_owner_jobs = []
+    as_worker_jobs = []
+
+    for job in db_jobs:
+        if (
+            job.owner_id == current_user.id
+            and job.status == s.JobStatus.IN_PROGRESS.value
+            or job.status == s.JobStatus.ON_CONFIRMATION.value
+        ):
+            job_location, job_address = format_location_string(job.location, job.address, lang)
+
+            as_owner_jobs.append(
+                s.JobByStatus(
+                    uuid=job.uuid,
+                    title=job.title,
+                    location=job_location,
+                    address=job_address,
+                    start_date=job.start_date,
+                    end_date=job.end_date,
+                    cost=job.cost,
+                )
+            )
+
+    for job in db_jobs:
+        if (
+            job.worker_id == current_user.id
+            and job.status == s.JobStatus.IN_PROGRESS.value
+            or job.status == s.JobStatus.ON_CONFIRMATION.value
+        ):
+            job_location, job_address = format_location_string(job.location, job.address, lang)
+
+            as_worker_jobs.append(
+                s.JobByStatus(
+                    uuid=job.uuid,
+                    title=job.title,
+                    location=job_location,
+                    address=job_address,
+                    start_date=job.start_date,
+                    end_date=job.end_date,
+                    cost=job.cost,
+                )
+            )
+
+    return (as_owner_jobs, as_worker_jobs)
+
+
+def get_archived_jobs(db: Session, current_user: m.User, lang: Language, archived_statuses: list[str]):
+    archived_jobs = []
+
+    archived_db_jobs = db.scalars(
+        sa.select(m.Job).where(
+            sa.or_(m.Job.owner_id == current_user.id, m.Job.worker_id == current_user.id),
+            sa.or_(m.Job.is_deleted.is_(True), m.Job.status.in_(archived_statuses)),
+        )
+    ).all()
+
+    if archived_db_jobs:
+        for job in archived_db_jobs:
+            job_location, job_address = format_location_string(job.location, job.address, lang)
+
+            archived_jobs.append(
+                s.JobByStatus(
+                    uuid=job.uuid,
+                    title=job.title,
+                    location=job_location,
+                    address=job_address,
+                    start_date=job.start_date,
+                    end_date=job.end_date,
+                    cost=job.cost,
+                )
+            )
+
+    return archived_jobs

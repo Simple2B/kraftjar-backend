@@ -83,6 +83,48 @@ def get_jobs(
     return s.JobsOut(items=jobs_out)
 
 
+@job_router.get(
+    "/jobs-by-status/",
+    status_code=status.HTTP_200_OK,
+    response_model=s.JobsByStatusList,
+    responses={status.HTTP_404_NOT_FOUND: {"description": "Jobs not found"}},
+)
+def get_jobs_by_status(
+    job_status: s.JobStatus = s.JobStatus.PENDING,
+    lang: Language = Language.UA,
+    db: Session = Depends(get_db),
+    current_user: m.User = Depends(get_current_user),
+):
+    """Get jobs by status"""
+    # TODO: add search by query
+
+    db_jobs = db.scalars(
+        sa.select(m.Job).where(
+            m.Job.is_deleted.is_(False),
+        )
+    ).all()
+
+    if not db_jobs:
+        log(log.ERROR, "Jobs not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Jobs not found")
+
+    as_owner_jobs: list[s.JobByStatus] = []
+    as_worker_jobs: list[s.JobByStatus] = []
+    archived_jobs: list[s.JobByStatus] = []
+
+    if job_status == s.JobStatus.PENDING:
+        as_owner_jobs, as_worker_jobs = c.get_pending_jobs(db_jobs, current_user, lang, db)
+
+    if job_status == s.JobStatus.IN_PROGRESS or job_status == s.JobStatus.ON_CONFIRMATION:
+        as_owner_jobs, as_worker_jobs = c.get_in_progress_jobs(db_jobs, current_user, lang)
+
+    archived_statuses = [s.JobStatus.COMPLETED.value, s.JobStatus.CANCELED.value]
+    if job_status.value in archived_statuses:
+        archived_jobs = c.get_archived_jobs(db, current_user, lang, archived_statuses)
+
+    return s.JobsByStatusList(owner=as_owner_jobs, worker=as_worker_jobs, archived=archived_jobs)
+
+
 @job_router.post(
     "/",
     status_code=status.HTTP_201_CREATED,

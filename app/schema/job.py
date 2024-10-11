@@ -276,3 +276,27 @@ class JobOutput(BaseModel):
 
 class JobsOut(BaseModel):
     items: list[JobOutput]
+
+
+class JobByStatus(BaseModel):
+    uuid: str
+    title: str
+    location: str
+    address: str | None = None
+    start_date: datetime | None
+    end_date: datetime | None = None
+    cost: float | None = None
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class JobsByStatusList(BaseModel):
+    owner: list[JobByStatus]
+    worker: list[JobByStatus]
+    archived: list[JobByStatus]
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
