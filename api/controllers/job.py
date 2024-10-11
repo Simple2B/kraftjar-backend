@@ -4,6 +4,7 @@ from fastapi import HTTPException, status
 import sqlalchemy as sa
 from sqlalchemy.orm import Session, aliased
 
+from api.utils import format_location_string
 import app.models as m
 import app.schema as s
 from app.schema.language import Language
@@ -296,23 +297,12 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
 
 
 def get_pending_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Language, db: Session):
-    ALL_UKRAINE = "Вся Україна" if lang == Language.UA else "All Ukraine"
-
     as_owner_jobs = []
     as_worker_jobs = []
 
     for job in db_jobs:
         if job.owner_id == current_user.id and job.status == s.JobStatus.PENDING.value:
-            job_location = ALL_UKRAINE
-
-            if job.location:
-                job_location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
-
-            job_address = None
-            if job.address:
-                lang_name = job.address.line1 if lang == Language.UA else job.address.line2
-                lang_type = job.address.street_type_ua if lang == Language.UA else job.address.street_type_en
-                job_address = f"{lang_type} {lang_name}"
+            job_location, job_address = format_location_string(job.location, job.address, lang)
 
             as_owner_jobs.append(
                 s.JobByStatus(
@@ -337,16 +327,7 @@ def get_pending_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Langu
         jobs = [job for job in db_jobs if job.id in app_jobs_ids]
 
         for job in jobs:
-            job_location = ALL_UKRAINE
-
-            if job.location:
-                job_location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
-
-            job_address = None
-            if job.address:
-                lang_name = job.address.line1 if lang == Language.UA else job.address.line2
-                lang_type = job.address.street_type_ua if lang == Language.UA else job.address.street_type_en
-                job_address = f"{lang_type} {lang_name}"
+            job_location, job_address = format_location_string(job.location, job.address, lang)
 
             as_worker_jobs.append(
                 s.JobByStatus(
@@ -364,8 +345,6 @@ def get_pending_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Langu
 
 
 def get_in_progress_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Language):
-    ALL_UKRAINE = "Вся Україна" if lang == Language.UA else "All Ukraine"
-
     as_owner_jobs = []
     as_worker_jobs = []
 
@@ -375,16 +354,7 @@ def get_in_progress_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: L
             and job.status == s.JobStatus.IN_PROGRESS.value
             or job.status == s.JobStatus.ON_CONFIRMATION.value
         ):
-            job_location = ALL_UKRAINE
-
-            if job.location:
-                job_location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
-
-            job_address = None
-            if job.address:
-                lang_name = job.address.line1 if lang == Language.UA else job.address.line2
-                lang_type = job.address.street_type_ua if lang == Language.UA else job.address.street_type_en
-                job_address = f"{lang_type} {lang_name}"
+            job_location, job_address = format_location_string(job.location, job.address, lang)
 
             as_owner_jobs.append(
                 s.JobByStatus(
@@ -404,16 +374,7 @@ def get_in_progress_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: L
             and job.status == s.JobStatus.IN_PROGRESS.value
             or job.status == s.JobStatus.ON_CONFIRMATION.value
         ):
-            job_location = ALL_UKRAINE
-
-            if job.location:
-                job_location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
-
-            job_address = None
-            if job.address:
-                lang_name = job.address.line1 if lang == Language.UA else job.address.line2
-                lang_type = job.address.street_type_ua if lang == Language.UA else job.address.street_type_en
-                job_address = f"{lang_type} {lang_name}"
+            job_location, job_address = format_location_string(job.location, job.address, lang)
 
             as_worker_jobs.append(
                 s.JobByStatus(
@@ -431,8 +392,6 @@ def get_in_progress_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: L
 
 
 def get_archived_jobs(db: Session, current_user: m.User, lang: Language, archived_statuses: list[str]):
-    ALL_UKRAINE = "Вся Україна" if lang == Language.UA else "All Ukraine"
-
     archived_jobs = []
 
     archived_db_jobs = db.scalars(
@@ -444,16 +403,7 @@ def get_archived_jobs(db: Session, current_user: m.User, lang: Language, archive
 
     if archived_db_jobs:
         for job in archived_db_jobs:
-            job_location = ALL_UKRAINE
-
-            if job.location:
-                job_location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
-
-            job_address = None
-            if job.address:
-                lang_name = job.address.line1 if lang == Language.UA else job.address.line2
-                lang_type = job.address.street_type_ua if lang == Language.UA else job.address.street_type_en
-                job_address = f"{lang_type} {lang_name}"
+            job_location, job_address = format_location_string(job.location, job.address, lang)
 
             archived_jobs.append(
                 s.JobByStatus(
