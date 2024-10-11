@@ -39,43 +39,7 @@ def get_job(
         log(log.ERROR, "Owner [%s] not found", job.owner_id)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Owner not found")
 
-    service_names = []
-    if job.services:
-        for service in job.services:
-            service_names.append(service.name_ua if lang == Language.UA else service.name_en)
-
-    location = "Вся Україна"
-    if job.location:
-        location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
-
-    address = None
-    if job.address:
-        lang_name = job.address.line1 if lang == Language.UA else job.address.line2
-        lang_type = job.address.street_type_ua if lang == Language.UA else job.address.street_type_en
-        address = f"{lang_type} {lang_name}"
-
-    # TODO: add files
-    files: list[str] = []
-
-    return s.JobInfo(
-        uuid=job.uuid,
-        title=job.title,
-        location=location,
-        address=address,
-        services=service_names,
-        onwer_name=job_owner.fullname,
-        owner_uuid=job_owner.uuid,
-        owner_average_rate=job_owner.average_rate,
-        owner_rates_count=job_owner.owned_rates_count,
-        start_date=job.start_date,
-        end_date=job.end_date,
-        cost=job.cost,
-        description=job.description,
-        files=files,
-        is_volunteer=job.is_volunteer,
-        is_negotiable=job.is_negotiable,
-        worker_uuid=job.worker.uuid if job.worker else None,
-    )
+    return c.get_job(job, lang, db, job_owner)
 
 
 @job_router.get(

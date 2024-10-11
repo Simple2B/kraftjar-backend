@@ -1,4 +1,5 @@
 from typing import Sequence
+from fastapi import HTTPException, status
 
 import sqlalchemy as sa
 from sqlalchemy.orm import Session, aliased
@@ -7,6 +8,7 @@ import app.models as m
 import app.schema as s
 from app.schema.language import Language
 from config import config
+from app.logger import log
 
 from app.utilities import pop_keys
 
@@ -209,3 +211,85 @@ def create_out_search_jobs(db_jobs: Sequence[m.Job], lang: Language, current_use
             )
         )
     return jobs
+
+
+def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.JobInfo:
+    ALL_UKRAINE = "Вся Україна" if lang == Language.UA else "All Ukraine"
+
+    service_names = []
+
+    if job.services:
+        for service in job.services:
+            service_names.append(service.name_ua if lang == Language.UA else service.name_en)
+
+    job_location = ALL_UKRAINE
+    if job.location:
+        job_location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
+
+    job_address = None
+    if job.address:
+        lang_name = job.address.line1 if lang == Language.UA else job.address.line2
+        lang_type = job.address.street_type_ua if lang == Language.UA else job.address.street_type_en
+        job_address = f"{lang_type} {lang_name}"
+
+    # TODO: add files
+    files: list[str] = []
+
+    applications: list[s.JobApplication] = []
+
+    if job.applications:
+        for application in job.applications:
+            worker = db.scalar(sa.select(m.User).where(m.User.id == application.worker_id))
+            if not worker:
+                log(log.ERROR, "Worker [%s] not found", application.worker_id)
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Worker not found")
+
+            app_location = ALL_UKRAINE
+
+            if worker.locations:
+                app_location = (
+                    worker.locations[0].region[0].name_ua
+                    if lang == Language.UA
+                    else worker.locations[0].region[0].name_en
+                )
+
+            services = []
+            if worker.services:
+                for service in worker.services:
+                    services.append(service.name_ua if lang == Language.UA else service.name_en)
+
+            applications.append(
+                s.JobApplication(
+                    uuid=application.uuid,
+                    owner=s.JobApplicationOwner(
+                        uuid=worker.uuid,
+                        fullname=worker.fullname,
+                        location=app_location,
+                        address=None,
+                        services=services,
+                        owned_rates_count=round(worker.owned_rates_count, 1),
+                        average_rate=round(worker.average_rate, 1),
+                    ),
+                )
+            )
+
+    return s.JobInfo(
+        uuid=job.uuid,
+        title=job.title,
+        location=job_location,
+        address=job_address,
+        services=service_names,
+        owner_name=job_owner.fullname,
+        owner_uuid=job_owner.uuid,
+        owner_average_rate=job_owner.average_rate,
+        owner_rates_count=job_owner.owned_rates_count,
+        start_date=job.start_date,
+        end_date=job.end_date,
+        cost=job.cost,
+        description=job.description,
+        files=files,
+        is_volunteer=job.is_volunteer,
+        is_negotiable=job.is_negotiable,
+        worker_uuid=job.worker.uuid if job.worker else None,
+        applications=applications,
+    )

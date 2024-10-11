@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 import app.models as m
 import app.schema as s
-from typing import Sequence, cast
+
 from api.dependency import get_current_user
 from app.database import get_db
 from app.logger import log
@@ -29,20 +29,6 @@ def get_application(
     return application
 
 
-@application_router.get("/", status_code=status.HTTP_200_OK, response_model=s.ApplicationOutList)
-def get_applications(
-    job_id: int,
-    db: Session = Depends(get_db),
-    current_user: m.User = Depends(get_current_user),
-):
-    """Get applications list by job id"""
-
-    query = sa.select(m.Application).where(m.Application.is_deleted.is_(False), m.Application.job_id == job_id)
-
-    applications: Sequence[m.Application] = db.scalars(query).all()
-    return s.ApplicationOutList(data=cast(list, applications))
-
-
 @application_router.post("/", status_code=status.HTTP_201_CREATED, response_model=s.ApplicationOut)
 def create_application(
     data: s.ApplicationIn,
@@ -63,6 +49,11 @@ def create_application(
         log(log.ERROR, "User [%s] is not allowed to create application", current_user.id)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User is not allowed to create application")
 
+    applications_ids = [app.worker_id for app in job.applications]
+    if data.worker_id in applications_ids:
+        log(log.ERROR, "User [%s] already applied to this job", data.worker_id)
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User already applied to this job")
+
     # worker can't invite himself
     is_worker_inviting = current_user.id == data.worker_id and data.type == m.ApplicationType.INVITE
     # owner can't apply to his job
@@ -79,8 +70,12 @@ def create_application(
         job_id=job.id,
         type=data.type,
     )
+
     db.add(application)
+    job.applications.append(application)
+
     db.commit()
+
     log(log.INFO, "Created application [%s] for job [%s]", application.id, job.id)
     return application
 
@@ -146,29 +141,35 @@ def update_application(
 
 
 @application_router.delete(
-    "/{application_id}",
+    "/{application_uuid}",
     status_code=status.HTTP_204_NO_CONTENT,
     responses={
         status.HTTP_404_NOT_FOUND: {"description": "Application not found"},
     },
 )
 def delete_application(
-    application_id: int,
+    application_uuid: str,
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
     application: m.Application | None = db.scalar(
-        sa.select(m.Application).where(m.Application.is_deleted.is_(False), m.Application.id == application_id)
+        sa.select(m.Application).where(m.Application.is_deleted.is_(False), m.Application.uuid == application_uuid)
     )
 
     if not application:
-        log(log.ERROR, "Application [%s] not found", application_id)
+        log(log.ERROR, "Application [%s] not found", application_uuid)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Application not found")
 
     if application.worker_id != current_user.id:
         log(log.ERROR, "User [%s] is not allowed to delete application [%s]", current_user.id, application.id)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User is not allowed to delete application")
 
+    job = db.scalar(sa.select(m.Job).where(m.Job.id == application.job_id))
+    if not job:
+        log(log.ERROR, "Job [%s] not found", application.job_id)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
+
     application.is_deleted = True
+    job.applications.remove(application)
     db.commit()
-    log(log.INFO, "Worker [%s] successfully deleted application [%s]", current_user.id, application_id)
+    log(log.INFO, "Worker [%s] successfully deleted application [%s]", current_user.id, application.id)

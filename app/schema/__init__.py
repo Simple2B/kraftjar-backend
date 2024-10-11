@@ -22,6 +22,8 @@ from .job import (
     JobsOrderBy,
     JobsIn,
     JobInfo,
+    JobApplicationOwner,
+    JobApplication,
 )
 from .application import (
     ApplicationIn,

@@ -56,13 +56,32 @@ class JobOut(BaseJob):
     service: Service | None = None
 
 
+class JobApplicationOwner(BaseModel):
+    uuid: str
+    fullname: str
+    location: str
+    address: str | None = None
+    services: list[str]
+    owned_rates_count: int
+    average_rate: float
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class JobApplication(BaseModel):
+    uuid: str
+    owner: JobApplicationOwner
+
+
 class JobInfo(BaseModel):
     uuid: str
     title: str
     location: str
     address: str | None = None
     services: list[str]
-    onwer_name: str
+    owner_name: str
     owner_uuid: str
     owner_average_rate: float
     owner_rates_count: int
@@ -74,6 +93,7 @@ class JobInfo(BaseModel):
     is_volunteer: bool
     is_negotiable: bool
     worker_uuid: str | None = None
+    applications: list[JobApplication]
 
 
 class JobOutList(BaseModel):
