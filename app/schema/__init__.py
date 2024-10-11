@@ -24,6 +24,8 @@ from .job import (
     JobInfo,
     JobApplicationOwner,
     JobApplication,
+    JobByStatus,
+    JobsByStatusList,
 )
 from .application import (
     ApplicationIn,

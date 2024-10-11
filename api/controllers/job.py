@@ -293,3 +293,178 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
         worker_uuid=job.worker.uuid if job.worker else None,
         applications=applications,
     )
+
+
+def get_pending_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Language, db: Session):
+    ALL_UKRAINE = "Вся Україна" if lang == Language.UA else "All Ukraine"
+
+    as_owner_jobs = []
+    as_worker_jobs = []
+
+    for job in db_jobs:
+        if job.owner_id == current_user.id and job.status == s.JobStatus.PENDING.value:
+            job_location = ALL_UKRAINE
+
+            if job.location:
+                job_location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
+
+            job_address = None
+            if job.address:
+                lang_name = job.address.line1 if lang == Language.UA else job.address.line2
+                lang_type = job.address.street_type_ua if lang == Language.UA else job.address.street_type_en
+                job_address = f"{lang_type} {lang_name}"
+
+            as_owner_jobs.append(
+                s.JobByStatus(
+                    uuid=job.uuid,
+                    title=job.title,
+                    location=job_location,
+                    address=job_address,
+                    start_date=job.start_date,
+                    end_date=job.end_date,
+                    cost=job.cost,
+                )
+            )
+
+    applications = db.scalars(
+        sa.select(m.Application).where(
+            m.Application.worker_id == current_user.id, m.Application.status == m.ApplicationStatus.PENDING
+        )
+    ).all()
+
+    if applications:
+        app_jobs_ids = [a.job_id for a in applications]
+        jobs = [job for job in db_jobs if job.id in app_jobs_ids]
+
+        for job in jobs:
+            job_location = ALL_UKRAINE
+
+            if job.location:
+                job_location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
+
+            job_address = None
+            if job.address:
+                lang_name = job.address.line1 if lang == Language.UA else job.address.line2
+                lang_type = job.address.street_type_ua if lang == Language.UA else job.address.street_type_en
+                job_address = f"{lang_type} {lang_name}"
+
+            as_worker_jobs.append(
+                s.JobByStatus(
+                    uuid=job.uuid,
+                    title=job.title,
+                    location=job_location,
+                    address=job_address,
+                    start_date=job.start_date,
+                    end_date=job.end_date,
+                    cost=job.cost,
+                )
+            )
+
+    return (as_owner_jobs, as_worker_jobs)
+
+
+def get_in_progress_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Language):
+    ALL_UKRAINE = "Вся Україна" if lang == Language.UA else "All Ukraine"
+
+    as_owner_jobs = []
+    as_worker_jobs = []
+
+    for job in db_jobs:
+        if (
+            job.owner_id == current_user.id
+            and job.status == s.JobStatus.IN_PROGRESS.value
+            or job.status == s.JobStatus.ON_CONFIRMATION.value
+        ):
+            job_location = ALL_UKRAINE
+
+            if job.location:
+                job_location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
+
+            job_address = None
+            if job.address:
+                lang_name = job.address.line1 if lang == Language.UA else job.address.line2
+                lang_type = job.address.street_type_ua if lang == Language.UA else job.address.street_type_en
+                job_address = f"{lang_type} {lang_name}"
+
+            as_owner_jobs.append(
+                s.JobByStatus(
+                    uuid=job.uuid,
+                    title=job.title,
+                    location=job_location,
+                    address=job_address,
+                    start_date=job.start_date,
+                    end_date=job.end_date,
+                    cost=job.cost,
+                )
+            )
+
+    for job in db_jobs:
+        if (
+            job.worker_id == current_user.id
+            and job.status == s.JobStatus.IN_PROGRESS.value
+            or job.status == s.JobStatus.ON_CONFIRMATION.value
+        ):
+            job_location = ALL_UKRAINE
+
+            if job.location:
+                job_location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
+
+            job_address = None
+            if job.address:
+                lang_name = job.address.line1 if lang == Language.UA else job.address.line2
+                lang_type = job.address.street_type_ua if lang == Language.UA else job.address.street_type_en
+                job_address = f"{lang_type} {lang_name}"
+
+            as_worker_jobs.append(
+                s.JobByStatus(
+                    uuid=job.uuid,
+                    title=job.title,
+                    location=job_location,
+                    address=job_address,
+                    start_date=job.start_date,
+                    end_date=job.end_date,
+                    cost=job.cost,
+                )
+            )
+
+    return (as_owner_jobs, as_worker_jobs)
+
+
+def get_archived_jobs(db: Session, current_user: m.User, lang: Language, archived_statuses: list[str]):
+    ALL_UKRAINE = "Вся Україна" if lang == Language.UA else "All Ukraine"
+
+    archived_jobs = []
+
+    archived_db_jobs = db.scalars(
+        sa.select(m.Job).where(
+            sa.or_(m.Job.owner_id == current_user.id, m.Job.worker_id == current_user.id),
+            sa.or_(m.Job.is_deleted.is_(True), m.Job.status.in_(archived_statuses)),
+        )
+    ).all()
+
+    if archived_db_jobs:
+        for job in archived_db_jobs:
+            job_location = ALL_UKRAINE
+
+            if job.location:
+                job_location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
+
+            job_address = None
+            if job.address:
+                lang_name = job.address.line1 if lang == Language.UA else job.address.line2
+                lang_type = job.address.street_type_ua if lang == Language.UA else job.address.street_type_en
+                job_address = f"{lang_type} {lang_name}"
+
+            archived_jobs.append(
+                s.JobByStatus(
+                    uuid=job.uuid,
+                    title=job.title,
+                    location=job_location,
+                    address=job_address,
+                    start_date=job.start_date,
+                    end_date=job.end_date,
+                    cost=job.cost,
+                )
+            )
+
+    return archived_jobs
