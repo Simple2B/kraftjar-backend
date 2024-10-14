@@ -8,6 +8,7 @@ from mypy_boto3_s3 import S3Client
 
 import api.controllers as c
 
+from api.routes import job
 from api.utils import get_file_extension
 import app.models as m
 import app.schema as s
@@ -114,16 +115,21 @@ def get_jobs_by_status(
     if job_status == s.JobStatus.PENDING:
         as_owner_jobs, as_worker_jobs = c.get_pending_jobs(db_jobs, current_user, lang, db)
 
-    # get active jobs (in progress and on confirmation)
+    # get active jobs (in progress, approved and on confirmation)
     if job_status == s.JobStatus.IN_PROGRESS:
-        as_owner_jobs, as_worker_jobs = c.get_in_progress_jobs(db_jobs, current_user, lang)
+        active_jobs = db.scalars(
+            sa.select(m.Job).where(
+                m.Job.is_deleted.is_(False),
+                m.Job.status.in_(
+                    [s.JobStatus.IN_PROGRESS.value, s.JobStatus.APPROVED.value, s.JobStatus.ON_CONFIRMATION.value]
+                ),
+            )
+        ).all()
+        as_owner_jobs, as_worker_jobs = c.get_in_progress_jobs(active_jobs, current_user, lang)
 
     # get archive jobs (completed and canceled)
     if job_status == s.JobStatus.COMPLETED:
-        # archived_statuses = [s.JobStatus.COMPLETED.value, s.JobStatus.CANCELED.value]
-        # if job_status.value in archived_statuses:
-        #     archived_jobs = c.get_archived_jobs(db, current_user, lang, archived_statuses)
-        as_owner_jobs, as_worker_jobs = c.get_in_progress_jobs(db_jobs, current_user, lang)
+        as_owner_jobs, as_worker_jobs = c.get_archived_jobs(db_jobs, current_user, lang)
 
     return s.JobsByStatusList(owner=as_owner_jobs, worker=as_worker_jobs)
 
