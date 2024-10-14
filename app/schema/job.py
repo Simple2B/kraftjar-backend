@@ -302,3 +302,10 @@ class JobsByStatusList(BaseModel):
     model_config = ConfigDict(
         from_attributes=True,
     )
+
+class JobStatusIn(BaseModel):
+    status: JobStatus
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )

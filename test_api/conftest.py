@@ -111,3 +111,27 @@ def auth_header(
     authorized_header["Authorization"] = f"Bearer {token.access_token}"
 
     yield authorized_header
+
+
+@pytest.fixture
+def worker_header(
+    client: TestClient,
+    db: orm.Session,
+) -> Generator[dict[str, str], None, None]:
+    """Returns an authorized test client for the API"""
+    authorized_header: dict[str, str] = {}
+    user = db.scalar(select(m.User).where(m.User.id == 2))
+    assert user
+
+    response = client.post(
+        "/api/auth/login",
+        data={
+            "username": user.phone,
+            "password": CFG.TEST_USER_PASSWORD,
+        },
+    )
+    assert response.status_code == status.HTTP_200_OK
+    token = s.Token.model_validate(response.json())
+    authorized_header["Authorization"] = f"Bearer {token.access_token}"
+
+    yield authorized_header
