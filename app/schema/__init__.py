@@ -26,6 +26,7 @@ from .job import (
     JobApplication,
     JobByStatus,
     JobsByStatusList,
+    JobStatusIn,
 )
 from .application import (
     ApplicationIn,

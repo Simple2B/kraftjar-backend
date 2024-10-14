@@ -15,9 +15,10 @@ CFG = config()
 
 class JobStatus(enum.Enum):
     PENDING = "pending"
+    APPROVED = "approved"
     IN_PROGRESS = "in_progress"
-    COMPLETED = "completed"
     ON_CONFIRMATION = "on_confirmation"
+    COMPLETED = "completed"
     CANCELED = "canceled"
 
 
@@ -94,6 +95,7 @@ class JobInfo(BaseModel):
     is_negotiable: bool
     worker_uuid: str | None = None
     applications: list[JobApplication]
+    status: JobStatus
 
 
 class JobOutList(BaseModel):
@@ -296,6 +298,14 @@ class JobsByStatusList(BaseModel):
     owner: list[JobByStatus]
     worker: list[JobByStatus]
     archived: list[JobByStatus]
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class JobStatusIn(BaseModel):
+    status: JobStatus
 
     model_config = ConfigDict(
         from_attributes=True,

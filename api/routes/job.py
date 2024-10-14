@@ -378,3 +378,104 @@ def delete_job(
     db.commit()
 
     log(log.INFO, "Job [%s] was deleted", job.id)
+
+
+@job_router.put("/{job_id}/status", status_code=status.HTTP_200_OK, response_model=s.JobStatusIn)
+def put_job_status(
+    job_id: int,
+    job_data: s.JobStatusIn,
+    db: Session = Depends(get_db),
+    current_user: m.User = Depends(get_current_user),
+):
+    job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.id == job_id))
+    if not job:
+        log(log.ERROR, "Job [%s] not found", job_id)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
+
+    if job_data.status == s.JobStatus.PENDING:
+        log(log.ERROR, "[put_job_status] Job [%s] status downgrade to pending is forbidden", job_id)
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Job status downgrade forbidden")
+
+    if job_data.status == s.JobStatus.APPROVED:
+        log(log.ERROR, "[put_job_status] Job [%s] status downgrade to approved is forbidden", job_id)
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Job status downgrade forbidden")
+
+    if job_data.status == s.JobStatus.IN_PROGRESS and job.status == s.JobStatus.APPROVED.value:
+        if current_user.id != job.worker_id:
+            log(
+                log.ERROR,
+                "[put_job_status] User is not a worker for job [%s]. Setting status to in progress forbidden",
+                job_id,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=" User is not a worker for this job. Setting status to in progress forbidden",
+            )
+
+        job.status = s.JobStatus.IN_PROGRESS.value
+        log(log.INFO, "Updated job [%s] status to IN_PROGRESS", job_id)
+        db.commit()
+        return job
+
+    if job_data.status == s.JobStatus.ON_CONFIRMATION and job.status == s.JobStatus.IN_PROGRESS.value:
+        if current_user.id != job.worker_id:
+            log(
+                log.ERROR,
+                "[put_job_status] User is not an worker for job [%s]. Setting status to on confirmation forbidden",
+                job_id,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="User is not an worker for this job. Setting status to on confirmation forbidden",
+            )
+
+        job.status = s.JobStatus.ON_CONFIRMATION.value
+        log(log.INFO, "Updated job [%s] status to ON_CONFIRMATION", job_id)
+
+        db.commit()
+        return job
+
+    if job_data.status == s.JobStatus.COMPLETED and job.status == s.JobStatus.ON_CONFIRMATION.value:
+        if current_user.id != job.owner_id:
+            log(
+                log.ERROR,
+                "[put_job_status] User is not an owner for job [%s]. Setting status to completed forbidden",
+                job_id,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="User is not an owner for this job. Setting status to completed forbidden",
+            )
+
+        job.status = s.JobStatus.COMPLETED.value
+        log(log.INFO, "Updated job [%s] status to COMPLETED", job_id)
+
+        db.commit()
+        return job
+
+    if job_data.status == s.JobStatus.CANCELED:
+        if current_user.id != job.owner_id:
+            log(
+                log.ERROR,
+                "[put_job_status] User is not an owner for job [%s]. Setting status to canceled forbidden",
+                job_id,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="User is not an owner for this job. Setting status to canceled forbidden",
+            )
+
+        job.status = s.JobStatus.CANCELED.value
+        log(log.INFO, "Updated job [%s] status to CANCELED", job_id)
+
+        db.commit()
+        return job
+
+    log(
+        log.ERROR,
+        "Updated job [%s] status. Status mismatch, current [%s], new: [%s]",
+        job_id,
+        job.status,
+        job_data.status,
+    )
+    raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Status mismatch")

@@ -130,9 +130,9 @@ def update_application(
     if data.status == m.ApplicationStatus.ACCEPTED:
         c.reject_other_not_accepted_applications(db, application)
 
-        job.status = s.JobStatus.IN_PROGRESS.value
+        job.status = s.JobStatus.APPROVED.value
         job.worker_id = application.worker_id
-        log(log.INFO, "Updated job [%s] status to IN_PROGRESS", application.job_id)
+        log(log.INFO, "Updated job [%s] status to APPROVED", application.job_id)
 
     db.commit()
     log(log.INFO, "Successfully updated application [%s]", application_id)
