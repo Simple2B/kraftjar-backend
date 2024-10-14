@@ -293,6 +293,7 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     assert not data.owner
     assert not data.worker
 
+
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_update_jobs_status(
     client: TestClient, auth_header: dict[str, str], worker_header: dict[str, str], db: Session
@@ -312,8 +313,11 @@ def test_update_jobs_status(
 
     job = s.JobOut.model_validate(res.json())
 
+    worker: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == 2))
+    assert worker
+
     # Create application
-    app_data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=2, job_id=job.id)
+    app_data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_uuid=worker.uuid, job_uuid=job.uuid)
     response = client.post("/api/applications", headers=worker_header, content=app_data.model_dump_json())
     assert response.status_code == status.HTTP_201_CREATED
 
