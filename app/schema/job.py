@@ -303,6 +303,7 @@ class JobsByStatusList(BaseModel):
         from_attributes=True,
     )
 
+
 class JobStatusIn(BaseModel):
     status: JobStatus
 

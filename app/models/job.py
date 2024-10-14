@@ -89,7 +89,11 @@ class Job(db.Model, ModelMixin):
 
     @property
     def is_in_progress(self) -> bool:
-        return self.status in [s.JobStatus.IN_PROGRESS.value, s.JobStatus.APPROVED.value, s.JobStatus.ON_CONFIRMATION.value]
+        return self.status in [
+            s.JobStatus.IN_PROGRESS.value,
+            s.JobStatus.APPROVED.value,
+            s.JobStatus.ON_CONFIRMATION.value,
+        ]
 
     def __repr__(self):
         return f"<Job {self.title} - {self.uuid}>"

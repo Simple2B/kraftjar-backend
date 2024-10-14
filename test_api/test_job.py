@@ -301,6 +301,10 @@ def test_update_jobs_status(
     client: TestClient, auth_header: dict[str, str], worker_header: dict[str, str], db: Session
 ):
     service = db.scalar(sa.select(m.Service))
+
+    if service is None:
+        raise ValueError("Service not found")
+
     job_in = s.JobIn(
         service_uuid=service.uuid,
         title="Job2",
