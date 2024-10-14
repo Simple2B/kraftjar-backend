@@ -35,27 +35,27 @@ def create_application(
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
-    job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.id == data.job_id))
+    job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.uuid == data.job_uuid))
     if not job:
-        log(log.ERROR, "Job [%s] not found", data.job_id)
+        log(log.ERROR, "Job [%s] not found", data.job_uuid)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
 
-    worker: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == data.worker_id))
+    worker: m.User | None = db.scalar(sa.select(m.User).where(m.User.uuid == data.worker_uuid))
     if not worker:
-        log(log.ERROR, "Worker [%s] not found", data.worker_id)
+        log(log.ERROR, "Worker [%s] not found", data.worker_uuid)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Worker not found")
 
-    if job.owner_id == data.worker_id:
+    if job.owner_id == worker.id:
         log(log.ERROR, "User [%s] is not allowed to create application", current_user.id)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User is not allowed to create application")
 
     applications_ids = [app.worker_id for app in job.applications]
-    if data.worker_id in applications_ids:
-        log(log.ERROR, "User [%s] already applied to this job", data.worker_id)
+    if worker.id in applications_ids:
+        log(log.ERROR, "User [%s] already applied to this job", worker.uuid)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User already applied to this job")
 
     # worker can't invite himself
-    is_worker_inviting = current_user.id == data.worker_id and data.type == m.ApplicationType.INVITE
+    is_worker_inviting = current_user.id == worker.id and data.type == m.ApplicationType.INVITE
     # owner can't apply to his job
     is_owner_applying = current_user.id == job.owner_id and data.type == m.ApplicationType.APPLY
 
@@ -66,7 +66,7 @@ def create_application(
         )
 
     application: m.Application = m.Application(
-        worker_id=data.worker_id,
+        worker_id=worker.id,
         job_id=job.id,
         type=data.type,
     )

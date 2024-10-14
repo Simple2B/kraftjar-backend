@@ -31,8 +31,8 @@ class ApplicationOutList(BaseModel):
 
 class ApplicationIn(BaseModel):
     type: ApplicationType
-    job_id: int
-    worker_id: int
+    job_uuid: str
+    worker_uuid: str
 
     model_config = ConfigDict(
         from_attributes=True,

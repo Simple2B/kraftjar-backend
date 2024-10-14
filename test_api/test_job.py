@@ -241,8 +241,11 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     )
     assert job
 
+    worker: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == 1))
+    assert worker
+
     # Create application
-    app_data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=1, job_id=job.id)
+    app_data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_uuid=worker.uuid, job_uuid=job.uuid)
     response = client.post("/api/applications", headers=auth_header, content=app_data.model_dump_json())
     assert response.status_code == status.HTTP_201_CREATED
 
@@ -254,7 +257,6 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     data = s.JobsByStatusList.model_validate(response.json())
     assert data.owner
     assert data.worker
-    assert not data.archived
 
     # Test in progress jobs
     response = client.get(
@@ -264,7 +266,6 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     data = s.JobsByStatusList.model_validate(response.json())
     assert data.owner
     assert data.worker
-    assert not data.archived
 
     # Test confirmaion jobs (not completed yet == in progress)
     response = client.get(
@@ -274,7 +275,6 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     data = s.JobsByStatusList.model_validate(response.json())
     assert data.owner
     assert data.worker
-    assert not data.archived
 
     # Test archived jobs
     response = client.get(
@@ -284,7 +284,6 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     data = s.JobsByStatusList.model_validate(response.json())
     assert not data.owner
     assert not data.worker
-    assert data.archived
 
     response = client.get(
         "/api/jobs/jobs-by-status/", params={"job_status": s.JobStatus.COMPLETED.value}, headers=auth_header
@@ -293,7 +292,6 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     data = s.JobsByStatusList.model_validate(response.json())
     assert not data.owner
     assert not data.worker
-    assert data.archived
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
@@ -315,8 +313,11 @@ def test_update_jobs_status(
 
     job = s.JobOut.model_validate(res.json())
 
+    worker: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == 2))
+    assert worker
+
     # Create application
-    app_data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=2, job_id=job.id)
+    app_data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_uuid=worker.uuid, job_uuid=job.uuid)
     response = client.post("/api/applications", headers=worker_header, content=app_data.model_dump_json())
     assert response.status_code == status.HTTP_201_CREATED
 

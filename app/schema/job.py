@@ -297,7 +297,6 @@ class JobByStatus(BaseModel):
 class JobsByStatusList(BaseModel):
     owner: list[JobByStatus]
     worker: list[JobByStatus]
-    archived: list[JobByStatus]
 
     model_config = ConfigDict(
         from_attributes=True,

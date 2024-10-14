@@ -33,17 +33,20 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     app.dependency_overrides[get_current_user] = lambda: mock_current_user
 
     # worker can't invite himself
-    data = s.ApplicationIn(type=m.ApplicationType.INVITE, worker_id=main_worker.id, job_id=job.id)
+    data = s.ApplicationIn(type=m.ApplicationType.INVITE, worker_uuid=main_worker.uuid, job_uuid=job.uuid)
     response = client.post("/api/applications", headers=auth_header, content=data.model_dump_json())
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
+    job_worker: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == job.owner_id))
+    assert job_worker
+
     # owner can't apply to his job
-    data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=job.owner_id, job_id=job.id)
+    data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_uuid=job_worker.uuid, job_uuid=job.uuid)
     response = client.post("/api/applications", headers=auth_header, content=data.model_dump_json())
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
     # Create application
-    data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=main_worker.id, job_id=job.id)
+    data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_uuid=main_worker.uuid, job_uuid=job.uuid)
     response = client.post("/api/applications", headers=auth_header, content=data.model_dump_json())
     assert response.status_code == status.HTTP_201_CREATED
     application_data = s.ApplicationOut.model_validate(response.json())
@@ -61,7 +64,7 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     another_worker_one: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == workers_list[1].id))
     assert another_worker_one
 
-    data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=another_worker_one.id, job_id=job.id)
+    data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_uuid=another_worker_one.uuid, job_uuid=job.uuid)
     response = client.post("/api/applications", headers=auth_header, content=data.model_dump_json())
     assert response.status_code == status.HTTP_201_CREATED
     another_app = s.ApplicationOut.model_validate(response.json())
@@ -70,7 +73,7 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     another_worker_two: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == workers_list[2].id))
     assert another_worker_two
 
-    data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=another_worker_two.id, job_id=job.id)
+    data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_uuid=another_worker_two.uuid, job_uuid=job.uuid)
     response = client.post("/api/applications", headers=auth_header, content=data.model_dump_json())
     assert response.status_code == status.HTTP_201_CREATED
     another_app = s.ApplicationOut.model_validate(response.json())
