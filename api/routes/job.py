@@ -110,19 +110,22 @@ def get_jobs_by_status(
 
     as_owner_jobs: list[s.JobByStatus] = []
     as_worker_jobs: list[s.JobByStatus] = []
-    archived_jobs: list[s.JobByStatus] = []
 
     if job_status == s.JobStatus.PENDING:
         as_owner_jobs, as_worker_jobs = c.get_pending_jobs(db_jobs, current_user, lang, db)
 
-    if job_status == s.JobStatus.IN_PROGRESS or job_status == s.JobStatus.ON_CONFIRMATION:
+    # get active jobs (in progress and on confirmation)
+    if job_status == s.JobStatus.IN_PROGRESS:
         as_owner_jobs, as_worker_jobs = c.get_in_progress_jobs(db_jobs, current_user, lang)
 
-    archived_statuses = [s.JobStatus.COMPLETED.value, s.JobStatus.CANCELED.value]
-    if job_status.value in archived_statuses:
-        archived_jobs = c.get_archived_jobs(db, current_user, lang, archived_statuses)
+    # get archive jobs (completed and canceled)
+    if job_status == s.JobStatus.COMPLETED:
+        # archived_statuses = [s.JobStatus.COMPLETED.value, s.JobStatus.CANCELED.value]
+        # if job_status.value in archived_statuses:
+        #     archived_jobs = c.get_archived_jobs(db, current_user, lang, archived_statuses)
+        as_owner_jobs, as_worker_jobs = c.get_in_progress_jobs(db_jobs, current_user, lang)
 
-    return s.JobsByStatusList(owner=as_owner_jobs, worker=as_worker_jobs, archived=archived_jobs)
+    return s.JobsByStatusList(owner=as_owner_jobs, worker=as_worker_jobs)
 
 
 @job_router.post(
