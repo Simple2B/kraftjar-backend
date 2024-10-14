@@ -292,3 +292,139 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     data = s.JobsByStatusList.model_validate(response.json())
     assert not data.owner
     assert not data.worker
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_update_jobs_status(
+    client: TestClient, auth_header: dict[str, str], worker_header: dict[str, str], db: Session
+):
+    service = db.scalar(sa.select(m.Service))
+
+    if service is None:
+        raise ValueError("Service not found")
+
+    job_in = s.JobIn(
+        service_uuid=service.uuid,
+        title="Job2",
+        description="job description",
+    )
+    res = client.post("/api/jobs", headers=auth_header, content=job_in.model_dump_json())
+    assert res.status_code == status.HTTP_201_CREATED
+
+    job = s.JobOut.model_validate(res.json())
+
+    # Create application
+    app_data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_id=2, job_id=job.id)
+    response = client.post("/api/applications", headers=worker_header, content=app_data.model_dump_json())
+    assert response.status_code == status.HTTP_201_CREATED
+
+    # Accept application
+    app = s.ApplicationOut.model_validate(response.json())
+    assert app
+
+    response = client.put(
+        f"/api/applications/{app.id}",
+        headers=auth_header,
+        content=s.ApplicationPutIn(status=m.ApplicationStatus.ACCEPTED).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+
+    # Check false statuses
+    response = client.put(
+        f"/api/jobs/{job.id}/status",
+        headers=worker_header,
+        content=s.JobStatusIn.model_validate({"status": s.JobStatus.ON_CONFIRMATION}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_409_CONFLICT
+
+    response = client.put(
+        f"/api/jobs/{job.id}/status",
+        headers=worker_header,
+        content=s.JobStatusIn.model_validate({"status": s.JobStatus.COMPLETED}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_409_CONFLICT
+
+    # Check false users
+    response = client.put(
+        f"/api/jobs/{job.id}/status",
+        headers=auth_header,
+        content=s.JobStatusIn.model_validate({"status": s.JobStatus.IN_PROGRESS}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_409_CONFLICT
+
+    # Check correct statuses
+    response = client.put(
+        f"/api/jobs/{job.id}/status",
+        headers=worker_header,
+        content=s.JobStatusIn.model_validate({"status": s.JobStatus.IN_PROGRESS}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+
+    # Check false statuses
+    response = client.put(
+        f"/api/jobs/{job.id}/status",
+        headers=worker_header,
+        content=s.JobStatusIn.model_validate({"status": s.JobStatus.COMPLETED}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_409_CONFLICT
+
+    # Check false users
+    response = client.put(
+        f"/api/jobs/{job.id}/status",
+        headers=auth_header,
+        content=s.JobStatusIn.model_validate({"status": s.JobStatus.ON_CONFIRMATION}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_409_CONFLICT
+
+    # Check correct statuses
+    response = client.put(
+        f"/api/jobs/{job.id}/status",
+        headers=worker_header,
+        content=s.JobStatusIn.model_validate({"status": s.JobStatus.ON_CONFIRMATION}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+
+    # Check false users
+    response = client.put(
+        f"/api/jobs/{job.id}/status",
+        headers=worker_header,
+        content=s.JobStatusIn.model_validate({"status": s.JobStatus.COMPLETED}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_409_CONFLICT
+
+    # Check correct statuses
+    response = client.put(
+        f"/api/jobs/{job.id}/status",
+        headers=auth_header,
+        content=s.JobStatusIn.model_validate({"status": s.JobStatus.COMPLETED}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+
+    # Check false statuses
+    response = client.put(
+        f"/api/jobs/{job.id}/status",
+        headers=worker_header,
+        content=s.JobStatusIn.model_validate({"status": s.JobStatus.IN_PROGRESS}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_409_CONFLICT
+
+    response = client.put(
+        f"/api/jobs/{job.id}/status",
+        headers=auth_header,
+        content=s.JobStatusIn.model_validate({"status": s.JobStatus.CANCELED}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+
+    # Check false statuses
+    response = client.put(
+        f"/api/jobs/{job.id}/status",
+        headers=auth_header,
+        content=s.JobStatusIn.model_validate({"status": s.JobStatus.PENDING}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_409_CONFLICT
+
+    response = client.put(
+        f"/api/jobs/{job.id}/status",
+        headers=auth_header,
+        content=s.JobStatusIn.model_validate({"status": s.JobStatus.IN_PROGRESS}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_409_CONFLICT

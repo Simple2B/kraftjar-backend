@@ -293,6 +293,7 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
         is_negotiable=job.is_negotiable,
         worker_uuid=job.worker.uuid if job.worker else None,
         applications=applications,
+        status=s.JobStatus(job.status),
     )
 
 
@@ -349,11 +350,7 @@ def get_in_progress_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: L
     as_worker_jobs = []
 
     for job in db_jobs:
-        if (
-            job.owner_id == current_user.id
-            and job.status == s.JobStatus.IN_PROGRESS.value
-            or job.status == s.JobStatus.ON_CONFIRMATION.value
-        ):
+        if job.owner_id == current_user.id and job.is_in_progress:
             job_location, job_address = format_location_string(job.location, job.address, lang)
 
             as_owner_jobs.append(
@@ -369,11 +366,7 @@ def get_in_progress_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: L
             )
 
     for job in db_jobs:
-        if (
-            job.worker_id == current_user.id
-            and job.status == s.JobStatus.IN_PROGRESS.value
-            or job.status == s.JobStatus.ON_CONFIRMATION.value
-        ):
+        if job.worker_id == current_user.id and job.is_in_progress:
             job_location, job_address = format_location_string(job.location, job.address, lang)
 
             as_worker_jobs.append(

@@ -107,10 +107,10 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
     for application in another_job_applications:
         assert application.status == m.ApplicationStatus.REJECTED
 
-    # accepted job should be in progress
+    # accepted job should be in approved status
     job = db.scalar(sa.select(m.Job).where(m.Job.id == data_app.job_id))
     assert job
-    assert job.status == s.JobStatus.IN_PROGRESS.value
+    assert job.status == s.JobStatus.APPROVED.value
 
     # update application with status REJECTED after ACCEPTED (should fail)
     # current_user == job owner
