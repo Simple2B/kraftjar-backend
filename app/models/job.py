@@ -87,5 +87,9 @@ class Job(db.Model, ModelMixin):
 
     applications: orm.Mapped[list["Application"]] = orm.relationship(secondary=job_applications)
 
+    @property
+    def is_in_progress(self) -> bool:
+        return self.status in [s.JobStatus.IN_PROGRESS.value, s.JobStatus.APPROVED.value, s.JobStatus.ON_CONFIRMATION.value]
+
     def __repr__(self):
         return f"<Job {self.title} - {self.uuid}>"
