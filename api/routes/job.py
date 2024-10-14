@@ -8,7 +8,6 @@ from mypy_boto3_s3 import S3Client
 
 import api.controllers as c
 
-from api.routes import job
 from api.utils import get_file_extension
 import app.models as m
 import app.schema as s
