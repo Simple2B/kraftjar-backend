@@ -396,6 +396,7 @@ def update_favorite_jobs(
     current_user.favorite_jobs.append(job)
 
     db.commit()
+    db.refresh(current_user)
     log(log.INFO, "User [%s] successfully updated favorite job list", current_user.id)
 
 
@@ -430,6 +431,8 @@ def delete_favorite_jobs(
     current_user.favorite_jobs.remove(job)
 
     db.commit()
+    db.refresh(current_user)
+
     log(log.INFO, "User [%s] successfully updated favorite job list", current_user.id)
 
 
@@ -464,6 +467,8 @@ def update_favorite_experts(
     current_user.favorite_experts.append(expert)
 
     db.commit()
+    db.refresh(current_user)
+
     log(log.INFO, "User [%s] successfully updated favorite experts list", current_user.id)
 
 
@@ -498,4 +503,6 @@ def delete_favorite_experts(
     current_user.favorite_experts.remove(expert)
 
     db.commit()
+    db.refresh(current_user)
+
     log(log.INFO, "User [%s] successfully updated favorite experts list", current_user.id)
