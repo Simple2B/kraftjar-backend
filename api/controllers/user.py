@@ -199,6 +199,8 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
 
         last_name = db_user.last_name[0] if db_user.last_name else ""
 
+        fullname = f"{db_user.first_name} {last_name}" if db_user.first_name else db_user.fullname
+
         favorite_jobs.append(
             s.UserFavoriteJob(
                 job_uuid=job.uuid,
@@ -211,7 +213,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
                 is_negotiable=job.is_negotiable,
                 owner=s.UserShortInfo(
                     uuid=db_user.uuid,
-                    fullname=f"{db_user.first_name} {last_name}.",
+                    fullname=fullname,
                 ),
             )
         )

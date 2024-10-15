@@ -81,7 +81,7 @@ def create_application(
 
 
 @application_router.put(
-    "/{application_id}",
+    "/{application_uuid}",
     status_code=status.HTTP_200_OK,
     response_model=s.ApplicationPutOut,
     responses={
@@ -89,21 +89,21 @@ def create_application(
     },
 )
 def update_application(
-    application_id: int,
+    application_uuid: str,
     data: s.ApplicationPutIn,
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
     application: m.Application | None = db.scalar(
-        sa.select(m.Application).where(m.Application.is_deleted.is_(False), m.Application.id == application_id)
+        sa.select(m.Application).where(m.Application.is_deleted.is_(False), m.Application.uuid == application_uuid)
     )
 
     if not application:
-        log(log.ERROR, "Application [%s] not found", application_id)
+        log(log.ERROR, "Application [%s] not found", application_uuid)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Application not found")
 
     if application.status in [m.ApplicationStatus.ACCEPTED, m.ApplicationStatus.REJECTED]:
-        log(log.ERROR, "Application [%s] is already completed", application_id)
+        log(log.ERROR, "Application [%s] is already completed", application_uuid)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Application is already completed")
 
     job = db.scalar(sa.select(m.Job).where(m.Job.id == application.job_id))
@@ -125,7 +125,7 @@ def update_application(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User is not allowed to update application")
 
     application.status = data.status
-    log(log.INFO, "Updated application [%s] with status: [%s]", application_id, data.status.name)
+    log(log.INFO, "Updated application [%s] with status: [%s]", application_uuid, data.status.name)
 
     if data.status == m.ApplicationStatus.ACCEPTED:
         c.reject_other_not_accepted_applications(db, application)
@@ -134,8 +134,16 @@ def update_application(
         job.worker_id = application.worker_id
         log(log.INFO, "Updated job [%s] status to APPROVED", application.job_id)
 
+    if data.status == m.ApplicationStatus.REJECTED:
+        application.status = m.ApplicationStatus.REJECTED
+        log(log.INFO, "Successfully rejected application [%s]", application_uuid)
+
     db.commit()
-    log(log.INFO, "Successfully updated application [%s]", application_id)
+    db.refresh(application)
+    db.refresh(job)
+    db.refresh(current_user)
+
+    log(log.INFO, "Successfully updated application [%s]", application_uuid)
 
     return s.ApplicationPutOut(application=application)
 
