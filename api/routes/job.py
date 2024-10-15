@@ -136,12 +136,14 @@ def get_jobs_by_status(
     # get active jobs (in progress, approved and on confirmation)
     if job_status == s.JobStatus.IN_PROGRESS:
         active_jobs = db.scalars(
-            sa.select(m.Job).where(
+            sa.select(m.Job)
+            .where(
                 m.Job.is_deleted.is_(False),
                 m.Job.status.in_(
                     [s.JobStatus.IN_PROGRESS.value, s.JobStatus.APPROVED.value, s.JobStatus.ON_CONFIRMATION.value]
                 ),
             )
+            .order_by(m.Job.updated_at.desc())
         ).all()
         as_owner_jobs, as_worker_jobs = c.get_in_progress_jobs(active_jobs, current_user, lang)
 
