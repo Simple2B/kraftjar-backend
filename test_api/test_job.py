@@ -273,8 +273,8 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     )
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsByStatusList.model_validate(response.json())
-    assert data.owner
-    assert data.worker
+    assert not data.owner
+    assert not data.worker
 
     # Test archived jobs
     response = client.get(
@@ -290,8 +290,8 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     )
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsByStatusList.model_validate(response.json())
-    assert not data.owner
-    assert not data.worker
+    assert data.owner
+    assert data.worker
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
@@ -326,7 +326,7 @@ def test_update_jobs_status(
     assert app
 
     response = client.put(
-        f"/api/applications/{app.id}",
+        f"/api/applications/{app.uuid}",
         headers=auth_header,
         content=s.ApplicationPutIn(status=m.ApplicationStatus.ACCEPTED).model_dump_json(),
     )
@@ -334,14 +334,14 @@ def test_update_jobs_status(
 
     # Check false statuses
     response = client.put(
-        f"/api/jobs/{job.id}/status",
+        f"/api/jobs/{job.uuid}/status",
         headers=worker_header,
         content=s.JobStatusIn.model_validate({"status": s.JobStatus.ON_CONFIRMATION}).model_dump_json(),
     )
     assert response.status_code == status.HTTP_409_CONFLICT
 
     response = client.put(
-        f"/api/jobs/{job.id}/status",
+        f"/api/jobs/{job.uuid}/status",
         headers=worker_header,
         content=s.JobStatusIn.model_validate({"status": s.JobStatus.COMPLETED}).model_dump_json(),
     )
@@ -349,7 +349,7 @@ def test_update_jobs_status(
 
     # Check false users
     response = client.put(
-        f"/api/jobs/{job.id}/status",
+        f"/api/jobs/{job.uuid}/status",
         headers=auth_header,
         content=s.JobStatusIn.model_validate({"status": s.JobStatus.IN_PROGRESS}).model_dump_json(),
     )
@@ -357,7 +357,7 @@ def test_update_jobs_status(
 
     # Check correct statuses
     response = client.put(
-        f"/api/jobs/{job.id}/status",
+        f"/api/jobs/{job.uuid}/status",
         headers=worker_header,
         content=s.JobStatusIn.model_validate({"status": s.JobStatus.IN_PROGRESS}).model_dump_json(),
     )
@@ -365,7 +365,7 @@ def test_update_jobs_status(
 
     # Check false statuses
     response = client.put(
-        f"/api/jobs/{job.id}/status",
+        f"/api/jobs/{job.uuid}/status",
         headers=worker_header,
         content=s.JobStatusIn.model_validate({"status": s.JobStatus.COMPLETED}).model_dump_json(),
     )
@@ -373,7 +373,7 @@ def test_update_jobs_status(
 
     # Check false users
     response = client.put(
-        f"/api/jobs/{job.id}/status",
+        f"/api/jobs/{job.uuid}/status",
         headers=auth_header,
         content=s.JobStatusIn.model_validate({"status": s.JobStatus.ON_CONFIRMATION}).model_dump_json(),
     )
@@ -381,7 +381,7 @@ def test_update_jobs_status(
 
     # Check correct statuses
     response = client.put(
-        f"/api/jobs/{job.id}/status",
+        f"/api/jobs/{job.uuid}/status",
         headers=worker_header,
         content=s.JobStatusIn.model_validate({"status": s.JobStatus.ON_CONFIRMATION}).model_dump_json(),
     )
@@ -389,7 +389,7 @@ def test_update_jobs_status(
 
     # Check false users
     response = client.put(
-        f"/api/jobs/{job.id}/status",
+        f"/api/jobs/{job.uuid}/status",
         headers=worker_header,
         content=s.JobStatusIn.model_validate({"status": s.JobStatus.COMPLETED}).model_dump_json(),
     )
@@ -397,7 +397,7 @@ def test_update_jobs_status(
 
     # Check correct statuses
     response = client.put(
-        f"/api/jobs/{job.id}/status",
+        f"/api/jobs/{job.uuid}/status",
         headers=auth_header,
         content=s.JobStatusIn.model_validate({"status": s.JobStatus.COMPLETED}).model_dump_json(),
     )
@@ -405,14 +405,14 @@ def test_update_jobs_status(
 
     # Check false statuses
     response = client.put(
-        f"/api/jobs/{job.id}/status",
+        f"/api/jobs/{job.uuid}/status",
         headers=worker_header,
         content=s.JobStatusIn.model_validate({"status": s.JobStatus.IN_PROGRESS}).model_dump_json(),
     )
     assert response.status_code == status.HTTP_409_CONFLICT
 
     response = client.put(
-        f"/api/jobs/{job.id}/status",
+        f"/api/jobs/{job.uuid}/status",
         headers=auth_header,
         content=s.JobStatusIn.model_validate({"status": s.JobStatus.CANCELED}).model_dump_json(),
     )
@@ -420,14 +420,14 @@ def test_update_jobs_status(
 
     # Check false statuses
     response = client.put(
-        f"/api/jobs/{job.id}/status",
+        f"/api/jobs/{job.uuid}/status",
         headers=auth_header,
         content=s.JobStatusIn.model_validate({"status": s.JobStatus.PENDING}).model_dump_json(),
     )
     assert response.status_code == status.HTTP_409_CONFLICT
 
     response = client.put(
-        f"/api/jobs/{job.id}/status",
+        f"/api/jobs/{job.uuid}/status",
         headers=auth_header,
         content=s.JobStatusIn.model_validate({"status": s.JobStatus.IN_PROGRESS}).model_dump_json(),
     )

@@ -258,21 +258,21 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
             if worker.services:
                 for service in worker.services:
                     services.append(service.name_ua if lang == Language.UA else service.name_en)
-
-            applications.append(
-                s.JobApplication(
-                    uuid=application.uuid,
-                    owner=s.JobApplicationOwner(
-                        uuid=worker.uuid,
-                        fullname=worker.fullname,
-                        location=app_location,
-                        address=None,
-                        services=services,
-                        owned_rates_count=round(worker.owned_rates_count, 1),
-                        average_rate=round(worker.average_rate, 1),
-                    ),
+            if application.status == m.ApplicationStatus.PENDING:
+                applications.append(
+                    s.JobApplication(
+                        uuid=application.uuid,
+                        owner=s.JobApplicationOwner(
+                            uuid=worker.uuid,
+                            fullname=worker.fullname,
+                            location=app_location,
+                            address=None,
+                            services=services,
+                            owned_rates_count=round(worker.owned_rates_count, 1),
+                            average_rate=round(worker.average_rate, 1),
+                        ),
+                    )
                 )
-            )
 
     return s.JobInfo(
         uuid=job.uuid,
@@ -314,6 +314,7 @@ def get_pending_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Langu
                     start_date=job.start_date,
                     end_date=job.end_date,
                     cost=job.cost,
+                    status=s.JobStatus(job.status),
                 )
             )
 
@@ -339,6 +340,7 @@ def get_pending_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Langu
                     start_date=job.start_date,
                     end_date=job.end_date,
                     cost=job.cost,
+                    status=s.JobStatus(job.status),
                 )
             )
 
@@ -362,6 +364,7 @@ def get_in_progress_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: L
                     start_date=job.start_date,
                     end_date=job.end_date,
                     cost=job.cost,
+                    status=s.JobStatus(job.status),
                 )
             )
 
@@ -378,6 +381,7 @@ def get_in_progress_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: L
                     start_date=job.start_date,
                     end_date=job.end_date,
                     cost=job.cost,
+                    status=s.JobStatus(job.status),
                 )
             )
 
@@ -405,6 +409,7 @@ def get_archived_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Lang
                     start_date=job.start_date,
                     end_date=job.end_date,
                     cost=job.cost,
+                    status=s.JobStatus(job.status),
                 )
             )
 
@@ -425,6 +430,7 @@ def get_archived_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Lang
                     start_date=job.start_date,
                     end_date=job.end_date,
                     cost=job.cost,
+                    status=s.JobStatus(job.status),
                 )
             )
 
