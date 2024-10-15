@@ -68,7 +68,9 @@ class User(db.Model, ModelMixin):
     # Relationships
     services: orm.Mapped[list["Service"]] = orm.relationship(secondary=user_services)
     locations: orm.Mapped[list["Location"]] = orm.relationship(secondary=user_locations)
+
     favorite_jobs: orm.Mapped[list["Job"]] = orm.relationship(secondary=favorite_jobs)
+
     favorite_experts: orm.Mapped[list["User"]] = orm.relationship(
         "User",
         secondary=favorite_experts,

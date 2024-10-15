@@ -87,15 +87,19 @@ def search_users(
     return c.search_users(query, current_user, db)
 
 
-@user_router.get("/{user_uuid}", status_code=status.HTTP_200_OK, response_model=s.UserProfileOut)
-def get_user_profile(
-    user_uuid: str,
-    lang: Language = Language.UA,
-    current_user: m.User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+@user_router.get(
+    "/{user_uuid}",
+    status_code=status.HTTP_200_OK,
+    response_model=s.UserProfileOut,
     responses={
         status.HTTP_404_NOT_FOUND: {"description": "User not found"},
     },
+    dependencies=[Depends(get_current_user)],
+)
+def get_user_profile(
+    user_uuid: str,
+    lang: Language = Language.UA,
+    db: Session = Depends(get_db),
 ):
     """Returns the user profile"""
     return c.get_user_profile(user_uuid, lang, db)

@@ -91,7 +91,7 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
 
     data_put = s.ApplicationPutIn(status=m.ApplicationStatus.ACCEPTED)
     response = client.put(
-        f"/api/applications/{application_data.id}", headers=auth_header, content=data_put.model_dump_json()
+        f"/api/applications/{application_data.uuid}", headers=auth_header, content=data_put.model_dump_json()
     )
     assert response.status_code == status.HTTP_200_OK
     data_out = s.ApplicationPutOut.model_validate(response.json())
@@ -120,7 +120,7 @@ def test_applications(client: TestClient, auth_header: dict[str, str], db: Sessi
 
     data_put = s.ApplicationPutIn(status=m.ApplicationStatus.REJECTED)
     response = client.put(
-        f"/api/applications/{application_data.id}", headers=auth_header, content=data_put.model_dump_json()
+        f"/api/applications/{application_data.uuid}", headers=auth_header, content=data_put.model_dump_json()
     )
     assert response.status_code == status.HTTP_403_FORBIDDEN
 

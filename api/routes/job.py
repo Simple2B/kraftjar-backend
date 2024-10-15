@@ -67,6 +67,19 @@ def get_jobs(
         m.Job.owner_id != current_user.id,
     )
 
+    current_user_applications = db.scalars(
+        sa.select(m.Application).where(
+            m.Application.is_deleted.is_(False),
+            m.Application.worker_id == current_user.id,
+        )
+    ).all()
+
+    applications_ids = [app.job_id for app in current_user_applications]
+
+    # exclude jobs where user already applied
+    if applications_ids:
+        db_jobs = db_jobs.where(~m.Job.id.in_(applications_ids))
+
     if selected_locations or current_user.locations:
         db_jobs = c.filter_jobs_by_locations(selected_locations, db, current_user, db_jobs)
 
@@ -388,24 +401,24 @@ def delete_job(
     log(log.INFO, "Job [%s] was deleted", job.id)
 
 
-@job_router.put("/{job_id}/status", status_code=status.HTTP_200_OK, response_model=s.JobStatusIn)
+@job_router.put("/{job_uuid}/status", status_code=status.HTTP_200_OK, response_model=s.JobStatusIn)
 def put_job_status(
-    job_id: int,
+    job_uuid: str,
     job_data: s.JobStatusIn,
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
-    job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.id == job_id))
+    job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.uuid == job_uuid))
     if not job:
-        log(log.ERROR, "Job [%s] not found", job_id)
+        log(log.ERROR, "Job [%s] not found", job_uuid)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
 
     if job_data.status == s.JobStatus.PENDING:
-        log(log.ERROR, "[put_job_status] Job [%s] status downgrade to pending is forbidden", job_id)
+        log(log.ERROR, "[put_job_status] Job [%s] status downgrade to pending is forbidden", job_uuid)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Job status downgrade forbidden")
 
     if job_data.status == s.JobStatus.APPROVED:
-        log(log.ERROR, "[put_job_status] Job [%s] status downgrade to approved is forbidden", job_id)
+        log(log.ERROR, "[put_job_status] Job [%s] status downgrade to approved is forbidden", job_uuid)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Job status downgrade forbidden")
 
     if job_data.status == s.JobStatus.IN_PROGRESS and job.status == s.JobStatus.APPROVED.value:
@@ -413,7 +426,7 @@ def put_job_status(
             log(
                 log.ERROR,
                 "[put_job_status] User is not a worker for job [%s]. Setting status to in progress forbidden",
-                job_id,
+                job_uuid,
             )
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -421,7 +434,7 @@ def put_job_status(
             )
 
         job.status = s.JobStatus.IN_PROGRESS.value
-        log(log.INFO, "Updated job [%s] status to IN_PROGRESS", job_id)
+        log(log.INFO, "Updated job [%s] status to IN_PROGRESS", job_uuid)
         db.commit()
         return job
 
@@ -430,7 +443,7 @@ def put_job_status(
             log(
                 log.ERROR,
                 "[put_job_status] User is not an worker for job [%s]. Setting status to on confirmation forbidden",
-                job_id,
+                job_uuid,
             )
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -438,7 +451,7 @@ def put_job_status(
             )
 
         job.status = s.JobStatus.ON_CONFIRMATION.value
-        log(log.INFO, "Updated job [%s] status to ON_CONFIRMATION", job_id)
+        log(log.INFO, "Updated job [%s] status to ON_CONFIRMATION", job_uuid)
 
         db.commit()
         return job
@@ -448,7 +461,7 @@ def put_job_status(
             log(
                 log.ERROR,
                 "[put_job_status] User is not an owner for job [%s]. Setting status to completed forbidden",
-                job_id,
+                job_uuid,
             )
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -456,7 +469,7 @@ def put_job_status(
             )
 
         job.status = s.JobStatus.COMPLETED.value
-        log(log.INFO, "Updated job [%s] status to COMPLETED", job_id)
+        log(log.INFO, "Updated job [%s] status to COMPLETED", job_uuid)
 
         db.commit()
         return job
@@ -466,7 +479,7 @@ def put_job_status(
             log(
                 log.ERROR,
                 "[put_job_status] User is not an owner for job [%s]. Setting status to canceled forbidden",
-                job_id,
+                job_uuid,
             )
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -474,7 +487,7 @@ def put_job_status(
             )
 
         job.status = s.JobStatus.CANCELED.value
-        log(log.INFO, "Updated job [%s] status to CANCELED", job_id)
+        log(log.INFO, "Updated job [%s] status to CANCELED", job_uuid)
 
         db.commit()
         return job
@@ -482,7 +495,7 @@ def put_job_status(
     log(
         log.ERROR,
         "Updated job [%s] status. Status mismatch, current [%s], new: [%s]",
-        job_id,
+        job_uuid,
         job.status,
         job_data.status,
     )

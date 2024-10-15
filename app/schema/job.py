@@ -288,6 +288,7 @@ class JobByStatus(BaseModel):
     start_date: datetime | None
     end_date: datetime | None = None
     cost: float | None = None
+    status: JobStatus
 
     model_config = ConfigDict(
         from_attributes=True,
