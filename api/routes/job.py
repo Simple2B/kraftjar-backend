@@ -59,12 +59,16 @@ def get_jobs(
 ):
     """Get jobs by query params"""
 
-    db_jobs = sa.select(m.Job).where(
-        m.Job.is_deleted.is_(False),
-        m.Job.status == s.JobStatus.PENDING.value,
-        m.Job.is_public.is_(True),
-        m.Job.worker_id.is_(None),
-        m.Job.owner_id != current_user.id,
+    db_jobs = (
+        sa.select(m.Job)
+        .where(
+            m.Job.is_deleted.is_(False),
+            m.Job.status == s.JobStatus.PENDING.value,
+            m.Job.is_public.is_(True),
+            m.Job.worker_id.is_(None),
+            m.Job.owner_id != current_user.id,
+        )
+        .order_by(m.Job.updated_at.desc())
     )
 
     current_user_applications = db.scalars(

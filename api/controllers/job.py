@@ -393,10 +393,8 @@ def get_archived_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Lang
     as_worker_jobs = []
 
     for job in db_jobs:
-        if (
-            job.owner_id == current_user.id
-            and job.status == s.JobStatus.COMPLETED.value
-            or job.status == s.JobStatus.CANCELED.value
+        if job.owner_id == current_user.id and (
+            job.status == s.JobStatus.COMPLETED.value or job.status == s.JobStatus.CANCELED.value
         ):
             job_location, job_address = format_location_string(job.location, job.address, lang)
 
@@ -414,10 +412,8 @@ def get_archived_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Lang
             )
 
     for job in db_jobs:
-        if (
-            job.worker_id == current_user.id
-            and job.status == s.JobStatus.COMPLETED.value
-            or job.status == s.JobStatus.CANCELED.value
+        if job.worker_id == current_user.id and (
+            job.status == s.JobStatus.COMPLETED.value or job.status == s.JobStatus.CANCELED.value
         ):
             job_location, job_address = format_location_string(job.location, job.address, lang)
 
