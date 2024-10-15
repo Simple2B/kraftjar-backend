@@ -112,9 +112,11 @@ def get_jobs_by_status(
     # TODO: add search by query
 
     db_jobs = db.scalars(
-        sa.select(m.Job).where(
+        sa.select(m.Job)
+        .where(
             m.Job.is_deleted.is_(False),
         )
+        .order_by(m.Job.updated_at.desc())
     ).all()
 
     if not db_jobs:
