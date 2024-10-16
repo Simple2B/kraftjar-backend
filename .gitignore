@@ -9,6 +9,7 @@ node_modules/
 .env
 *.pyc
 /*.sqlite3
+database-test-flask.sqlite3-journal
 
 /credentials.json
 /token.json
