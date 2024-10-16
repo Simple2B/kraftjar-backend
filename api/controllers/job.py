@@ -298,14 +298,15 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
 
 
 def get_pending_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Language, db: Session):
-    as_owner_jobs = []
-    as_worker_jobs = []
+    as_owner_jobs: list[s.JobByStatus] = []
+    as_worker_jobs: list[s.JobByStatus] = []
 
     for job in db_jobs:
         if job.owner_id == current_user.id and job.status == s.JobStatus.PENDING.value:
             job_location, job_address = format_location_string(job.location, job.address, lang)
 
-            as_owner_jobs.append(
+            as_owner_jobs.insert(
+                0,
                 s.JobByStatus(
                     uuid=job.uuid,
                     title=job.title,
@@ -315,7 +316,7 @@ def get_pending_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Langu
                     end_date=job.end_date,
                     cost=job.cost,
                     status=s.JobStatus(job.status),
-                )
+                ),
             )
 
     applications = db.scalars(
@@ -331,7 +332,8 @@ def get_pending_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Langu
         for job in jobs:
             job_location, job_address = format_location_string(job.location, job.address, lang)
 
-            as_worker_jobs.append(
+            as_worker_jobs.insert(
+                0,
                 s.JobByStatus(
                     uuid=job.uuid,
                     title=job.title,
@@ -341,7 +343,7 @@ def get_pending_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Langu
                     end_date=job.end_date,
                     cost=job.cost,
                     status=s.JobStatus(job.status),
-                )
+                ),
             )
 
     return (as_owner_jobs, as_worker_jobs)
