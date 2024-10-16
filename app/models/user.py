@@ -26,6 +26,7 @@ if TYPE_CHECKING:
     from .service import Service
     from .auth_account import AuthAccount
     from .job import Job
+    from .device import Device
 
 
 class User(db.Model, ModelMixin):
@@ -49,7 +50,7 @@ class User(db.Model, ModelMixin):
     last_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
     description: orm.Mapped[str] = orm.mapped_column(sa.String(512), default="", server_default="")
 
-    phone: orm.Mapped[str] = orm.mapped_column(sa.String(32), default="")  # fill in registration form
+    phone: orm.Mapped[str] = orm.mapped_column(sa.String(32), unique=True)  # fill in registration form
     phone_verified: orm.Mapped[bool] = orm.mapped_column(default=False)
 
     auth_accounts: orm.Mapped[list["AuthAccount"]] = orm.relationship("AuthAccount", backref="user")
@@ -70,6 +71,8 @@ class User(db.Model, ModelMixin):
     locations: orm.Mapped[list["Location"]] = orm.relationship(secondary=user_locations)
 
     favorite_jobs: orm.Mapped[list["Job"]] = orm.relationship(secondary=favorite_jobs)
+
+    devices: orm.Mapped[list["Device"]] = orm.relationship()
 
     favorite_experts: orm.Mapped[list["User"]] = orm.relationship(
         "User",

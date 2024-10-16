@@ -110,3 +110,5 @@ from .meest_api import (
 )
 from .file import FileType, File, FileIn, FileOut, Files
 from .city import City, CityIn, CityOut, CitiesFile, CityAddressesOut
+
+from .device import DeviceIn, DeviceOut
