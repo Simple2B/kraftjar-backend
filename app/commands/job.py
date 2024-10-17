@@ -90,14 +90,14 @@ def write_jobs_in_db(jobs: list[s.JobCompletedCreate]):
 
             if new_job.status == JobStatus.COMPLETED.value:
                 rate_worker: m.Rate = m.Rate(
-                    message="Mocked rate",
+                    review="Mocked rate",
                     gives_id=new_job.owner_id,
                     receiver_id=new_job.worker_id,
                     job_id=new_job.id,
                     rate=job.rate_worker,
                 )
                 rate_owner: m.Rate = m.Rate(
-                    message="Mocked rate",
+                    review="Mocked rate",
                     gives_id=new_job.worker_id,
                     receiver_id=new_job.owner_id,
                     job_id=new_job.id,

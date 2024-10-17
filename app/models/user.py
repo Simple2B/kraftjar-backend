@@ -12,7 +12,7 @@ from app.schema.auth import AuthType
 from app.schema.user import User as u
 from config import config
 
-from .rates import Rate
+from .rate import Rate
 from .user_locations import user_locations
 from .user_services import user_services
 from .favorite_jobs import favorite_jobs
@@ -35,9 +35,16 @@ class User(db.Model, ModelMixin):
         sa.CheckConstraint(f"average_rate <= {CFG.MAXIMUM_RATE}", name="max_rate_check"),
     )
 
-    rates_as_giver: orm.Mapped[list["Rate"]] = orm.relationship("Rate", foreign_keys=[Rate.gives_id], backref="giver")
+    rates_as_giver: orm.Mapped[list["Rate"]] = orm.relationship(
+        "Rate",
+        foreign_keys=[Rate.gives_id],
+        # backref="giver",
+    )
+
     rates_as_receiver: orm.Mapped[list["Rate"]] = orm.relationship(
-        "Rate", foreign_keys=[Rate.receiver_id], backref="receiver"
+        "Rate",
+        foreign_keys=[Rate.receiver_id],
+        # backref="receiver",
     )
 
     __tablename__ = "users"
