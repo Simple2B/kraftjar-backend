@@ -21,3 +21,6 @@ from .favorite_jobs import favorite_jobs
 from .favorite_experts import favorite_experts
 from .job_applications import job_applications
 from .device import Device
+from .notification_devices import notification_devices
+from .notification_users import notification_users
+from .push_notification import PushNotification

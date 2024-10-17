@@ -38,12 +38,7 @@ CFG = config()
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_create_job(
-    client: TestClient,
-    db: Session,
-    auth_header: dict[str, str],
-    s3_client: S3Client,
-):
+def test_create_job(client: TestClient, db: Session, auth_header: dict[str, str], s3_client: S3Client):
     with open("test_api/test_data/image_1.jpg", "rb") as image:
         response = client.post(
             "/api/jobs/files",

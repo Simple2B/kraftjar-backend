@@ -13,6 +13,7 @@ database-test-flask.sqlite3-journal
 
 /credentials.json
 /token.json
+/admin_key.json
 .yarn/*
 
 dump.sql
