@@ -197,9 +197,12 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
             lang_type = job.address.street_type_ua if lang == Language.UA else job.address.street_type_en
             address = f"{lang_type} {lang_name}"
 
-        last_name = db_user.last_name[0] if db_user.last_name else ""
+        job_owner: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == job.owner_id))
 
-        fullname = f"{db_user.first_name} {last_name}" if db_user.first_name else db_user.fullname
+        if not job_owner:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job owner not found")
+
+        job_owner_fullname = f"{job_owner.first_name} {job_owner.last_name[0] if job_owner.last_name else ''}"
 
         favorite_jobs.append(
             s.UserFavoriteJob(
@@ -212,8 +215,8 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
                 is_volunteer=job.is_volunteer,
                 is_negotiable=job.is_negotiable,
                 owner=s.UserShortInfo(
-                    uuid=db_user.uuid,
-                    fullname=fullname,
+                    uuid=job_owner.uuid,
+                    fullname=job_owner_fullname,
                 ),
             )
         )
