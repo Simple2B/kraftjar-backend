@@ -292,6 +292,7 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
         is_volunteer=job.is_volunteer,
         is_negotiable=job.is_negotiable,
         worker_uuid=job.worker.uuid if job.worker else None,
+        worker_name=job.worker.fullname if job.worker else None,
         applications=applications,
         status=s.JobStatus(job.status),
     )
