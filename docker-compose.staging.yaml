@@ -23,6 +23,7 @@ services:
       - .env
     volumes:
       - ./credentials.json:/home/app/credentials.json
+      - ./admin_key.json:/home/app/admin_key.json
     depends_on:
       - db
     labels:
@@ -44,6 +45,9 @@ services:
       - .env
     depends_on:
       - db
+    volumes:
+      - ./credentials.json:/home/app/credentials.json
+      - ./admin_key.json:/home/app/admin_key.json
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.kraftjar_api.rule=Host(`api.kraftjar.net`)'
