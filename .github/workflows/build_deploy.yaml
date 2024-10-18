@@ -129,7 +129,6 @@ jobs:
             export GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
             cd ~/kraftjar
             echo ${{env.FCM_ADMIN_KEY_BASE64}} | base64 --decode > admin_key.json
-            chmod 600 admin_key.json
             mv docker-compose.staging.yaml docker-compose.yaml
             docker login -u ${{ env.DOCKER_LOGIN }} -p ${{ env.DOCKER_ACCESS_TOKEN }} &&
             docker compose pull &&
