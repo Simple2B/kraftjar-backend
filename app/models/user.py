@@ -109,6 +109,10 @@ class User(db.Model, ModelMixin):
         return len(self.rates_as_receiver)
 
     @property
+    def active_devices(self):
+        return [device for device in self.devices if not device.is_deleted]
+
+    @property
     def password(self):
         return self.password_hash
 

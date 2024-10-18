@@ -33,6 +33,23 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db=Depends
     return s.Token(access_token=create_access_token(user.id))
 
 
+@router.post("/logout", status_code=status.HTTP_200_OK)
+def logout(device_id: str, db=Depends(get_db), current_user: m.User = Depends(get_current_user)):
+    """Logs out a user and deletes the device"""
+    device = db.scalar(
+        sa.select(m.Device).where(sa.and_(m.Device.device_id == device_id, m.Device.user_id == current_user.id))
+    )
+    if not device:
+        log(log.ERROR, "Device [%s] not found for user [%s]", device_id, current_user)
+        return
+
+    device.mark_as_deleted()
+    db.commit()
+
+    log(log.INFO, "User logged out")
+    return
+
+
 @router.post(
     "/token",
     status_code=status.HTTP_200_OK,
