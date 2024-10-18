@@ -94,6 +94,7 @@ class JobInfo(BaseModel):
     is_volunteer: bool
     is_negotiable: bool
     worker_uuid: str | None = None
+    worker_name: str | None = None
     applications: list[JobApplication]
     status: JobStatus
 
