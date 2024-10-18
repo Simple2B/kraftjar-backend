@@ -29,7 +29,7 @@ class PushNotification(db.Model, ModelMixin):
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
     title: orm.Mapped[str] = orm.mapped_column(sa.String(512), nullable=False)
     content: orm.Mapped[str] = orm.mapped_column(sa.String(1024), nullable=False)
-    metadata: orm.Mapped[str] = orm.mapped_column(
+    meta_data: orm.Mapped[str] = orm.mapped_column(
         sa.String(1024), default="", server_default=""
     )  # JSON string of notification data object
     fcm_id: orm.Mapped[str] = orm.mapped_column(sa.String(512), default="", server_default="")
@@ -58,7 +58,7 @@ class PushNotification(db.Model, ModelMixin):
 
     @property
     def data(self) -> dict[str, str]:
-        data = {"original_id": str(self.id), "type": self.n_type, **json.loads(self.metadata)}
+        data = {"original_id": str(self.id), "type": self.n_type, **json.loads(self.meta_data)}
         return data
 
     def __repr__(self):
