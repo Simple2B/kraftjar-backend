@@ -28,11 +28,18 @@ def init_firebase() -> bool:
 
 def send_push_notification(notification: m.PushNotification) -> None:
     try:
+        if not len(notification.device_tokens):
+            log(log.WARNING, "[send_push_notification] No devices to send notification. Skipping.")
+            return
+
         init_firebase()
 
         message = messaging.MulticastMessage(
             notification=messaging.Notification(title=notification.title, body=notification.content),
             tokens=notification.device_tokens,
+            android=messaging.AndroidConfig(
+                priority="max", notification=messaging.AndroidNotification(sound="default", channel_id="default")
+            ),
         )
         message.data = notification.data
 
