@@ -5,7 +5,7 @@ from .address import Address
 from .application import Application, ApplicationStatus, ApplicationType
 from .file import File
 from .location import Location
-from .rates import Rate
+from .rate import Rate
 from .service import Service
 from .admin import Admin, AnonymousUser
 from .settlement import Settlement

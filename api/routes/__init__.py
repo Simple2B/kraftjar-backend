@@ -9,6 +9,7 @@ from .application import application_router
 from .location import location_router
 from .service import service_router
 from .device import device_router
+from .rate import rate_router
 
 # from .notify import notification_test_router
 
@@ -24,6 +25,7 @@ router.include_router(application_router)
 router.include_router(location_router)
 router.include_router(service_router)
 router.include_router(device_router)
+router.include_router(rate_router)
 
 
 @router.get("/list-endpoints/")
