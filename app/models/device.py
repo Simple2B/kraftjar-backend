@@ -41,5 +41,8 @@ class Device(db.Model, ModelMixin):
     # Relationships
     user: orm.Mapped["User"] = orm.relationship()
 
+    def mark_as_deleted(self):
+        self.is_deleted = True
+
     def __repr__(self):
         return f"<{self.id}:{self.device_id}. User: {self.user_id}>"

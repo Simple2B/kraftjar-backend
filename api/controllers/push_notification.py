@@ -50,13 +50,13 @@ def send_push_notification(notification: m.PushNotification) -> None:
 
 
 def create_new_job_notification(db: Session, job: m.Job) -> m.PushNotification:
-    metadata = {"job_id": job.id}
+    meta_data = {"job_id": job.id}
     notification = m.PushNotification(
         title="New job available",
         content="A new job is available, check it out!",
         n_type=s.PushNotificationType.job_created.value,
         created_by_id=job.owner_id,
-        metadata=json.dumps(metadata),
+        meta_data=json.dumps(meta_data),
     )
     db.add(notification)
 
@@ -67,7 +67,7 @@ def create_new_job_notification(db: Session, job: m.Job) -> m.PushNotification:
     ).all()
 
     for user in users:
-        notification.sent_to.extend(user.devices)
+        notification.sent_to.extend(user.active_devices)
     db.commit()
 
     return notification

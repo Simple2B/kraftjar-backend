@@ -35,3 +35,8 @@ def test_user_device(
     device_out = s.DeviceOut.model_validate(response.json())
     assert device_out.device_id == test_device_id
     assert device_out.push_token == new_push_token
+
+    logout_response = client.post("api/auth/logout", headers=auth_header, params={"device_id": test_device_id})
+    assert logout_response.status_code == status.HTTP_200_OK
+
+    assert not len(user.active_devices)
