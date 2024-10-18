@@ -58,7 +58,8 @@ class PushNotification(db.Model, ModelMixin):
 
     @property
     def data(self) -> dict[str, str]:
-        data = {"original_id": str(self.id), "type": self.n_type, **json.loads(self.meta_data)}
+        data = {"original_id": str(self.id), "n_type": self.n_type, **json.loads(self.meta_data)}
+        data = {key: str(value) for key, value in data.items()}
         return data
 
     def __repr__(self):
