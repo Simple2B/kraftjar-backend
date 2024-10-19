@@ -38,7 +38,7 @@ def send_push_notification(notification: m.PushNotification) -> None:
             notification=messaging.Notification(title=notification.title, body=notification.content),
             tokens=notification.device_tokens,
             android=messaging.AndroidConfig(
-                priority="max", notification=messaging.AndroidNotification(sound="default", channel_id="default")
+                priority="high", notification=messaging.AndroidNotification(sound="default", channel_id="default")
             ),
         )
         message.data = notification.data
