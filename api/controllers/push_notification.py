@@ -1,62 +1,73 @@
 import json
+import os
 
-import firebase_admin
+import requests
 import sqlalchemy as sa
-from firebase_admin import credentials, messaging
-from firebase_admin.exceptions import FirebaseError
-from sqlalchemy.orm import Session
+from exponent_server_sdk import (
+    DeviceNotRegisteredError,
+    PushClient,
+    PushMessage,
+    PushServerError,
+    PushTicket,
+    PushTicketError,
+)
+from requests.exceptions import ConnectionError, HTTPError
+from sqlalchemy.orm import Session as DbSession
 
+# Optionally providing an access token within a session if you have enabled push security
 from app import models as m
 from app import schema as s
 from app.logger import log
 from config import config
 
 CFG = config()
-
-
-def init_firebase() -> bool:
-    try:
-        cred = credentials.Certificate("admin_key.json")
-        firebase_admin.initialize_app(cred)
-        return True
-    except ValueError as e:
-        log(
-            log.ERROR, "Firebase initialization error: %s", e
-        )  # just log for now, implement proper error handling if needed
-        return False
+session = requests.Session()
+session.headers.update(
+    {
+        "Authorization": f"Bearer {os.getenv('EXPO_TOKEN')}",
+        "accept": "application/json",
+        "accept-encoding": "gzip, deflate",
+        "content-type": "application/json",
+    }
+)
 
 
 def send_push_notification(notification: m.PushNotification) -> None:
     try:
-        if not len(notification.device_tokens):
-            log(log.WARNING, "[send_push_notification] No devices to send notification. Skipping.")
-            return
-
-        init_firebase()
-
-        message = messaging.MulticastMessage(
-            notification=messaging.Notification(title=notification.title, body=notification.content),
-            tokens=notification.device_tokens,
-            android=messaging.AndroidConfig(
-                priority="high", notification=messaging.AndroidNotification(sound="default", channel_id="default")
-            ),
+        responses: list[PushTicket] = PushClient(session=session).publish_multiple(
+            [
+                PushMessage(
+                    to=device.push_token,
+                    body=notification.content,
+                    title=notification.title,
+                    data=notification.meta_data,
+                    priority="high",
+                    channel_id="default",
+                )
+                for device in notification.sent_to
+            ]
         )
-        message.data = notification.data
+    except PushServerError as exc:
+        # Encountered some likely formatting/validation error.
+        log(log.ERROR, "[send_push_notification] PushServerError: %s", exc)
+    except (ConnectionError, HTTPError) as exc:
+        log(log.ERROR, "[send_push_notification] ConnectionError or HTTPError: %s", exc)
+    for response in responses:
+        try:
+            # We got a response back, but we don't know whether it's an error yet.
+            # This call raises errors so we can handle them with normal exception
+            # flows.
+            response.validate_response()
 
-        response: messaging.BatchResponse = messaging.send_each_for_multicast(message)
-
-        if not response.success_count:
-            log(log.WARNING, "[send_push_notification] Failed to send notification: %s", response)
-            return
-
-        log(log.INFO, "[send_push_notification] Notification sent: %s", response)
-    except ValueError as e:
-        log(log.ERROR, "[send_push_notification] Wrong notification args: %s", e)
-    except FirebaseError as e:
-        log(log.ERROR, "[send_push_notification] Firebase error: %s", e)
+        except DeviceNotRegisteredError as exc:
+            # Mark the push token as inactive
+            log(log.WARNING, "[send_push_notification] DeviceNotRegisteredError: %s", exc)
+        except PushTicketError as exc:
+            # Encountered some other per-notification error.
+            log(log.ERROR, "[send_push_notification] PushTicketError: %s", exc)
 
 
-def create_new_job_notification(db: Session, job: m.Job) -> m.PushNotification:
+def create_new_job_notification(db: DbSession, job: m.Job) -> m.PushNotification:
     meta_data = {"job_id": job.id}
     notification = m.PushNotification(
         title="New job available",
@@ -80,6 +91,6 @@ def create_new_job_notification(db: Session, job: m.Job) -> m.PushNotification:
     return notification
 
 
-def send_created_job_notification(db: Session, job: m.Job) -> None:
+def send_created_job_notification(db: DbSession, job: m.Job) -> None:
     notification = create_new_job_notification(db, job)
     send_push_notification(notification)

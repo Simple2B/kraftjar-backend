@@ -103,6 +103,9 @@ class BaseConfig(BaseSettings):
     AWS_S3_BUCKET_NAME: str = "kraftjar"
     AWS_S3_BUCKET_URL: str
 
+    # EXPO
+    EXPO_TOKEN: str
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.

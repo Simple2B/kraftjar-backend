@@ -100,7 +100,7 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     assert response.status_code == status.HTTP_200_OK
 
     data = s.UsersSearchOut.model_validate(response.json())
-    assert len(data.top_users) == 5
+    assert len(data.top_users) == 10
 
     for user in data.near_users:
         assert data.user_locations[0] in user.locations
