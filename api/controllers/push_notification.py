@@ -43,6 +43,7 @@ def send_push_notification(notification: m.PushNotification) -> None:
                     data=notification.meta_data,
                     priority="high",
                     channel_id="default",
+                    sound="default",
                 )
                 for device in notification.sent_to
             ]
