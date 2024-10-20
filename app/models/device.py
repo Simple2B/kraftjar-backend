@@ -5,6 +5,7 @@ import sqlalchemy as sa
 from sqlalchemy import orm
 
 from app.database import db
+from app.schema.device import DevicePlatform
 
 from .utils import ModelMixin
 
@@ -28,6 +29,10 @@ class Device(db.Model, ModelMixin):
     push_token: orm.Mapped[str] = orm.mapped_column(
         sa.String(512), nullable=False
     )  # Push token, received from the device
+
+    platform: orm.Mapped[str] = orm.mapped_column(
+        sa.String(16), default=DevicePlatform.UNKNOWN.value, server_default="unknown"
+    )
 
     created_at: orm.Mapped[datetime] = orm.mapped_column(
         default=sa.func.now(),

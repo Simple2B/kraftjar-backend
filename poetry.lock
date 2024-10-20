@@ -498,6 +498,21 @@ dnspython = ">=2.0.0"
 idna = ">=2.0.0"
 
 [[package]]
+name = "exponent-server-sdk"
+version = "2.1.0"
+description = "Expo Server SDK for Python"
+optional = false
+python-versions = "*"
+files = [
+    {file = "exponent_server_sdk-2.1.0-py3-none-any.whl", hash = "sha256:1c69058aaf14d2b788074afd03252c9e7d15db6bf434741282d4c189b3d54df0"},
+    {file = "exponent_server_sdk-2.1.0.tar.gz", hash = "sha256:089074b944e656ca009c4e2e66a4399b81db3fd104bc4c8ed973a930331973f9"},
+]
+
+[package.dependencies]
+requests = "*"
+six = "*"
+
+[[package]]
 name = "faker"
 version = "18.13.0"
 description = "Faker is a Python package that generates fake data for you."
@@ -2514,4 +2529,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "721687be449761aa92ba4d1876bf8b99370cc559faeb1be21ac9139f81bbe804"
+content-hash = "77110a9fb1cfbc1edf0feb20185c95a1e5579e1ab39250404c6239f0a758194f"

@@ -27,7 +27,9 @@ def update_device(
     )
     if not existing_device:
         log(log.INFO, "[update_device] Device not found. Creating new device")
-        new_device = m.Device(**device.model_dump(), user_id=current_user.id, device_id=device_id)
+        device_data = device.model_dump()
+        platform: s.DevicePlatform = device_data.pop("platform")
+        new_device = m.Device(**device_data, user_id=current_user.id, device_id=device_id, platform=platform.value)
         db.add(new_device)
         db.commit()
         log(log.INFO, "[update_device] Device [%s] created", new_device.id)
