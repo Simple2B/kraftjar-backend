@@ -1,6 +1,6 @@
 {
   "name": "kraftjar",
-  "version": "0.1.143",
+  "version": "0.1.144",
   "description": "Kraftjar Portal",
   "main": "index.js",
   "scripts": {
