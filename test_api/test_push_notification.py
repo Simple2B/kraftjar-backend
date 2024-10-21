@@ -1,3 +1,4 @@
+import pytest
 import sqlalchemy as sa
 from sqlalchemy.orm import Session
 from fastapi.testclient import TestClient
@@ -6,8 +7,13 @@ from fastapi.testclient import TestClient
 from app import models as m, schema as s
 
 from api.controllers.push_notification import create_new_job_notification
+from config import config
 
 
+CFG = config()
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_create_new_job_notification(db: Session):
     users = db.query(m.User).all()
     for user in users:
@@ -30,6 +36,7 @@ def test_create_new_job_notification(db: Session):
     assert notification.data["original_uuid"] == str(notification.uuid)
 
 
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_get_my_push_notifications(client: TestClient, db: Session, auth_header: dict[str, str]):
     user = db.scalar(sa.select(m.User))
     assert user
@@ -60,3 +67,39 @@ def test_get_my_push_notifications(client: TestClient, db: Session, auth_header:
 
     assert len(notifications) == 1
     assert notifications[0].uuid == notification.uuid
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_mark_notification_as_read(client: TestClient, db: Session, auth_header: dict[str, str]):
+    user = db.scalar(sa.select(m.User))
+    assert user
+    job = db.scalar(sa.select(m.Job))
+    assert job
+    device = m.Device(
+        push_token="test_token",
+        device_id="test_device",
+        user=user,
+    )
+    db.add(device)
+    user.devices.append(device)
+    notification = m.PushNotification(
+        title="Test",
+        content="Test content",
+        n_type=s.PushNotificationType.job_created.value,
+        created_by_id=user.id,
+        job_id=job.id,
+        meta_data="",
+    )
+    db.add(notification)
+    notification.sent_to.append(device)
+    db.commit()
+
+    response = client.put(f"/api/push_notifications/{notification.uuid}/read", headers=auth_header)
+    assert response.status_code == 200
+    notification_res = s.PushNotificationOut.model_validate(response.json())
+    assert notification_res.read_by_me
+
+    response = client.put(f"/api/push_notifications/{notification.uuid}/read", headers=auth_header)
+    assert response.status_code == 200
+    notification_res = s.PushNotificationOut.model_validate(response.json())
+    assert notification_res.read_by_me
