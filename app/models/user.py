@@ -35,6 +35,18 @@ class User(db.Model, ModelMixin):
         sa.CheckConstraint(f"average_rate <= {CFG.MAXIMUM_RATE}", name="max_rate_check"),
     )
 
+    rates_as_giver: orm.Mapped[list["Rate"]] = orm.relationship(
+        "Rate",
+        foreign_keys=[Rate.gives_id],
+        # backref="giver",
+    )
+
+    rates_as_receiver: orm.Mapped[list["Rate"]] = orm.relationship(
+        "Rate",
+        foreign_keys=[Rate.receiver_id],
+        # backref="receiver",
+    )
+
     __tablename__ = "users"
 
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
