@@ -11,7 +11,7 @@ import api.controllers as c
 from api.utils import get_file_extension
 import app.models as m
 import app.schema as s
-from api.dependency import get_current_user, get_user, get_s3_connect
+from api.dependency import get_current_user, get_s3_connect
 from app.database import get_db
 from app.logger import log
 from app.schema.language import Language
@@ -22,12 +22,20 @@ CFG = config()
 job_router = APIRouter(prefix="/jobs", tags=["jobs"])
 
 
-@job_router.get("/{job_uuid}", status_code=status.HTTP_200_OK, response_model=s.JobInfo)
+@job_router.get(
+    "/{job_uuid}",
+    status_code=status.HTTP_200_OK,
+    response_model=s.JobInfo,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Job not found"},
+        status.HTTP_403_FORBIDDEN: {"description": "User does not own job"},
+    },
+    dependencies=[Depends(get_current_user)],
+)
 def get_job(
     job_uuid: str,
     lang: Language = Language.UA,
     db: Session = Depends(get_db),
-    current_user: m.User | None = Depends(get_user),
 ):
     job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.uuid == job_uuid))
     if not job:
@@ -150,6 +158,12 @@ def get_jobs_by_status(
     # get archive jobs (completed and canceled)
     if job_status == s.JobStatus.COMPLETED:
         as_owner_jobs, as_worker_jobs = c.get_archived_jobs(db_jobs, current_user, lang)
+        completed_jobs_uuids = c.get_completed_jobs_without_rate(db, current_user)
+        return s.JobsByStatusList(
+            owner=as_owner_jobs,
+            worker=as_worker_jobs,
+            completed_jobs_without_rate=completed_jobs_uuids,
+        )
 
     return s.JobsByStatusList(owner=as_owner_jobs, worker=as_worker_jobs)
 
@@ -328,7 +342,11 @@ def delete_job_file(
     log(log.INFO, "File was deleted")
 
 
-@job_router.put("/{job_id}", status_code=status.HTTP_200_OK, response_model=s.JobOut)
+@job_router.put(
+    "/{job_id}",
+    status_code=status.HTTP_200_OK,
+    response_model=s.JobOut,
+)
 def put_job(
     job_id: int,
     job_data: s.JobPut,
@@ -409,7 +427,11 @@ def delete_job(
     log(log.INFO, "Job [%s] was deleted", job.id)
 
 
-@job_router.put("/{job_uuid}/status", status_code=status.HTTP_200_OK, response_model=s.JobStatusIn)
+@job_router.put(
+    "/{job_uuid}/status",
+    status_code=status.HTTP_200_OK,
+    response_model=s.JobStatusIn,
+)
 def put_job_status(
     job_uuid: str,
     job_data: s.JobStatusIn,
