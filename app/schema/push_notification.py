@@ -1,4 +1,6 @@
 from enum import Enum
+from datetime import datetime
+
 
 from pydantic import BaseModel, ConfigDict
 
@@ -21,6 +23,7 @@ class PushNotificationOut(BaseModel):
     job_title: str
     read_by_me: bool
     job_uuid: str
+    created_at: datetime
 
     model_config = ConfigDict(
         from_attributes=True,
