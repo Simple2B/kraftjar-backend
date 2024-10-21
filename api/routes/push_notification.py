@@ -31,6 +31,7 @@ def get_notifications(
             job_uuid=notification.job.uuid,
             n_type=s.PushNotificationType(notification.n_type),
             job_title=notification.job.title,
+            created_at=notification.created_at,
             read_by_me=c.notification_is_read_by_user(notification, current_user),
         )
         for notification in notifications
@@ -63,5 +64,6 @@ def mark_notification_as_read(
         job_uuid=notification.job.uuid,
         n_type=s.PushNotificationType(notification.n_type),
         job_title=notification.job.title,
+        created_at=notification.created_at,
         read_by_me=c.notification_is_read_by_user(notification, current_user),
     )
