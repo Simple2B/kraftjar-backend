@@ -1,5 +1,4 @@
 from datetime import UTC, datetime
-import re
 from uuid import uuid4
 
 import sqlalchemy as sa
