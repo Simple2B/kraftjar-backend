@@ -4,6 +4,7 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
 from app.schema.language import Language
+from app.schema.rate import RateJobOut
 from config import config
 
 from .location import LocationStrings
@@ -20,6 +21,11 @@ class JobStatus(enum.Enum):
     ON_CONFIRMATION = "on_confirmation"
     COMPLETED = "completed"
     CANCELED = "canceled"
+
+
+class JobUserStatus(enum.Enum):
+    OWNER = "owner"
+    WORKER = "worker"
 
 
 class BaseJob(BaseModel):
@@ -74,6 +80,11 @@ class JobApplicationOwner(BaseModel):
 class JobApplication(BaseModel):
     uuid: str
     owner: JobApplicationOwner
+
+
+class JobRate(BaseModel):
+    uuid: str
+    rates: list[RateJobOut] = []
 
 
 class JobInfo(BaseModel):
@@ -291,14 +302,16 @@ class JobByStatus(BaseModel):
     cost: float | None = None
     status: JobStatus
 
+    required_rate_owner: bool | None = None
+    required_rate_worker: bool | None = None
+
     model_config = ConfigDict(
         from_attributes=True,
     )
 
 
 class JobsByStatusList(BaseModel):
-    owner: list[JobByStatus]
-    worker: list[JobByStatus]
+    items: list[JobByStatus]
 
     model_config = ConfigDict(
         from_attributes=True,

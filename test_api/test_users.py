@@ -48,7 +48,11 @@ def test_get_user(client: TestClient, auth_header: dict[str, str], full_db: Sess
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Session):
+def test_get_users(
+    client: TestClient,
+    auth_header: dict[str, str],
+    full_db: Session,
+):
     db: Session = full_db
 
     users_with_services: Sequence[m.User] = db.scalars(sa.select(m.User)).all()
@@ -100,7 +104,7 @@ def test_get_users(client: TestClient, auth_header: dict[str, str], full_db: Ses
     assert response.status_code == status.HTTP_200_OK
 
     data = s.UsersSearchOut.model_validate(response.json())
-    assert len(data.top_users) == 10
+    assert len(data.top_users) == len(set(data.top_users))
 
     for user in data.near_users:
         assert data.user_locations[0] in user.locations

@@ -62,8 +62,19 @@ class Rate(db.Model, ModelMixin):
     giver: orm.Mapped["User"] = orm.relationship(
         "User",
         foreign_keys=[gives_id],
-        # backref="rates",
     )
+
+    @property
+    def job_uuid(self) -> str:
+        return self.job.uuid
+
+    @property
+    def receiver_uuid(self) -> str:
+        return self.receiver.uuid
+
+    @property
+    def gives_uuid(self) -> str:
+        return self.giver.uuid
 
     def __str__(self) -> str:
         return f"User[{self.uuid}] - [{self.rate}] stars"

@@ -9,6 +9,7 @@ from app import schema as s
 
 from .job_services import job_services
 from .job_applications import job_applications
+from .job_rates import job_rates
 
 from .utils import ModelMixin
 from typing import TYPE_CHECKING
@@ -19,6 +20,7 @@ if TYPE_CHECKING:
     from .user import User
     from .service import Service
     from .application import Application
+    from .rate import Rate
 
 
 class Job(db.Model, ModelMixin):
@@ -87,6 +89,8 @@ class Job(db.Model, ModelMixin):
 
     applications: orm.Mapped[list["Application"]] = orm.relationship(secondary=job_applications)
 
+    rates: orm.Mapped[list["Rate"]] = orm.relationship(secondary=job_rates)
+
     @property
     def is_in_progress(self) -> bool:
         return self.status in [
@@ -94,6 +98,20 @@ class Job(db.Model, ModelMixin):
             s.JobStatus.APPROVED.value,
             s.JobStatus.ON_CONFIRMATION.value,
         ]
+
+    @property
+    def required_rate_worker(self) -> bool:
+        rates_givers_ids = [rate.gives_id for rate in self.rates]
+        if self.status == s.JobStatus.COMPLETED.value and self.worker_id not in rates_givers_ids:
+            return True
+        return False
+
+    @property
+    def required_rate_owner(self) -> bool:
+        rates_givers_ids = [rate.gives_id for rate in self.rates]
+        if self.status == s.JobStatus.COMPLETED.value and self.owner_id not in rates_givers_ids:
+            return True
+        return False
 
     def __repr__(self):
         return f"<Job {self.title} - {self.uuid}>"

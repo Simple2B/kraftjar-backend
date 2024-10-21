@@ -13,7 +13,10 @@ from app.logger import log
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> m.User:
+def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    db: Session = Depends(get_db),
+) -> m.User:
     """Raises an exception if the current user is not authenticated"""
     token_data: s.TokenData = verify_access_token(token, INVALID_CREDENTIALS_EXCEPTION)
     user = db.scalar(

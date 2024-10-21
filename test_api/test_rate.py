@@ -35,7 +35,7 @@ def test_create_rate(client: TestClient, auth_header: dict[str, str], full_db: S
     assert response.status_code == status.HTTP_201_CREATED
     assert response.json()["rate"] == data.rate
     assert response.json()["review"] == data.review
-    assert response.json()["job"]["uuid"] == data.job_uuid
+    assert response.json()["job_uuid"] == data.job_uuid
     assert response.json()["receiver"]["uuid"] == data.receiver_uuid
     assert response.json()["giver"]["uuid"] == current_user.uuid
     rate_1_uuid = response.json()["uuid"]
