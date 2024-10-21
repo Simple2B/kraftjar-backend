@@ -1,4 +1,3 @@
-import json
 import os
 
 import requests
@@ -69,13 +68,13 @@ def send_push_notification(notification: m.PushNotification) -> None:
 
 
 def create_new_job_notification(db: DbSession, job: m.Job) -> m.PushNotification:
-    meta_data = {"job_id": job.id}
     notification = m.PushNotification(
         title="New job available",
-        content="A new job is available, check it out!",
+        content=f"A new job '{job.title}' is available, check it out!",
         n_type=s.PushNotificationType.job_created.value,
         created_by_id=job.owner_id,
-        meta_data=json.dumps(meta_data),
+        meta_data="",
+        job=job,
     )
     db.add(notification)
 
@@ -95,3 +94,7 @@ def create_new_job_notification(db: DbSession, job: m.Job) -> m.PushNotification
 def send_created_job_notification(db: DbSession, job: m.Job) -> None:
     notification = create_new_job_notification(db, job)
     send_push_notification(notification)
+
+
+def notification_is_read_by_user(notification: m.PushNotification, user: m.User) -> bool:
+    return user in notification.read_by

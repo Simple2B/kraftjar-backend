@@ -112,4 +112,4 @@ from .file import FileType, File, FileIn, FileOut, Files
 from .city import City, CityIn, CityOut, CitiesFile, CityAddressesOut
 
 from .device import DeviceIn, DeviceOut, DevicePlatform
-from .push_notification import PushNotificationType
+from .push_notification import PushNotificationType, PushNotificationOut
