@@ -292,6 +292,7 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
         is_volunteer=job.is_volunteer,
         is_negotiable=job.is_negotiable,
         worker_uuid=job.worker.uuid if job.worker else None,
+        worker_name=job.worker.fullname if job.worker else None,
         applications=applications,
         status=s.JobStatus(job.status),
     )
@@ -433,3 +434,50 @@ def get_archived_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Lang
             )
 
     return (as_owner_jobs, as_worker_jobs)
+
+
+def get_completed_jobs_without_rate(db: Session, current_user: m.User) -> list[str]:
+    """Get completed job without rate for current user"""
+
+    jobs = db.scalars(
+        sa.select(m.Job)
+        .where(
+            sa.or_(
+                sa.and_(
+                    m.Job.is_deleted.is_(False),
+                    m.Job.status == s.JobStatus.COMPLETED.value,
+                    m.Job.owner_id == current_user.id,
+                    ~sa.exists().where(
+                        sa.and_(
+                            m.Rate.job_id == m.Job.id,
+                            m.Rate.gives_id == current_user.id,
+                        )
+                    ),
+                ),
+                sa.and_(
+                    m.Job.is_deleted.is_(False),
+                    m.Job.status == s.JobStatus.COMPLETED.value,
+                    m.Job.worker_id == current_user.id,
+                    ~sa.exists().where(
+                        sa.and_(
+                            m.Rate.job_id == m.Job.id,
+                            m.Rate.gives_id == current_user.id,
+                        )
+                    ),
+                ),
+            )
+        )
+        .order_by(m.Job.updated_at.desc())
+    ).all()
+
+    # if not jobs:
+    #     log(log.ERROR, "Job not found")
+    #     return []
+
+    log(log.INFO, "Jobs [%s] found", len(jobs))
+
+    jobs_out: list[str] = [job.uuid for job in jobs]
+
+    log(log.INFO, "Jobs [%s] without rate found", len(jobs_out))
+
+    return jobs_out
