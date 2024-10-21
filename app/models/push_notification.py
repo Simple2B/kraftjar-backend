@@ -30,7 +30,7 @@ class PushNotification(db.Model, ModelMixin):
 
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
     uuid: orm.Mapped[str] = orm.mapped_column(
-        sa.String(36), default=lambda: str(uuid4()), server_default=sa.func.uuid()
+        sa.String(36), default=lambda: str(uuid4()), server_default=sa.func.gen_random_uuid()
     )
     title: orm.Mapped[str] = orm.mapped_column(sa.String(512), nullable=False)
     content: orm.Mapped[str] = orm.mapped_column(sa.String(1024), nullable=False)
