@@ -83,6 +83,13 @@ def create_rate(
         log(log.ERROR, "Job [%s] not found", data.job_uuid)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
 
+    # check if job has rate from current user like giver
+    if job.rates:
+        job_giver_ids = [rate.gives_id for rate in job.rates]
+        if current_user.id in job_giver_ids:
+            log(log.ERROR, "User [%s] already gave rate for job [%s]", current_user.uuid, job.uuid)
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User already gave rate for job")
+
     # Check if current user is owner or worker
     if current_user.id == job.owner_id:
         receiver_id = job.worker_id
@@ -108,6 +115,11 @@ def create_rate(
     db.refresh(rate)
 
     log(log.INFO, "Rate [%s] created for job [%s]", rate.uuid, job.uuid)
+
+    job_rate = m.JobRate(rate_id=rate.id, job_id=job.id)
+    db.add(job_rate)
+    db.commit()
+    log(log.INFO, "Rate [%s] added to job [%s]", rate.uuid, job.uuid)
 
     return rate
 

@@ -1,5 +1,5 @@
 from pydantic import BaseModel, ConfigDict
-from app import schema as s
+from app.schema.user import User
 
 
 class Rate(BaseModel):
@@ -22,9 +22,19 @@ class RateIn(Rate):
 
 class RateOut(Rate):
     uuid: str
-    receiver: s.User
-    giver: s.User
-    job: s.BaseJob
+    receiver: User
+    giver: User
+    job_uuid: str
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class RateJobOut(Rate):
+    uuid: str
+    gives_uuid: str | None = None
+    receiver_uuid: str | None = None
 
     model_config = ConfigDict(
         from_attributes=True,
