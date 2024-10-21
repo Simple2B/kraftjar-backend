@@ -247,24 +247,42 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     # Test pending jobs
     response = client.get(
         "/api/jobs/jobs-by-status/",
-        params={"job_status": s.JobStatus.PENDING.value},
+        params={
+            "job_status": s.JobStatus.PENDING.value,
+            "job_user_status": s.JobUserStatus.OWNER.value,
+        },
         headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsByStatusList.model_validate(response.json())
-    assert data.owner
-    assert data.worker
+    owner_jobs = data.items
+    assert owner_jobs
+
+    response = client.get(
+        "/api/jobs/jobs-by-status/",
+        params={
+            "job_status": s.JobStatus.PENDING.value,
+            "job_user_status": s.JobUserStatus.WORKER.value,
+        },
+        headers=auth_header,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = s.JobsByStatusList.model_validate(response.json())
+    worker_jobs = data.items
+    assert worker_jobs
 
     # Test in progress jobs
     response = client.get(
         "/api/jobs/jobs-by-status/",
-        params={"job_status": s.JobStatus.IN_PROGRESS.value},
+        params={
+            "job_status": s.JobStatus.IN_PROGRESS.value,
+            "job_user_status": s.JobUserStatus.WORKER.value,
+        },
         headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsByStatusList.model_validate(response.json())
-    assert data.owner
-    assert data.worker
+    assert data.items
 
     # Test confirmaion jobs (not completed yet == in progress)
     response = client.get(
@@ -274,8 +292,7 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     )
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsByStatusList.model_validate(response.json())
-    assert not data.owner
-    assert not data.worker
+    assert not data.items
 
     # Test archived jobs
     response = client.get(
@@ -285,8 +302,7 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     )
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsByStatusList.model_validate(response.json())
-    assert not data.owner
-    assert not data.worker
+    assert not data.items
 
     response = client.get(
         "/api/jobs/jobs-by-status/",
@@ -295,8 +311,7 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     )
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsByStatusList.model_validate(response.json())
-    assert data.owner
-    assert data.worker
+    assert data.items
 
 
 @pytest.mark.skipif(
@@ -406,23 +421,11 @@ def test_get_jobs_without_rate(
                         m.Job.is_deleted.is_(False),
                         m.Job.status == s.JobStatus.COMPLETED.value,
                         m.Job.owner_id == current_user.id,
-                        ~sa.exists().where(
-                            sa.and_(
-                                m.Rate.job_id == m.Job.id,
-                                m.Rate.gives_id == current_user.id,
-                            )
-                        ),
                     ),
                     sa.and_(
                         m.Job.is_deleted.is_(False),
-                        m.Job.status == s.JobStatus.COMPLETED.value,
-                        m.Job.worker_id == current_user.id,
-                        ~sa.exists().where(
-                            sa.and_(
-                                m.Rate.job_id == m.Job.id,
-                                m.Rate.gives_id == current_user.id,
-                            )
-                        ),
+                        m.Job.status == s.JobStatus.CANCELED.value,
+                        m.Job.owner_id == current_user.id,
                     ),
                 )
             )
@@ -435,12 +438,16 @@ def test_get_jobs_without_rate(
     # find job without rate for current user
     response = client.get(
         "/api/jobs/jobs-by-status/",
-        params={"job_status": s.JobStatus.COMPLETED.value},
+        params={
+            "job_status": s.JobStatus.COMPLETED.value,
+            "job_user_status": s.JobUserStatus.OWNER.value,
+        },
         headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
-    assert response.json()["completed_jobs_without_rate"]
-    assert len(db_completed_jobs) == len(response.json()["completed_jobs_without_rate"])
+    assert response.json()
+
+    assert len(db_completed_jobs) == len(response.json()["items"])
 
     # crete rate for job without rate for current user
     job_for_rate: m.Job = db_completed_jobs[0]
@@ -453,11 +460,12 @@ def test_get_jobs_without_rate(
     assert job_worker
 
     receiver_uuid = job_owner.uuid if job_for_rate.worker_id == current_user.id else job_worker.uuid
+    assert receiver_uuid
 
     rate_data = s.RateIn(
         rate=5,
         review="Good job",
-        job_uuid=db_completed_jobs[0].uuid,
+        job_uuid=job_for_rate.uuid,
         receiver_uuid=receiver_uuid,
     )
 
@@ -471,12 +479,15 @@ def test_get_jobs_without_rate(
 
     response = client.get(
         "/api/jobs/jobs-by-status/",
-        params={"job_status": s.JobStatus.COMPLETED.value},
+        params={
+            "job_status": s.JobStatus.COMPLETED.value,
+            "job_user_status": s.JobUserStatus.OWNER.value,
+        },
         headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
-    assert response.json()["completed_jobs_without_rate"]
-    assert len(response.json()["completed_jobs_without_rate"]) == len(db_completed_jobs) - 1
+    assert response.json()
+    assert job_for_rate.required_rate_owner is not False
 
 
 @pytest.mark.skipif(

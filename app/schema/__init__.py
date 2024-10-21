@@ -28,6 +28,7 @@ from .job import (
     JobsByStatusList,
     JobStatusIn,
     JobRate,
+    JobUserStatus,
 )
 from .application import (
     ApplicationIn,

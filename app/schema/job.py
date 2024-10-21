@@ -23,6 +23,11 @@ class JobStatus(enum.Enum):
     CANCELED = "canceled"
 
 
+class JobUserStatus(enum.Enum):
+    OWNER = "owner"
+    WORKER = "worker"
+
+
 class BaseJob(BaseModel):
     id: int
     uuid: str
@@ -297,15 +302,16 @@ class JobByStatus(BaseModel):
     cost: float | None = None
     status: JobStatus
 
+    required_rate_owner: bool | None = None
+    required_rate_worker: bool | None = None
+
     model_config = ConfigDict(
         from_attributes=True,
     )
 
 
 class JobsByStatusList(BaseModel):
-    owner: list[JobByStatus]
-    worker: list[JobByStatus]
-    completed_jobs_without_rate: list[str] = []  # list of uuids
+    items: list[JobByStatus]
 
     model_config = ConfigDict(
         from_attributes=True,

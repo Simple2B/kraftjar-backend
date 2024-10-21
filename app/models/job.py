@@ -1,4 +1,5 @@
 from datetime import UTC, datetime
+import re
 from uuid import uuid4
 
 import sqlalchemy as sa
@@ -98,6 +99,22 @@ class Job(db.Model, ModelMixin):
             s.JobStatus.APPROVED.value,
             s.JobStatus.ON_CONFIRMATION.value,
         ]
+
+    @property
+    def required_rate_worker(self) -> bool:
+        rates_givers_ids = [rate.gives_id for rate in self.rates]
+        if self.status == s.JobStatus.COMPLETED.value:
+            if self.worker_id in rates_givers_ids:
+                return True
+        return False
+
+    @property
+    def required_rate_owner(self) -> bool:
+        rates_givers_ids = [rate.gives_id for rate in self.rates]
+        if self.status == s.JobStatus.COMPLETED.value:
+            if self.owner_id in rates_givers_ids:
+                return True
+        return False
 
     def __repr__(self):
         return f"<Job {self.title} - {self.uuid}>"

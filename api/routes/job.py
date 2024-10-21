@@ -116,6 +116,7 @@ def get_jobs(
 )
 def get_jobs_by_status(
     job_status: s.JobStatus = s.JobStatus.PENDING,
+    job_user_status: s.JobUserStatus = s.JobUserStatus.OWNER,
     lang: Language = Language.UA,
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
@@ -135,11 +136,10 @@ def get_jobs_by_status(
         log(log.ERROR, "Jobs not found")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Jobs not found")
 
-    as_owner_jobs: list[s.JobByStatus] = []
-    as_worker_jobs: list[s.JobByStatus] = []
+    jobs_out: list[s.JobByStatus] = []
 
     if job_status == s.JobStatus.PENDING:
-        as_owner_jobs, as_worker_jobs = c.get_pending_jobs(db_jobs, current_user, lang, db)
+        jobs_out = c.get_pending_jobs(db_jobs, current_user, job_user_status, lang, db)
 
     # get active jobs (in progress, approved and on confirmation)
     if job_status == s.JobStatus.IN_PROGRESS:
@@ -153,19 +153,13 @@ def get_jobs_by_status(
             )
             .order_by(m.Job.updated_at.desc())
         ).all()
-        as_owner_jobs, as_worker_jobs = c.get_in_progress_jobs(active_jobs, current_user, lang)
+        jobs_out = c.get_in_progress_jobs(active_jobs, current_user, job_user_status, lang)
 
     # get archive jobs (completed and canceled)
     if job_status == s.JobStatus.COMPLETED:
-        as_owner_jobs, as_worker_jobs = c.get_archived_jobs(db_jobs, current_user, lang)
-        completed_jobs_uuids = c.get_completed_jobs_without_rate(db, current_user)
-        return s.JobsByStatusList(
-            owner=as_owner_jobs,
-            worker=as_worker_jobs,
-            completed_jobs_without_rate=completed_jobs_uuids,
-        )
+        jobs_out = c.get_archived_jobs(db_jobs, current_user, job_user_status, lang)
 
-    return s.JobsByStatusList(owner=as_owner_jobs, worker=as_worker_jobs)
+    return s.JobsByStatusList(items=jobs_out)
 
 
 @job_router.post(

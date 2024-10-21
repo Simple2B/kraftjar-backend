@@ -298,15 +298,24 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
     )
 
 
-def get_pending_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Language, db: Session):
-    as_owner_jobs: list[s.JobByStatus] = []
-    as_worker_jobs: list[s.JobByStatus] = []
+def get_pending_jobs(
+    db_jobs: Sequence[m.Job],
+    current_user: m.User,
+    job_user_status: s.JobUserStatus,
+    lang: Language,
+    db: Session,
+):
+    job_out: list[s.JobByStatus] = []
 
     for job in db_jobs:
-        if job.owner_id == current_user.id and job.status == s.JobStatus.PENDING.value:
+        if (
+            job.owner_id == current_user.id
+            and job.status == s.JobStatus.PENDING.value
+            and job_user_status == s.JobUserStatus.OWNER
+        ):
             job_location, job_address = format_location_string(job.location, job.address, lang)
 
-            as_owner_jobs.insert(
+            job_out.insert(
                 0,
                 s.JobByStatus(
                     uuid=job.uuid,
@@ -317,6 +326,8 @@ def get_pending_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Langu
                     end_date=job.end_date,
                     cost=job.cost,
                     status=s.JobStatus(job.status),
+                    required_rate_owner=job.required_rate_owner,
+                    required_rate_worker=job.required_rate_worker,
                 ),
             )
 
@@ -326,14 +337,14 @@ def get_pending_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Langu
         )
     ).all()
 
-    if applications:
+    if applications and job_user_status == s.JobUserStatus.WORKER:
         app_jobs_ids = [a.job_id for a in applications]
         jobs = [job for job in db_jobs if job.id in app_jobs_ids]
 
         for job in jobs:
             job_location, job_address = format_location_string(job.location, job.address, lang)
 
-            as_worker_jobs.insert(
+            job_out.insert(
                 0,
                 s.JobByStatus(
                     uuid=job.uuid,
@@ -344,96 +355,118 @@ def get_pending_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Langu
                     end_date=job.end_date,
                     cost=job.cost,
                     status=s.JobStatus(job.status),
+                    required_rate_owner=job.required_rate_owner,
+                    required_rate_worker=job.required_rate_worker,
                 ),
             )
 
-    return (as_owner_jobs, as_worker_jobs)
+    return job_out
 
 
-def get_in_progress_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Language):
-    as_owner_jobs = []
-    as_worker_jobs = []
+def get_in_progress_jobs(
+    db_jobs: Sequence[m.Job],
+    current_user: m.User,
+    job_user_status: s.JobUserStatus,
+    lang: Language,
+):
+    jobs_out = []
 
-    for job in db_jobs:
-        if job.owner_id == current_user.id and job.is_in_progress:
-            job_location, job_address = format_location_string(job.location, job.address, lang)
+    if job_user_status == s.JobUserStatus.OWNER:
+        for job in db_jobs:
+            if job.owner_id == current_user.id and job.is_in_progress:
+                job_location, job_address = format_location_string(job.location, job.address, lang)
 
-            as_owner_jobs.append(
-                s.JobByStatus(
-                    uuid=job.uuid,
-                    title=job.title,
-                    location=job_location,
-                    address=job_address,
-                    start_date=job.start_date,
-                    end_date=job.end_date,
-                    cost=job.cost,
-                    status=s.JobStatus(job.status),
+                jobs_out.append(
+                    s.JobByStatus(
+                        uuid=job.uuid,
+                        title=job.title,
+                        location=job_location,
+                        address=job_address,
+                        start_date=job.start_date,
+                        end_date=job.end_date,
+                        cost=job.cost,
+                        status=s.JobStatus(job.status),
+                        required_rate_owner=job.required_rate_owner,
+                        required_rate_worker=job.required_rate_worker,
+                    )
                 )
-            )
 
-    for job in db_jobs:
-        if job.worker_id == current_user.id and job.is_in_progress:
-            job_location, job_address = format_location_string(job.location, job.address, lang)
+    if job_user_status == s.JobUserStatus.WORKER:
+        for job in db_jobs:
+            if job.worker_id == current_user.id and job.is_in_progress:
+                job_location, job_address = format_location_string(job.location, job.address, lang)
 
-            as_worker_jobs.append(
-                s.JobByStatus(
-                    uuid=job.uuid,
-                    title=job.title,
-                    location=job_location,
-                    address=job_address,
-                    start_date=job.start_date,
-                    end_date=job.end_date,
-                    cost=job.cost,
-                    status=s.JobStatus(job.status),
+                jobs_out.append(
+                    s.JobByStatus(
+                        uuid=job.uuid,
+                        title=job.title,
+                        location=job_location,
+                        address=job_address,
+                        start_date=job.start_date,
+                        end_date=job.end_date,
+                        cost=job.cost,
+                        status=s.JobStatus(job.status),
+                        required_rate_owner=job.required_rate_owner,
+                        required_rate_worker=job.required_rate_worker,
+                    )
                 )
-            )
 
-    return (as_owner_jobs, as_worker_jobs)
+    return jobs_out
 
 
-def get_archived_jobs(db_jobs: Sequence[m.Job], current_user: m.User, lang: Language):
-    as_owner_jobs = []
-    as_worker_jobs = []
+def get_archived_jobs(
+    db_jobs: Sequence[m.Job],
+    current_user: m.User,
+    job_user_status: s.JobUserStatus,
+    lang: Language,
+):
+    jobs_out = []
 
-    for job in db_jobs:
-        if job.owner_id == current_user.id and (
-            job.status == s.JobStatus.COMPLETED.value or job.status == s.JobStatus.CANCELED.value
-        ):
-            job_location, job_address = format_location_string(job.location, job.address, lang)
+    if job_user_status == s.JobUserStatus.OWNER:
+        for job in db_jobs:
+            if job.owner_id == current_user.id and (
+                job.status == s.JobStatus.COMPLETED.value or job.status == s.JobStatus.CANCELED.value
+            ):
+                job_location, job_address = format_location_string(job.location, job.address, lang)
 
-            as_owner_jobs.append(
-                s.JobByStatus(
-                    uuid=job.uuid,
-                    title=job.title,
-                    location=job_location,
-                    address=job_address,
-                    start_date=job.start_date,
-                    end_date=job.end_date,
-                    cost=job.cost,
-                    status=s.JobStatus(job.status),
+                jobs_out.append(
+                    s.JobByStatus(
+                        uuid=job.uuid,
+                        title=job.title,
+                        location=job_location,
+                        address=job_address,
+                        start_date=job.start_date,
+                        end_date=job.end_date,
+                        cost=job.cost,
+                        status=s.JobStatus(job.status),
+                        required_rate_owner=job.required_rate_owner,
+                        required_rate_worker=job.required_rate_worker,
+                    )
                 )
-            )
 
-    for job in db_jobs:
-        if job.worker_id == current_user.id and (
-            job.status == s.JobStatus.COMPLETED.value or job.status == s.JobStatus.CANCELED.value
-        ):
-            job_location, job_address = format_location_string(job.location, job.address, lang)
+    if job_user_status == s.JobUserStatus.WORKER:
+        for job in db_jobs:
+            if job.worker_id == current_user.id and (
+                job.status == s.JobStatus.COMPLETED.value or job.status == s.JobStatus.CANCELED.value
+            ):
+                job_location, job_address = format_location_string(job.location, job.address, lang)
 
-            as_worker_jobs.append(
-                s.JobByStatus(
-                    uuid=job.uuid,
-                    title=job.title,
-                    location=job_location,
-                    address=job_address,
-                    start_date=job.start_date,
-                    end_date=job.end_date,
-                    cost=job.cost,
-                    status=s.JobStatus(job.status),
+                jobs_out.append(
+                    s.JobByStatus(
+                        uuid=job.uuid,
+                        title=job.title,
+                        location=job_location,
+                        address=job_address,
+                        start_date=job.start_date,
+                        end_date=job.end_date,
+                        cost=job.cost,
+                        status=s.JobStatus(job.status),
+                        required_rate_owner=job.required_rate_owner,
+                        required_rate_worker=job.required_rate_worker,
+                    )
                 )
-            )
 
-    return (as_owner_jobs, as_worker_jobs)
+    return jobs_out
 
 
 def get_completed_jobs_without_rate(db: Session, current_user: m.User) -> list[str]:
