@@ -487,7 +487,7 @@ def test_get_jobs_without_rate(
     )
     assert response.status_code == status.HTTP_200_OK
     assert response.json()
-    assert job_for_rate.required_rate_owner is not False
+    assert job_for_rate.required_rate_owner is False
 
 
 @pytest.mark.skipif(
