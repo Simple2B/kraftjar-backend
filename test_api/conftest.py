@@ -3,9 +3,10 @@ from typing import Generator
 import pytest
 from dotenv import load_dotenv
 from fastapi import status
-
-from mypy_boto3_s3 import S3Client
 from moto import mock_aws
+from mypy_boto3_s3 import S3Client
+
+from test_api.utils import do_nothing
 
 load_dotenv("test_api/test.env")
 
@@ -30,14 +31,13 @@ def db() -> Generator[orm.Session, None, None]:
     with db.Session() as session:
         db.Model.metadata.create_all(bind=session.bind)
 
-        from app.commands.locations import export_test_locations_from_json_file
         from app.commands.addresses import export_addresses_from_json_file
         from app.commands.cities import export_cities_from_json_file
-        from app.commands.locations import export_regions_from_json_file
+        from app.commands.job import export_jobs_from_json_file
+        from app.commands.locations import export_regions_from_json_file, export_test_locations_from_json_file
+        from app.commands.rayons_json import export_rayons_from_json_file
         from app.commands.service import export_services_from_json_file
         from app.commands.user import export_users_from_json_file
-        from app.commands.job import export_jobs_from_json_file
-        from app.commands.rayons_json import export_rayons_from_json_file
 
         # export_test_locations_from_json_file(with_print=False)
         export_services_from_json_file(with_print=False)
@@ -83,8 +83,10 @@ def s3_client() -> Generator[S3Client, None, None]:
 
 
 @pytest.fixture
-def client(db) -> Generator[TestClient, None, None]:
+def client(db, monkeypatch) -> Generator[TestClient, None, None]:
     """Returns a non-authorized test client for the API"""
+    monkeypatch.setattr("api.routes.job.c.send_created_job_notification", do_nothing)
+
     with TestClient(app) as c:
         yield c
 

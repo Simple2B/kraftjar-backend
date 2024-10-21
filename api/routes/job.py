@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Annotated, Any, List, Union
 
 import sqlalchemy as sa
-from fastapi import APIRouter, Depends, HTTPException, Query, status, UploadFile
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status, UploadFile
 from sqlalchemy.orm import Session
 from mypy_boto3_s3 import S3Client
 
@@ -179,6 +179,7 @@ def get_jobs_by_status(
 )
 def create_job(
     job: s.JobIn,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
@@ -256,6 +257,7 @@ def create_job(
     job_out = s.BaseJob.model_validate(new_job)
 
     log(log.INFO, "Job [%s] was created", new_job.id)
+    background_tasks.add_task(c.send_created_job_notification, db, new_job)
 
     return s.JobOut(
         **job_out.model_dump(),

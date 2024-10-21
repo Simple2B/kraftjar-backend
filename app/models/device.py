@@ -5,6 +5,7 @@ import sqlalchemy as sa
 from sqlalchemy import orm
 
 from app.database import db
+from app.schema.device import DevicePlatform
 
 from .utils import ModelMixin
 
@@ -29,6 +30,10 @@ class Device(db.Model, ModelMixin):
         sa.String(512), nullable=False
     )  # Push token, received from the device
 
+    platform: orm.Mapped[str] = orm.mapped_column(
+        sa.String(16), default=DevicePlatform.UNKNOWN.value, server_default="unknown"
+    )
+
     created_at: orm.Mapped[datetime] = orm.mapped_column(
         default=sa.func.now(),
     )
@@ -40,6 +45,9 @@ class Device(db.Model, ModelMixin):
 
     # Relationships
     user: orm.Mapped["User"] = orm.relationship()
+
+    def mark_as_deleted(self):
+        self.is_deleted = True
 
     def __repr__(self):
         return f"<{self.id}:{self.device_id}. User: {self.user_id}>"

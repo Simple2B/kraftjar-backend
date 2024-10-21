@@ -22,3 +22,6 @@ from .favorite_experts import favorite_experts
 from .job_applications import job_applications
 from .job_rates import job_rates, JobRate
 from .device import Device
+from .notification_devices import notification_devices
+from .notification_users import notification_users
+from .push_notification import PushNotification

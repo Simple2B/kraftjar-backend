@@ -15,6 +15,7 @@ env:
   DOCKER_ACCESS_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
   GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+  FCM_ADMIN_KEY_BASE64: ${{ secrets.FCM_ADMIN_KEY }}
 
 jobs:
   on-develop-branch-check:
@@ -126,9 +127,8 @@ jobs:
           envs: GOOGLE_CLIENT_ID
           script: |
             export GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
-            echo $env
-
             cd ~/kraftjar
+            echo ${{env.FCM_ADMIN_KEY_BASE64}} | base64 --decode > admin_key.json
             mv docker-compose.staging.yaml docker-compose.yaml
             docker login -u ${{ env.DOCKER_LOGIN }} -p ${{ env.DOCKER_ACCESS_TOKEN }} &&
             docker compose pull &&

@@ -21,6 +21,7 @@ services:
       ALCHEMICAL_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-passwd}@db:5432/db
     volumes:
       - ./credentials.json:/home/app/credentials.json
+      - ./admin_key.json:/home/app/admin_key.json
     env_file:
       - .env
     depends_on:
@@ -37,6 +38,9 @@ services:
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
     env_file:
       - .env
+    volumes:
+      - ./credentials.json:/home/app/credentials.json
+      - ./admin_key.json:/home/app/admin_key.json
     depends_on:
       - db
 

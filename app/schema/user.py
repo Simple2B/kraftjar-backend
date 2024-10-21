@@ -144,6 +144,7 @@ class UserProfileOut(User):
     announced_jobs_count: int
     favorite_jobs: list[UserFavoriteJob] = []
     favorite_experts: list[UserFavoriteExpert] = []
+    created_at: datetime
 
     __hash__ = object.__hash__
 
