@@ -27,6 +27,7 @@ from .job import (
     JobByStatus,
     JobsByStatusList,
     JobStatusIn,
+    JobRate,
 )
 from .application import (
     ApplicationIn,
@@ -78,7 +79,7 @@ from .user import (
     UserFavoriteExpert,
 )
 from .whoami import WhoAmI
-from .rate import RateIn, RateOut, RateOutList
+from .rate import RateIn, RateOut, RateOutList, RateJobOut
 from .auth import (
     Auth,
     GoogleAuthIn,

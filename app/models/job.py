@@ -9,6 +9,7 @@ from app import schema as s
 
 from .job_services import job_services
 from .job_applications import job_applications
+from .job_rates import job_rates
 
 from .utils import ModelMixin
 from typing import TYPE_CHECKING
@@ -19,6 +20,7 @@ if TYPE_CHECKING:
     from .user import User
     from .service import Service
     from .application import Application
+    from .rate import Rate
 
 
 class Job(db.Model, ModelMixin):
@@ -86,6 +88,8 @@ class Job(db.Model, ModelMixin):
     )
 
     applications: orm.Mapped[list["Application"]] = orm.relationship(secondary=job_applications)
+
+    rates: orm.Mapped[list["Rate"]] = orm.relationship(secondary=job_rates)
 
     @property
     def is_in_progress(self) -> bool:

@@ -4,6 +4,7 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
 from app.schema.language import Language
+from app.schema.rate import RateJobOut
 from config import config
 
 from .location import LocationStrings
@@ -76,6 +77,11 @@ class JobApplication(BaseModel):
     owner: JobApplicationOwner
 
 
+class JobRate(BaseModel):
+    uuid: str
+    rates: list[RateJobOut] = []
+
+
 class JobInfo(BaseModel):
     uuid: str
     title: str
@@ -94,6 +100,7 @@ class JobInfo(BaseModel):
     is_volunteer: bool
     is_negotiable: bool
     worker_uuid: str | None = None
+    worker_name: str | None = None
     applications: list[JobApplication]
     status: JobStatus
 
@@ -298,6 +305,7 @@ class JobByStatus(BaseModel):
 class JobsByStatusList(BaseModel):
     owner: list[JobByStatus]
     worker: list[JobByStatus]
+    completed_jobs_without_rate: list[str] = []  # list of uuids
 
     model_config = ConfigDict(
         from_attributes=True,
