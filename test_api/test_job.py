@@ -115,7 +115,7 @@ def test_create_job(
     assert job.files[1].uuid == image_2[0]
 
     # Get job
-    response = client.get(f"/api/jobs/{job.uuid}")
+    response = client.get(f"/api/jobs/{job.uuid}", headers=auth_header)
     assert response.status_code == status.HTTP_200_OK
     job_data = s.JobInfo.model_validate(response.json())
     assert job_data
@@ -251,7 +251,9 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
 
     # Test pending jobs
     response = client.get(
-        "/api/jobs/jobs-by-status/", params={"job_status": s.JobStatus.PENDING.value}, headers=auth_header
+        "/api/jobs/jobs-by-status/",
+        params={"job_status": s.JobStatus.PENDING.value},
+        headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsByStatusList.model_validate(response.json())
@@ -260,7 +262,9 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
 
     # Test in progress jobs
     response = client.get(
-        "/api/jobs/jobs-by-status/", params={"job_status": s.JobStatus.IN_PROGRESS.value}, headers=auth_header
+        "/api/jobs/jobs-by-status/",
+        params={"job_status": s.JobStatus.IN_PROGRESS.value},
+        headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsByStatusList.model_validate(response.json())
@@ -269,7 +273,9 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
 
     # Test confirmaion jobs (not completed yet == in progress)
     response = client.get(
-        "/api/jobs/jobs-by-status/", params={"job_status": s.JobStatus.ON_CONFIRMATION.value}, headers=auth_header
+        "/api/jobs/jobs-by-status/",
+        params={"job_status": s.JobStatus.ON_CONFIRMATION.value},
+        headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsByStatusList.model_validate(response.json())
@@ -278,7 +284,9 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
 
     # Test archived jobs
     response = client.get(
-        "/api/jobs/jobs-by-status/", params={"job_status": s.JobStatus.CANCELED.value}, headers=auth_header
+        "/api/jobs/jobs-by-status/",
+        params={"job_status": s.JobStatus.CANCELED.value},
+        headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsByStatusList.model_validate(response.json())
@@ -286,7 +294,9 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     assert not data.worker
 
     response = client.get(
-        "/api/jobs/jobs-by-status/", params={"job_status": s.JobStatus.COMPLETED.value}, headers=auth_header
+        "/api/jobs/jobs-by-status/",
+        params={"job_status": s.JobStatus.COMPLETED.value},
+        headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsByStatusList.model_validate(response.json())
@@ -294,9 +304,195 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     assert data.worker
 
 
-@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+@pytest.mark.skipif(
+    not CFG.IS_API,
+    reason="API is not enabled",
+)
+def test_get_jobs_without_rate(
+    client: TestClient,
+    auth_header: dict[str, str],
+    worker_header: dict[str, str],
+    db: Session,
+):
+    current_user = db.scalar(sa.select(m.User).where(m.User.id == 1))
+    assert current_user
+
+    service = db.scalar(sa.select(m.Service))
+    assert service
+
+    sattlement = db.scalar(sa.select(m.Settlement))
+    assert sattlement
+
+    address = db.scalar(sa.select(m.Address))
+    assert address
+
+    # cretae jobs for current user and add worker
+    for i in range(6):
+        new_job = s.JobIn(
+            service_uuid=service.uuid,
+            title=f"Test Job {i}",
+            description=f"Test Description {i}",
+            settlement_uuid=sattlement.city_id,
+            address_uuid=address.street_id,
+            start_date="2024-09-13T15:23:20.911Z",
+            end_date="2024-09-13T15:23:25.960Z",
+        )
+
+        response = client.post(
+            "/api/jobs",
+            headers=auth_header,
+            json=new_job.model_dump(),
+        )
+        assert response.status_code == status.HTTP_201_CREATED
+        job = s.JobOut.model_validate(response.json())
+        assert job
+
+        # add worker
+        worker = db.scalar(sa.select(m.User).where(m.User.id == 2))
+        assert worker
+
+        app_data = s.ApplicationIn(
+            type=m.ApplicationType.APPLY,
+            worker_uuid=worker.uuid,
+            job_uuid=job.uuid,
+        )
+
+        response = client.post(
+            "/api/applications",
+            headers=worker_header,
+            content=app_data.model_dump_json(),
+        )
+
+        assert response.status_code == status.HTTP_201_CREATED
+
+        app = s.ApplicationOut.model_validate(response.json())
+        assert app
+
+        # accept application
+        response = client.put(
+            f"/api/applications/{app.uuid}",
+            headers=auth_header,
+            content=s.ApplicationPutIn(status=m.ApplicationStatus.ACCEPTED).model_dump_json(),
+        )
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json()["application"]["status"] == m.ApplicationStatus.ACCEPTED.value
+        assert response.json()["application"]["worker_id"] == worker.id
+
+        # change job status to in progress
+        response = client.put(
+            f"/api/jobs/{job.uuid}/status",
+            headers=worker_header,
+            content=s.JobStatusIn(status=s.JobStatus.IN_PROGRESS).model_dump_json(),
+        )
+        assert response.status_code == status.HTTP_200_OK
+
+        # change job status to on confirmation
+        response = client.put(
+            f"/api/jobs/{job.uuid}/status",
+            headers=worker_header,
+            content=s.JobStatusIn(status=s.JobStatus.ON_CONFIRMATION).model_dump_json(),
+        )
+        assert response.status_code == status.HTTP_200_OK
+
+        # change job status to completed
+        response = client.put(
+            f"/api/jobs/{job.uuid}/status",
+            headers=auth_header,
+            content=s.JobStatusIn(status=s.JobStatus.COMPLETED).model_dump_json(),
+        )
+        assert response.status_code == status.HTTP_200_OK
+
+    # get completed job for current user without rate
+    db_completed_jobs = (
+        db.execute(
+            sa.select(m.Job).where(
+                sa.or_(
+                    sa.and_(
+                        m.Job.is_deleted.is_(False),
+                        m.Job.status == s.JobStatus.COMPLETED.value,
+                        m.Job.owner_id == current_user.id,
+                        ~sa.exists().where(
+                            sa.and_(
+                                m.Rate.job_id == m.Job.id,
+                                m.Rate.gives_id == current_user.id,
+                            )
+                        ),
+                    ),
+                    sa.and_(
+                        m.Job.is_deleted.is_(False),
+                        m.Job.status == s.JobStatus.COMPLETED.value,
+                        m.Job.worker_id == current_user.id,
+                        ~sa.exists().where(
+                            sa.and_(
+                                m.Rate.job_id == m.Job.id,
+                                m.Rate.gives_id == current_user.id,
+                            )
+                        ),
+                    ),
+                )
+            )
+        )
+        .scalars()
+        .all()
+    )
+    assert db_completed_jobs
+
+    # find job without rate for current user
+    response = client.get(
+        "/api/jobs/jobs-by-status/",
+        params={"job_status": s.JobStatus.COMPLETED.value},
+        headers=auth_header,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["completed_jobs_without_rate"]
+    assert len(db_completed_jobs) == len(response.json()["completed_jobs_without_rate"])
+
+    # crete rate for job without rate for current user
+    job_for_rate: m.Job = db_completed_jobs[0]
+    assert job_for_rate
+
+    job_owner = db.scalar(sa.select(m.User).where(m.User.id == job_for_rate.owner_id))
+    assert job_owner
+
+    job_worker = db.scalar(sa.select(m.User).where(m.User.id == job_for_rate.worker_id))
+    assert job_worker
+
+    receiver_uuid = job_owner.uuid if job_for_rate.worker_id == current_user.id else job_worker.uuid
+
+    rate_data = s.RateIn(
+        rate=5,
+        review="Good job",
+        job_uuid=db_completed_jobs[0].uuid,
+        receiver_uuid=receiver_uuid,
+    )
+
+    response = client.post(
+        "/api/rates",
+        headers=auth_header,
+        content=rate_data.model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_201_CREATED
+    assert response.json()
+
+    response = client.get(
+        "/api/jobs/jobs-by-status/",
+        params={"job_status": s.JobStatus.COMPLETED.value},
+        headers=auth_header,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["completed_jobs_without_rate"]
+    assert len(response.json()["completed_jobs_without_rate"]) == len(db_completed_jobs) - 1
+
+
+@pytest.mark.skipif(
+    not CFG.IS_API,
+    reason="API is not enabled",
+)
 def test_update_jobs_status(
-    client: TestClient, auth_header: dict[str, str], worker_header: dict[str, str], db: Session
+    client: TestClient,
+    auth_header: dict[str, str],
+    worker_header: dict[str, str],
+    db: Session,
 ):
     service = db.scalar(sa.select(m.Service))
 
@@ -343,7 +539,9 @@ def test_update_jobs_status(
     response = client.put(
         f"/api/jobs/{job.uuid}/status",
         headers=worker_header,
-        content=s.JobStatusIn.model_validate({"status": s.JobStatus.COMPLETED}).model_dump_json(),
+        content=s.JobStatusIn.model_validate(
+            {"status": s.JobStatus.COMPLETED},
+        ).model_dump_json(),
     )
     assert response.status_code == status.HTTP_409_CONFLICT
 
@@ -351,7 +549,9 @@ def test_update_jobs_status(
     response = client.put(
         f"/api/jobs/{job.uuid}/status",
         headers=auth_header,
-        content=s.JobStatusIn.model_validate({"status": s.JobStatus.IN_PROGRESS}).model_dump_json(),
+        content=s.JobStatusIn.model_validate(
+            {"status": s.JobStatus.IN_PROGRESS},
+        ).model_dump_json(),
     )
     assert response.status_code == status.HTTP_409_CONFLICT
 
