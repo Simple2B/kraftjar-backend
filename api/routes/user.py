@@ -263,6 +263,7 @@ def update_user(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Basic auth account not found")
 
     if user_data.services:
+        current_user.services.clear()
         for service_uuid in user_data.services:
             service: m.Service | None = db.scalar(sa.select(m.Service).where(m.Service.uuid == service_uuid))
             if not service:
@@ -270,6 +271,7 @@ def update_user(
             current_user.services.append(service)
 
     if user_data.locations:
+        current_user.locations.clear()
         for location_uuid in user_data.locations:
             location: m.Location | None = db.scalar(sa.select(m.Location).where(m.Location.uuid == location_uuid))
             if not location:
