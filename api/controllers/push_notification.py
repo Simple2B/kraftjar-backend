@@ -49,9 +49,11 @@ def send_push_notification(notification: m.PushNotification) -> None:
         )
     except PushServerError as exc:
         # Encountered some likely formatting/validation error.
-        log(log.ERROR, "[send_push_notification] PushServerError: %s", exc)
+        log(log.ERROR, "[send_push_notification] PushServerError: %s", str(exc.errors))
+        return
     except (ConnectionError, HTTPError) as exc:
         log(log.ERROR, "[send_push_notification] ConnectionError or HTTPError: %s", exc)
+        return
     for response in responses:
         try:
             # We got a response back, but we don't know whether it's an error yet.
