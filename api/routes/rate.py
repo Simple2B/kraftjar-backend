@@ -56,15 +56,13 @@ def get_rates(
         log(log.ERROR, "Specialist [%s] not found", specialist_uuid)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Specialist not found")
 
-    rates = (
-        db.execute(
-            sa.select(m.Rate).where(
-                m.Rate.receiver_id == specialist.id,
-            )
+    rates = db.scalars(
+        sa.select(m.Rate)
+        .where(
+            m.Rate.receiver_id == specialist.id,
         )
-        .scalars()
-        .all()
-    )
+        .order_by(m.Rate.created_at.desc())
+    ).all()
 
     if not rates:
         log(log.INFO, "Rates not found for user [%s]", specialist.uuid)
