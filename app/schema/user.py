@@ -65,6 +65,14 @@ class UserSearchOut(BaseModel):
     __hash__ = object.__hash__
 
 
+class UserRateOut(BaseModel):
+    uuid: str
+    fullname: str
+    # TODO: must be add avatar field here later
+
+    __hash__ = object.__hash__
+
+
 class UserSearchIn(BaseModel):
     lang: Language = Language.UA
     selected_locations: list[str] = []  # list of uuids - selected locations
