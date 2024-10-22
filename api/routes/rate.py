@@ -36,29 +36,72 @@ def get_rate(
 
 
 @rate_router.get(
-    "/",
+    "/{specialist_uuid}/specialist",
     status_code=status.HTTP_200_OK,
-    response_model=list[s.RateOut],
+    response_model=s.RateUserOutList,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Specialist not found"},
+    },
+    dependencies=[Depends(get_current_user)],
 )
 def get_rates(
+    specialist_uuid: str,
     db: Session = Depends(get_db),
-    current_user: m.User = Depends(get_current_user),
 ):
-    """Get all rates for user"""
+    """Get all rates for specialist user"""
+
+    specialist: m.User | None = db.scalar(sa.select(m.User).where(m.User.uuid == specialist_uuid))
+
+    if not specialist:
+        log(log.ERROR, "Specialist [%s] not found", specialist_uuid)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Specialist not found")
 
     rates = (
         db.execute(
-            sa.select(m.Rate).where(sa.or_(m.Rate.gives_id == current_user.id, m.Rate.receiver_id == current_user.id))
+            sa.select(m.Rate).where(
+                m.Rate.receiver_id == specialist.id,
+            )
         )
         .scalars()
         .all()
     )
 
     if not rates:
-        log(log.INFO, "Rates not found for user [%s]", current_user.uuid)
-        return s.RateOutList(items=[])
+        log(log.INFO, "Rates not found for user [%s]", specialist.uuid)
+        return s.RateUserOutList(items=[])
 
-    return rates
+    rates_out: list[s.RateUserOut] = []
+
+    for rate in rates:
+        giver: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == rate.gives_id))
+
+        if not giver:
+            log(log.ERROR, "Giver not found for rate [%s]", rate.uuid)
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Giver not found")
+
+        receiver: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == rate.receiver_id))
+
+        if not receiver:
+            log(log.ERROR, "Receiver not found for rate [%s]", rate.uuid)
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Receiver not found")
+
+        fullname = giver.fullname if giver.fullname else f"{giver.first_name} {giver.last_name}"
+
+        rate_out = s.RateUserOut(
+            rate=rate.rate,
+            review=rate.review,
+            uuid=rate.uuid,
+            gives=s.UserRateOut(
+                uuid=giver.uuid,
+                fullname=fullname,
+            ),
+            receiver_uuid=receiver.uuid,
+            created_at=rate.created_at,
+        )
+
+        rates_out.append(rate_out)
+
+    return s.RateUserOutList(items=rates_out)
 
 
 @rate_router.post(
