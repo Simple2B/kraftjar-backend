@@ -31,7 +31,11 @@ def test_create_rate(client: TestClient, auth_header: dict[str, str], full_db: S
     )
 
     # Create rate for job worker
-    response = client.post("/api/rates", headers=auth_header, content=data.model_dump_json())
+    response = client.post(
+        "/api/rates",
+        headers=auth_header,
+        content=data.model_dump_json(),
+    )
     assert response.status_code == status.HTTP_201_CREATED
     assert response.json()["rate"] == data.rate
     assert response.json()["review"] == data.review
@@ -82,29 +86,30 @@ def test_create_rate(client: TestClient, auth_header: dict[str, str], full_db: S
 
     db_rates_current_user = (
         full_db.execute(
-            select(m.Rate).where(sa.or_(m.Rate.receiver_id == current_user.id, m.Rate.gives_id == current_user.id))
+            select(m.Rate).where(
+                sa.or_(m.Rate.receiver_id == current_user.id),
+            )
         )
         .scalars()
         .all()
     )
     assert db_rates_current_user
     db_rates_current_user_uuids = [rate.uuid for rate in db_rates_current_user]
-    assert rate_1_uuid in db_rates_current_user_uuids
+    assert rate_2_uuid in db_rates_current_user_uuids
+
+    specialist_uuid = current_user.uuid
 
     # Get rates for job owner
-    response_3 = client.get("/api/rates", headers=auth_header)
+    response_3 = client.get(f"/api/rates/{specialist_uuid}/specialist", headers=auth_header)
     assert response_3.status_code == status.HTTP_200_OK
-    assert len(response_3.json()) == len(db_rates_current_user)
+    assert len(response_3.json()["items"]) == len(db_rates_current_user)
 
-    db_rates_worker = (
-        full_db.execute(
-            select(m.Rate).where(sa.or_(m.Rate.receiver_id == job_worker.id, m.Rate.gives_id == job_worker.id))
-        )
-        .scalars()
-        .all()
-    )
+    db_rates_worker = full_db.execute(select(m.Rate).where(sa.or_(m.Rate.receiver_id == job_worker.id))).scalars().all()
     assert db_rates_worker
 
-    response_4 = client.get("/api/rates", headers=authorized_header)
+    # Get rates for job worker
+    specialist_uuid_2 = job_worker.uuid
+
+    response_4 = client.get(f"/api/rates/{specialist_uuid_2}/specialist", headers=authorized_header)
     assert response_4.status_code == status.HTTP_200_OK
-    assert len(response_4.json()) == len(db_rates_worker)
+    assert len(response_4.json()["items"]) == len(db_rates_worker)

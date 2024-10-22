@@ -78,9 +78,10 @@ from .user import (
     UserFavoriteJob,
     UserShortInfo,
     UserFavoriteExpert,
+    UserRateOut,
 )
 from .whoami import WhoAmI
-from .rate import RateIn, RateOut, RateOutList, RateJobOut
+from .rate import RateIn, RateOut, RateOutList, RateUserOutList, RateJobOut, RateUserOut
 from .auth import (
     Auth,
     GoogleAuthIn,
