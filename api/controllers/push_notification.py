@@ -39,7 +39,7 @@ def send_push_notification(notification: m.PushNotification) -> None:
                     to=device.push_token,
                     body=notification.content,
                     title=notification.title,
-                    data=notification.meta_data,
+                    data=notification.data,
                     priority="high",
                     channel_id="default",
                     sound="default",
