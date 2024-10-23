@@ -106,6 +106,7 @@ class JobInfo(BaseModel):
     is_negotiable: bool
     worker_uuid: str | None = None
     worker_name: str | None = None
+    worker_average_rate: float | None = None
     applications: list[JobApplication]
     status: JobStatus
 
