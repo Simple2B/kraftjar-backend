@@ -27,6 +27,7 @@ if TYPE_CHECKING:
     from .auth_account import AuthAccount
     from .job import Job
     from .device import Device
+    from .file import File
 
 
 class User(db.Model, ModelMixin):
@@ -34,6 +35,8 @@ class User(db.Model, ModelMixin):
         sa.CheckConstraint(f"average_rate >= {CFG.MINIMUM_RATE} or average_rate == 0", name="min_rate_check"),
         sa.CheckConstraint(f"average_rate <= {CFG.MAXIMUM_RATE}", name="max_rate_check"),
     )
+
+    avatar_id: orm.Mapped[int | None] = orm.mapped_column(sa.ForeignKey("files.id"), nullable=True)
 
     rates_as_giver: orm.Mapped[list["Rate"]] = orm.relationship(
         "Rate",
@@ -74,6 +77,8 @@ class User(db.Model, ModelMixin):
     average_rate: orm.Mapped[float] = orm.mapped_column(sa.Float, default=0)
 
     # Relationships
+    avatar: orm.Mapped["File"] = orm.relationship("File", uselist=False)
+
     services: orm.Mapped[list["Service"]] = orm.relationship(secondary=user_services)
     locations: orm.Mapped[list["Location"]] = orm.relationship(secondary=user_locations)
 

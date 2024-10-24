@@ -1,5 +1,6 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, Query, status, HTTPException
+from fastapi import APIRouter, Depends, Query, UploadFile, status, HTTPException
+from mypy_boto3_s3 import S3Client
 from sqlalchemy.orm import Session
 import sqlalchemy as sa
 
@@ -8,7 +9,8 @@ from google.auth.transport import requests
 
 import api.controllers as c
 from api.controllers.user import create_out_search_users, get_user_auth_account
-from api.utils import mark_as_deleted
+from api.dependency.s3_client import get_s3_connect
+from api.utils import get_file_extension, mark_as_deleted
 import app.models as m
 import app.schema as s
 from api.dependency import get_current_user
@@ -512,3 +514,54 @@ def delete_favorite_experts(
     db.refresh(current_user)
 
     log(log.INFO, "User [%s] successfully updated favorite experts list", current_user.id)
+
+
+@user_router.put(
+    "/avatar",
+    status_code=status.HTTP_200_OK,
+    response_model=s.UserPut,
+    responses={
+        status.HTTP_400_BAD_REQUEST: {"description": "Unknown file extension"},
+    },
+    dependencies=[Depends(get_current_user)],
+)
+def upload_user_avatar(
+    file: UploadFile,
+    db: Session = Depends(get_db),
+    s3_client: S3Client = Depends(get_s3_connect),
+    current_user: m.User = Depends(get_current_user),
+):
+    """Uploads file for user avatar"""
+
+    extension = get_file_extension(file)
+
+    file_type = c.get_file_type(extension)
+
+    if file_type == s.FileType.UNKNOWN:
+        log(log.ERROR, "Unknown file extension [%s]", extension)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Unknown file extension")
+
+    file_model = c.create_file(
+        file=file,
+        db=db,
+        s3_client=s3_client,
+        extension=extension,
+        file_type=file_type,
+        file_name_url="user/avatar",
+    )
+
+    log(log.INFO, "File [%s] was uploaded", file_model.uuid)
+
+    current_user.avatar_id = file_model.id
+
+    log(log.INFO, "User [%s] avatar was added", current_user.id)
+    db.commit()
+
+    return s.UserPut(
+        fullname=current_user.fullname,
+        email=current_user.basic_auth_account.email,
+        description=current_user.description,
+        locations=[loc.uuid for loc in current_user.locations],
+        services=[s.uuid for s in current_user.services],
+        avatar=current_user.avatar,
+    )

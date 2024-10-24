@@ -245,6 +245,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
         services=services,
         locations=locations,
         owned_rates_count=db_user.owned_rates_count,
+        avatar=db_user.avatar,
         completed_jobs_count=completed_jobs_count if completed_jobs_count else 0,
         announced_jobs_count=announced_jobs_count if announced_jobs_count else 0,
         favorite_jobs=favorite_jobs,

@@ -7,6 +7,8 @@ from app.schema.auth import AuthAccount, AuthAccountOut
 from app.schema.language import Language
 
 from .location import LocationStrings
+from .file import FileOut, File
+
 from .service import Service
 
 
@@ -153,6 +155,7 @@ class UserProfileOut(User):
     favorite_jobs: list[UserFavoriteJob] = []
     favorite_experts: list[UserFavoriteExpert] = []
     created_at: datetime
+    avatar: File | None = None
 
     __hash__ = object.__hash__
 
@@ -192,3 +195,4 @@ class UserPut(BaseModel):
     description: str = ""
     locations: list[str] = []
     services: list[str] = []
+    avatar: File | None = None
