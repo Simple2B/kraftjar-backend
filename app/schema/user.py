@@ -153,6 +153,7 @@ class UserProfileOut(User):
     favorite_jobs: list[UserFavoriteJob] = []
     favorite_experts: list[UserFavoriteExpert] = []
     created_at: datetime
+    avatar_url: str | None = None
 
     __hash__ = object.__hash__
 
@@ -192,3 +193,4 @@ class UserPut(BaseModel):
     description: str = ""
     locations: list[str] = []
     services: list[str] = []
+    avatar_url: str | None = None
