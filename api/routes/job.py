@@ -240,12 +240,11 @@ def create_job(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Selected file not found")
 
     for file in db_files:
-        m.JobFile(job_id=new_job.id, file_id=file.id)
-        db.add(new_job)
+        new_job.files.append(file)
+        db.commit()
         files.append(file)
         log(log.INFO, "File [%s] was added to job [%s]", file.id, new_job.id)
 
-    db.commit()
     db.refresh(new_job)
 
     job_out = s.BaseJob.model_validate(new_job)
