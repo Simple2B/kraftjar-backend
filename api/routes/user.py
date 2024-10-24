@@ -550,8 +550,6 @@ def upload_user_avatar(
         file_name_url="user/avatar",
     )
 
-    log(log.INFO, "File [%s] was uploaded", file_model.uuid)
-
     current_user.avatar_id = file_model.id
 
     log(log.INFO, "User [%s] avatar was added", current_user.id)
