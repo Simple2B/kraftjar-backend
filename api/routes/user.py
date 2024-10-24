@@ -551,9 +551,9 @@ def upload_user_avatar(
     )
 
     current_user.avatar_id = file_model.id
+    db.commit()
 
     log(log.INFO, "User [%s] avatar was added", current_user.id)
-    db.commit()
 
     return s.UserPut(
         fullname=current_user.fullname,
