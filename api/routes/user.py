@@ -547,7 +547,7 @@ def upload_user_avatar(
         s3_client=s3_client,
         extension=extension,
         file_type=file_type,
-        file_name_url="user/avatar",
+        file_name_url=f"users/{current_user.uuid}/avatar",
     )
 
     current_user.avatar_id = file_model.id
