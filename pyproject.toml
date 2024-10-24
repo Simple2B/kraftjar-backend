@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "api"
-version = "0.1.155"
+version = "0.1.156"
 description = "Kraftjar Backend API"
 authors = ["Simple2B <simple2b.info@gmail.com>"]
 
