@@ -205,7 +205,15 @@ def create_out_search_jobs(db_jobs: Sequence[m.Job], lang: Language, current_use
 
         jobs.append(
             s.JobOutput(
-                **pop_keys(db_job.__dict__, ["services", "location"]),
+                **pop_keys(
+                    db_job.__dict__,
+                    [
+                        "services",
+                        "location",
+                        "files",
+                    ],
+                ),
+                files=[s.File.model_validate(file) for file in db_job.files],
                 services=services,
                 location=location,
                 is_favorite=db_job in current_user.favorite_jobs,
@@ -232,9 +240,6 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
         lang_name = job.address.line1 if lang == Language.UA else job.address.line2
         lang_type = job.address.street_type_ua if lang == Language.UA else job.address.street_type_en
         job_address = f"{lang_type} {lang_name}"
-
-    # TODO: add files
-    files: list[str] = []
 
     applications: list[s.JobApplication] = []
 
@@ -288,7 +293,7 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
         end_date=job.end_date,
         cost=job.cost,
         description=job.description,
-        files=files,
+        files=[s.File.model_validate(file) for file in job.files],
         is_volunteer=job.is_volunteer,
         is_negotiable=job.is_negotiable,
         worker_uuid=job.worker.uuid if job.worker else None,
@@ -329,6 +334,7 @@ def get_pending_jobs(
                     status=s.JobStatus(job.status),
                     required_rate_owner=job.required_rate_owner,
                     required_rate_worker=job.required_rate_worker,
+                    files=[s.File.model_validate(file) for file in job.files],
                 ),
             )
 
@@ -358,6 +364,7 @@ def get_pending_jobs(
                     status=s.JobStatus(job.status),
                     required_rate_owner=job.required_rate_owner,
                     required_rate_worker=job.required_rate_worker,
+                    files=[s.File.model_validate(file) for file in job.files],
                 ),
             )
 
@@ -389,6 +396,7 @@ def get_in_progress_jobs(
                         status=s.JobStatus(job.status),
                         required_rate_owner=job.required_rate_owner,
                         required_rate_worker=job.required_rate_worker,
+                        files=[s.File.model_validate(file) for file in job.files],
                     )
                 )
 
@@ -409,6 +417,7 @@ def get_in_progress_jobs(
                         status=s.JobStatus(job.status),
                         required_rate_owner=job.required_rate_owner,
                         required_rate_worker=job.required_rate_worker,
+                        files=[s.File.model_validate(file) for file in job.files],
                     )
                 )
 
@@ -442,6 +451,7 @@ def get_archived_jobs(
                         status=s.JobStatus(job.status),
                         required_rate_owner=job.required_rate_owner,
                         required_rate_worker=job.required_rate_worker,
+                        files=[s.File.model_validate(file) for file in job.files],
                     )
                 )
 
@@ -464,6 +474,7 @@ def get_archived_jobs(
                         status=s.JobStatus(job.status),
                         required_rate_owner=job.required_rate_owner,
                         required_rate_worker=job.required_rate_worker,
+                        files=[s.File.model_validate(file) for file in job.files],
                     )
                 )
 
