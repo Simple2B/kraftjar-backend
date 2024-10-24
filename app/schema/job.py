@@ -8,7 +8,7 @@ from app.schema.rate import RateJobOut
 from config import config
 
 from .location import LocationStrings
-from .file import FileOut
+from .file import FileOut, File
 from .service import Service
 
 CFG = config()
@@ -101,7 +101,7 @@ class JobInfo(BaseModel):
     end_date: datetime | None = None
     cost: float | None = None
     description: str
-    files: list[str]
+    files: list[File]
     is_volunteer: bool
     is_negotiable: bool
     worker_uuid: str | None = None
@@ -283,6 +283,7 @@ class JobOutput(BaseModel):
     location: LocationStrings | None = None
     services: list[Service]
     is_favorite: bool
+    files: list[File] = []
 
     model_config = ConfigDict(
         from_attributes=True,
@@ -305,6 +306,8 @@ class JobByStatus(BaseModel):
 
     required_rate_owner: bool | None = None
     required_rate_worker: bool | None = None
+
+    files: list[File] = []
 
     model_config = ConfigDict(
         from_attributes=True,
