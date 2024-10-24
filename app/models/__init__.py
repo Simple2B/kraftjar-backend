@@ -16,7 +16,8 @@ from .user_locations import user_locations
 from .saved_jobs import saved_jobs, SavedJob
 from .auth_account import AuthAccount
 from .job_services import JobService
-from .job_files import JobFile
+
+from .files_job import files_job
 from .favorite_jobs import favorite_jobs
 from .favorite_experts import favorite_experts
 from .job_applications import job_applications
