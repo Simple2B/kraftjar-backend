@@ -95,6 +95,12 @@ class User(db.Model, ModelMixin):
     )
 
     @property
+    def avatar_url(self):
+        if self.avatar:
+            return self.avatar.url
+        return None
+
+    @property
     def basic_auth_account(self):
         for acc in self.auth_accounts:
             if acc.auth_type == AuthType.BASIC:

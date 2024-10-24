@@ -563,5 +563,5 @@ def upload_user_avatar(
         description=current_user.description,
         locations=[loc.uuid for loc in current_user.locations],
         services=[s.uuid for s in current_user.services],
-        avatar=current_user.avatar,
+        avatar_url=current_user.avatar.url,
     )
