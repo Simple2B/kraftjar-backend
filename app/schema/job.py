@@ -66,6 +66,7 @@ class JobOut(BaseJob):
 class JobApplicationOwner(BaseModel):
     uuid: str
     fullname: str
+    avatar_url: str | None = None
     location: str
     address: str | None = None
     services: list[str]
@@ -97,6 +98,7 @@ class JobInfo(BaseModel):
     owner_uuid: str
     owner_average_rate: float
     owner_rates_count: int
+    owner_avatar_url: str | None = None
     start_date: datetime | None = None
     end_date: datetime | None = None
     cost: float | None = None
@@ -107,6 +109,7 @@ class JobInfo(BaseModel):
     worker_uuid: str | None = None
     worker_name: str | None = None
     worker_average_rate: float | None = None
+    worker_avatar_url: str | None = None
     applications: list[JobApplication]
     status: JobStatus
 

@@ -20,6 +20,7 @@ class User(BaseModel):
     is_deleted: bool
     phone_verified: bool
     description: str
+    avatar_url: str | None = None
 
     is_volunteer: bool
 
@@ -38,6 +39,7 @@ class UserFile(BaseModel):
     location_ids: list[int] = []
     service_ids: list[int] = []
     is_volunteer: bool = False
+    avatar_url: str | None = None
 
 
 class UsersFile(BaseModel):
@@ -57,6 +59,7 @@ class UserSearchOut(BaseModel):
     uuid: str
     fullname: str
     owned_rates_count: int
+    avatar_url: str | None = None
     average_rate: float
     services: list[Service]
     locations: list[LocationStrings]
@@ -114,6 +117,7 @@ class UsersOut(BaseModel):
 class UserShortInfo(BaseModel):
     uuid: str
     fullname: str
+    avatar_url: str | None = None
 
     model_config = ConfigDict(
         from_attributes=True,
@@ -140,6 +144,7 @@ class UserFavoriteExpert(BaseModel):
     uuid: str
     fullname: str
     locations: list[str]
+    avatar_url: str | None = None
 
 
 class UserProfileOut(User):
@@ -167,6 +172,7 @@ class PublicUserProfileOut(BaseModel):
     uuid: str
     fullname: str
     owned_rates_count: int
+    avatar_url: str | None = None
     average_rate: float
     services: list[Service]
     locations: list[LocationStrings]

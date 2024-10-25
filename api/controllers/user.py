@@ -42,6 +42,7 @@ def create_out_search_users(
                 locations=locations,
                 owned_rates_count=db_user.owned_rates_count,
                 is_favorite=db_user in me.favorite_experts if me else False,
+                avatar_url=db_user.avatar_url,
             )
         )
     return users
@@ -217,6 +218,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
                 owner=s.UserShortInfo(
                     uuid=job_owner.uuid,
                     fullname=job_owner_fullname,
+                    avatar_url=job_owner.avatar_url,
                 ),
             )
         )
@@ -235,6 +237,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
                 uuid=expert.uuid,
                 fullname=expert.fullname,
                 locations=expert_locations if expert_locations else [ALL_UKRAINE],
+                avatar_url=expert.avatar_url,
             )
         )
 
@@ -325,6 +328,7 @@ def get_public_user_profile(user_uuid: str, lang: Language, db: Session) -> s.Pu
         services=services,
         locations=locations,
         owned_rates_count=db_user.owned_rates_count,
+        avatar_url=db_user.avatar_url,
     )
 
 
