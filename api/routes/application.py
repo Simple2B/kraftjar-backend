@@ -1,5 +1,6 @@
+from typing import Sequence
 import sqlalchemy as sa
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 import app.models as m
@@ -29,18 +30,26 @@ def get_application(
     return application
 
 
-@application_router.post("/", status_code=status.HTTP_201_CREATED, response_model=s.ApplicationOut)
+@application_router.post(
+    "/",
+    status_code=status.HTTP_201_CREATED,
+    response_model=s.ApplicationOut,
+)
 def create_application(
     data: s.ApplicationIn,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
     job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.uuid == data.job_uuid))
+
     if not job:
         log(log.ERROR, "Job [%s] not found", data.job_uuid)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
 
-    worker: m.User | None = db.scalar(sa.select(m.User).where(m.User.uuid == data.worker_uuid))
+    worker: m.User | None = db.scalar(
+        sa.select(m.User).where(m.User.uuid == data.worker_uuid),
+    )
     if not worker:
         log(log.ERROR, "Worker [%s] not found", data.worker_uuid)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Worker not found")
@@ -75,6 +84,14 @@ def create_application(
     job.applications.append(application)
 
     db.commit()
+    db.refresh(application)
+
+    background_tasks.add_task(
+        c.send_apply_application_notification,
+        db,
+        job,
+        worker,
+    )
 
     log(log.INFO, "Created application [%s] for job [%s]", application.id, job.id)
     return application
@@ -91,6 +108,7 @@ def create_application(
 def update_application(
     application_uuid: str,
     data: s.ApplicationPutIn,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
@@ -128,18 +146,38 @@ def update_application(
     log(log.INFO, "Updated application [%s] with status: [%s]", application_uuid, data.status.name)
 
     if data.status == m.ApplicationStatus.ACCEPTED:
-        c.reject_other_not_accepted_applications(db, application)
+        job_aplications: Sequence[m.Application] = c.reject_other_not_accepted_applications(db, application)
+
+        if job_aplications:
+            background_tasks.add_task(
+                c.send_rejected_application_notification,
+                db,
+                job,
+                job_aplications,
+            )
 
         job.status = s.JobStatus.APPROVED.value
         job.worker_id = application.worker_id
         log(log.INFO, "Updated job [%s] status to APPROVED", application.job_id)
+        background_tasks.add_task(
+            c.send_accepted_application_notification,
+            db,
+            job,
+        )
 
     if data.status == m.ApplicationStatus.REJECTED:
         application.status = m.ApplicationStatus.REJECTED
+        db.commit()
+        db.refresh(application)
         log(log.INFO, "Successfully rejected application [%s]", application_uuid)
+        background_tasks.add_task(
+            c.send_rejected_application_notification,
+            db,
+            job,
+            [application],
+        )
 
     db.commit()
-    db.refresh(application)
     db.refresh(job)
     db.refresh(current_user)
 

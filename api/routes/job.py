@@ -216,7 +216,9 @@ def create_job(
         log(log.INFO, "Settlement [%s] was added to job [%s]", location.id, new_job.id)
 
     if job.address_uuid:
-        address = db.scalar(sa.select(m.Address).where(m.Address.street_id == job.address_uuid))
+        address = db.scalar(
+            sa.select(m.Address).where(m.Address.street_id == job.address_uuid),
+        )
         if not address:
             log(log.ERROR, "Address [%s] not found", job.address_uuid)
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Selected address not found")
@@ -250,6 +252,7 @@ def create_job(
     job_out = s.BaseJob.model_validate(new_job)
 
     log(log.INFO, "Job [%s] was created", new_job.id)
+
     background_tasks.add_task(c.send_created_job_notification, db, new_job)
 
     return s.JobOut(
@@ -430,10 +433,12 @@ def delete_job(
 def put_job_status(
     job_uuid: str,
     job_data: s.JobStatusIn,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
     job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.uuid == job_uuid))
+
     if not job:
         log(log.ERROR, "Job [%s] not found", job_uuid)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
@@ -461,6 +466,7 @@ def put_job_status(
         job.status = s.JobStatus.IN_PROGRESS.value
         log(log.INFO, "Updated job [%s] status to IN_PROGRESS", job_uuid)
         db.commit()
+        background_tasks.add_task(c.send_job_started_notification, job)
         return job
 
     if job_data.status == s.JobStatus.ON_CONFIRMATION and job.status == s.JobStatus.IN_PROGRESS.value:
@@ -479,6 +485,7 @@ def put_job_status(
         log(log.INFO, "Updated job [%s] status to ON_CONFIRMATION", job_uuid)
 
         db.commit()
+        background_tasks.add_task(c.send_job_finished_notification, job)
         return job
 
     if job_data.status == s.JobStatus.COMPLETED and job.status == s.JobStatus.ON_CONFIRMATION.value:
@@ -497,6 +504,7 @@ def put_job_status(
         log(log.INFO, "Updated job [%s] status to COMPLETED", job_uuid)
 
         db.commit()
+        background_tasks.add_task(c.send_job_confirmed_notification, job)
         return job
 
     if job_data.status == s.JobStatus.CANCELED:
