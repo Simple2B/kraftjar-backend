@@ -15,7 +15,11 @@ CFG = config()
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_applications(client: TestClient, auth_header: dict[str, str], db: Session):
+def test_applications(
+    client: TestClient,
+    auth_header: dict[str, str],
+    db: Session,
+):
     USERS_TEST_COUNT = 3
     workers_list = db.scalars(sa.select(m.User).where(m.User.is_deleted.is_(False))).all()[:USERS_TEST_COUNT]
     assert len(workers_list) == USERS_TEST_COUNT

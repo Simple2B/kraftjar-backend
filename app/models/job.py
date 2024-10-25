@@ -89,6 +89,11 @@ class Job(db.Model, ModelMixin):
         backref="jobs",
     )
 
+    owner: orm.Mapped["User"] = orm.relationship(
+        "User",
+        foreign_keys=[owner_id],
+    )
+
     applications: orm.Mapped[list["Application"]] = orm.relationship(secondary=job_applications)
 
     rates: orm.Mapped[list["Rate"]] = orm.relationship(secondary=job_rates)

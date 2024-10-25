@@ -86,6 +86,12 @@ def s3_client() -> Generator[S3Client, None, None]:
 def client(db, monkeypatch) -> Generator[TestClient, None, None]:
     """Returns a non-authorized test client for the API"""
     monkeypatch.setattr("api.routes.job.c.send_created_job_notification", do_nothing)
+    monkeypatch.setattr("api.routes.job.c.send_apply_application_notification", do_nothing)
+    monkeypatch.setattr("api.routes.job.c.send_accepted_application_notification", do_nothing)
+    monkeypatch.setattr("api.routes.job.c.send_rejected_application_notification", do_nothing)
+    monkeypatch.setattr("api.routes.job.c.send_job_started_notification", do_nothing)
+    monkeypatch.setattr("api.routes.job.c.send_job_finished_notification", do_nothing)
+    monkeypatch.setattr("api.routes.job.c.send_job_confirmed_notification", do_nothing)
 
     with TestClient(app) as c:
         yield c
