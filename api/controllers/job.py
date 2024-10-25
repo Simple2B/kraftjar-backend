@@ -275,6 +275,7 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
                             services=services,
                             owned_rates_count=round(worker.owned_rates_count, 1),
                             average_rate=round(worker.average_rate, 1),
+                            avatar_url=worker.avatar_url,
                         ),
                     )
                 )
@@ -289,6 +290,7 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
         owner_uuid=job_owner.uuid,
         owner_average_rate=job_owner.average_rate,
         owner_rates_count=job_owner.owned_rates_count,
+        owner_avatar_url=job_owner.avatar_url,
         start_date=job.start_date,
         end_date=job.end_date,
         cost=job.cost,
@@ -299,6 +301,7 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
         worker_uuid=job.worker.uuid if job.worker else None,
         worker_name=job.worker.fullname if job.worker else None,
         worker_average_rate=job.worker.average_rate if job.worker else None,
+        worker_avatar_url=job.worker.avatar_url if job.worker else None,
         applications=applications,
         status=s.JobStatus(job.status),
     )
