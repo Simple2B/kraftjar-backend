@@ -52,7 +52,7 @@ def phone_verification(
     """Logs in a user, returns access token"""
     log(log.INFO, "Phone verification for user with phone [%s]", phone_data.phone)
 
-    return c.phone_verification(phone_data, db)
+    return c.verify_phone(phone_data, db)
 
 
 @router.post(

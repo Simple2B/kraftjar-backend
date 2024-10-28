@@ -12,8 +12,6 @@ from app import models as m
 from app import schema as s
 from app.logger import log
 
-# from .oauth2 import create_access_token
-
 
 def register_user(
     user_data: s.RegistrationIn,
@@ -71,7 +69,6 @@ def register_user(
 
         # generate otp code
         otp_code = random.randint(100000, 999999)
-        print("otp_code", otp_code)
 
         user.otp_code = str(otp_code)
         db.commit()
@@ -96,10 +93,8 @@ def register_user(
             detail="Error while creating user",
         )
 
-    # return s.Token(access_token=create_access_token(user.id))
 
-
-def phone_verification(phone_data: s.PhoneVerificationIn, db: Session) -> s.Token:
+def verify_phone(phone_data: s.PhoneVerificationIn, db: Session) -> s.Token:
     user: m.User | None = db.scalar(sa.select(m.User).where(m.User.phone == phone_data.phone))
 
     if not user:
@@ -112,6 +107,7 @@ def phone_verification(phone_data: s.PhoneVerificationIn, db: Session) -> s.Toke
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid OTP code")
 
     user.phone_verified = True
+    user.otp_code = None
     db.commit()
     db.refresh(user)
 
