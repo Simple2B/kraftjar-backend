@@ -6,6 +6,7 @@ import sqlalchemy as sa
 from sqlalchemy import orm
 
 from app.database import db
+from .job import Job
 
 from .utils import ModelMixin
 
@@ -47,5 +48,11 @@ class Application(db.Model, ModelMixin):
     )
     is_deleted: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, default=False)
 
+    job: orm.Mapped["Job"] = orm.relationship()
+
     def __repr__(self):
         return f"<Application {self.id}: worker {self.worker_id} -> job {self.job_id} ({self.type})>"
+
+    @property
+    def job_uuid(self) -> str:
+        return self.job.uuid
