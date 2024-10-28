@@ -94,7 +94,7 @@ from .auth import (
     AuthAccount,
     AuthAccountOut,
 )
-from .registration import RegistrationIn, SetPhoneIn, ValidatePhoneIn, SetPhoneOut
+from .registration import RegistrationIn, PhoneVerificationIn, SetPhoneIn, ValidatePhoneIn, SetPhoneOut
 from .field import FieldCreate
 from .exception import NotFound
 from .service import Service, ServicesIn, ServicesOut, ServiceData, ServiceDataFile, ServiceDB

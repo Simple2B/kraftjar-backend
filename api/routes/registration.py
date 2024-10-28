@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, status
+from mypy_boto3_sns import SNSClient
 
 from api import controllers as c
-from api.dependency import get_current_user, get_db
+from api.dependency import get_current_user, get_sns_connect, get_db
 from app import models as m
 from app import schema as s
 from app.logger import log
@@ -15,16 +16,43 @@ CFG = config()
 @router.post(
     "/",
     status_code=status.HTTP_200_OK,
-    response_model=s.Token,
     responses={
         status.HTTP_406_NOT_ACCEPTABLE: {"description": "This phone is already registered"},
         status.HTTP_409_CONFLICT: {"description": "This email is already registered"},
     },
 )
-def register_user(auth_data: s.RegistrationIn, db=Depends(get_db)):
+def register_user(
+    auth_data: s.RegistrationIn,
+    db=Depends(get_db),
+    sns_client: SNSClient = Depends(get_sns_connect),
+):
     """Logs in a user"""
     log(log.INFO, "Register user with phone [%s]", auth_data.phone)
-    return c.register_user(auth_data, db)
+    return c.register_user(
+        auth_data,
+        db,
+        sns_client,
+    )
+
+
+@router.post(
+    "/phone_verification",
+    status_code=status.HTTP_200_OK,
+    response_model=s.Token,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "User phone not found"},
+        status.HTTP_400_BAD_REQUEST: {"description": "Phone validation failed"},
+        status.HTTP_401_UNAUTHORIZED: {"description": "Invalid OTP code"},
+    },
+)
+def phone_verification(
+    phone_data: s.PhoneVerificationIn,
+    db=Depends(get_db),
+):
+    """Logs in a user, returns access token"""
+    log(log.INFO, "Phone verification for user with phone [%s]", phone_data.phone)
+
+    return c.phone_verification(phone_data, db)
 
 
 @router.post(
@@ -35,7 +63,11 @@ def register_user(auth_data: s.RegistrationIn, db=Depends(get_db)):
     },
     response_model=s.SetPhoneOut,
 )
-def set_phone(phone_data: s.SetPhoneIn, db=Depends(get_db), current_user: m.User = Depends(get_current_user)):
+def set_phone(
+    phone_data: s.SetPhoneIn,
+    db=Depends(get_db),
+    current_user: m.User = Depends(get_current_user),
+):
     """Sets phone for a user"""
     log(log.INFO, "Set phone [%s] for user with id [%s]", phone_data.phone, current_user.id)
     c.set_phone(phone_data, current_user, db=db)

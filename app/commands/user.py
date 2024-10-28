@@ -44,7 +44,8 @@ def write_users_in_db(users: list[s.UserFile], with_print: bool = True):
         assert session.scalar(sa.select(m.Service)), "Services table is empty. Please run `flask export-services` first"
 
         for user in users:
-            if session.scalar(sa.select(m.User).where(m.User.phone == user.phone)):
+            user_db: m.User | None = session.scalar(sa.select(m.User).where(m.User.phone == user.phone))
+            if user_db:
                 log(log.DEBUG, "User with phone [%s] already exists", user.phone)
                 continue
 
