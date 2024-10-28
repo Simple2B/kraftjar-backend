@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from fastapi import status
 from moto import mock_aws
 from mypy_boto3_s3 import S3Client
+from mypy_boto3_sns import SNSClient
 
 from test_api.utils import do_nothing
 
@@ -12,6 +13,7 @@ load_dotenv("test_api/test.env")
 
 # ruff: noqa: F401 E402
 import os
+import boto3
 
 from fastapi.testclient import TestClient
 from sqlalchemy import orm, select
@@ -34,7 +36,7 @@ def db() -> Generator[orm.Session, None, None]:
         from app.commands.addresses import export_addresses_from_json_file
         from app.commands.cities import export_cities_from_json_file
         from app.commands.job import export_jobs_from_json_file
-        from app.commands.locations import export_regions_from_json_file, export_test_locations_from_json_file
+        from app.commands.locations import export_regions_from_json_file
         from app.commands.rayons_json import export_rayons_from_json_file
         from app.commands.service import export_services_from_json_file
         from app.commands.user import export_users_from_json_file
@@ -78,6 +80,16 @@ def s3_client() -> Generator[S3Client, None, None]:
             Bucket=CFG.AWS_S3_BUCKET_NAME,
             CreateBucketConfiguration={"LocationConstraint": CFG.AWS_REGION},  # type: ignore
         )
+
+        yield client
+
+
+@pytest.fixture
+def sns_client() -> Generator[SNSClient, None, None]:
+    """Returns a mock SNS client"""
+
+    with mock_aws():
+        client = boto3.client("sns", region_name="us-east-1")
 
         yield client
 
