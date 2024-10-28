@@ -616,7 +616,6 @@ def test_update_jobs_status(
     )
     assert response.status_code == status.HTTP_200_OK
 
-
     # Check false statuses
     response = client.put(
         f"/api/jobs/{job.uuid}/status",

@@ -451,7 +451,6 @@ def put_job_status(
         log(log.ERROR, "[put_job_status] Job [%s] status downgrade to approved is forbidden", job_uuid)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Job status downgrade forbidden")
 
-
     if job_data.status == s.JobStatus.PAYMENT_CONFIRMED and job.status == s.JobStatus.COMPLETED.value:
         if current_user.id != job.worker_id:
             log(
