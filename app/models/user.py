@@ -61,6 +61,9 @@ class User(db.Model, ModelMixin):
     description: orm.Mapped[str] = orm.mapped_column(sa.String(512), default="", server_default="")
 
     phone: orm.Mapped[str] = orm.mapped_column(sa.String(32), unique=True)  # fill in registration form
+
+    otp_code: orm.Mapped[str | None] = orm.mapped_column(sa.String(6), default=None, server_default=None)
+
     phone_verified: orm.Mapped[bool] = orm.mapped_column(default=False)
 
     auth_accounts: orm.Mapped[list["AuthAccount"]] = orm.relationship("AuthAccount", backref="user")
