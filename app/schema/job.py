@@ -20,6 +20,7 @@ class JobStatus(enum.Enum):
     IN_PROGRESS = "in_progress"
     ON_CONFIRMATION = "on_confirmation"
     COMPLETED = "completed"
+    PAYMENT_CONFIRMED = "payment_confirmed"
     CANCELED = "canceled"
 
 

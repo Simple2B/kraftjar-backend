@@ -451,6 +451,25 @@ def put_job_status(
         log(log.ERROR, "[put_job_status] Job [%s] status downgrade to approved is forbidden", job_uuid)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Job status downgrade forbidden")
 
+
+    if job_data.status == s.JobStatus.PAYMENT_CONFIRMED and job.status == s.JobStatus.COMPLETED.value:
+        if current_user.id != job.worker_id:
+            log(
+                log.ERROR,
+                "[put_job_status] User is not an worker for job [%s]. Setting status to completed forbidden",
+                job_uuid,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="User is not an worker for this job. Setting status to completed forbidden",
+            )
+
+        job.status = s.JobStatus.PAYMENT_CONFIRMED.value
+        log(log.INFO, "Updated job [%s] status to PAYMENT_CONFIRMED", job_uuid)
+
+        db.commit()
+        return job
+
     if job_data.status == s.JobStatus.IN_PROGRESS and job.status == s.JobStatus.APPROVED.value:
         if current_user.id != job.worker_id:
             log(
