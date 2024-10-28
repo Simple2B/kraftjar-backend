@@ -7,6 +7,7 @@ from app.models.application import ApplicationStatus, ApplicationType
 class ApplicationOut(BaseModel):
     id: int
     uuid: str
+    job_uuid: str
 
     worker_id: int
     job_id: int
