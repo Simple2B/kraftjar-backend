@@ -141,22 +141,27 @@ def get_jobs_by_status(
     if job_status == s.JobStatus.PENDING:
         jobs_out = c.get_pending_jobs(db_jobs, current_user, job_user_status, lang, db)
 
-    # get active jobs (in progress, approved and on confirmation)
+    # get active jobs (in progress, approved, on confirmation and completed)
     if job_status == s.JobStatus.IN_PROGRESS:
         active_jobs = db.scalars(
             sa.select(m.Job)
             .where(
                 m.Job.is_deleted.is_(False),
                 m.Job.status.in_(
-                    [s.JobStatus.IN_PROGRESS.value, s.JobStatus.APPROVED.value, s.JobStatus.ON_CONFIRMATION.value]
+                    [
+                        s.JobStatus.IN_PROGRESS.value,
+                        s.JobStatus.APPROVED.value,
+                        s.JobStatus.ON_CONFIRMATION.value,
+                        s.JobStatus.COMPLETED.value,
+                    ]
                 ),
             )
             .order_by(m.Job.updated_at.desc())
         ).all()
         jobs_out = c.get_in_progress_jobs(active_jobs, current_user, job_user_status, lang)
 
-    # get archive jobs (completed and canceled)
-    if job_status == s.JobStatus.COMPLETED:
+    # get archive jobs (payment_confirmed and canceled)
+    if job_status == s.JobStatus.PAYMENT_CONFIRMED:
         jobs_out = c.get_archived_jobs(db_jobs, current_user, job_user_status, lang)
 
     return s.JobsByStatusList(items=jobs_out)
