@@ -15,4 +15,5 @@ def get_sns_connect() -> SNSClient:
         region_name=settings.AWS_SNS_REGION,
     )
     sns = session.client("sns")
+
     return sns
