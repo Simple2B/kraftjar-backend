@@ -438,7 +438,7 @@ def get_archived_jobs(
     if job_user_status == s.JobUserStatus.OWNER:
         for job in db_jobs:
             if job.owner_id == current_user.id and (
-                job.status == s.JobStatus.COMPLETED.value or job.status == s.JobStatus.CANCELED.value
+                job.status == s.JobStatus.PAYMENT_CONFIRMED.value or job.status == s.JobStatus.CANCELED.value
             ):
                 job_location, job_address = format_location_string(job.location, job.address, lang)
 
@@ -461,7 +461,7 @@ def get_archived_jobs(
     if job_user_status == s.JobUserStatus.WORKER:
         for job in db_jobs:
             if job.worker_id == current_user.id and (
-                job.status == s.JobStatus.COMPLETED.value or job.status == s.JobStatus.CANCELED.value
+                job.status == s.JobStatus.PAYMENT_CONFIRMED.value or job.status == s.JobStatus.CANCELED.value
             ):
                 job_location, job_address = format_location_string(job.location, job.address, lang)
 

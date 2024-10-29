@@ -306,7 +306,7 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
 
     response = client.get(
         "/api/jobs/jobs-by-status/",
-        params={"job_status": s.JobStatus.COMPLETED.value},
+        params={"job_status": s.JobStatus.PAYMENT_CONFIRMED.value},
         headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK
@@ -419,7 +419,7 @@ def test_get_jobs_without_rate(
                 sa.or_(
                     sa.and_(
                         m.Job.is_deleted.is_(False),
-                        m.Job.status == s.JobStatus.COMPLETED.value,
+                        m.Job.status == s.JobStatus.PAYMENT_CONFIRMED.value,
                         m.Job.owner_id == current_user.id,
                     ),
                     sa.and_(
@@ -439,7 +439,7 @@ def test_get_jobs_without_rate(
     response = client.get(
         "/api/jobs/jobs-by-status/",
         params={
-            "job_status": s.JobStatus.COMPLETED.value,
+            "job_status": s.JobStatus.PAYMENT_CONFIRMED.value,
             "job_user_status": s.JobUserStatus.OWNER.value,
         },
         headers=auth_header,
