@@ -95,6 +95,7 @@ def get_rates(
             ),
             receiver_uuid=receiver.uuid,
             created_at=rate.created_at,
+            avatar_url=giver.avatar_url,
         )
 
         rates_out.append(rate_out)

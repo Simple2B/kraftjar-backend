@@ -55,6 +55,7 @@ class RateUserOut(Rate):
     gives: UserRateOut
     receiver_uuid: str
     created_at: datetime
+    avatar_url: str | None = None
 
     model_config = ConfigDict(
         from_attributes=True,
