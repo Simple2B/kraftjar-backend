@@ -10,7 +10,10 @@ from mypy_boto3_sns import SNSClient
 
 from app import models as m
 from app import schema as s
+from config import config
 from app.logger import log
+
+CFG = config()
 
 
 def register_user(
@@ -90,13 +93,21 @@ def send_sms_to_user(user: m.User, sns_client: SNSClient, db: Session) -> None:
     user.otp_code = str(otp_code)
     db.commit()
 
+    message = f"[Kraftjar] Your OTP code is {otp_code}"
+
     res = sns_client.publish(
         PhoneNumber=user.phone,
-        Subject="OTP code from Kraftjar",
-        Message=f"[Kraftjar] Your OTP code is {otp_code}",
+        Message=message,
+        MessageAttributes={
+            "AWS.SNS.SMS.SMSType": {
+                "DataType": "String",
+                "StringValue": "Transactional",
+            }
+        },
     )
 
-    log(log.ERROR, "Sending SMS AWS - [%s]", res)
+    log(log.INFO, "Sending SMS AWS - [%s]", res)
+    log(log.INFO, "SMS sended to [%s]", user.phone)
 
 
 def verify_phone(phone_data: s.PhoneVerificationIn, db: Session) -> s.Token:
