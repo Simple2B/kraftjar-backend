@@ -35,6 +35,7 @@ moto = "^5.0.14"
 pyjwt = "^2.9.0"
 firebase-admin = "^6.5.0"
 exponent-server-sdk = "^2.1.0"
+mypy-boto3-sns = "^1.35.0"
 
 
 [tool.poetry.group.dev.dependencies]
