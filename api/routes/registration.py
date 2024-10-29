@@ -1,5 +1,8 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from mypy_boto3_sns import SNSClient
+import sqlalchemy as sa
+from sqlalchemy.exc import SQLAlchemyError
+from botocore.exceptions import ClientError
 
 from api import controllers as c
 from api.dependency import get_current_user, get_sns_connect, get_db
@@ -55,6 +58,122 @@ def phone_verification(
     return c.verify_phone(phone_data, db)
 
 
+@router.post(
+    "/resend_otp",
+    status_code=status.HTTP_200_OK,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "User not found"},
+    },
+)
+def resend_otp(
+    data: s.SetPhoneIn,
+    db=Depends(get_db),
+    sns_client: SNSClient = Depends(get_sns_connect),
+):
+    """Logs in a user, returns access token"""
+
+    user: m.User | None = db.scalar(sa.select(m.User).where(m.User.phone == data.phone))
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    try:
+        c.send_sms_to_user(user, sns_client, db)
+
+    except ClientError as e:
+        log(log.ERROR, "Error sending SMS - [%s]", e)
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Error while sending SMS",
+        )
+    except SQLAlchemyError as e:
+        log(log.ERROR, "Error while creating user - [%s]", e)
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Error while creating user",
+        )
+
+
+@router.post(
+    "/forgot-password-send-otp",
+    status_code=status.HTTP_200_OK,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "User not found"},
+        status.HTTP_403_FORBIDDEN: {"description": "User phone is validated already"},
+    },
+)
+def forgot_password_send_otp(
+    data: s.SetPhoneIn,
+    db=Depends(get_db),
+    sns_client: SNSClient = Depends(get_sns_connect),
+):
+    """user forgot password"""
+
+    user: m.User | None = db.scalar(sa.select(m.User).where(m.User.phone == data.phone))
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    try:
+        c.send_sms_to_user(user, sns_client, db)
+
+    except ClientError as e:
+        log(log.ERROR, "Error sending SMS - [%s]", e)
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Error while sending SMS",
+        )
+    except SQLAlchemyError as e:
+        log(log.ERROR, "Error while creating user - [%s]", e)
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Error while creating user",
+        )
+
+
+@router.post(
+    "/forgot-password-new-password",
+    status_code=status.HTTP_200_OK,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "User not found"},
+        status.HTTP_403_FORBIDDEN: {"description": "User phone is not validated"},
+    },
+)
+def forgot_password_new_password(
+    data: s.ChangePasswordIn,
+    db=Depends(get_db),
+):
+    """user forgot password"""
+
+    user: m.User | None = db.scalar(sa.select(m.User).where(m.User.phone == data.phone))
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    if not user.phone_verified:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User phone is not validated")
+
+    c.change_password(user, data.password, db)
+
+
+# reset password
+# @router.post(
+#     "/reset-password",
+#     status_code=status.HTTP_200_OK,
+#     responses={
+#         status.HTTP_404_NOT_FOUND: {"description": "User not found"},
+#     },
+# )
+# def reset_password(
+#     reset_data: s.ResetPasswordIn,
+#     db=Depends(get_db),
+# ):
+#     """Resets password for a user"""
+#     log(log.INFO, "Reset password for user with phone [%s]", reset_data.phone)
+#     c.reset_password(reset_data, db)
+
+
+# ====
 @router.post(
     "/set-phone",
     status_code=status.HTTP_201_CREATED,

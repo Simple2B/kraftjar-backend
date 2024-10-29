@@ -36,6 +36,11 @@ class PhoneVerificationIn(BaseModel):
     otp_code: str
 
 
+class ChangePasswordIn(BaseModel):
+    phone: str
+    password: str
+
+
 class SetPhoneIn(BaseModel):
     phone: str
 

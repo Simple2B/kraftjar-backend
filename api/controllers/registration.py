@@ -67,18 +67,7 @@ def register_user(
 
         log(log.INFO, "User [%s] was created", user.fullname)
 
-        # generate otp code
-        otp_code = random.randint(100000, 999999)
-
-        user.otp_code = str(otp_code)
-        db.commit()
-
-        sns_client.publish(
-            PhoneNumber=user_data.phone,
-            Subject="OTP code from Kraftjк",
-            Message=f"Your OTP code is {otp_code}",
-        )
-        log(log.INFO, "SMS sended to [%s]", user_data.phone)
+        send_sms_to_user(user, sns_client, db)
 
     except ClientError as e:
         log(log.ERROR, "Error sending SMS - [%s]", e)
@@ -92,6 +81,22 @@ def register_user(
             status_code=status.HTTP_409_CONFLICT,
             detail="Error while creating user",
         )
+
+
+def send_sms_to_user(user: m.User, sns_client: SNSClient, db: Session) -> None:
+    # generate otp code
+    otp_code = random.randint(100000, 999999)
+
+    user.otp_code = str(otp_code)
+    db.commit()
+
+    res = sns_client.publish(
+        PhoneNumber=user.phone,
+        Subject="OTP code from Kraftjar",
+        Message=f"[Kraftjar] Your OTP code is {otp_code}",
+    )
+
+    log(log.ERROR, "Sending SMS AWS - [%s]", res)
 
 
 def verify_phone(phone_data: s.PhoneVerificationIn, db: Session) -> s.Token:
@@ -112,6 +117,17 @@ def verify_phone(phone_data: s.PhoneVerificationIn, db: Session) -> s.Token:
     db.refresh(user)
 
     return s.Token(access_token=create_access_token(user.id))
+
+
+def change_password(user: m.User, password: str, db: Session) -> None:
+    log(log.INFO, "Changing password for user [%s]", user.phone)
+
+    user.password = s.RegistrationIn.password_validation(password)
+
+    db.commit()
+    db.refresh(user)
+
+    log(log.INFO, "Password changed for user [%s]", user.phone)
 
 
 def set_phone(phone_data: s.SetPhoneIn, user: m.User, db: Session) -> None:
