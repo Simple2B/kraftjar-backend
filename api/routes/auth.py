@@ -1,12 +1,16 @@
 from typing import Annotated
 
+from botocore.exceptions import ClientError
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from mypy_boto3_sns import SNSClient
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 import sqlalchemy as sa
 from google.oauth2 import id_token
 from google.auth.transport import requests
 
+from api.dependency.sns_client import get_sns_connect
 import app.models as m
 from api.dependency import get_db, get_current_user
 from api.controllers.oauth2 import create_access_token
@@ -132,6 +136,7 @@ def save_phone(
     data: s.PhoneAuthIn,
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
+    sns_client: SNSClient = Depends(get_sns_connect),
 ):
     """Saves phone for a user and sends an SMS with a code"""
 
@@ -139,12 +144,31 @@ def save_phone(
     if db.scalar(sa.select(m.User).where(m.User.phone == data.phone)):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Phone is already in use")
 
+    if current_user.phone_verified:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User phone is validated already")
+
     current_user.phone = data.phone
 
     # TODO: send sms with code to the phone. Creating a code and save it to the database, add field verification code to the user model
 
     db.commit()
     db.refresh(current_user)
+
+    try:
+        c.send_sms_to_user(current_user, sns_client, db)
+
+    except ClientError as e:
+        log(log.ERROR, "Error sending SMS - [%s]", e)
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Error while sending SMS",
+        )
+    except SQLAlchemyError as e:
+        log(log.ERROR, "Error while creating user - [%s]", e)
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Error while creating user",
+        )
 
     return s.Token(access_token=create_access_token(current_user.id))
 

@@ -31,6 +31,16 @@ class RegistrationIn(BaseModel):
         return v
 
 
+class PhoneVerificationIn(BaseModel):
+    phone: str
+    otp_code: str
+
+
+class ChangePasswordIn(BaseModel):
+    phone: str
+    password: str
+
+
 class SetPhoneIn(BaseModel):
     phone: str
 

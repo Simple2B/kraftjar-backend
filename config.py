@@ -106,6 +106,11 @@ class BaseConfig(BaseSettings):
     # EXPO
     EXPO_TOKEN: str
 
+    # aws sns
+    AWS_SNS_ACCESS_KEY: str | None
+    AWS_SNS_SECRET_KEY: str | None
+    AWS_SNS_REGION: str | None
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.

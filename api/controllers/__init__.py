@@ -1,7 +1,15 @@
 # ruff: noqa: F401
 
 from .auth import verify_apple_token, get_apple_fullname
-from .registration import register_user, set_phone, send_otp_to_user, validate_phone
+from .registration import (
+    register_user,
+    verify_phone,
+    set_phone,
+    send_otp_to_user,
+    validate_phone,
+    send_sms_to_user,
+    change_password,
+)
 from .oauth2 import create_access_token
 from .service import get_services
 from .location import get_locations
