@@ -17,7 +17,9 @@ def test_create_rate(client: TestClient, auth_header: dict[str, str], full_db: S
     current_user = full_db.scalar(select(m.User).where(m.User.id == 1))
     assert current_user
 
-    current_user_job = full_db.scalar(select(m.Job).where(m.Job.owner_id == current_user.id))
+    current_user_job = full_db.scalar(
+        select(m.Job).where(m.Job.owner_id == current_user.id, m.Job.worker_id.is_not(None))
+    )
     assert current_user_job
 
     job_worker = full_db.scalar(select(m.User).where(m.User.id == current_user_job.worker_id))

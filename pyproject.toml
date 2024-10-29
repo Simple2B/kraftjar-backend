@@ -54,8 +54,8 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 filterwarnings = [
-    'ignore:.*werkzeug\.urls\.url.*:DeprecationWarning',
-    'ignore:.*datetime\.datetime\.utcnow.*:DeprecationWarning',
+  'ignore:.*werkzeug\.urls\.url.*:DeprecationWarning',
+  'ignore:.*datetime\.datetime\.utcnow.*:DeprecationWarning',
 ]
 testpaths = ["test_flask", "test_api"]
 
@@ -67,19 +67,19 @@ exclude = ["migrations/env.py", "migrations/version/*.py"]
 
 [tool.ruff]
 exclude = [
-    "__pypackages__",
-    "__pycache__",
-    ".eggs",
-    ".git",
-    ".github",
-    ".pytest_cache",
-    ".mypy_cache",
-    ".ruff_cache",
-    ".venv",
-    "build",
-    "dist",
-    "node_modules",
-    "migrations",
+  "__pypackages__",
+  "__pycache__",
+  ".eggs",
+  ".git",
+  ".github",
+  ".pytest_cache",
+  ".mypy_cache",
+  ".ruff_cache",
+  ".venv",
+  "build",
+  "dist",
+  "node_modules",
+  "migrations",
 ]
 line-length = 120
 indent-width = 4
