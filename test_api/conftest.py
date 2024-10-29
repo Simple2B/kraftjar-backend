@@ -42,11 +42,11 @@ def db() -> Generator[orm.Session, None, None]:
         # export_test_locations_from_json_file(with_print=False)
         export_services_from_json_file(with_print=False)
         export_regions_from_json_file(with_print=False)
-        export_users_from_json_file(with_print=False)
+        export_users_from_json_file(with_print=False, max_user_limit=10)
         export_cities_from_json_file(with_print=False)
         export_rayons_from_json_file(with_print=False)
         export_addresses_from_json_file(with_print=False)
-        export_jobs_from_json_file()
+        export_jobs_from_json_file(max_job_limit=50)
 
         def override_get_db() -> Generator:
             yield session

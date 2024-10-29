@@ -142,22 +142,22 @@ def test_create_job(client: TestClient, db: Session, auth_header: dict[str, str]
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_get_jobs_by_query_params(client: TestClient, auth_header: dict[str, str], db: Session):
-    # Житомирська, Львівська
-    LOCATIONS = ["7", "14"]
+    # Київ, Київська область
+    LOCATIONS = ["1", "2"]
 
     locations = db.execute(sa.select(m.Location).where(m.Location.id.in_(LOCATIONS))).scalars().all()
     assert locations
     locations_uuid = [loc.uuid for loc in locations]
 
     # Test query only
-    query_data = s.JobsIn(query=" Ремонт ")
+    query_data = s.JobsIn(query=" Краса ")
     response = client.get(f"/api/jobs?query={query_data.query}", headers=auth_header)
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsOut.model_validate(response.json())
     assert len(data.items) > 0
 
     # Test UA
-    query_data = s.JobsIn(query="Сантехнік", lang=Language.UA, selected_locations=locations_uuid)
+    query_data = s.JobsIn(query="Краса", lang=Language.UA, selected_locations=locations_uuid)
     response = client.get(
         f"/api/jobs?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}",
         headers=auth_header,
@@ -167,7 +167,7 @@ def test_get_jobs_by_query_params(client: TestClient, auth_header: dict[str, str
     assert len(data_ua.items) > 0
 
     # Test EN
-    query_data = s.JobsIn(query="Plumber", lang=Language.EN, selected_locations=locations_uuid)
+    query_data = s.JobsIn(query="Beauty", lang=Language.EN, selected_locations=locations_uuid)
     response = client.get(
         f"/api/jobs?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}",
         headers=auth_header,
@@ -209,7 +209,7 @@ def test_get_jobs_by_query_params(client: TestClient, auth_header: dict[str, str
 
     # All params
     query_data = s.JobsIn(
-        query="Сантехнік",
+        query="Краса",
         lang=Language.UA,
         selected_locations=locations_uuid,
         order_by=s.JobsOrderBy.COST,
