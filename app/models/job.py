@@ -114,14 +114,14 @@ class Job(db.Model, ModelMixin):
     @property
     def required_rate_worker(self) -> bool:
         rates_givers_ids = [rate.gives_id for rate in self.rates]
-        if self.status == s.JobStatus.COMPLETED.value and self.worker_id not in rates_givers_ids:
+        if self.status == s.JobStatus.PAYMENT_CONFIRMED.value and self.worker_id not in rates_givers_ids:
             return True
         return False
 
     @property
     def required_rate_owner(self) -> bool:
         rates_givers_ids = [rate.gives_id for rate in self.rates]
-        if self.status == s.JobStatus.COMPLETED.value and self.owner_id not in rates_givers_ids:
+        if self.status == s.JobStatus.PAYMENT_CONFIRMED.value and self.owner_id not in rates_givers_ids:
             return True
         return False
 
