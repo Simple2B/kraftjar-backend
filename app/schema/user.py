@@ -64,6 +64,7 @@ class UserSearchOut(BaseModel):
     services: list[Service]
     locations: list[LocationStrings]
     is_favorite: bool
+    created_at: str | None = None
 
     __hash__ = object.__hash__
 

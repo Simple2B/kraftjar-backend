@@ -4,7 +4,7 @@ from fastapi import HTTPException, status
 import sqlalchemy as sa
 from sqlalchemy.orm import Session, aliased
 
-from api.utils import format_location_string
+from api.utils import format_location_string, format_time_difference
 import app.models as m
 import app.schema as s
 from app.schema.language import Language
@@ -211,12 +211,14 @@ def create_out_search_jobs(db_jobs: Sequence[m.Job], lang: Language, current_use
                         "services",
                         "location",
                         "files",
+                        "created_at",
                     ],
                 ),
                 files=[s.File.model_validate(file) for file in db_job.files],
                 services=services,
                 location=location,
                 is_favorite=db_job in current_user.favorite_jobs,
+                created_at=format_time_difference(db_job.created_at, lang) if db_job.created_at else None,
             )
         )
     return jobs

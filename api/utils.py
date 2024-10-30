@@ -42,3 +42,22 @@ def format_location_string(location: m.Location, address: m.Address, lang: Langu
         job_address = f"{lang_type} {lang_name}"
 
     return (job_location, job_address)
+
+
+def format_time_difference(created_at: datetime, leng: Language):
+    now = datetime.now()
+    diff = now - created_at
+
+    seconds = diff.total_seconds()
+    minutes = seconds // 60
+    hours = minutes // 60
+    days = hours // 24
+
+    if seconds < 60:
+        return f"{int(seconds)} {"секунд тому" if leng == Language.UA else "seconds ago"}"
+    elif minutes < 60:
+        return f"{int(minutes)} {"хвилин тому" if leng == Language.UA else "minutes ago"}"
+    elif hours < 24:
+        return f"{int(hours)} {"годин тому" if leng == Language.UA else "hours ago"}"
+    else:
+        return f"{int(days)} {"днів тому" if leng == Language.UA else "days ago"}"

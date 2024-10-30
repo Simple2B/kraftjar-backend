@@ -6,6 +6,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.engine.result import Result
 from sqlalchemy.orm import Session, aliased
 
+from api.utils import format_time_difference
 import app.models as m
 import app.schema as s
 from app.schema.language import Language
@@ -37,12 +38,13 @@ def create_out_search_users(
         locations: list[s.LocationStrings] = [s.LocationStrings(name=name, uuid=uuid) for name, uuid in regions]
         users.append(
             s.UserSearchOut(
-                **pop_keys(db_user.__dict__, ["services", "locations"]),
+                **pop_keys(db_user.__dict__, ["services", "locations", "created_at"]),
                 services=services,
                 locations=locations,
                 owned_rates_count=db_user.owned_rates_count,
                 is_favorite=db_user in me.favorite_experts if me else False,
                 avatar_url=db_user.avatar_url,
+                created_at=format_time_difference(db_user.created_at, lang) if db_user.created_at else None,
             )
         )
     return users

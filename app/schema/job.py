@@ -283,7 +283,7 @@ class JobOutput(BaseModel):
     cost: float
     start_date: datetime
     end_date: datetime | None = None
-    created_at: datetime
+    created_at: str | None = None
     location: LocationStrings | None = None
     services: list[Service]
     is_favorite: bool
