@@ -109,6 +109,7 @@ class Job(db.Model, ModelMixin):
             s.JobStatus.IN_PROGRESS.value,
             s.JobStatus.APPROVED.value,
             s.JobStatus.ON_CONFIRMATION.value,
+            s.JobStatus.COMPLETED.value,
         ]
 
     @property
