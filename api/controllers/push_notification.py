@@ -303,5 +303,33 @@ def send_job_confirmed_notification(
     send_push_notification(notification)
 
 
+# job payment confirmed
+def create_job_payment_confirmed_notification(
+    job: m.Job,
+) -> m.PushNotification:
+    worker_name = job.worker.fullname if job.worker.fullname else f"{job.worker.first_name} {job.worker.last_name}"
+    notification = m.PushNotification(
+        title="Payment confirmed",
+        content=f"Owner {worker_name} accepted payment job '{job.title}'",
+        n_type=s.PushNotificationType.job_payment_received.value,
+        created_by_id=job.worker_id,
+        meta_data="",
+        job=job,
+    )
+
+    # send notification to job worker
+    notification.sent_to.extend(job.owner.active_devices)
+
+    return notification
+
+
+def send_job_payment_confirmed_notification(
+    job: m.Job,
+) -> None:
+    pass
+    notification = create_job_payment_confirmed_notification(job)
+    send_push_notification(notification)
+
+
 def notification_is_read_by_user(notification: m.PushNotification, user: m.User) -> bool:
     return user in notification.read_by

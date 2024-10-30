@@ -14,6 +14,7 @@ class PushNotificationType(Enum):
     job_started = "job_started"
     job_finished = "job_finished"
     job_confirmed = "job_confirmed"
+    job_payment_received = "job_payment_received"
     job_canceled = "job_canceled"
 
 

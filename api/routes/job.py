@@ -472,6 +472,7 @@ def put_job_status(
         log(log.INFO, "Updated job [%s] status to PAYMENT_CONFIRMED", job_uuid)
 
         db.commit()
+        background_tasks.add_task(c.send_job_payment_confirmed_notification, job)
         return job
 
     if job_data.status == s.JobStatus.IN_PROGRESS and job.status == s.JobStatus.APPROVED.value:

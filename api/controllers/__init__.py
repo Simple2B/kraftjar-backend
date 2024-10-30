@@ -46,5 +46,6 @@ from .push_notification import (
     send_job_started_notification,
     send_job_finished_notification,
     send_job_confirmed_notification,
+    send_job_payment_confirmed_notification,
     notification_is_read_by_user,
 )
