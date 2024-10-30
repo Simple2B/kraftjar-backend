@@ -54,10 +54,10 @@ def format_time_difference(created_at: datetime, leng: Language):
     days = hours // 24
 
     if seconds < 60:
-        return f"{int(seconds)} {"секунд тому" if leng == Language.UA else "seconds ago"}"
+        return f"{int(seconds)} {'секунд тому' if leng == Language.UA else 'seconds ago'}"
     elif minutes < 60:
-        return f"{int(minutes)} {"хвилин тому" if leng == Language.UA else "minutes ago"}"
+        return f"{int(minutes)} {'хвилин тому' if leng == Language.UA else 'minutes ago'}"
     elif hours < 24:
-        return f"{int(hours)} {"годин тому" if leng == Language.UA else "hours ago"}"
+        return f"{int(hours)} {'годин тому' if leng == Language.UA else 'hours ago'}"
     else:
-        return f"{int(days)} {"днів тому" if leng == Language.UA else "days ago"}"
+        return f"{int(days)} {'днів тому' if leng == Language.UA else 'days ago'}"
