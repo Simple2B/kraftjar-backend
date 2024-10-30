@@ -107,7 +107,9 @@ def send_sms_to_user(user: m.User, sns_client: SNSClient, db: Session) -> None:
     )
 
     log(log.INFO, "Sending SMS AWS - [%s]", res)
-    log(log.INFO, "SMS sended to [%s]", user.phone)
+    log(log.INFO, "============================================================")
+    log(log.INFO, "SMS sended to [%s] with otp code [%s]", user.phone, otp_code)
+    log(log.INFO, "============================================================")
 
 
 def verify_phone(phone_data: s.PhoneVerificationIn, db: Session) -> s.Token:
