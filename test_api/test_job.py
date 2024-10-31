@@ -745,6 +745,20 @@ def test_job_cancel_flow(
     assert response.status_code == status.HTTP_200_OK
     assert job.is_cancel_request
 
+    # Get job
+    # Owner should see alert about cancel request
+    response = client.get(f"/api/jobs/{job.uuid}", headers=auth_header)
+    assert response.status_code == status.HTTP_200_OK
+    job_data = s.JobInfo.model_validate(response.json())
+    assert job_data
+    assert job_data.is_cancel_request
+    # Worker should not see alert about cancel request
+    response = client.get(f"/api/jobs/{job.uuid}", headers=worker_header)
+    assert response.status_code == status.HTTP_200_OK
+    job_data = s.JobInfo.model_validate(response.json())
+    assert job_data
+    assert job_data.is_cancel_request is False
+
     # Owner discard cancel request
     response = client.put(
         f"/api/jobs/{job.uuid}/cancel",
@@ -766,6 +780,20 @@ def test_job_cancel_flow(
     )
     assert response.status_code == status.HTTP_200_OK
     assert job.is_cancel_request
+
+    # Get job
+    # Worker should see alert about cancel request
+    response = client.get(f"/api/jobs/{job.uuid}", headers=worker_header)
+    assert response.status_code == status.HTTP_200_OK
+    job_data = s.JobInfo.model_validate(response.json())
+    assert job_data
+    assert job_data.is_cancel_request
+    # Owner should not see alert about cancel request
+    response = client.get(f"/api/jobs/{job.uuid}", headers=auth_header)
+    assert response.status_code == status.HTTP_200_OK
+    job_data = s.JobInfo.model_validate(response.json())
+    assert job_data
+    assert job_data.is_cancel_request is False
 
     # Worker approve cancel request
     response = client.put(

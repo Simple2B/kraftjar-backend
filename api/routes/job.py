@@ -35,6 +35,7 @@ job_router = APIRouter(prefix="/jobs", tags=["jobs"])
 def get_job(
     job_uuid: str,
     lang: Language = Language.UA,
+    current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.uuid == job_uuid))
@@ -47,7 +48,7 @@ def get_job(
         log(log.ERROR, "Owner [%s] not found", job.owner_id)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Owner not found")
 
-    return c.get_job(job, lang, db, job_owner)
+    return c.get_job(job, lang, db, job_owner, current_user)
 
 
 @job_router.get(
