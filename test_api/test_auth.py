@@ -78,3 +78,10 @@ def test_auth(db: Session, client: TestClient):
     user_db = db.scalar(sa.select(m.User).where(m.User.phone == USER_PHONE))
     assert user_db
     assert check_password_hash(user_db.password, new_password)
+
+    # auth with new password
+    user_auth = s.Auth(phone=USER_PHONE, password=new_password)
+    response = client.post("/api/auth/token", json=user_auth.model_dump())
+    assert response.status_code == status.HTTP_200_OK
+    token = s.Token.model_validate(response.json())
+    assert token.access_token and token.token_type == "bearer"
