@@ -678,5 +678,5 @@ def cancel_job(
         # TODO: add notification
         return job
 
-    log(log.ERROR, "Something went wrong with cancel jog [%s]", job_uuid)
+    log(log.ERROR, "Something went wrong with cancel job [%s]", job_uuid)
     raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Something went wrong with cancel job")
