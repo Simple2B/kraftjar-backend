@@ -115,12 +115,6 @@ def test_register(
     response = client.put("/api/users", headers=auth_header, json=user_update_data.model_dump())
     assert response.status_code == status.HTTP_200_OK
 
-    # data = s.UserPut.model_validate(response.json())
-    # assert data.fullname == current_user.fullname
-    # assert data.description == current_user.description
-    # assert data.services == [s.uuid for s in current_user.services]
-    # assert data.locations == [loc.uuid for loc in current_user.locations]
-
     basic_auth_account = current_user.basic_auth_account
     assert basic_auth_account
     assert basic_auth_account.email == user_update_data.email

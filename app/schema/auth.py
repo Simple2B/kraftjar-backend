@@ -86,3 +86,8 @@ class AuthAccountOut(BaseModel):
     id: int
     email: str = ""
     auth_type: AuthType
+
+
+class PasswordAuthIn(BaseModel):
+    old_password: str
+    new_password: str

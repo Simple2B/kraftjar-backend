@@ -125,6 +125,32 @@ def google_auth(auth_data: s.GoogleAuthIn, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid token")
 
 
+# change password
+@router.post(
+    "/change-password",
+    status_code=status.HTTP_200_OK,
+    responses={status.HTTP_403_FORBIDDEN: {"description": "Invalid old password"}},
+)
+def change_password(
+    data: s.PasswordAuthIn,
+    db: Session = Depends(get_db),
+    current_user: m.User = Depends(get_current_user),
+):
+    """Changes user password"""
+
+    if not current_user.authenticate(current_user.phone, data.old_password, session=db):
+        log(log.ERROR, "User [%s] wrong old password", current_user.phone)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid old password")
+
+    new_password = s.RegistrationIn.password_validation(data.new_password)
+
+    current_user.password = new_password
+    db.commit()
+    db.refresh(current_user)
+
+    log(log.INFO, "User [%s] changed password", current_user.phone)
+
+
 # save phone for user and send sms with code
 @router.post(
     "/phone",
