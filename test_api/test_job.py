@@ -654,6 +654,7 @@ def test_update_jobs_status(
 def test_job_cancel_flow(
     client: TestClient,
     auth_header: dict[str, str],
+    worker_header: dict[str, str],
     db: Session,
 ):
     OWNER_ID = 1
@@ -661,10 +662,137 @@ def test_job_cancel_flow(
     assert job
 
     response = client.put(
-        f"/api/jobs/{job.uuid}/status",
+        f"/api/jobs/{job.uuid}/cancel",
         headers=auth_header,
-        content=s.JobStatusIn.model_validate({"status": s.JobStatus.CANCELED}).model_dump_json(),
+        content=s.JobStatusCancelIn.model_validate({"status": s.JobStatus.CANCELED}).model_dump_json(),
     )
     assert response.status_code == status.HTTP_200_OK
     assert job.status == s.JobStatus.CANCELED.value
     assert job.canceled_by == OWNER_ID
+
+    worker = db.scalar(sa.select(m.User).where(m.User.id != OWNER_ID))
+    assert worker
+
+    # Create application
+    app_data = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_uuid=worker.uuid, job_uuid=job.uuid)
+    response = client.post("/api/applications", headers=worker_header, content=app_data.model_dump_json())
+    assert response.status_code == status.HTTP_201_CREATED
+
+    # Accept application
+    app = s.ApplicationOut.model_validate(response.json())
+    assert app
+
+    # Owner accept application
+    response = client.put(
+        f"/api/applications/{app.uuid}",
+        headers=auth_header,
+        content=s.ApplicationPutIn(status=m.ApplicationStatus.ACCEPTED).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert job.status == s.JobStatus.APPROVED.value
+
+    def revert_job_status():
+        job.status = s.JobStatus.APPROVED.value
+        job.cancel_request_by = None
+        db.commit()
+
+    # Test invalid statuses
+    response = client.put(
+        f"/api/jobs/{job.uuid}/cancel",
+        headers=worker_header,
+        content=s.JobStatusCancelIn.model_validate({"status": s.JobStatus.ON_CONFIRMATION}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_409_CONFLICT
+    response = client.put(
+        f"/api/jobs/{job.uuid}/cancel",
+        headers=worker_header,
+        content=s.JobStatusCancelIn.model_validate({"status": s.JobStatus.COMPLETED}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_409_CONFLICT
+    response = client.put(
+        f"/api/jobs/{job.uuid}/cancel",
+        headers=worker_header,
+        content=s.JobStatusCancelIn.model_validate({"status": s.JobStatus.PAYMENT_CONFIRMED}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_409_CONFLICT
+
+    # Worker start request to cancel job
+    response = client.put(
+        f"/api/jobs/{job.uuid}/cancel",
+        headers=worker_header,
+        content=s.JobStatusCancelIn.model_validate({"status": s.JobStatus.CANCELED}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert job.is_cancel_request
+
+    # Owner approve cancel request
+    response = client.put(
+        f"/api/jobs/{job.uuid}/cancel",
+        headers=auth_header,
+        content=s.JobStatusCancelIn.model_validate({"status": s.JobStatus.CANCELED}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert job.status == s.JobStatus.CANCELED.value
+
+    revert_job_status()
+
+    # Worker start request to cancel job
+    response = client.put(
+        f"/api/jobs/{job.uuid}/cancel",
+        headers=worker_header,
+        content=s.JobStatusCancelIn.model_validate({"status": s.JobStatus.CANCELED}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert job.is_cancel_request
+
+    # Owner discard cancel request
+    response = client.put(
+        f"/api/jobs/{job.uuid}/cancel",
+        headers=auth_header,
+        content=s.JobStatusCancelIn.model_validate({"status": None}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert job.status != s.JobStatus.CANCELED.value
+    assert job.is_cancel_request is False
+
+    ### Vise versa - Owner cancel job
+    revert_job_status()
+
+    # Owner start request to cancel job
+    response = client.put(
+        f"/api/jobs/{job.uuid}/cancel",
+        headers=auth_header,
+        content=s.JobStatusCancelIn.model_validate({"status": s.JobStatus.CANCELED}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert job.is_cancel_request
+
+    # Worker approve cancel request
+    response = client.put(
+        f"/api/jobs/{job.uuid}/cancel",
+        headers=worker_header,
+        content=s.JobStatusCancelIn.model_validate({"status": s.JobStatus.CANCELED}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert job.status == s.JobStatus.CANCELED.value
+
+    revert_job_status()
+
+    # Owner start request to cancel job
+    response = client.put(
+        f"/api/jobs/{job.uuid}/cancel",
+        headers=auth_header,
+        content=s.JobStatusCancelIn.model_validate({"status": s.JobStatus.CANCELED}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert job.is_cancel_request
+
+    # Worker discard cancel request
+    response = client.put(
+        f"/api/jobs/{job.uuid}/cancel",
+        headers=worker_header,
+        data=s.JobStatusCancelIn.model_validate({"status": None}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert job.status != s.JobStatus.CANCELED.value
+    assert job.is_cancel_request is False

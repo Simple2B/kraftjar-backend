@@ -113,6 +113,7 @@ class JobInfo(BaseModel):
     worker_avatar_url: str | None = None
     applications: list[JobApplication]
     status: JobStatus
+    is_cancel_request: bool = False
 
 
 class JobOutList(BaseModel):
@@ -328,6 +329,14 @@ class JobsByStatusList(BaseModel):
 
 class JobStatusIn(BaseModel):
     status: JobStatus
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class JobStatusCancelIn(BaseModel):
+    status: JobStatus | None
 
     model_config = ConfigDict(
         from_attributes=True,

@@ -452,18 +452,6 @@ def put_job_status(
         log(log.ERROR, "[put_job_status] Job [%s] status downgrade to pending is forbidden", job_uuid)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Job status downgrade forbidden")
 
-    if (
-        job_data.status == s.JobStatus.CANCELED
-        and current_user.id == job.owner_id
-        and job.status == s.JobStatus.PENDING.value
-    ):
-        job.status = s.JobStatus.CANCELED.value
-        job.canceled_by = current_user.id
-
-        log(log.INFO, "Owner [%s] canceled job [%s]", current_user.id, job_uuid)
-        db.commit()
-        return job
-
     if job_data.status == s.JobStatus.APPROVED:
         log(log.ERROR, "[put_job_status] Job [%s] status downgrade to approved is forbidden", job_uuid)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Job status downgrade forbidden")
@@ -569,3 +557,126 @@ def put_job_status(
         job_data.status,
     )
     raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Status mismatch")
+
+
+@job_router.put(
+    "/{job_uuid}/cancel",
+    status_code=status.HTTP_200_OK,
+    response_model=s.JobStatusIn,
+)
+def cancel_job(
+    job_uuid: str,
+    job_data: s.JobStatusCancelIn,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+    current_user: m.User = Depends(get_current_user),
+):
+    job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.uuid == job_uuid))
+
+    if not job:
+        log(log.ERROR, "Job [%s] not found", job_uuid)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
+
+    if job_data.status in [s.JobStatus.ON_CONFIRMATION, s.JobStatus.COMPLETED, s.JobStatus.PAYMENT_CONFIRMED]:
+        log(log.ERROR, "Status [%s] is not allowed for cancel job [%s]", job_data.status, job_uuid)
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Status is not allowed for cancel job")
+
+    # Owner cancel job with status PENDING
+    if (
+        job_data.status == s.JobStatus.CANCELED
+        and current_user.id == job.owner_id
+        and job.status == s.JobStatus.PENDING.value
+    ):
+        job.status = s.JobStatus.CANCELED.value
+        job.canceled_by = current_user.id
+
+        log(log.INFO, "Owner [%s] canceled job [%s]", current_user.id, job_uuid)
+        db.commit()
+        return job
+
+    # Worker request to cancel job with status IN_PROGRESS or APPROVED
+    if (
+        job_data.status == s.JobStatus.CANCELED
+        and current_user.id == job.worker_id
+        and job.status in [s.JobStatus.APPROVED.value, s.JobStatus.IN_PROGRESS.value]
+        and not job.cancel_request_by
+    ):
+        job.cancel_request_by = current_user.id
+
+        log(log.INFO, "Worker [%s] requested to cancel job [%s]", current_user.id, job_uuid)
+        db.commit()
+        # TODO: add notification
+        return job
+
+    # Owner approve cancel request
+    if (
+        job_data.status == s.JobStatus.CANCELED
+        and current_user.id == job.owner_id
+        and job.status in [s.JobStatus.APPROVED.value, s.JobStatus.IN_PROGRESS.value]
+        and job.cancel_request_by == job.worker_id
+    ):
+        job.canceled_by = current_user.id
+        job.status = s.JobStatus.CANCELED.value
+
+        log(log.INFO, "Owner [%s] approved cancel request for job [%s]", current_user.id, job_uuid)
+        # TODO: add notification
+        return job
+
+    # Owner discard cancel request
+    if (
+        not job_data.status
+        and current_user.id == job.owner_id
+        and job.status in [s.JobStatus.APPROVED.value, s.JobStatus.IN_PROGRESS.value]
+        and job.cancel_request_by == job.worker_id
+    ):
+        job.cancel_request_by = None
+
+        log(log.INFO, "Owner [%s] discarded cancel request for job [%s]", current_user.id, job_uuid)
+        # TODO: add notification
+        return job
+
+    ### Vise versa - Owner cancel job
+
+    # Owner request to cancel job with status IN_PROGRESS or APPROVED
+    if (
+        job_data.status == s.JobStatus.CANCELED
+        and current_user.id == job.owner_id
+        and job.status in [s.JobStatus.APPROVED.value, s.JobStatus.IN_PROGRESS.value]
+        and not job.cancel_request_by
+    ):
+        job.cancel_request_by = current_user.id
+
+        log(log.INFO, "Owner [%s] requested to cancel job [%s]", current_user.id, job_uuid)
+        db.commit()
+        # TODO: add notification
+        return job
+
+    # Worker approve cancel request
+    if (
+        job_data.status == s.JobStatus.CANCELED
+        and current_user.id == job.worker_id
+        and job.status in [s.JobStatus.APPROVED.value, s.JobStatus.IN_PROGRESS.value]
+        and job.cancel_request_by == job.owner_id
+    ):
+        job.canceled_by = current_user.id
+        job.status = s.JobStatus.CANCELED.value
+
+        log(log.INFO, "Worker [%s] approved cancel request for job [%s]", current_user.id, job_uuid)
+        # TODO: add notification
+        return job
+
+    # Worker discard cancel request
+    if (
+        not job_data.status
+        and current_user.id == job.worker_id
+        and job.status in [s.JobStatus.APPROVED.value, s.JobStatus.IN_PROGRESS.value]
+        and job.cancel_request_by == job.owner_id
+    ):
+        job.cancel_request_by = None
+
+        log(log.INFO, "Worker [%s] discarded cancel request for job [%s]", current_user.id, job_uuid)
+        # TODO: add notification
+        return job
+
+    log(log.ERROR, "Something went wrong with cancel jog [%s]", job_uuid)
+    raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Something went wrong with cancel job")
