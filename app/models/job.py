@@ -61,6 +61,9 @@ class Job(db.Model, ModelMixin):
 
     worker_id: orm.Mapped[int | None] = orm.mapped_column(sa.Integer, sa.ForeignKey("users.id"))
 
+    cancel_request_by: orm.Mapped[int | None] = orm.mapped_column(sa.Integer, sa.ForeignKey("users.id"))
+    canceled_by: orm.Mapped[int | None] = orm.mapped_column(sa.Integer, sa.ForeignKey("users.id"))
+
     created_at: orm.Mapped[datetime] = orm.mapped_column(
         sa.DateTime,
         default=datetime.now(UTC),
@@ -102,6 +105,10 @@ class Job(db.Model, ModelMixin):
         "File",
         secondary=files_job,
     )
+
+    @property
+    def is_cancel_request(self) -> bool:
+        return bool(self.cancel_request_by) and self.status in [s.JobStatus.APPROVED, s.JobStatus.IN_PROGRESS]
 
     @property
     def is_in_progress(self) -> bool:
