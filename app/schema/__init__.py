@@ -93,6 +93,7 @@ from .auth import (
     AuthType,
     AuthAccount,
     AuthAccountOut,
+    PasswordAuthIn,
 )
 from .registration import (
     RegistrationIn,
