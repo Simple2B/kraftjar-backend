@@ -3,6 +3,8 @@ import sqlalchemy as sa
 from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
+from werkzeug.security import check_password_hash
+
 
 from app.schema import GoogleTokenVerification, AppleTokenVerification
 
@@ -58,3 +60,21 @@ def test_auth(db: Session, client: TestClient):
     header = dict(Authorization=f"Bearer {token.access_token}")
     res = client.get("api/users/me", headers=header)
     assert res.status_code == status.HTTP_200_OK
+
+    old_password = "Kraftjar2024"
+    new_password = "New_password1"
+
+    # change password
+    data_change_password: s.PasswordAuthIn = s.PasswordAuthIn(
+        old_password=old_password,
+        new_password=new_password,
+    )
+    response = client.post(
+        "/api/auth/change-password",
+        json=data_change_password.model_dump(),
+        headers=header,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    user_db = db.scalar(sa.select(m.User).where(m.User.phone == USER_PHONE))
+    assert user_db
+    assert check_password_hash(user_db.password, new_password)

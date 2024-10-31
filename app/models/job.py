@@ -108,7 +108,10 @@ class Job(db.Model, ModelMixin):
 
     @property
     def is_cancel_request(self) -> bool:
-        return bool(self.cancel_request_by) and self.status in [s.JobStatus.APPROVED, s.JobStatus.IN_PROGRESS]
+        return bool(self.cancel_request_by) and self.status in [
+            s.JobStatus.APPROVED.value,
+            s.JobStatus.IN_PROGRESS.value,
+        ]
 
     @property
     def is_in_progress(self) -> bool:

@@ -29,6 +29,7 @@ from .job import (
     JobStatusIn,
     JobRate,
     JobUserStatus,
+    JobStatusCancelIn,
 )
 from .application import (
     ApplicationIn,
@@ -93,6 +94,7 @@ from .auth import (
     AuthType,
     AuthAccount,
     AuthAccountOut,
+    PasswordAuthIn,
 )
 from .registration import (
     RegistrationIn,
