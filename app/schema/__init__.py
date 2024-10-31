@@ -29,6 +29,7 @@ from .job import (
     JobStatusIn,
     JobRate,
     JobUserStatus,
+    JobStatusCancelIn,
 )
 from .application import (
     ApplicationIn,

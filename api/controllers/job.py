@@ -222,7 +222,7 @@ def create_out_search_jobs(db_jobs: Sequence[m.Job], lang: Language, current_use
     return jobs
 
 
-def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.JobInfo:
+def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User, current_user: m.User) -> s.JobInfo:
     ALL_UKRAINE = "Вся Україна" if lang == Language.UA else "All Ukraine"
 
     service_names = []
@@ -304,6 +304,7 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User) -> s.Job
         worker_avatar_url=job.worker.avatar_url if job.worker else None,
         applications=applications,
         status=s.JobStatus(job.status),
+        is_cancel_request=job.is_cancel_request and job.cancel_request_by != current_user.id,
     )
 
 
