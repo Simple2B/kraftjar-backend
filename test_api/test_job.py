@@ -645,3 +645,26 @@ def test_update_jobs_status(
         content=s.JobStatusIn.model_validate({"status": s.JobStatus.IN_PROGRESS}).model_dump_json(),
     )
     assert response.status_code == status.HTTP_409_CONFLICT
+
+
+@pytest.mark.skipif(
+    not CFG.IS_API,
+    reason="API is not enabled",
+)
+def test_job_cancel_flow(
+    client: TestClient,
+    auth_header: dict[str, str],
+    db: Session,
+):
+    OWNER_ID = 1
+    job = db.scalar(sa.select(m.Job).where(m.Job.owner_id == OWNER_ID, m.Job.status == s.JobStatus.PENDING.value))
+    assert job
+
+    response = client.put(
+        f"/api/jobs/{job.uuid}/status",
+        headers=auth_header,
+        content=s.JobStatusIn.model_validate({"status": s.JobStatus.CANCELED}).model_dump_json(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert job.status == s.JobStatus.CANCELED.value
+    assert job.canceled_by == OWNER_ID

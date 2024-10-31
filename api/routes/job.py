@@ -452,6 +452,18 @@ def put_job_status(
         log(log.ERROR, "[put_job_status] Job [%s] status downgrade to pending is forbidden", job_uuid)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Job status downgrade forbidden")
 
+    if (
+        job_data.status == s.JobStatus.CANCELED
+        and current_user.id == job.owner_id
+        and job.status == s.JobStatus.PENDING.value
+    ):
+        job.status = s.JobStatus.CANCELED.value
+        job.canceled_by = current_user.id
+
+        log(log.INFO, "Owner [%s] canceled job [%s]", current_user.id, job_uuid)
+        db.commit()
+        return job
+
     if job_data.status == s.JobStatus.APPROVED:
         log(log.ERROR, "[put_job_status] Job [%s] status downgrade to approved is forbidden", job_uuid)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Job status downgrade forbidden")
