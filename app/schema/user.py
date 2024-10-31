@@ -202,3 +202,7 @@ class UserPut(BaseModel):
     services: list[str] = []
     avatar_url: str | None = None
     preferred_language: Language = Language.UA
+
+    model_config = ConfigDict(
+        use_enum_values=True,
+    )
