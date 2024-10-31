@@ -580,12 +580,17 @@ def update_language(
 ):
     """Update user preferred language"""
 
-    if current_user.preferred_language == user_data.preferred_language.value:
-        log(log.ERROR, "language is already assigned to a user [%s]", current_user.fullname)
+    try:
+        preferred_language = Language(user_data.preferred_language)
+    except ValueError:
+        log(log.ERROR, "Invalid language [%s] for user [%s]", user_data.preferred_language, current_user.fullname)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid preferred language")
+
+    if preferred_language.value == current_user.preferred_language:
+        log(log.ERROR, "Language is already assigned to a user [%s]", current_user.fullname)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Language is already assigned to a user")
 
-    if user_data.preferred_language.value:
-        current_user.preferred_language = user_data.preferred_language.value
+    current_user.preferred_language = preferred_language.value
 
     db.commit()
     log(log.INFO, "User [%s] successfully updated preferred language", current_user.fullname)
@@ -596,5 +601,6 @@ def update_language(
         description=current_user.description,
         locations=[loc.uuid for loc in current_user.locations],
         services=[s.uuid for s in current_user.services],
-        preferred_language=current_user.preferred_language,
+        avatar_url=current_user.avatar_url,
+        preferred_language=preferred_language,
     )
