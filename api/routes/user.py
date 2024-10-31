@@ -563,3 +563,38 @@ def upload_user_avatar(
         services=[s.uuid for s in current_user.services],
         avatar_url=current_user.avatar.url,
     )
+
+
+@user_router.put(
+    "/language",
+    status_code=status.HTTP_200_OK,
+    response_model=s.UserPut,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "User not found"},
+    },
+)
+def update_language(
+    user_data: s.UserPut,
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Update user preferred language"""
+
+    if current_user.preferred_language == user_data.preferred_language.value:
+        log(log.ERROR, "language is already assigned to a user [%s]", current_user.fullname)
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Language is already assigned to a user")
+
+    if user_data.preferred_language.value:
+        current_user.preferred_language = user_data.preferred_language.value
+
+    db.commit()
+    log(log.INFO, "User [%s] successfully updated preferred language", current_user.fullname)
+
+    return s.UserPut(
+        fullname=current_user.fullname,
+        email=current_user.basic_auth_account.email,
+        description=current_user.description,
+        locations=[loc.uuid for loc in current_user.locations],
+        services=[s.uuid for s in current_user.services],
+        preferred_language=current_user.preferred_language,
+    )
