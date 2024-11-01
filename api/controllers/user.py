@@ -167,7 +167,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
             sa.and_(
                 m.Job.is_deleted.is_(False),
                 m.Job.worker_id == db_user.id,
-                m.Job.status == s.JobStatus.COMPLETED.value,
+                m.Job.status == s.JobStatus.PAYMENT_CONFIRMED.value,
             )
         )
     )
