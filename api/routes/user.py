@@ -52,21 +52,30 @@ def get_users(
     selected_locations: Annotated[list[str] | None, Query()] = None,
     order_by: s.UsersOrderBy = s.UsersOrderBy.AVERAGE_RATE,
     ascending: bool = True,
-    current_user: m.User = Depends(get_current_user),
+    current_user_uuid: str = Query(None),
     db: Session = Depends(get_db),
 ):
     """Get users by query params"""
 
-    db_users = sa.select(m.User).where(m.User.is_deleted.is_(False), m.User.id != current_user.id)
+    if current_user_uuid:
+        current_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.uuid == current_user_uuid))
 
-    # TODO: All Ukraine select
-    if selected_locations or current_user.locations:
-        db_users = c.filter_users_by_locations(selected_locations, db, current_user, db_users)
+        if not current_user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-    users = c.filter_and_order_users(query, lang, db, current_user, db_users, order_by)
+        db_users = sa.select(m.User).where(m.User.is_deleted.is_(False), m.User.id != current_user.id)
+
+        if selected_locations or current_user.locations:
+            db_users = c.filter_users_by_locations(selected_locations, db, current_user.locations, db_users)
+
+        users = c.filter_and_order_users(query, lang, db, current_user.locations, db_users, order_by)
+    else:
+        # For website
+        db_users = sa.select(m.User).where(m.User.is_deleted.is_(False))
+        users = c.filter_and_order_users(query, lang, db, None, db_users, order_by)
 
     if not users:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Users not found")
+        return s.UsersOut(items=[])
 
     if not ascending:
         users = users[::-1]
@@ -96,7 +105,6 @@ def search_users(
     responses={
         status.HTTP_404_NOT_FOUND: {"description": "User not found"},
     },
-    dependencies=[Depends(get_current_user)],
 )
 def get_user_profile(
     user_uuid: str,

@@ -64,6 +64,7 @@ class UserSearchOut(BaseModel):
     services: list[Service]
     locations: list[LocationStrings]
     is_favorite: bool
+    receiver_average_rate: float
 
     __hash__ = object.__hash__
 
@@ -159,6 +160,7 @@ class UserProfileOut(User):
     favorite_experts: list[UserFavoriteExpert] = []
     created_at: datetime
     avatar_url: str | None = None
+    receiver_average_rate: float
     preferred_language: Language = Language.UA
 
     __hash__ = object.__hash__

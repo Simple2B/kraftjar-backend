@@ -7,6 +7,7 @@ from sqlalchemy.engine.result import Result
 from sqlalchemy.orm import Session, aliased
 
 import app.models as m
+from app.models.location import Location
 import app.schema as s
 from app.schema.language import Language
 from app.utilities import pop_keys
@@ -43,6 +44,7 @@ def create_out_search_users(
                 owned_rates_count=db_user.owned_rates_count,
                 is_favorite=db_user in me.favorite_experts if me else False,
                 avatar_url=db_user.avatar_url,
+                receiver_average_rate=db_user.receiver_average_rate,
             )
         )
     return users
@@ -253,6 +255,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
         announced_jobs_count=announced_jobs_count if announced_jobs_count else 0,
         favorite_jobs=favorite_jobs,
         favorite_experts=favorite_expert,
+        receiver_average_rate=db_user.receiver_average_rate,
     )
 
 
@@ -344,21 +347,30 @@ def get_user_auth_account(email: str, oauth_id: str, db: Session, auth_type: s.A
 
 
 def filter_users_by_locations(
-    selected_locations: list[str] | None, db: Session, current_user: m.User, db_users: sa.Select
+    selected_locations: list[str] | None,
+    db: Session,
+    user_locations: list[Location],
+    db_users: sa.Select[Tuple[m.User]],
 ):
     if selected_locations:
+        if CFG.ALL_UKRAINE in selected_locations:
+            return db_users
+
         locations = db.execute(sa.select(m.Location).where(m.Location.uuid.in_(selected_locations))).scalars().all()
         db_users = db_users.where(m.User.locations.any(m.Location.uuid.in_([loc.uuid for loc in locations])))
     else:
-        db_users = db_users.where(
-            m.User.locations.any(m.Location.uuid.in_([loc.uuid for loc in current_user.locations]))
-        )
+        db_users = db_users.where(m.User.locations.any(m.Location.uuid.in_([loc.uuid for loc in user_locations])))
 
     return db_users
 
 
 def filter_and_order_users(
-    query: str, lang: Language, db: Session, current_user: m.User, db_users: sa.Select, order_by: s.UsersOrderBy
+    query: str,
+    lang: Language,
+    db: Session,
+    user_locations: list[Location] | None,
+    db_users: sa.Select[Tuple[m.User]],
+    order_by: s.UsersOrderBy,
 ):
     """Filters and orders users by query params"""
 
@@ -371,19 +383,20 @@ def filter_and_order_users(
             name_lang_query = m.Service.name_en.ilike(f"%{query}%")
 
         services = db.execute(sa.select(m.Service).where(name_lang_query)).scalars().all()
-        db_users = db_users.where(m.User.services.any(m.Service.id.in_([s.id for s in services])))
+        if services:
+            db_users = db_users.where(m.User.services.any(m.Service.id.in_([s.id for s in services])))
+        else:
+            db_users = db_users.where(m.User.fullname.ilike(f"%{query}%"))
 
     if order_by == s.UsersOrderBy.AVERAGE_RATE:
         users = db.execute(db_users.order_by(m.User.average_rate.desc())).scalars().all()
     elif order_by == s.UsersOrderBy.OWNED_RATES_COUNT:
         users = db.execute(db_users).scalars().all()
         users = sorted(users, key=lambda user: user.owned_rates_count, reverse=True)
-    elif order_by == s.UsersOrderBy.NEAR:
+    elif user_locations and order_by == s.UsersOrderBy.NEAR:
         users = (
             db.execute(
-                db_users.order_by(
-                    m.User.locations.any(m.Location.id.in_([loc.id for loc in current_user.locations])).desc()
-                )
+                db_users.order_by(m.User.locations.any(m.Location.id.in_([loc.id for loc in user_locations])).desc())
             )
             .scalars()
             .all()
