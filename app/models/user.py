@@ -123,6 +123,12 @@ class User(db.Model, ModelMixin):
         return len(self.rates_as_receiver)
 
     @property
+    def receiver_average_rate(self) -> float:
+        if self.owned_rates_count == 0:
+            return 0
+        return sum([rate.rate for rate in self.rates_as_receiver]) / self.owned_rates_count
+
+    @property
     def active_devices(self):
         return [device for device in self.devices if not device.is_deleted]
 

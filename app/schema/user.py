@@ -159,6 +159,7 @@ class UserProfileOut(User):
     favorite_experts: list[UserFavoriteExpert] = []
     created_at: datetime
     avatar_url: str | None = None
+    receiver_average_rate: float
 
     __hash__ = object.__hash__
 
