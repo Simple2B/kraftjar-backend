@@ -111,6 +111,7 @@ def test_register(
         description="New description",
         services=[s.uuid for s in current_user.services],
         locations=[loc.uuid for loc in current_user.locations],
+        preferred_language=s.Language.EN,
     )
     response = client.put("/api/users", headers=auth_header, json=user_update_data.model_dump())
     assert response.status_code == status.HTTP_200_OK
