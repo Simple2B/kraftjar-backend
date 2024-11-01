@@ -64,6 +64,7 @@ class UserSearchOut(BaseModel):
     services: list[Service]
     locations: list[LocationStrings]
     is_favorite: bool
+    receiver_average_rate: float
 
     __hash__ = object.__hash__
 

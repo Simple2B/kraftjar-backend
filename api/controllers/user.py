@@ -44,6 +44,7 @@ def create_out_search_users(
                 owned_rates_count=db_user.owned_rates_count,
                 is_favorite=db_user in me.favorite_experts if me else False,
                 avatar_url=db_user.avatar_url,
+                receiver_average_rate=db_user.receiver_average_rate,
             )
         )
     return users
