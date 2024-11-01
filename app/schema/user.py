@@ -160,6 +160,7 @@ class UserProfileOut(User):
     created_at: datetime
     avatar_url: str | None = None
     receiver_average_rate: float
+    preferred_language: Language = Language.UA
 
     __hash__ = object.__hash__
 
@@ -201,3 +202,8 @@ class UserPut(BaseModel):
     locations: list[str] = []
     services: list[str] = []
     avatar_url: str | None = None
+    preferred_language: Language = Language.UA
+
+    model_config = ConfigDict(
+        use_enum_values=True,
+    )

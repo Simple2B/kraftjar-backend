@@ -10,6 +10,7 @@ from app.database import db
 from app.logger import log
 from app.schema.auth import AuthType
 from app.schema.user import User as u
+from app import schema as s
 from config import config
 
 from .rate import Rate
@@ -88,6 +89,10 @@ class User(db.Model, ModelMixin):
     favorite_jobs: orm.Mapped[list["Job"]] = orm.relationship(secondary=favorite_jobs)
 
     devices: orm.Mapped[list["Device"]] = orm.relationship()
+
+    preferred_language: orm.Mapped[str] = orm.mapped_column(
+        sa.String(2), default=s.Language.UA.value, server_default=s.Language.UA.value
+    )
 
     favorite_experts: orm.Mapped[list["User"]] = orm.relationship(
         "User",

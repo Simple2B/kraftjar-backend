@@ -383,3 +383,22 @@ def test_update_favorite_experts(client: TestClient, auth_header: dict[str, str]
 
     # reset user dependency
     app.dependency_overrides[get_current_user] = get_current_user
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_preferred_language_update(client: TestClient, auth_header: dict[str, str], db: Session):
+    CURRENT_USER = 1
+    mock_current_user = db.scalar(sa.select(m.User).where(m.User.id == CURRENT_USER))
+    assert mock_current_user
+
+    current_user_preferred_language = mock_current_user.preferred_language
+    response = client.put(
+        "/api/users/language", headers=auth_header, json={"preferred_language": current_user_preferred_language}
+    )
+    assert response.status_code == status.HTTP_409_CONFLICT
+
+    response = client.put("/api/users/language", headers=auth_header, json={"preferred_language": s.Language.EN.value})
+    assert response.status_code == status.HTTP_200_OK
+
+    response = client.put("/api/users/language", headers=auth_header, json={"preferred_language": "fr"})
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
