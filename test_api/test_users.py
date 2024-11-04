@@ -124,13 +124,18 @@ def test_get_users(
 def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, str], db: Session):
     # Житомирська, Львівська
     LOCATIONS = ["14", "1", "2"]
+    USER_ID = 1
 
     locations = db.execute(sa.select(m.Location).where(m.Location.id.in_(LOCATIONS))).scalars().all()
+    assert locations
     locations_uuid = [loc.uuid for loc in locations]
+
+    current_user = db.scalar(sa.select(m.User).where(m.User.id == USER_ID))
+    assert current_user
 
     # Test query only
     query_data = s.UsersIn(query=" Ремонт ")
-    response = client.get(f"/api/users?query={query_data.query}", headers=auth_header)
+    response = client.get(f"/api/users?query={query_data.query}", params={"current_user_uuid": current_user.uuid})
     assert response.status_code == status.HTTP_200_OK
     data = s.UsersOut.model_validate(response.json())
     assert len(data.items) > 0
@@ -139,7 +144,7 @@ def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, st
     query_data = s.UsersIn(query="Освіта", lang=Language.UA, selected_locations=locations_uuid)
     response = client.get(
         f"/api/users?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}",
-        headers=auth_header,
+        params={"current_user_uuid": current_user.uuid},
     )
     assert response.status_code == status.HTTP_200_OK
     data_ua = s.UsersOut.model_validate(response.json())
@@ -149,7 +154,7 @@ def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, st
     query_data = s.UsersIn(query="Education", lang=Language.EN, selected_locations=locations_uuid)
     response = client.get(
         f"/api/users?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}",
-        headers=auth_header,
+        params={"current_user_uuid": current_user.uuid},
     )
     assert response.status_code == status.HTTP_200_OK
     data_en = s.UsersOut.model_validate(response.json())
@@ -160,20 +165,20 @@ def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, st
     query_data = s.UsersIn(selected_locations=locations_uuid)
     response = client.get(
         f"/api/users?selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}&selected_locations={query_data.selected_locations[2]}",
-        headers=auth_header,
+        params={"current_user_uuid": current_user.uuid},
     )
     assert response.status_code == status.HTTP_200_OK
     data = s.UsersOut.model_validate(response.json())
     assert len(data.items) > 0
 
     # No query params
-    response = client.get("/api/users", headers=auth_header)
+    response = client.get("/api/users", params={"current_user_uuid": current_user.uuid})
     assert response.status_code == status.HTTP_200_OK
     data = s.UsersOut.model_validate(response.json())
     assert len(data.items) > 0
 
     # Empty query with spaces
-    response = client.get(f"/api/users?query={'   '}", headers=auth_header)
+    response = client.get(f"/api/users?query={'   '}", params={"current_user_uuid": current_user.uuid})
     assert response.status_code == status.HTTP_200_OK
     data = s.UsersOut.model_validate(response.json())
     assert len(data.items) > 0
@@ -188,7 +193,7 @@ def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, st
     )
     response = client.get(
         f"/api/users?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}&selected_locations={query_data.selected_locations[2]}&ascending={query_data.ascending}&order_by={query_data.order_by.value}",
-        headers=auth_header,
+        params={"current_user_uuid": current_user.uuid},
     )
     assert response.status_code == status.HTTP_200_OK
     data = s.UsersOut.model_validate(response.json())
@@ -196,8 +201,24 @@ def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, st
 
     # Test no results
     query_data = s.UsersIn(query="Тест")
-    response = client.get(f"/api/users?query={query_data.query}", headers=auth_header)
-    assert response.status_code == status.HTTP_404_NOT_FOUND
+    response = client.get(f"/api/users?query={query_data.query}", params={"current_user_uuid": current_user.uuid})
+    assert response.status_code == status.HTTP_200_OK
+    data = s.UsersOut.model_validate(response.json())
+    assert len(data.items) == 0
+
+    # Test public website query
+    query_data = s.UsersIn(query="Кулінарія")
+    response = client.get(f"/api/users?query={query_data.query}")
+    assert response.status_code == status.HTTP_200_OK
+    data = s.UsersOut.model_validate(response.json())
+    assert len(data.items) > 0
+
+    # Test public no results
+    query_data = s.UsersIn(query="Тест")
+    response = client.get(f"/api/users?query={query_data.query}")
+    assert response.status_code == status.HTTP_200_OK
+    data = s.UsersOut.model_validate(response.json())
+    assert len(data.items) == 0
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
@@ -362,3 +383,22 @@ def test_update_favorite_experts(client: TestClient, auth_header: dict[str, str]
 
     # reset user dependency
     app.dependency_overrides[get_current_user] = get_current_user
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_preferred_language_update(client: TestClient, auth_header: dict[str, str], db: Session):
+    CURRENT_USER = 1
+    mock_current_user = db.scalar(sa.select(m.User).where(m.User.id == CURRENT_USER))
+    assert mock_current_user
+
+    current_user_preferred_language = mock_current_user.preferred_language
+    response = client.put(
+        "/api/users/language", headers=auth_header, json={"preferred_language": current_user_preferred_language}
+    )
+    assert response.status_code == status.HTTP_409_CONFLICT
+
+    response = client.put("/api/users/language", headers=auth_header, json={"preferred_language": s.Language.EN.value})
+    assert response.status_code == status.HTTP_200_OK
+
+    response = client.put("/api/users/language", headers=auth_header, json={"preferred_language": "fr"})
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY

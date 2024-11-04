@@ -613,9 +613,9 @@ def cancel_job(
     ):
         job.status = s.JobStatus.CANCELED.value
         job.canceled_by = current_user.id
+        db.commit()
 
         log(log.INFO, "Owner [%s] canceled job [%s]", current_user.id, job_uuid)
-        db.commit()
         return job
 
     # Worker request to cancel job with status IN_PROGRESS or APPROVED
@@ -626,9 +626,9 @@ def cancel_job(
         and not job.cancel_request_by
     ):
         job.cancel_request_by = current_user.id
+        db.commit()
 
         log(log.INFO, "Worker [%s] requested to cancel job [%s]", current_user.id, job_uuid)
-        db.commit()
         # TODO: add notification
         return job
 
@@ -641,6 +641,7 @@ def cancel_job(
     ):
         job.canceled_by = current_user.id
         job.status = s.JobStatus.CANCELED.value
+        db.commit()
 
         log(log.INFO, "Owner [%s] approved cancel request for job [%s]", current_user.id, job_uuid)
         # TODO: add notification
@@ -654,6 +655,7 @@ def cancel_job(
         and job.cancel_request_by == job.worker_id
     ):
         job.cancel_request_by = None
+        db.commit()
 
         log(log.INFO, "Owner [%s] discarded cancel request for job [%s]", current_user.id, job_uuid)
         # TODO: add notification
@@ -669,9 +671,9 @@ def cancel_job(
         and not job.cancel_request_by
     ):
         job.cancel_request_by = current_user.id
+        db.commit()
 
         log(log.INFO, "Owner [%s] requested to cancel job [%s]", current_user.id, job_uuid)
-        db.commit()
         # TODO: add notification
         return job
 
@@ -684,6 +686,7 @@ def cancel_job(
     ):
         job.canceled_by = current_user.id
         job.status = s.JobStatus.CANCELED.value
+        db.commit()
 
         log(log.INFO, "Worker [%s] approved cancel request for job [%s]", current_user.id, job_uuid)
         # TODO: add notification
@@ -697,6 +700,7 @@ def cancel_job(
         and job.cancel_request_by == job.owner_id
     ):
         job.cancel_request_by = None
+        db.commit()
 
         log(log.INFO, "Worker [%s] discarded cancel request for job [%s]", current_user.id, job_uuid)
         # TODO: add notification
