@@ -1,15 +1,17 @@
-from datetime import datetime
-from typing import TYPE_CHECKING, Self
 from uuid import uuid4
+from datetime import datetime, UTC
+from typing import TYPE_CHECKING, Self
 
 import sqlalchemy as sa
 from sqlalchemy import orm
+
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.database import db
 from app.logger import log
 from app.schema.auth import AuthType
 from app.schema.user import User as u
+import app.schema as s
 from config import config
 
 from .rate import Rate
@@ -28,6 +30,9 @@ if TYPE_CHECKING:
     from .job import Job
     from .device import Device
     from .file import File
+    from .user_notification_statuses_job import UserNotificationStatusesJob
+    from .user_notification_statuses_application import UserNotificationStatusesApplication
+    from .user_notification_types_application import UserNotificationTypesApplication
 
 
 class User(db.Model, ModelMixin):
@@ -69,7 +74,10 @@ class User(db.Model, ModelMixin):
     auth_accounts: orm.Mapped[list["AuthAccount"]] = orm.relationship("AuthAccount", backref="user")
 
     password_hash: orm.Mapped[str | None] = orm.mapped_column(sa.String(256))  # fill in registration form
-    created_at: orm.Mapped[datetime] = orm.mapped_column(default=datetime.utcnow)
+    created_at: orm.Mapped[datetime] = orm.mapped_column(
+        sa.DateTime,
+        default=datetime.now(UTC),
+    )
 
     updated_at: orm.Mapped[datetime] = orm.mapped_column(default=sa.func.now(), onupdate=sa.func.now())
 
@@ -96,6 +104,53 @@ class User(db.Model, ModelMixin):
         secondaryjoin=id == favorite_experts.c.expert_id,
         backref="expert_of",
     )
+
+    # notification settings
+    notification_change_status_job_flag: orm.Mapped[bool] = orm.mapped_column(
+        default=True,
+        server_default="true",
+    )
+    notification_change_statuses_job: orm.Mapped[list["UserNotificationStatusesJob"]] = orm.relationship(
+        "UserNotificationStatusesJob",
+        backref="user",
+    )
+
+    notification_change_status_application_flag: orm.Mapped[bool] = orm.mapped_column(
+        default=True,
+        server_default="true",
+    )
+    notification_change_statuses_application: orm.Mapped[
+        list["UserNotificationStatusesApplication"]
+    ] = orm.relationship(
+        "UserNotificationStatusesApplication",
+        backref="user",
+    )
+
+    notification_change_type_application_flag: orm.Mapped[bool] = orm.mapped_column(
+        default=True,
+        server_default="true",
+    )
+    notification_change_types_application: orm.Mapped[list["UserNotificationTypesApplication"]] = orm.relationship(
+        "UserNotificationTypesApplication",
+        backref="user",
+    )
+
+    @property
+    def notification_settings(self):
+        return s.UserNotificationSettings(
+            notification_change_status_job_flag=self.notification_change_status_job_flag,
+            notification_change_statuses_job=[
+                status.name_ua for status in self.notification_change_statuses_job if status.is_active
+            ],
+            notification_change_status_application_flag=self.notification_change_status_application_flag,
+            notification_change_statuses_application=[
+                status.name_ua for status in self.notification_change_statuses_application if status.is_active
+            ],
+            notification_change_type_application_flag=self.notification_change_type_application_flag,
+            notification_change_types_application=[
+                status.name_ua for status in self.notification_change_types_application if status.is_active
+            ],
+        )
 
     @property
     def avatar_url(self):
