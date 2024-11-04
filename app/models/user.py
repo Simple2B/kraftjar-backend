@@ -11,7 +11,7 @@ from app.database import db
 from app.logger import log
 from app.schema.auth import AuthType
 from app.schema.user import User as u
-import app.schema as s
+from app import schema as s
 from config import config
 
 from .rate import Rate
@@ -97,6 +97,10 @@ class User(db.Model, ModelMixin):
 
     devices: orm.Mapped[list["Device"]] = orm.relationship()
 
+    preferred_language: orm.Mapped[str] = orm.mapped_column(
+        sa.String(2), default=s.Language.UA.value, server_default=s.Language.UA.value
+    )
+
     favorite_experts: orm.Mapped[list["User"]] = orm.relationship(
         "User",
         secondary=favorite_experts,
@@ -176,6 +180,12 @@ class User(db.Model, ModelMixin):
     @property
     def owned_rates_count(self) -> int:
         return len(self.rates_as_receiver)
+
+    @property
+    def receiver_average_rate(self) -> float:
+        if self.owned_rates_count == 0:
+            return 0
+        return sum([rate.rate for rate in self.rates_as_receiver]) / self.owned_rates_count
 
     @property
     def active_devices(self):

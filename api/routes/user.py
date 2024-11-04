@@ -52,21 +52,30 @@ def get_users(
     selected_locations: Annotated[list[str] | None, Query()] = None,
     order_by: s.UsersOrderBy = s.UsersOrderBy.AVERAGE_RATE,
     ascending: bool = True,
-    current_user: m.User = Depends(get_current_user),
+    current_user_uuid: str = Query(None),
     db: Session = Depends(get_db),
 ):
     """Get users by query params"""
 
-    db_users = sa.select(m.User).where(m.User.is_deleted.is_(False), m.User.id != current_user.id)
+    if current_user_uuid:
+        current_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.uuid == current_user_uuid))
 
-    # TODO: All Ukraine select
-    if selected_locations or current_user.locations:
-        db_users = c.filter_users_by_locations(selected_locations, db, current_user, db_users)
+        if not current_user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-    users = c.filter_and_order_users(query, lang, db, current_user, db_users, order_by)
+        db_users = sa.select(m.User).where(m.User.is_deleted.is_(False), m.User.id != current_user.id)
+
+        if selected_locations or current_user.locations:
+            db_users = c.filter_users_by_locations(selected_locations, db, current_user.locations, db_users)
+
+        users = c.filter_and_order_users(query, lang, db, current_user.locations, db_users, order_by)
+    else:
+        # For website
+        db_users = sa.select(m.User).where(m.User.is_deleted.is_(False))
+        users = c.filter_and_order_users(query, lang, db, None, db_users, order_by)
 
     if not users:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Users not found")
+        return s.UsersOut(items=[])
 
     if not ascending:
         users = users[::-1]
@@ -96,7 +105,6 @@ def search_users(
     responses={
         status.HTTP_404_NOT_FOUND: {"description": "User not found"},
     },
-    dependencies=[Depends(get_current_user)],
 )
 def get_user_profile(
     user_uuid: str,
@@ -564,7 +572,6 @@ def upload_user_avatar(
         avatar_url=current_user.avatar.url,
     )
 
-
 @user_router.patch(
     "/notification-settings",
     status_code=status.HTTP_200_OK,
@@ -619,3 +626,44 @@ def update_notification_settings(
     log(log.INFO, "User [%s] successfully updated notification settings", current_user.id)
 
     return c.get_user_profile(current_user.uuid, s.Language.UA, db)
+
+@user_router.put(
+    "/language",
+    status_code=status.HTTP_200_OK,
+    response_model=s.UserPut,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "User not found"},
+    },
+)
+def update_language(
+    user_data: s.UserPut,
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Update user preferred language"""
+
+    try:
+        preferred_language = Language(user_data.preferred_language)
+    except ValueError:
+        log(log.ERROR, "Invalid language [%s] for user [%s]", user_data.preferred_language, current_user.fullname)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid preferred language")
+
+    if preferred_language.value == current_user.preferred_language:
+        log(log.ERROR, "Language is already assigned to a user [%s]", current_user.fullname)
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Language is already assigned to a user")
+
+    current_user.preferred_language = preferred_language.value
+
+    db.commit()
+    log(log.INFO, "User [%s] successfully updated preferred language", current_user.fullname)
+
+    return s.UserPut(
+        fullname=current_user.fullname,
+        email=current_user.basic_auth_account.email,
+        description=current_user.description,
+        locations=[loc.uuid for loc in current_user.locations],
+        services=[s.uuid for s in current_user.services],
+        avatar_url=current_user.avatar_url,
+        preferred_language=preferred_language,
+    )
+
