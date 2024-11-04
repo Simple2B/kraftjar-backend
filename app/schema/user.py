@@ -147,6 +147,19 @@ class UserFavoriteExpert(BaseModel):
     avatar_url: str | None = None
 
 
+class UserNotificationSettings(BaseModel):
+    notification_change_status_job_flag: bool
+    notification_change_statuses_job: list[str]
+    notification_change_status_application_flag: bool
+    notification_change_statuses_application: list[str]
+    notification_change_type_application_flag: bool
+    notification_change_types_application: list[str]
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
 class UserProfileOut(User):
     auth_accounts: list[AuthAccountOut] = []
     owned_rates_count: int
@@ -159,6 +172,8 @@ class UserProfileOut(User):
     favorite_experts: list[UserFavoriteExpert] = []
     created_at: datetime
     avatar_url: str | None = None
+
+    notification_settings: UserNotificationSettings
 
     __hash__ = object.__hash__
 
