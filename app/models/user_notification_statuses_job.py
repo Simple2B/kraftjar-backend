@@ -1,4 +1,3 @@
-from operator import is_
 from uuid import uuid4
 from datetime import datetime, UTC
 
