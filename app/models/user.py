@@ -11,7 +11,7 @@ from app.database import db
 from app.logger import log
 from app.schema.auth import AuthType
 from app.schema.user import User as u
-import app.schema as s
+from app import schema as s
 from config import config
 
 from .rate import Rate
