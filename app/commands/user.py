@@ -8,6 +8,7 @@ from googleapiclient.discovery import Resource, build
 from app import models as m
 from app import schema as s
 from app.database import db
+import api.controllers as c
 from app.logger import log
 from config import BASE_DIR, config
 
@@ -80,6 +81,8 @@ def write_users_in_db(users: list[s.UserFile], with_print: bool = True):
                 assert service, f"Service with id [{service_id}] not found"
                 new_user.services.append(service)
             session.add(new_user)
+            session.flush()
+            c.create_user_notification_settings(new_user, session)
             if with_print:
                 log(log.INFO, f"Created user {user.fullname} ======> {user.phone}")
 
