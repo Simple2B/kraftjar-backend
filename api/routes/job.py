@@ -259,7 +259,10 @@ def create_job(
 
     log(log.INFO, "Job [%s] was created", new_job.id)
 
-    background_tasks.add_task(c.send_created_job_notification, db, new_job)
+    if current_user.notification_change_status_job_flag and s.JobStatus.PENDING.value in [
+        status_job.name_ua for status_job in current_user.notification_change_statuses_job
+    ]:
+        background_tasks.add_task(c.send_created_job_notification, db, new_job)
 
     return s.JobOut(
         **job_out.model_dump(),
@@ -457,6 +460,8 @@ def put_job_status(
         log(log.ERROR, "[put_job_status] Job [%s] status downgrade to approved is forbidden", job_uuid)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Job status downgrade forbidden")
 
+    notification_job_statuses = [status_job.name_ua for status_job in current_user.notification_change_statuses_job]
+
     if job_data.status == s.JobStatus.PAYMENT_CONFIRMED and job.status == s.JobStatus.COMPLETED.value:
         if current_user.id != job.worker_id:
             log(
@@ -473,7 +478,11 @@ def put_job_status(
         log(log.INFO, "Updated job [%s] status to PAYMENT_CONFIRMED", job_uuid)
 
         db.commit()
-        background_tasks.add_task(c.send_job_payment_confirmed_notification, job)
+        if (
+            current_user.notification_change_status_job_flag
+            and s.JobStatus.PAYMENT_CONFIRMED.value in notification_job_statuses
+        ):
+            background_tasks.add_task(c.send_job_payment_confirmed_notification, job)
         return job
 
     if job_data.status == s.JobStatus.IN_PROGRESS and job.status == s.JobStatus.APPROVED.value:
@@ -491,7 +500,12 @@ def put_job_status(
         job.status = s.JobStatus.IN_PROGRESS.value
         log(log.INFO, "Updated job [%s] status to IN_PROGRESS", job_uuid)
         db.commit()
-        background_tasks.add_task(c.send_job_started_notification, job)
+
+        if (
+            current_user.notification_change_status_job_flag
+            and s.JobStatus.IN_PROGRESS.value in notification_job_statuses
+        ):
+            background_tasks.add_task(c.send_job_started_notification, job)
         return job
 
     if job_data.status == s.JobStatus.ON_CONFIRMATION and job.status == s.JobStatus.IN_PROGRESS.value:
@@ -510,7 +524,11 @@ def put_job_status(
         log(log.INFO, "Updated job [%s] status to ON_CONFIRMATION", job_uuid)
 
         db.commit()
-        background_tasks.add_task(c.send_job_finished_notification, job)
+        if (
+            current_user.notification_change_status_job_flag
+            and s.JobStatus.ON_CONFIRMATION.value in notification_job_statuses
+        ):
+            background_tasks.add_task(c.send_job_finished_notification, job)
         return job
 
     if job_data.status == s.JobStatus.COMPLETED and job.status == s.JobStatus.ON_CONFIRMATION.value:
@@ -529,7 +547,11 @@ def put_job_status(
         log(log.INFO, "Updated job [%s] status to COMPLETED", job_uuid)
 
         db.commit()
-        background_tasks.add_task(c.send_job_confirmed_notification, job)
+        if (
+            current_user.notification_change_status_job_flag
+            and s.JobStatus.COMPLETED.value in notification_job_statuses
+        ):
+            background_tasks.add_task(c.send_job_confirmed_notification, job)
         return job
 
     if job_data.status == s.JobStatus.CANCELED:
@@ -546,6 +568,7 @@ def put_job_status(
 
         job.status = s.JobStatus.CANCELED.value
         log(log.INFO, "Updated job [%s] status to CANCELED", job_uuid)
+        # TODO: add notification depending on the status of the job and the user's notification settings
 
         db.commit()
         return job

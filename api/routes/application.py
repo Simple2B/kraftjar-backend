@@ -86,12 +86,15 @@ def create_application(
     db.commit()
     db.refresh(application)
 
-    background_tasks.add_task(
-        c.send_apply_application_notification,
-        db,
-        job,
-        worker,
-    )
+    if worker.notification_change_status_application_flag and m.ApplicationType.APPLY.value in [
+        status_application.name_ua for status_application in worker.notification_change_statuses_application
+    ]:
+        background_tasks.add_task(
+            c.send_apply_application_notification,
+            db,
+            job,
+            worker,
+        )
 
     log(log.INFO, "Created application [%s] for job [%s]", application.id, job.id)
     return application
@@ -148,7 +151,15 @@ def update_application(
     if data.status == m.ApplicationStatus.ACCEPTED:
         job_aplications: Sequence[m.Application] = c.reject_other_not_accepted_applications(db, application)
 
-        if job_aplications:
+        if (
+            job_aplications
+            and current_user.notification_change_status_application_flag
+            and m.ApplicationStatus.REJECTED.value
+            in [
+                status_application.name_ua
+                for status_application in current_user.notification_change_statuses_application
+            ]
+        ):
             background_tasks.add_task(
                 c.send_rejected_application_notification,
                 db,
@@ -159,23 +170,37 @@ def update_application(
         job.status = s.JobStatus.APPROVED.value
         job.worker_id = application.worker_id
         log(log.INFO, "Updated job [%s] status to APPROVED", application.job_id)
-        background_tasks.add_task(
-            c.send_accepted_application_notification,
-            db,
-            job,
-        )
+
+        if (
+            current_user.notification_change_type_application_flag
+            and m.ApplicationType.INVITE.value
+            in [status_job.name_ua for status_job in current_user.notification_change_types_application]
+        ) or (
+            current_user.notification_change_status_job_flag
+            and s.JobStatus.APPROVED.value
+            in [status_job.name_ua for status_job in current_user.notification_change_statuses_job]
+        ):
+            background_tasks.add_task(
+                c.send_accepted_application_notification,
+                db,
+                job,
+            )
 
     if data.status == m.ApplicationStatus.REJECTED:
         application.status = m.ApplicationStatus.REJECTED
         db.commit()
         db.refresh(application)
         log(log.INFO, "Successfully rejected application [%s]", application_uuid)
-        background_tasks.add_task(
-            c.send_rejected_application_notification,
-            db,
-            job,
-            [application],
-        )
+
+        if current_user.notification_change_status_application_flag and m.ApplicationStatus.REJECTED.value in [
+            status_application.name_ua for status_application in current_user.notification_change_statuses_application
+        ]:
+            background_tasks.add_task(
+                c.send_rejected_application_notification,
+                db,
+                job,
+                [application],
+            )
 
     db.commit()
     db.refresh(job)

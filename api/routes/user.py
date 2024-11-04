@@ -563,3 +563,59 @@ def upload_user_avatar(
         services=[s.uuid for s in current_user.services],
         avatar_url=current_user.avatar.url,
     )
+
+
+@user_router.patch(
+    "/notification-settings",
+    status_code=status.HTTP_200_OK,
+    response_model=s.UserProfileOut,
+)
+def update_notification_settings(
+    notification_settings: s.UserNotificationSettings,
+    db: Session = Depends(get_db),
+    current_user: m.User = Depends(get_current_user),
+):
+    """Update notification settings"""
+
+    current_user.notification_change_status_job_flag = notification_settings.notification_change_status_job_flag
+
+    if notification_settings.notification_change_status_job_flag:
+        for status_job in current_user.notification_change_statuses_job:
+            if status_job.name_ua not in notification_settings.notification_change_statuses_job:
+                status_job.is_active = False
+                log(log.INFO, "Notification status job [%s] is inactive", status_job.name_ua)
+            else:
+                status_job.is_active = True
+                log(log.INFO, "Notification status job [%s] is active", status_job.name_ua)
+
+    current_user.notification_change_status_application_flag = (
+        notification_settings.notification_change_status_application_flag
+    )
+
+    if notification_settings.notification_change_status_application_flag:
+        for status_application in current_user.notification_change_statuses_application:
+            if status_application.name_ua not in notification_settings.notification_change_statuses_application:
+                status_application.is_active = False
+                log(log.INFO, "Notification status application [%s] is inactive", status_application.name_ua)
+            else:
+                status_application.is_active = True
+                log(log.INFO, "Notification status application [%s] is active", status_application.name_ua)
+
+    current_user.notification_change_type_application_flag = (
+        notification_settings.notification_change_type_application_flag
+    )
+
+    if notification_settings.notification_change_type_application_flag:
+        for type_application in current_user.notification_change_types_application:
+            if type_application.name_ua not in notification_settings.notification_change_types_application:
+                type_application.is_active = False
+                log(log.INFO, "Notification type application [%s] is inactive", type_application.name_ua)
+            else:
+                type_application.is_active = True
+                log(log.INFO, "Notification type application [%s] is active", type_application.name_ua)
+
+    db.commit()
+    db.refresh(current_user)
+    log(log.INFO, "User [%s] successfully updated notification settings", current_user.id)
+
+    return c.get_user_profile(current_user.uuid, s.Language.UA, db)
