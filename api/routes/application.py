@@ -80,18 +80,30 @@ def create_application(
         type=data.type,
     )
 
+    if data.type == m.ApplicationType.INVITE:
+        job.worker_id = worker.id
+
     db.add(application)
     job.applications.append(application)
 
     db.commit()
     db.refresh(application)
 
-    background_tasks.add_task(
-        c.send_apply_application_notification,
-        db,
-        job,
-        worker,
-    )
+    if data.type == m.ApplicationType.APPLY:
+        background_tasks.add_task(
+            c.send_apply_application_notification,
+            db,
+            job,
+            worker,
+        )
+    else:
+        background_tasks.add_task(
+            c.send_invite_application_notification,
+            db,
+            job,
+            current_user,
+            worker,
+        )
 
     log(log.INFO, "Created application [%s] for job [%s]", application.id, job.id)
     return application
@@ -157,7 +169,10 @@ def update_application(
             )
 
         job.status = s.JobStatus.APPROVED.value
-        job.worker_id = application.worker_id
+
+        if application.type == m.ApplicationType.APPLY:
+            job.worker_id = application.worker_id
+
         log(log.INFO, "Updated job [%s] status to APPROVED", application.job_id)
         background_tasks.add_task(
             c.send_accepted_application_notification,
@@ -167,6 +182,10 @@ def update_application(
 
     if data.status == m.ApplicationStatus.REJECTED:
         application.status = m.ApplicationStatus.REJECTED
+
+        if application.type == m.ApplicationType.INVITE:
+            job.worker_id = None
+
         db.commit()
         db.refresh(application)
         log(log.INFO, "Successfully rejected application [%s]", application_uuid)

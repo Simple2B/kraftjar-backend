@@ -7,6 +7,7 @@ from fastapi.testclient import TestClient
 from app import models as m, schema as s
 
 from api.controllers.push_notification import (
+    create_invite_application_notification,
     create_job_confirmed_notification,
     create_job_finished_notification,
     create_job_started_notification,
@@ -147,6 +148,40 @@ def test_create_apply_application_notification(
     )
     assert notification.n_type == s.PushNotificationType.application_created.value
     assert notification.sent_to  # owner
+    assert notification.data["job_uuid"] == str(job.uuid)
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_create_invite_application_notification(
+    db: Session,
+):
+    job = db.scalar(
+        sa.select(m.Job).where(
+            sa.and_(m.Job.worker_id.is_(None), m.Job.status == s.JobStatus.PENDING.value),
+            m.Job.owner_id == 1,
+        )
+    )
+    assert job
+
+    worker = db.scalar(sa.select(m.User).where(m.User.id == 2))
+    assert worker
+
+    device = m.Device(
+        push_token=f"test_token_user_{job.owner.id}",
+        device_id=f"test_device_user_{job.owner.id}",
+        user=worker,
+        platform=s.DevicePlatform.ANDROID.value,
+    )
+    worker.devices.append(device)
+
+    notification = create_invite_application_notification(
+        db,
+        job,
+        job.owner,
+        worker,
+    )
+    assert notification.n_type == s.PushNotificationType.job_invite_created.value
+    assert notification.sent_to  # worker
     assert notification.data["job_uuid"] == str(job.uuid)
 
 
