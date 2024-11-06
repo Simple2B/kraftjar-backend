@@ -392,3 +392,36 @@ def send_job_payment_confirmed_notification(
 
 def notification_is_read_by_user(notification: m.PushNotification, user: m.User) -> bool:
     return user in notification.read_by
+
+
+# cancel job
+def create_job_cancel_notification(
+    job: m.Job,
+    user_to: m.User,
+    user_from: m.User,
+) -> m.PushNotification:
+    name = user_from.fullname if user_from.fullname else f"{user_from.first_name} {user_from.last_name}"
+    notification = m.PushNotification(
+        title="Job accepted",
+        content=f"{name} canceled job '{job.title}'",
+        n_type=s.PushNotificationType.job_confirmed.value,
+        created_by_id=user_from.id,
+        meta_data="",
+        job=job,
+    )
+
+    notification.sent_to.extend(user_to.active_devices)
+
+    return notification
+
+
+def send_job_cancel_notification(
+    job: m.Job,
+    user_to: m.User,
+    user_from: m.User,
+) -> None:
+    pass
+    notification = create_job_cancel_notification(job, user_to, user_from)
+
+    if user_from.is_canceled_job_status:
+        send_push_notification(notification)
