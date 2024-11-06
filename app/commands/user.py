@@ -8,7 +8,6 @@ from googleapiclient.discovery import Resource, build
 from app import models as m
 from app import schema as s
 from app.database import db
-import api.controllers as c
 from app.logger import log
 from config import BASE_DIR, config
 

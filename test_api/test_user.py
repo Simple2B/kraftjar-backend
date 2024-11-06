@@ -25,6 +25,7 @@ def test_current_user_profile(db: Session, client: TestClient, auth_header: dict
         is_approved_job_status=True,
         is_in_progress_job_status=True,
         is_on_confirmation_job_status=False,
+        is_payment_confirmed_job_status=True,
         is_completed_job_status=True,
         is_canceled_job_status=False,
         # =================================

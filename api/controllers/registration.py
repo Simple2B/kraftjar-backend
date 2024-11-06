@@ -10,7 +10,6 @@ from mypy_boto3_sns import SNSClient
 
 from app import models as m
 from app import schema as s
-import api.controllers as c
 from config import config
 from app.logger import log
 
