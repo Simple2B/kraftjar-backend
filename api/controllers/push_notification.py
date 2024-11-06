@@ -420,7 +420,6 @@ def send_job_cancel_notification(
     user_to: m.User,
     user_from: m.User,
 ) -> None:
-    pass
     notification = create_job_cancel_notification(job, user_to, user_from)
 
     if user_from.is_canceled_job_status:
