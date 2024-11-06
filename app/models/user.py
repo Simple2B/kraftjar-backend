@@ -1,3 +1,4 @@
+from operator import is_
 from uuid import uuid4
 from datetime import datetime, UTC
 from typing import TYPE_CHECKING, Self
@@ -30,9 +31,6 @@ if TYPE_CHECKING:
     from .job import Job
     from .device import Device
     from .file import File
-    from .user_notification_statuses_job import UserNotificationStatusesJob
-    from .user_notification_statuses_application import UserNotificationStatusesApplication
-    from .user_notification_types_application import UserNotificationTypesApplication
 
 
 class User(db.Model, ModelMixin):
@@ -109,51 +107,100 @@ class User(db.Model, ModelMixin):
         backref="expert_of",
     )
 
+    # PENDING = "pending"
+    # APPROVED = "approved"
+    # IN_PROGRESS = "in_progress"
+    # ON_CONFIRMATION = "on_confirmation"
+    # COMPLETED = "completed"
+    # PAYMENT_CONFIRMED = "payment_confirmed"
+    # CANCELED = "canceled"
+
     # notification settings
-    notification_change_status_job_flag: orm.Mapped[bool] = orm.mapped_column(
-        default=True,
-        server_default="true",
-    )
-    notification_change_statuses_job: orm.Mapped[list["UserNotificationStatusesJob"]] = orm.relationship(
-        "UserNotificationStatusesJob",
-        backref="user",
-    )
 
-    notification_change_status_application_flag: orm.Mapped[bool] = orm.mapped_column(
-        default=True,
-        server_default="true",
-    )
-    notification_change_statuses_application: orm.Mapped[
-        list["UserNotificationStatusesApplication"]
-    ] = orm.relationship(
-        "UserNotificationStatusesApplication",
-        backref="user",
-    )
+    # job statuses
+    is_pending_job_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_approved_job_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_in_progress_job_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_on_confirmation_job_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_payment_confirmed_job_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_completed_job_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_canceled_job_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    # =================================
 
-    notification_change_type_application_flag: orm.Mapped[bool] = orm.mapped_column(
-        default=True,
-        server_default="true",
-    )
-    notification_change_types_application: orm.Mapped[list["UserNotificationTypesApplication"]] = orm.relationship(
-        "UserNotificationTypesApplication",
-        backref="user",
-    )
+    # application statuses
+    is_pending_aplication_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_accepted_aplication_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_rejected_aplication_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    # =================================
+
+    # application types
+    is_invite_application_type: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_apply_application_type: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    # =================================
+
+    @property
+    def is_job_statuses_notification_settings(self):
+        return (
+            self.is_pending_job_status
+            and self.is_approved_job_status
+            and self.is_in_progress_job_status
+            and self.is_on_confirmation_job_status
+            and self.is_payment_confirmed_job_status
+            and self.is_completed_job_status
+            and self.is_canceled_job_status
+        )
+
+    @property
+    def is_application_statuses_notification_settings(self):
+        return (
+            self.is_pending_aplication_status
+            and self.is_accepted_aplication_status
+            and self.is_rejected_aplication_status
+        )
+
+    @property
+    def is_application_types_notification_settings(self):
+        return self.is_invite_application_type and self.is_apply_application_type
+
+    @property
+    def job_statuses_notification_settings_flags(self) -> s.UserJobStatusesNotificationSettings:
+        return s.UserJobStatusesNotificationSettings(
+            is_pending_job_status=self.is_pending_job_status,
+            is_approved_job_status=self.is_approved_job_status,
+            is_in_progress_job_status=self.is_in_progress_job_status,
+            is_on_confirmation_job_status=self.is_on_confirmation_job_status,
+            is_payment_confirmed_job_status=self.is_payment_confirmed_job_status,
+            is_completed_job_status=self.is_completed_job_status,
+            is_canceled_job_status=self.is_canceled_job_status,
+        )
+
+    @property
+    def application_statuse_notifications_settings_flags(self) -> s.UserApplicationStatusesNotificationSettings:
+        return s.UserApplicationStatusesNotificationSettings(
+            is_pending_aplication_status=self.is_pending_aplication_status,
+            is_accepted_aplication_status=self.is_accepted_aplication_status,
+            is_rejected_aplication_status=self.is_rejected_aplication_status,
+        )
+
+    @property
+    def application_types_notification_flags(self) -> s.UserApplicationTypesNotificationSettings:
+        return s.UserApplicationTypesNotificationSettings(
+            is_invite_application_type=self.is_apply_application_type,
+            is_apply_application_type=self.is_apply_application_type,
+        )
 
     @property
     def notification_settings(self):
-        return s.UserNotificationSettings(
-            notification_change_status_job_flag=self.notification_change_status_job_flag,
-            notification_change_statuses_job=[
-                status.name_ua for status in self.notification_change_statuses_job if status.is_active
-            ],
-            notification_change_status_application_flag=self.notification_change_status_application_flag,
-            notification_change_statuses_application=[
-                status.name_ua for status in self.notification_change_statuses_application if status.is_active
-            ],
-            notification_change_type_application_flag=self.notification_change_type_application_flag,
-            notification_change_types_application=[
-                status.name_ua for status in self.notification_change_types_application if status.is_active
-            ],
+        return s.UserNotificationSettingsOut(
+            # job statuses
+            is_job_statuses_notification_settings=self.is_job_statuses_notification_settings,
+            job_statuses_notification_settings_flags=self.job_statuses_notification_settings_flags,
+            # application statuses
+            is_application_statuses_notification_settings=self.is_application_statuses_notification_settings,
+            application_statuse_notifications_settings_flags=self.application_statuse_notifications_settings_flags,
+            # application types
+            is_application_types_notification_settings=self.is_application_types_notification_settings,
+            application_types_notification_flags=self.application_types_notification_flags,
         )
 
     @property

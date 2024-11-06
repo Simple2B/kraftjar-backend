@@ -259,10 +259,7 @@ def create_job(
 
     log(log.INFO, "Job [%s] was created", new_job.id)
 
-    if current_user.notification_change_status_job_flag and s.JobStatus.PENDING.value in [
-        status_job.name_ua for status_job in current_user.notification_change_statuses_job
-    ]:
-        background_tasks.add_task(c.send_created_job_notification, db, new_job)
+    background_tasks.add_task(c.send_created_job_notification, db, new_job, current_user)
 
     return s.JobOut(
         **job_out.model_dump(),
@@ -376,14 +373,18 @@ def put_job(
     return job
 
 
-@job_router.post("/search", status_code=status.HTTP_200_OK, response_model=s.JobsSearchOut)
+@job_router.post(
+    "/search",
+    status_code=status.HTTP_200_OK,
+    response_model=s.JobsSearchOut,
+    responses={
+        status.HTTP_409_CONFLICT: {"description": "Selected service not found"},
+    },
+)
 def search_jobs(
     query: s.JobSearchIn,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
-    responses={
-        status.HTTP_409_CONFLICT: {"description": "Selected service not found"},
-    },
 ):
     """Returns filtered list of jobs"""
     return c.search_jobs(query, current_user, db)
@@ -460,8 +461,6 @@ def put_job_status(
         log(log.ERROR, "[put_job_status] Job [%s] status downgrade to approved is forbidden", job_uuid)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Job status downgrade forbidden")
 
-    notification_job_statuses = [status_job.name_ua for status_job in current_user.notification_change_statuses_job]
-
     if job_data.status == s.JobStatus.PAYMENT_CONFIRMED and job.status == s.JobStatus.COMPLETED.value:
         if current_user.id != job.worker_id:
             log(
@@ -478,11 +477,7 @@ def put_job_status(
         log(log.INFO, "Updated job [%s] status to PAYMENT_CONFIRMED", job_uuid)
 
         db.commit()
-        if (
-            current_user.notification_change_status_job_flag
-            and s.JobStatus.PAYMENT_CONFIRMED.value in notification_job_statuses
-        ):
-            background_tasks.add_task(c.send_job_payment_confirmed_notification, job)
+        background_tasks.add_task(c.send_job_payment_confirmed_notification, job, current_user)
         return job
 
     if job_data.status == s.JobStatus.IN_PROGRESS and job.status == s.JobStatus.APPROVED.value:
@@ -501,11 +496,7 @@ def put_job_status(
         log(log.INFO, "Updated job [%s] status to IN_PROGRESS", job_uuid)
         db.commit()
 
-        if (
-            current_user.notification_change_status_job_flag
-            and s.JobStatus.IN_PROGRESS.value in notification_job_statuses
-        ):
-            background_tasks.add_task(c.send_job_started_notification, job)
+        background_tasks.add_task(c.send_job_started_notification, job, current_user)
         return job
 
     if job_data.status == s.JobStatus.ON_CONFIRMATION and job.status == s.JobStatus.IN_PROGRESS.value:
@@ -524,11 +515,8 @@ def put_job_status(
         log(log.INFO, "Updated job [%s] status to ON_CONFIRMATION", job_uuid)
 
         db.commit()
-        if (
-            current_user.notification_change_status_job_flag
-            and s.JobStatus.ON_CONFIRMATION.value in notification_job_statuses
-        ):
-            background_tasks.add_task(c.send_job_finished_notification, job)
+
+        background_tasks.add_task(c.send_job_finished_notification, job, current_user)
         return job
 
     if job_data.status == s.JobStatus.COMPLETED and job.status == s.JobStatus.ON_CONFIRMATION.value:
@@ -547,11 +535,8 @@ def put_job_status(
         log(log.INFO, "Updated job [%s] status to COMPLETED", job_uuid)
 
         db.commit()
-        if (
-            current_user.notification_change_status_job_flag
-            and s.JobStatus.COMPLETED.value in notification_job_statuses
-        ):
-            background_tasks.add_task(c.send_job_confirmed_notification, job)
+
+        background_tasks.add_task(c.send_job_confirmed_notification, job, current_user)
         return job
 
     if job_data.status == s.JobStatus.CANCELED:

@@ -49,4 +49,3 @@ from .push_notification import (
     send_job_payment_confirmed_notification,
     notification_is_read_by_user,
 )
-from .push_notification_settings import create_user_notification_settings

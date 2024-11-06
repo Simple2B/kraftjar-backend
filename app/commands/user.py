@@ -82,7 +82,6 @@ def write_users_in_db(users: list[s.UserFile], with_print: bool = True):
                 new_user.services.append(service)
             session.add(new_user)
             session.flush()
-            c.create_user_notification_settings(new_user, session)
             if with_print:
                 log(log.INFO, f"Created user {user.fullname} ======> {user.phone}")
 

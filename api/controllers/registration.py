@@ -69,8 +69,6 @@ def register_user(
         db.commit()
         db.refresh(user)
 
-        c.create_user_notification_settings(user, db)
-
         log(log.INFO, "User [%s] was created", user.fullname)
 
         send_sms_to_user(user, sns_client, db)
