@@ -102,9 +102,11 @@ def create_new_job_notification(db: DbSession, job: m.Job) -> m.PushNotification
     return notification
 
 
-def send_created_job_notification(db: DbSession, job: m.Job) -> None:
+def send_created_job_notification(db: DbSession, job: m.Job, user: m.User) -> None:
     notification = create_new_job_notification(db, job)
-    send_push_notification(notification)
+
+    if user.is_pending_job_status:
+        send_push_notification(notification)
 
 
 # apply application
@@ -143,7 +145,8 @@ def send_apply_application_notification(
         job,
         worker,
     )
-    send_push_notification(notification)
+    if worker.is_apply_application_type:
+        send_push_notification(notification)
 
 
 # accepted application
@@ -171,12 +174,15 @@ def create_accepted_application_notification(
 def send_accepted_application_notification(
     db: DbSession,
     job: m.Job,
+    user: m.User,
 ) -> None:
     notification = create_accepted_application_notification(
         db,
         job,
     )
-    send_push_notification(notification)
+
+    if user.is_invite_application_type and user.is_approved_job_status:
+        send_push_notification(notification)
 
 
 # rejected application
@@ -210,13 +216,15 @@ def send_rejected_application_notification(
     db: DbSession,
     job: m.Job,
     rejected_applications: Sequence[m.Application],
+    user: m.User,
 ) -> None:
     notification = create_rejected_application_notification(
         db,
         job,
         rejected_applications,
     )
-    send_push_notification(notification)
+    if user.is_rejected_aplication_status:
+        send_push_notification(notification)
 
 
 # job started
@@ -241,10 +249,12 @@ def create_job_started_notification(
 
 def send_job_started_notification(
     job: m.Job,
+    user: m.User,
 ) -> None:
     pass
     notification = create_job_started_notification(job)
-    send_push_notification(notification)
+    if user.is_in_progress_job_status:
+        send_push_notification(notification)
 
 
 # job finished
@@ -269,10 +279,12 @@ def create_job_finished_notification(
 
 def send_job_finished_notification(
     job: m.Job,
+    user: m.User,
 ) -> None:
     pass
     notification = create_job_finished_notification(job)
-    send_push_notification(notification)
+    if user.is_on_confirmation_job_status:
+        send_push_notification(notification)
 
 
 # job confirmed
@@ -297,10 +309,13 @@ def create_job_confirmed_notification(
 
 def send_job_confirmed_notification(
     job: m.Job,
+    user: m.User,
 ) -> None:
     pass
     notification = create_job_confirmed_notification(job)
-    send_push_notification(notification)
+
+    if user.is_completed_job_status:
+        send_push_notification(notification)
 
 
 # job payment confirmed
@@ -325,10 +340,12 @@ def create_job_payment_confirmed_notification(
 
 def send_job_payment_confirmed_notification(
     job: m.Job,
+    user: m.User,
 ) -> None:
     pass
     notification = create_job_payment_confirmed_notification(job)
-    send_push_notification(notification)
+    if user.is_payment_confirmed_job_status:
+        send_push_notification(notification)
 
 
 def notification_is_read_by_user(notification: m.PushNotification, user: m.User) -> bool:

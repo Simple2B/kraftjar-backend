@@ -255,6 +255,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
         announced_jobs_count=announced_jobs_count if announced_jobs_count else 0,
         favorite_jobs=favorite_jobs,
         favorite_experts=favorite_expert,
+        notification_settings=db_user.notification_settings,
         receiver_average_rate=db_user.receiver_average_rate,
     )
 

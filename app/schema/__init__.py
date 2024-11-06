@@ -80,6 +80,11 @@ from .user import (
     UserShortInfo,
     UserFavoriteExpert,
     UserRateOut,
+    UserNotificationSettingsIn,
+    UserNotificationSettingsOut,
+    UserJobStatusesNotificationSettings,
+    UserApplicationStatusesNotificationSettings,
+    UserApplicationTypesNotificationSettings,
 )
 from .whoami import WhoAmI
 from .rate import RateIn, RateOut, RateOutList, RateUserOutList, RateJobOut, RateUserOut

@@ -1,9 +1,10 @@
-from datetime import datetime
-from typing import TYPE_CHECKING, Self
 from uuid import uuid4
+from datetime import datetime, UTC
+from typing import TYPE_CHECKING, Self
 
 import sqlalchemy as sa
 from sqlalchemy import orm
+
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.database import db
@@ -70,7 +71,10 @@ class User(db.Model, ModelMixin):
     auth_accounts: orm.Mapped[list["AuthAccount"]] = orm.relationship("AuthAccount", backref="user")
 
     password_hash: orm.Mapped[str | None] = orm.mapped_column(sa.String(256))  # fill in registration form
-    created_at: orm.Mapped[datetime] = orm.mapped_column(default=datetime.utcnow)
+    created_at: orm.Mapped[datetime] = orm.mapped_column(
+        sa.DateTime,
+        default=datetime.now(UTC),
+    )
 
     updated_at: orm.Mapped[datetime] = orm.mapped_column(default=sa.func.now(), onupdate=sa.func.now())
 
@@ -101,6 +105,102 @@ class User(db.Model, ModelMixin):
         secondaryjoin=id == favorite_experts.c.expert_id,
         backref="expert_of",
     )
+
+    # PENDING = "pending"
+    # APPROVED = "approved"
+    # IN_PROGRESS = "in_progress"
+    # ON_CONFIRMATION = "on_confirmation"
+    # COMPLETED = "completed"
+    # PAYMENT_CONFIRMED = "payment_confirmed"
+    # CANCELED = "canceled"
+
+    # notification settings
+
+    # job statuses
+    is_pending_job_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_approved_job_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_in_progress_job_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_on_confirmation_job_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_payment_confirmed_job_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_completed_job_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_canceled_job_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    # =================================
+
+    # application statuses
+    is_pending_aplication_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_accepted_aplication_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_rejected_aplication_status: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    # =================================
+
+    # application types
+    is_invite_application_type: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    is_apply_application_type: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
+    # =================================
+
+    @property
+    def is_job_statuses_notification_settings(self):
+        return (
+            self.is_pending_job_status
+            and self.is_approved_job_status
+            and self.is_in_progress_job_status
+            and self.is_on_confirmation_job_status
+            and self.is_payment_confirmed_job_status
+            and self.is_completed_job_status
+            and self.is_canceled_job_status
+        )
+
+    @property
+    def is_application_statuses_notification_settings(self):
+        return (
+            self.is_pending_aplication_status
+            and self.is_accepted_aplication_status
+            and self.is_rejected_aplication_status
+        )
+
+    @property
+    def is_application_types_notification_settings(self):
+        return self.is_invite_application_type and self.is_apply_application_type
+
+    @property
+    def job_statuses_notification_settings_flags(self) -> s.UserJobStatusesNotificationSettings:
+        return s.UserJobStatusesNotificationSettings(
+            is_pending_job_status=self.is_pending_job_status,
+            is_approved_job_status=self.is_approved_job_status,
+            is_in_progress_job_status=self.is_in_progress_job_status,
+            is_on_confirmation_job_status=self.is_on_confirmation_job_status,
+            is_payment_confirmed_job_status=self.is_payment_confirmed_job_status,
+            is_completed_job_status=self.is_completed_job_status,
+            is_canceled_job_status=self.is_canceled_job_status,
+        )
+
+    @property
+    def application_statuse_notifications_settings_flags(self) -> s.UserApplicationStatusesNotificationSettings:
+        return s.UserApplicationStatusesNotificationSettings(
+            is_pending_aplication_status=self.is_pending_aplication_status,
+            is_accepted_aplication_status=self.is_accepted_aplication_status,
+            is_rejected_aplication_status=self.is_rejected_aplication_status,
+        )
+
+    @property
+    def application_types_notification_flags(self) -> s.UserApplicationTypesNotificationSettings:
+        return s.UserApplicationTypesNotificationSettings(
+            is_invite_application_type=self.is_apply_application_type,
+            is_apply_application_type=self.is_apply_application_type,
+        )
+
+    @property
+    def notification_settings(self):
+        return s.UserNotificationSettingsOut(
+            # job statuses
+            is_job_statuses_notification_settings=self.is_job_statuses_notification_settings,
+            job_statuses_notification_settings_flags=self.job_statuses_notification_settings_flags,
+            # application statuses
+            is_application_statuses_notification_settings=self.is_application_statuses_notification_settings,
+            application_statuse_notifications_settings_flags=self.application_statuse_notifications_settings_flags,
+            # application types
+            is_application_types_notification_settings=self.is_application_types_notification_settings,
+            application_types_notification_flags=self.application_types_notification_flags,
+        )
 
     @property
     def avatar_url(self):
