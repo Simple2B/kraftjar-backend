@@ -149,6 +149,48 @@ def send_apply_application_notification(
         send_push_notification(notification)
 
 
+# invite application
+def create_invite_application_notification(
+    db: DbSession,
+    job: m.Job,
+    owner: m.User,
+    worker: m.User,
+) -> m.PushNotification:
+    fullname = owner.fullname if owner.fullname else f"{owner.first_name} {owner.last_name}"
+
+    notification = m.PushNotification(
+        title="New job application",
+        content=f"{fullname} invited you to a job '{job.title}'",
+        n_type=s.PushNotificationType.job_invite_created.value,
+        created_by_id=owner.id,
+        meta_data="",
+        job=job,
+    )
+
+    db.add(notification)
+
+    #  send notification to invited worker
+    notification.sent_to.extend(worker.active_devices)
+    db.commit()
+
+    return notification
+
+
+def send_invite_application_notification(
+    db: DbSession,
+    job: m.Job,
+    owner: m.User,
+    worker: m.User,
+) -> None:
+    notification = create_invite_application_notification(
+        db,
+        job,
+        owner,
+        worker,
+    )
+    send_push_notification(notification)
+
+
 # accepted application
 def create_accepted_application_notification(
     db: DbSession,

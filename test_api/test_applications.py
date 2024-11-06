@@ -143,3 +143,85 @@ def test_applications(
 
     # reset user dependency
     app.dependency_overrides[get_current_user] = get_current_user
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_invite_application(
+    client: TestClient,
+    auth_header: dict[str, str],
+    db: Session,
+):
+    ## Accept invite
+    job: m.Job | None = db.scalar(
+        sa.select(m.Job).where(m.Job.worker_id.is_(None), m.Job.status == s.JobStatus.PENDING.value)
+    )
+    assert job
+
+    # Owner
+    CURRENT_USER_ID = 1
+
+    worker_to_invite = db.scalar(sa.select(m.User).where(m.User.is_deleted.is_(False), m.User.id != CURRENT_USER_ID))
+    assert worker_to_invite
+
+    # Create application
+    data = s.ApplicationIn(type=m.ApplicationType.INVITE, worker_uuid=worker_to_invite.uuid, job_uuid=job.uuid)
+    response = client.post("/api/applications", headers=auth_header, content=data.model_dump_json())
+    assert response.status_code == status.HTTP_201_CREATED
+    application_data = s.ApplicationOut.model_validate(response.json())
+    assert application_data
+
+    # Check applications list
+    assert job.applications[0].type == m.ApplicationType.INVITE
+    assert job.applications[0].worker_id == worker_to_invite.id
+
+    app.dependency_overrides[get_current_user] = lambda: worker_to_invite
+
+    # Accept invite
+    data_put = s.ApplicationPutIn(status=m.ApplicationStatus.ACCEPTED)
+    response = client.put(
+        f"/api/applications/{application_data.uuid}", headers=auth_header, content=data_put.model_dump_json()
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data_out = s.ApplicationPutOut.model_validate(response.json())
+    assert data_out
+    data_app = data_out.application
+    assert data_app.status == m.ApplicationStatus.ACCEPTED
+    assert job.status == s.JobStatus.APPROVED.value
+
+    app.dependency_overrides[get_current_user] = get_current_user
+
+    ## Reject invite
+    job_to_reject: m.Job | None = db.scalar(
+        sa.select(m.Job).where(m.Job.worker_id.is_(None), m.Job.status == s.JobStatus.PENDING.value)
+    )
+    assert job_to_reject
+
+    # Create application
+    data = s.ApplicationIn(
+        type=m.ApplicationType.INVITE, worker_uuid=worker_to_invite.uuid, job_uuid=job_to_reject.uuid
+    )
+    response = client.post("/api/applications", headers=auth_header, content=data.model_dump_json())
+    assert response.status_code == status.HTTP_201_CREATED
+    application_data = s.ApplicationOut.model_validate(response.json())
+    assert application_data
+
+    # Check applications list
+    assert job_to_reject.applications[0].type == m.ApplicationType.INVITE
+    assert job_to_reject.applications[0].worker_id == worker_to_invite.id
+
+    app.dependency_overrides[get_current_user] = lambda: worker_to_invite
+
+    # Reject invite
+    data_put = s.ApplicationPutIn(status=m.ApplicationStatus.REJECTED)
+    response = client.put(
+        f"/api/applications/{application_data.uuid}", headers=auth_header, content=data_put.model_dump_json()
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data_out = s.ApplicationPutOut.model_validate(response.json())
+    assert data_out
+    data_app = data_out.application
+    assert data_app.status == m.ApplicationStatus.REJECTED
+    assert job_to_reject.worker_id is None
+
+    # reset user dependency
+    app.dependency_overrides[get_current_user] = get_current_user
