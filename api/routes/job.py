@@ -553,7 +553,8 @@ def put_job_status(
 
         job.status = s.JobStatus.CANCELED.value
         log(log.INFO, "Updated job [%s] status to CANCELED", job_uuid)
-        # TODO: add notification depending on the status of the job and the user's notification settings
+
+        background_tasks.add_task(c.send_job_cancel_notification, job, job.owner, current_user)
 
         db.commit()
         return job
@@ -601,6 +602,9 @@ def cancel_job(
         db.commit()
 
         log(log.INFO, "Owner [%s] canceled job [%s]", current_user.id, job_uuid)
+
+        background_tasks.add_task(c.send_job_cancel_notification, job, job.owner, current_user)
+
         return job
 
     # Worker request to cancel job with status IN_PROGRESS or APPROVED
@@ -615,6 +619,7 @@ def cancel_job(
 
         log(log.INFO, "Worker [%s] requested to cancel job [%s]", current_user.id, job_uuid)
         # TODO: add notification
+        background_tasks.add_task(c.send_job_cancel_notification, job, job.owner, current_user)
         return job
 
     # Owner approve cancel request

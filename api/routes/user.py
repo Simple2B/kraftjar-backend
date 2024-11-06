@@ -610,6 +610,7 @@ def update_notification_settings(
     current_user.is_approved_job_status = notification_settings.is_approved_job_status
     current_user.is_in_progress_job_status = notification_settings.is_in_progress_job_status
     current_user.is_on_confirmation_job_status = notification_settings.is_on_confirmation_job_status
+    current_user.is_payment_confirmed_job_status = notification_settings.is_payment_confirmed_job_status
     current_user.is_completed_job_status = notification_settings.is_completed_job_status
     current_user.is_canceled_job_status = notification_settings.is_canceled_job_status
 
