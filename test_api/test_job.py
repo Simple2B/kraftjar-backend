@@ -294,6 +294,10 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     data = s.JobsByStatusList.model_validate(response.json())
     assert not data.items
 
+    # Try do delete user account with active jobs
+    user_res = client.delete("/api/users", headers=auth_header)
+    assert user_res.status_code == status.HTTP_409_CONFLICT
+
     # Test archived jobs
     response = client.get(
         "/api/jobs/jobs-by-status/",

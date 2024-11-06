@@ -326,6 +326,26 @@ def delete_user(
         log(log.ERROR, "User [%s] has no auth accounts, at least basic account should be present", current_user.id)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Auth accounts not found")
 
+    active_user_jobs = db.scalar(
+        sa.select(m.Job).where(
+            sa.or_(m.Job.owner_id == current_user.id, m.Job.worker_id == current_user.id),
+            m.Job.is_deleted.is_(False),
+            m.Job.status.in_(
+                [
+                    s.JobStatus.PENDING.value,
+                    s.JobStatus.IN_PROGRESS.value,
+                    s.JobStatus.APPROVED.value,
+                    s.JobStatus.ON_CONFIRMATION.value,
+                    s.JobStatus.COMPLETED.value,
+                ]
+            ),
+        )
+    )
+
+    if active_user_jobs:
+        log(log.ERROR, "User [%s] has active jobs, can't delete account", current_user.id)
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User has active jobs")
+
     deleted_mark = mark_as_deleted()
 
     current_user.is_deleted = True

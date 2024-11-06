@@ -65,6 +65,8 @@ class UserSearchOut(BaseModel):
     locations: list[LocationStrings]
     is_favorite: bool
     receiver_average_rate: float
+    created_at: datetime
+    lang: Language = Language.UA
 
     __hash__ = object.__hash__
 

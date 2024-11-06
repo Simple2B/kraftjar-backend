@@ -73,6 +73,7 @@ class JobApplicationOwner(BaseModel):
     services: list[str]
     owned_rates_count: int
     average_rate: float
+    receiver_average_rate: float
 
     model_config = ConfigDict(
         from_attributes=True,

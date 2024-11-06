@@ -276,6 +276,7 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User, current_
                             owned_rates_count=round(worker.owned_rates_count, 1),
                             average_rate=round(worker.average_rate, 1),
                             avatar_url=worker.avatar_url,
+                            receiver_average_rate=worker.receiver_average_rate,
                         ),
                     )
                 )
