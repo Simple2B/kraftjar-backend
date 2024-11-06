@@ -80,6 +80,7 @@ def write_users_in_db(users: list[s.UserFile], with_print: bool = True):
                 assert service, f"Service with id [{service_id}] not found"
                 new_user.services.append(service)
             session.add(new_user)
+            session.flush()
             if with_print:
                 log(log.INFO, f"Created user {user.fullname} ======> {user.phone}")
 

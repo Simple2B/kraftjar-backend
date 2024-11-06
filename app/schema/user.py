@@ -148,6 +148,81 @@ class UserFavoriteExpert(BaseModel):
     avatar_url: str | None = None
 
 
+class UserNotificationSettingsIn(BaseModel):
+    # job statuses
+    is_pending_job_status: bool
+    is_approved_job_status: bool
+    is_in_progress_job_status: bool
+    is_on_confirmation_job_status: bool
+    is_payment_confirmed_job_status: bool
+    is_completed_job_status: bool
+    is_canceled_job_status: bool
+    # =================================
+
+    # application statuses
+    is_pending_aplication_status: bool
+    is_accepted_aplication_status: bool
+    is_rejected_aplication_status: bool
+    # =================================
+
+    # application types
+    is_invite_application_type: bool
+    is_apply_application_type: bool
+    # =================================
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class UserJobStatusesNotificationSettings(BaseModel):
+    is_pending_job_status: bool
+    is_approved_job_status: bool
+    is_in_progress_job_status: bool
+    is_on_confirmation_job_status: bool
+    is_payment_confirmed_job_status: bool
+    is_completed_job_status: bool
+    is_canceled_job_status: bool
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class UserApplicationStatusesNotificationSettings(BaseModel):
+    is_pending_aplication_status: bool
+    is_accepted_aplication_status: bool
+    is_rejected_aplication_status: bool
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class UserApplicationTypesNotificationSettings(BaseModel):
+    is_invite_application_type: bool
+    is_apply_application_type: bool
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class UserNotificationSettingsOut(BaseModel):
+    is_job_statuses_notification_settings: bool
+    job_statuses_notification_settings_flags: UserJobStatusesNotificationSettings
+
+    is_application_statuses_notification_settings: bool
+    application_statuse_notifications_settings_flags: UserApplicationStatusesNotificationSettings
+
+    is_application_types_notification_settings: bool
+    application_types_notification_flags: UserApplicationTypesNotificationSettings
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
 class UserProfileOut(User):
     auth_accounts: list[AuthAccountOut] = []
     owned_rates_count: int
@@ -162,6 +237,8 @@ class UserProfileOut(User):
     avatar_url: str | None = None
     receiver_average_rate: float
     preferred_language: Language = Language.UA
+
+    notification_settings: UserNotificationSettingsOut
 
     __hash__ = object.__hash__
 

@@ -573,6 +573,42 @@ def upload_user_avatar(
     )
 
 
+@user_router.patch(
+    "/notification-settings",
+    status_code=status.HTTP_200_OK,
+    response_model=s.UserProfileOut,
+)
+def update_notification_settings(
+    notification_settings: s.UserNotificationSettingsIn,
+    db: Session = Depends(get_db),
+    current_user: m.User = Depends(get_current_user),
+):
+    """Update notification settings"""
+
+    # job statuses
+    current_user.is_pending_job_status = notification_settings.is_pending_job_status
+    current_user.is_approved_job_status = notification_settings.is_approved_job_status
+    current_user.is_in_progress_job_status = notification_settings.is_in_progress_job_status
+    current_user.is_on_confirmation_job_status = notification_settings.is_on_confirmation_job_status
+    current_user.is_completed_job_status = notification_settings.is_completed_job_status
+    current_user.is_canceled_job_status = notification_settings.is_canceled_job_status
+
+    # application statuses
+    current_user.is_pending_aplication_status = notification_settings.is_pending_aplication_status
+    current_user.is_accepted_aplication_status = notification_settings.is_accepted_aplication_status
+    current_user.is_rejected_aplication_status = notification_settings.is_rejected_aplication_status
+
+    # application types
+    current_user.is_invite_application_type = notification_settings.is_invite_application_type
+    current_user.is_apply_application_type = notification_settings.is_apply_application_type
+
+    db.commit()
+    db.refresh(current_user)
+    log(log.INFO, "User [%s] successfully updated notification settings", current_user.id)
+
+    return c.get_user_profile(current_user.uuid, s.Language.UA, db)
+
+
 @user_router.put(
     "/language",
     status_code=status.HTTP_200_OK,

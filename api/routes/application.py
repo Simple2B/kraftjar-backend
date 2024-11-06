@@ -160,13 +160,13 @@ def update_application(
     if data.status == m.ApplicationStatus.ACCEPTED:
         job_aplications: Sequence[m.Application] = c.reject_other_not_accepted_applications(db, application)
 
-        if job_aplications:
-            background_tasks.add_task(
-                c.send_rejected_application_notification,
-                db,
-                job,
-                job_aplications,
-            )
+        background_tasks.add_task(
+            c.send_rejected_application_notification,
+            db,
+            job,
+            job_aplications,
+            current_user,
+        )
 
         job.status = s.JobStatus.APPROVED.value
 
@@ -174,10 +174,12 @@ def update_application(
             job.worker_id = application.worker_id
 
         log(log.INFO, "Updated job [%s] status to APPROVED", application.job_id)
+
         background_tasks.add_task(
             c.send_accepted_application_notification,
             db,
             job,
+            current_user,
         )
 
     if data.status == m.ApplicationStatus.REJECTED:
@@ -189,11 +191,13 @@ def update_application(
         db.commit()
         db.refresh(application)
         log(log.INFO, "Successfully rejected application [%s]", application_uuid)
+
         background_tasks.add_task(
             c.send_rejected_application_notification,
             db,
             job,
             [application],
+            current_user,
         )
 
     db.commit()
