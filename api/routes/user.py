@@ -1,5 +1,8 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, Query, UploadFile, status, HTTPException
+
+# from fastapi_pagination.ext.sqlalchemy import paginate
+from fastapi_pagination import Page, paginate
 from mypy_boto3_s3 import S3Client
 from sqlalchemy.orm import Session
 import sqlalchemy as sa
@@ -43,7 +46,7 @@ def get_current_user_profile(
 @user_router.get(
     "/",
     status_code=status.HTTP_200_OK,
-    response_model=s.UsersOut,
+    response_model=Page[s.UserSearchOut],
     responses={status.HTTP_404_NOT_FOUND: {"description": "Users not found"}},
 )
 def get_users(
@@ -75,14 +78,16 @@ def get_users(
         users = c.filter_and_order_users(query, lang, db, None, db_users, order_by)
 
     if not users:
-        return s.UsersOut(items=[])
+        return paginate([])
 
     if not ascending:
         users = users[::-1]
 
     users_out = create_out_search_users(users, lang, db)
 
-    return s.UsersOut(items=users_out)
+    return paginate(users_out)
+
+    # return s.UsersOut(items=users_out)
 
 
 @user_router.post("/search", status_code=status.HTTP_200_OK, response_model=s.UsersSearchOut)

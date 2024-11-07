@@ -140,6 +140,22 @@ def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, st
     data = s.UsersOut.model_validate(response.json())
     assert len(data.items) > 0
 
+    # Test pagination
+    SIZE = 5
+    query_data = s.UsersIn(query="", page=1, size=SIZE)
+    response = client.get(
+        f"/api/users?query={query_data.query}",
+        params={
+            "current_user_uuid": current_user.uuid,
+            "selected_locations": CFG.ALL_UKRAINE,
+            "page": query_data.page,
+            "size": query_data.size,
+        },
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = s.UsersOut.model_validate(response.json())
+    assert len(data.items) == SIZE
+
     # Test UA
     query_data = s.UsersIn(query="Освіта", lang=Language.UA, selected_locations=locations_uuid)
     response = client.get(
