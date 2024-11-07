@@ -225,7 +225,7 @@ class User(db.Model, ModelMixin):
 
     @property
     def owned_rates_count(self) -> int:
-        return len(self.rates_as_receiver)
+        return round(len(self.rates_as_receiver), 1)
 
     @property
     def receiver_average_rate(self) -> float:

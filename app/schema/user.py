@@ -107,10 +107,16 @@ class UsersIn(BaseModel):
     query: str = ""
     order_by: UsersOrderBy = UsersOrderBy.AVERAGE_RATE
     ascending: bool = True
+    page: int = 1
+    size: int = 10
 
 
 class UsersOut(BaseModel):
     items: list[UserSearchOut]
+    total: int
+    page: int
+    size: int
+    pages: int
     # user_locations: list[LocationStrings] = [] part of /me
 
     # TODO: must be separated (another endpoint)
