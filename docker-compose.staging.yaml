@@ -28,7 +28,7 @@ services:
       - db
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.kraftjar_portal.rule=Host(`www.kraftjar.net`, `kraftjar.net`)'
+      - 'traefik.http.routers.kraftjar_portal.rule=Host(`admin.kraftjar.net`)'
       - 'traefik.http.routers.kraftjar_portal.tls=true'
       - 'traefik.http.routers.kraftjar_portal.tls.certresolver=myresolver'
 
