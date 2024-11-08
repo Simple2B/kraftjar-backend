@@ -111,7 +111,7 @@ from .registration import (
 )
 from .field import FieldCreate
 from .exception import NotFound
-from .service import Service, ServicesIn, ServicesOut, ServiceData, ServiceDataFile, ServiceDB
+from .service import Service, ServicesIn, ServicesOut, ServiceData, ServiceDataFile, ServiceDB, ServicesList
 from .address import AddressBase, AddressesFile
 from .language import Language
 

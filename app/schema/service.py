@@ -49,3 +49,7 @@ class ServiceData(BaseModel):
 
 class ServiceDataFile(BaseModel):
     services: list[ServiceData]
+
+
+class ServicesList(BaseModel):
+    services: list[Service]

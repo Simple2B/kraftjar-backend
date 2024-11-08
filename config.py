@@ -111,6 +111,8 @@ class BaseConfig(BaseSettings):
     AWS_SNS_SECRET_KEY: str | None
     AWS_SNS_REGION: str | None
 
+    SERVICES_LIMIT: int = 16
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.
