@@ -19,11 +19,3 @@ class AddressBase(BaseModel):
 
 class AddressesFile(BaseModel):
     addresses: list[AddressBase]
-
-
-class AddressOut(AddressBase):
-    uuid: str
-
-    model_config = ConfigDict(
-        from_attributes=True,
-    )

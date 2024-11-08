@@ -3,6 +3,7 @@ from typing import Annotated, Any, List, Union
 
 import sqlalchemy as sa
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status, UploadFile
+from fastapi_pagination import Page, paginate
 from sqlalchemy.orm import Session
 from mypy_boto3_s3 import S3Client
 
@@ -54,7 +55,7 @@ def get_job(
 @job_router.get(
     "/",
     status_code=status.HTTP_200_OK,
-    response_model=s.JobsOut,
+    response_model=Page[s.JobOutput],
     responses={status.HTTP_404_NOT_FOUND: {"description": "Jobs not found"}},
 )
 def get_jobs(
@@ -106,7 +107,7 @@ def get_jobs(
 
     jobs_out = c.create_out_search_jobs(jobs, lang, current_user)
 
-    return s.JobsOut(items=jobs_out)
+    return paginate(jobs_out)
 
 
 @job_router.get(

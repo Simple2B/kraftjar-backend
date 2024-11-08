@@ -112,7 +112,7 @@ from .registration import (
 from .field import FieldCreate
 from .exception import NotFound
 from .service import Service, ServicesIn, ServicesOut, ServiceData, ServiceDataFile, ServiceDB
-from .address import AddressBase, AddressesFile, AddressOut
+from .address import AddressBase, AddressesFile
 from .language import Language
 
 from .meest_api import (
@@ -126,7 +126,7 @@ from .meest_api import (
     AddressList,
 )
 from .file import FileType, File, FileIn, FileOut, Files
-from .city import City, CityIn, CityOut, CitiesFile, CityAddressesOut
+from .city import City, CityIn, CityOut, CitiesFile
 
 from .device import DeviceIn, DeviceOut, DevicePlatform
 from .push_notification import PushNotificationType, PushNotificationOut

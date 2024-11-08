@@ -1,7 +1,6 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, Query, UploadFile, status, HTTPException
 
-# from fastapi_pagination.ext.sqlalchemy import paginate
 from fastapi_pagination import Page, paginate
 from mypy_boto3_s3 import S3Client
 from sqlalchemy.orm import Session
@@ -86,8 +85,6 @@ def get_users(
     users_out = create_out_search_users(users, lang, db)
 
     return paginate(users_out)
-
-    # return s.UsersOut(items=users_out)
 
 
 @user_router.post("/search", status_code=status.HTTP_200_OK, response_model=s.UsersSearchOut)

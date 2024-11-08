@@ -156,6 +156,23 @@ def test_get_jobs_by_query_params(client: TestClient, auth_header: dict[str, str
     data = s.JobsOut.model_validate(response.json())
     assert len(data.items) > 0
 
+    # Test pagination
+    PAGE_SIZE = 5
+    query_data = s.JobsIn(query="", page=1, size=PAGE_SIZE)
+    response = client.get(
+        "/api/jobs",
+        headers=auth_header,
+        params={
+            "query": query_data.query,
+            "page": query_data.page,
+            "size": query_data.size,
+            "selected_locations": CFG.ALL_UKRAINE,
+        },
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = s.JobsOut.model_validate(response.json())
+    assert len(data.items) == PAGE_SIZE
+
     # Test UA
     query_data = s.JobsIn(query="Краса", lang=Language.UA, selected_locations=locations_uuid)
     response = client.get(

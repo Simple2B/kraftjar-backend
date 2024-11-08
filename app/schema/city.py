@@ -1,5 +1,4 @@
 from pydantic import BaseModel, ConfigDict
-from app.schema.address import AddressOut
 
 
 class City(BaseModel):
@@ -31,8 +30,3 @@ class CityOut(City):
     model_config = ConfigDict(
         from_attributes=True,
     )
-
-
-class CityAddressesOut(BaseModel):
-    city: City
-    addresses: list[AddressOut]

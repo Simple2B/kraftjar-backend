@@ -276,6 +276,8 @@ class JobsIn(BaseModel):
     query: str = ""
     order_by: JobsOrderBy = JobsOrderBy.CREATED_AT
     ascending: bool = True
+    page: int = 1
+    size: int = 10
 
 
 class JobOutput(BaseModel):
