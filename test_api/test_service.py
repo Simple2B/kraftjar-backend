@@ -43,7 +43,7 @@ def test_get_services(client: TestClient, full_db: Session):
         assert uuid in uuids
 
     # Test get popular services
-    res_get = client.get("/api/services")
+    res_get = client.get("/api/services/")
     assert res_get.status_code == status.HTTP_200_OK
     res_data = s.ServicesList.model_validate(res_get.json())
     assert res_data

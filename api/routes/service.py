@@ -14,7 +14,7 @@ service_router = APIRouter(prefix="/services", tags=["service"])
 
 
 @service_router.post(
-    "/",
+    "",
     status_code=status.HTTP_200_OK,
     response_model=s.ServicesOut,
 )
