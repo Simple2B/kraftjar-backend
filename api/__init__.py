@@ -10,7 +10,7 @@ from .routes import router
 
 CFG = config()
 
-router_deep_linking = APIRouter(tags=["deep linking"])
+router_deep_linking = APIRouter(prefix="/.well-known", tags=["DEEP LINKING"])
 
 app = FastAPI(
     version=CFG.VERSION,
@@ -24,9 +24,8 @@ add_pagination(app)
 
 # universal links for iOS (deep linking)
 @router_deep_linking.get(
-    "/.well-known/apple-app-site-association",
+    "/apple-app-site-association",
     status_code=status.HTTP_200_OK,
-    response_model=dict,
 )
 def apple_app_link():
     with open("apple-app-site-association.json", "r") as file:
@@ -36,9 +35,8 @@ def apple_app_link():
 
 # universal links for Android (deep linking)
 @router_deep_linking.get(
-    "/.well-known/assetlinks.json",
+    "/assetlinks.json",
     status_code=status.HTTP_200_OK,
-    response_model=dict,
 )
 def android_app_link():
     with open("assetlinks.json", "r") as file:
