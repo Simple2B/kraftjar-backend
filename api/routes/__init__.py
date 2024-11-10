@@ -11,6 +11,7 @@ from .service import service_router
 from .device import device_router
 from .rate import rate_router
 from .push_notification import push_notification_router
+from .deep_linking import router_deep_linking
 
 # from .notify import notification_test_router
 
@@ -28,6 +29,7 @@ router.include_router(service_router)
 router.include_router(device_router)
 router.include_router(rate_router)
 router.include_router(push_notification_router)
+router.include_router(router_deep_linking)
 
 
 @router.get("/list-endpoints/")
