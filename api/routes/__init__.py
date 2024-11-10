@@ -1,5 +1,4 @@
-import json
-from fastapi import APIRouter, Request, status
+from fastapi import APIRouter, Request
 
 from .user import user_router
 from .auth import router as auth_router
@@ -29,32 +28,6 @@ router.include_router(service_router)
 router.include_router(device_router)
 router.include_router(rate_router)
 router.include_router(push_notification_router)
-
-router_linking = APIRouter(tags=["deep linking"])
-
-
-# universal links for iOS (deep linking)
-@router_linking.get(
-    "/.well-known/apple-app-site-association",
-    status_code=status.HTTP_200_OK,
-    response_model=dict,
-)
-def apple_app_link():
-    with open("apple-app-site-association.json", "r") as file:
-        data = json.load(file)
-    return data
-
-
-# universal links for Android (deep linking)
-@router_linking.get(
-    "/.well-known/assetlinks.json",
-    status_code=status.HTTP_200_OK,
-    response_model=dict,
-)
-def android_app_link():
-    with open("assetlinks.json", "r") as file:
-        data = json.load(file)
-    return data
 
 
 @router.get("/list-endpoints/")
