@@ -1,3 +1,4 @@
+import json
 from typing import Annotated
 from fastapi import APIRouter, Depends, Query, UploadFile, status, HTTPException
 
@@ -671,3 +672,19 @@ def update_language(
         avatar_url=current_user.avatar_url,
         preferred_language=preferred_language,
     )
+
+
+# universal links for iOS (deep linking)
+@user_router.get("/.well-known/apple-app-site-association", status_code=status.HTTP_200_OK)
+def apple_app_link():
+    with open("apple-app-site-association.json", "r") as file:
+        data = json.load(file)
+    return data
+
+
+# universal links for Android (deep linking)
+@user_router.get("/.well-known/assetlinks.json")
+def android_app_link():
+    with open("assetlinks.json", "r") as file:
+        data = json.load(file)
+    return data

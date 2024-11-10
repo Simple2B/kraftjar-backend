@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "kraftjar",
+      "package_name": "net.kraftjar.app",
+      "sha256_cert_fingerprints": [
+        "FC:03:57:5C:36:DA:62:39:9A:88:63:0E:D7:1D:3C:D3:47:A9:7E:D9:A9:50:C4:28:0F:DA:1A:EB:D6:47:28:E1"
+      ]
+    }
+  }
+]
