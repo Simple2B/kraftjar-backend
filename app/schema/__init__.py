@@ -30,6 +30,7 @@ from .job import (
     JobRate,
     JobUserStatus,
     JobStatusCancelIn,
+    JobPutOut,
 )
 from .application import (
     ApplicationIn,

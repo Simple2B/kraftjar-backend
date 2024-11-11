@@ -1,3 +1,4 @@
+from datetime import datetime
 from mypy_boto3_s3 import S3Client
 import pytest
 
@@ -845,3 +846,57 @@ def test_job_cancel_flow(
     assert response.status_code == status.HTTP_200_OK
     assert job.status != s.JobStatus.CANCELED.value
     assert job.is_cancel_request is False
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_update_job(client: TestClient, auth_header: dict[str, str], db: Session):
+    job: m.Job | None = db.scalar(
+        sa.select(m.Job).where(
+            m.Job.owner_id == 1, m.Job.status == s.JobStatus.PENDING.value, ~m.Job.applications.any()
+        )
+    )
+    assert job
+
+    service = db.scalar(sa.select(m.Service).where(m.Service.uuid.notin_([s.uuid for s in job.services])))
+    assert service
+
+    location = db.scalar(sa.select(m.Settlement).where(m.Settlement.city_id != job.location.uuid))
+    assert location
+
+    address = db.scalar(
+        sa.select(m.Address).where(m.Address.city_id == location.city_id),
+    )
+    assert address
+
+    test_data = s.JobPut(
+        title="Test Job",
+        description="Test Description",
+        services=[service.uuid],
+        settlement_uuid=location.city_id,
+        address_uuid=address.street_id,
+        end_date="2024-09-13T15:23:25.960Z",
+        cost=12345,
+        is_negotiable=True,
+        is_public=False,
+    )
+
+    response = client.put(
+        f"/api/jobs/{job.uuid}",
+        headers=auth_header,
+        json=test_data.model_dump(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = s.JobPutOut.model_validate(response.json())
+    assert data
+    assert data.title == test_data.title
+    assert data.description == test_data.description
+    assert data.services[0] == service.name_ua
+    assert data.location == location.location.region[0].name_ua
+    assert data.address == f"вул. {address.line1}"
+    assert data.cost
+    assert round(data.cost) == test_data.cost
+    assert data.is_negotiable == test_data.is_negotiable
+    assert data.is_public == test_data.is_public
+    assert data.end_date
+    assert test_data.end_date
+    assert data.end_date.date().isoformat() == datetime.fromisoformat(test_data.end_date).date().isoformat()
