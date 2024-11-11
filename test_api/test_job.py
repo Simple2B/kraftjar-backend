@@ -849,7 +849,7 @@ def test_job_cancel_flow(
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_update_job(client: TestClient, auth_header: dict[str, str], db: Session):
+def test_update_job(client: TestClient, auth_header: dict[str, str], db: Session, worker_header: dict[str, str]):
     job: m.Job | None = db.scalar(
         sa.select(m.Job).where(
             m.Job.owner_id == 1, m.Job.status == s.JobStatus.PENDING.value, ~m.Job.applications.any()
@@ -900,3 +900,25 @@ def test_update_job(client: TestClient, auth_header: dict[str, str], db: Session
     assert data.end_date
     assert test_data.end_date
     assert data.end_date.date().isoformat() == datetime.fromisoformat(test_data.end_date).date().isoformat()
+
+    # Create application
+    worker = db.scalar(sa.select(m.User).where(m.User.id == 2))
+    assert worker
+
+    data_app = s.ApplicationIn(type=m.ApplicationType.APPLY, worker_uuid=worker.uuid, job_uuid=job.uuid)
+    response = client.post("/api/applications", headers=worker_header, content=data_app.model_dump_json())
+    assert response.status_code == status.HTTP_201_CREATED
+    application_data = s.ApplicationOut.model_validate(response.json())
+    assert application_data
+
+    # Try to update job with applications
+    test_data = s.JobPut(
+        title="Test Job with applications",
+    )
+
+    response = client.put(
+        f"/api/jobs/{job.uuid}",
+        headers=auth_header,
+        json=test_data.model_dump(),
+    )
+    assert response.status_code == status.HTTP_403_FORBIDDEN

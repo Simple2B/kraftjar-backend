@@ -372,6 +372,10 @@ def put_job(
         log(log.ERROR, "User [%s] doesn't allow to update job [%s]", current_user.id, job.id)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User doesn't allow to update job")
 
+    if job.applications:
+        log(log.ERROR, "Job [%s] has applications. Update forbidden", job.id)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Job has applications. Update forbidden")
+
     if job_data.title:
         job.title = job_data.title
     if job_data.description:
