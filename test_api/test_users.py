@@ -205,10 +205,10 @@ def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, st
         lang=Language.UA,
         selected_locations=locations_uuid,
         order_by=s.UsersOrderBy.AVERAGE_RATE,
-        ascending=False,
+        order_type=s.OrderType.DESC,
     )
     response = client.get(
-        f"/api/users?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}&selected_locations={query_data.selected_locations[2]}&ascending={query_data.ascending}&order_by={query_data.order_by.value}",
+        f"/api/users?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}&selected_locations={query_data.selected_locations[2]}&order_type={query_data.order_type.value}&order_by={query_data.order_by.value}",
         params={"current_user_uuid": current_user.uuid},
     )
     assert response.status_code == status.HTTP_200_OK

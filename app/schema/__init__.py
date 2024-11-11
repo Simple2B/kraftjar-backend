@@ -130,3 +130,5 @@ from .city import City, CityIn, CityOut, CitiesFile
 
 from .device import DeviceIn, DeviceOut, DevicePlatform
 from .push_notification import PushNotificationType, PushNotificationOut
+
+from .misc import OrderType

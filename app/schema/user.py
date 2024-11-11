@@ -5,6 +5,7 @@ from enum import Enum
 
 from app.schema.auth import AuthAccount, AuthAccountOut
 from app.schema.language import Language
+from app.schema.misc import OrderType
 
 from .location import LocationStrings
 from .service import Service
@@ -106,7 +107,7 @@ class UsersIn(BaseModel):
     selected_locations: list[str] = []  # list of uuids - selected locations
     query: str = ""
     order_by: UsersOrderBy = UsersOrderBy.AVERAGE_RATE
-    ascending: bool = True
+    order_type: OrderType = OrderType.ASC
     page: int = 1
     size: int = 10
 

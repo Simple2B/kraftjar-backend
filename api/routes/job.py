@@ -63,7 +63,7 @@ def get_jobs(
     lang: Language = Language.UA,
     selected_locations: Annotated[Union[List[str], None], Query()] = None,
     order_by: s.JobsOrderBy = s.JobsOrderBy.CREATED_AT,
-    ascending: bool = True,
+    order_type: s.OrderType = s.OrderType.ASC,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -102,7 +102,7 @@ def get_jobs(
     if not jobs:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Jobs not found")
 
-    if not ascending:
+    if order_type == s.OrderType.DESC:
         jobs = jobs[::-1]
 
     jobs_out = c.create_out_search_jobs(jobs, lang, current_user)

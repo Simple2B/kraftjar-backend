@@ -4,6 +4,7 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
 from app.schema.language import Language
+from app.schema.misc import OrderType
 from app.schema.rate import RateJobOut
 from config import config
 
@@ -275,7 +276,7 @@ class JobsIn(BaseModel):
     selected_locations: list[str] = []  # list of uuids - selected locations
     query: str = ""
     order_by: JobsOrderBy = JobsOrderBy.CREATED_AT
-    ascending: bool = True
+    order_type: OrderType = OrderType.ASC
     page: int = 1
     size: int = 10
 

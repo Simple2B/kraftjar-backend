@@ -230,10 +230,10 @@ def test_get_jobs_by_query_params(client: TestClient, auth_header: dict[str, str
         lang=Language.UA,
         selected_locations=locations_uuid,
         order_by=s.JobsOrderBy.COST,
-        ascending=False,
+        order_type=s.OrderType.DESC,
     )
     response = client.get(
-        f"/api/jobs?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}&ascending={query_data.ascending}&order_by={query_data.order_by.value}",
+        f"/api/jobs?query={query_data.query}&lang={query_data.lang.value}&selected_locations={query_data.selected_locations[0]}&selected_locations={query_data.selected_locations[1]}&order_type={query_data.order_type.value}&order_by={query_data.order_by.value}",
         headers=auth_header,
     )
     assert response.status_code == status.HTTP_200_OK

@@ -53,11 +53,11 @@ def get_users(
     lang: Language = Language.UA,
     selected_locations: Annotated[list[str] | None, Query()] = None,
     order_by: s.UsersOrderBy = s.UsersOrderBy.AVERAGE_RATE,
-    ascending: bool = True,
+    order_type: s.OrderType = s.OrderType.DESC,
     current_user_uuid: str = Query(None),
     db: Session = Depends(get_db),
 ):
-    """Get users by query params"""
+    """Get users by query params (without current_user_uuid api is considered as public)"""
 
     if current_user_uuid:
         current_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.uuid == current_user_uuid))
@@ -79,7 +79,7 @@ def get_users(
     if not users:
         return paginate([])
 
-    if not ascending:
+    if order_type == s.OrderType.ASC:
         users = users[::-1]
 
     users_out = create_out_search_users(users, lang, db)

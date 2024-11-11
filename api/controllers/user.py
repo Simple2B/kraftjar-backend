@@ -390,10 +390,13 @@ def filter_and_order_users(
         else:
             db_users = db_users.where(m.User.fullname.ilike(f"%{query}%"))
 
+    all_users = db.execute(db_users).scalars().all()
+
     if order_by == s.UsersOrderBy.AVERAGE_RATE:
-        users = db.execute(db_users.order_by(m.User.average_rate.desc())).scalars().all()
+        users = all_users
+        users = sorted(users, key=lambda user: user.receiver_average_rate, reverse=True)
     elif order_by == s.UsersOrderBy.OWNED_RATES_COUNT:
-        users = db.execute(db_users).scalars().all()
+        users = all_users
         users = sorted(users, key=lambda user: user.owned_rates_count, reverse=True)
     elif user_locations and order_by == s.UsersOrderBy.NEAR:
         users = (
@@ -404,6 +407,6 @@ def filter_and_order_users(
             .all()
         )
     else:
-        users = db.execute(db_users).scalars().all()
+        users = all_users
 
     return users
