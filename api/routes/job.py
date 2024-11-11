@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Annotated, Any, List, Union
+from typing import Annotated, List, Union
 
 import sqlalchemy as sa
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status, UploadFile
@@ -9,7 +9,8 @@ from mypy_boto3_s3 import S3Client
 
 import api.controllers as c
 
-from api.utils import get_file_extension
+from api.utils import format_location_string, get_file_extension
+from app.commands.utility import ALL_UKRAINE
 import app.models as m
 import app.schema as s
 from api.dependency import get_current_user, get_s3_connect
@@ -348,30 +349,100 @@ def delete_job_file(
 
 
 @job_router.put(
-    "/{job_id}",
+    "/{job_uuid}",
     status_code=status.HTTP_200_OK,
-    response_model=s.JobOut,
+    response_model=s.JobPutOut,
 )
 def put_job(
-    job_id: int,
+    job_uuid: str,
     job_data: s.JobPut,
+    lang: Language = Language.UA,
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
 ):
-    job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.id == job_id))
+    """Updates job"""
+
+    job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.uuid == job_uuid))
+
     if not job:
-        log(log.ERROR, "Job [%s] not found", job_id)
+        log(log.ERROR, "Job [%s] not found", job_uuid)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
+
     if job.owner_id != current_user.id:
-        log(log.ERROR, "User [%s] does not own job [%s]", current_user.id, job_id)
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User does not own job")
+        log(log.ERROR, "User [%s] doesn't allow to update job [%s]", current_user.id, job.id)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User doesn't allow to update job")
 
-    data_filtered: dict[str, Any] = {key: value for key, value in job_data.model_dump().items() if value is not None}
+    if job.applications:
+        log(log.ERROR, "Job [%s] has applications. Update forbidden", job.id)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Job has applications. Update forbidden")
 
-    db.execute(sa.update(m.Job).where(m.Job.id == job_id).values(**data_filtered))
+    if job_data.title:
+        job.title = job_data.title
+    if job_data.description:
+        job.description = job_data.description
+    if job_data.cost:
+        job.cost = job_data.cost
+    if job_data.end_date:
+        job.end_date = datetime.fromisoformat(job_data.end_date)
+    if job_data.is_public is not None:
+        job.is_public = job_data.is_public
+    if job_data.is_volunteer is not None:
+        job.is_volunteer = job_data.is_volunteer
+    if job_data.is_negotiable is not None:
+        job.is_negotiable = job_data.is_negotiable
+
+    if job_data.services:
+        job.services.clear()
+        for service_uuid in job_data.services:
+            service: m.Service | None = db.scalar(sa.select(m.Service).where(m.Service.uuid == service_uuid))
+            if not service:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Service not found")
+            job.services.append(service)
+
+    if job_data.settlement_uuid:
+        location = db.scalar(sa.select(m.Settlement).where(m.Settlement.city_id == job_data.settlement_uuid))
+        if not location:
+            log(log.ERROR, "Settlement [%s] not found", job.settlement_uuid)
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Selected location not found")
+
+        job.location_id = location.location_id
+
+    if job_data.address_uuid:
+        address = db.scalar(
+            sa.select(m.Address).where(m.Address.street_id == job_data.address_uuid),
+        )
+        if not address:
+            log(log.ERROR, "Address [%s] not found", job.address_uuid)
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Selected address not found")
+
+        job.address_id = address.id
+
     db.commit()
-    log(log.INFO, "Updated job [%s]", job_id)
-    return job
+    db.refresh(job)
+    log(log.INFO, "Job successfully updated [%s]", job.id)
+
+    service_names = []
+
+    if job.services:
+        for service in job.services:
+            service_names.append(service.name_ua if lang == Language.UA else service.name_en)
+
+    job_location = ALL_UKRAINE
+    if job.location:
+        job_location, job_address = format_location_string(job.location, job.address, lang)
+
+    return s.JobPutOut(
+        title=job.title,
+        description=job.description,
+        location=job_location,
+        address=job_address,
+        services=service_names,
+        cost=job.cost,
+        end_date=job.end_date,
+        is_public=job.is_public,
+        is_volunteer=job.is_volunteer,
+        is_negotiable=job.is_negotiable,
+    )
 
 
 @job_router.post(

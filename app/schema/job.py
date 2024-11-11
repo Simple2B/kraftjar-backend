@@ -156,10 +156,32 @@ class JobIn(BaseModel):
 class JobPut(BaseModel):
     title: str | None = None
     description: str | None = None
-    address_id: int | None = None
-    location_id: int | None = None
-    # time: str | None = None
+    settlement_uuid: str | None = None
+    address_uuid: str | None = None
+    services: list[str] = []
     is_public: bool | None = None
+    is_volunteer: bool | None = None
+
+    cost: int | None = None
+    end_date: str | None = None
+    is_negotiable: bool | None = None
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class JobPutOut(BaseModel):
+    title: str
+    description: str
+    location: str
+    address: str | None = None
+    services: list[str]
+    is_public: bool
+    is_volunteer: bool
+    is_negotiable: bool
+    end_date: datetime | None = None
+    cost: float | None = None
 
     model_config = ConfigDict(
         from_attributes=True,
