@@ -26,7 +26,7 @@ router = APIRouter(prefix="/auth", tags=["Auth"])
 CFG = config()
 
 
-@router.post("/login", status_code=status.HTTP_200_OK, response_model=s.Token)
+@router.post("/login", status_code=status.HTTP_200_OK, response_model=s.Token, include_in_schema=False)
 def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db=Depends(get_db)):
     """Logs in a user"""
     user = m.User.authenticate(form_data.username, form_data.password, session=db)

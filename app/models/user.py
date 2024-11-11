@@ -231,7 +231,8 @@ class User(db.Model, ModelMixin):
     def receiver_average_rate(self) -> float:
         if self.owned_rates_count == 0:
             return 0
-        return sum([rate.rate for rate in self.rates_as_receiver]) / self.owned_rates_count
+        rate = sum([rate.rate for rate in self.rates_as_receiver]) / self.owned_rates_count
+        return round(rate, 1)
 
     @property
     def active_devices(self):

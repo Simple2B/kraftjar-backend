@@ -274,7 +274,7 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User, current_
                             address=None,
                             services=services,
                             owned_rates_count=round(worker.owned_rates_count, 1),
-                            average_rate=round(worker.average_rate, 1),
+                            average_rate=round(worker.receiver_average_rate, 1),
                             avatar_url=worker.avatar_url,
                             receiver_average_rate=worker.receiver_average_rate,
                         ),
@@ -289,7 +289,7 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User, current_
         services=service_names,
         owner_name=job_owner.fullname,
         owner_uuid=job_owner.uuid,
-        owner_average_rate=job_owner.average_rate,
+        owner_average_rate=job_owner.receiver_average_rate,
         owner_rates_count=job_owner.owned_rates_count,
         owner_avatar_url=job_owner.avatar_url,
         start_date=job.start_date,
@@ -301,7 +301,7 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User, current_
         is_negotiable=job.is_negotiable,
         worker_uuid=job.worker.uuid if job.worker else None,
         worker_name=job.worker.fullname if job.worker else None,
-        worker_average_rate=job.worker.average_rate if job.worker else None,
+        worker_average_rate=job.worker.receiver_average_rate if job.worker else None,
         worker_avatar_url=job.worker.avatar_url if job.worker else None,
         applications=applications,
         status=s.JobStatus(job.status),
@@ -345,7 +345,9 @@ def get_pending_jobs(
 
     applications = db.scalars(
         sa.select(m.Application).where(
-            m.Application.worker_id == current_user.id, m.Application.status == m.ApplicationStatus.PENDING
+            m.Application.is_deleted.is_(False),
+            m.Application.worker_id == current_user.id,
+            m.Application.status == m.ApplicationStatus.PENDING,
         )
     ).all()
 
