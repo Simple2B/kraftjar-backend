@@ -1,4 +1,4 @@
-from fastapi import APIRouter, FastAPI
+from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi_pagination import add_pagination
 
@@ -9,7 +9,6 @@ from .routes import router
 
 CFG = config()
 
-router_deep_linking = APIRouter(prefix="/.well-known", tags=["deep linking"])
 
 app = FastAPI(
     version=CFG.VERSION,
