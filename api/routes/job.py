@@ -428,6 +428,8 @@ def put_job(
             service_names.append(service.name_ua if lang == Language.UA else service.name_en)
 
     job_location = ALL_UKRAINE
+    job_address = None
+
     if job.location:
         job_location, job_address = format_location_string(job.location, job.address, lang)
 

@@ -28,7 +28,7 @@ def mark_as_deleted():
     return f"deleted-{current_timestamp}"
 
 
-def format_location_string(location: m.Location, address: m.Address, lang: Language):
+def format_location_string(location: m.Location, address: m.Address | None, lang: Language):
     ALL_UKRAINE = "Вся Україна" if lang == Language.UA else "All Ukraine"
     job_location = ALL_UKRAINE
 
