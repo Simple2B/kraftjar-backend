@@ -892,6 +892,7 @@ def test_update_job(client: TestClient, auth_header: dict[str, str], db: Session
     # Try to update job with applications
     test_data = s.JobPut(
         title="Test Job with applications",
+        description="Test Description",
     )
 
     response = client.put(

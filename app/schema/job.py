@@ -146,11 +146,11 @@ class JobIn(BaseModel):
 
 
 class JobPut(BaseModel):
-    title: str | None = None
-    description: str | None = None
+    title: str
+    description: str
     settlement_uuid: str | None = None
     address_uuid: str | None = None
-    services: list[str] = []
+    services: list[str] | None = None
     is_public: bool | None = None
     is_volunteer: bool | None = None
 

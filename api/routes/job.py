@@ -382,7 +382,7 @@ def put_job(
         job.description = job_data.description
     if job_data.cost is not None:
         job.cost = job_data.cost
-    if job_data.end_date:
+    if job_data.end_date is not None:
         job.end_date = datetime.fromisoformat(job_data.end_date)
     if job_data.is_public is not None:
         job.is_public = job_data.is_public
@@ -391,7 +391,7 @@ def put_job(
     if job_data.is_negotiable is not None:
         job.is_negotiable = job_data.is_negotiable
 
-    if job_data.services:
+    if job_data.services is not None:
         job.services.clear()
         for service_uuid in job_data.services:
             service: m.Service | None = db.scalar(sa.select(m.Service).where(m.Service.uuid == service_uuid))
@@ -399,7 +399,7 @@ def put_job(
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Service not found")
             job.services.append(service)
 
-    if job_data.settlement_uuid:
+    if job_data.settlement_uuid is not None:
         location = db.scalar(sa.select(m.Settlement).where(m.Settlement.city_id == job_data.settlement_uuid))
         if not location:
             log(log.ERROR, "Settlement [%s] not found", job.settlement_uuid)
@@ -407,15 +407,18 @@ def put_job(
 
         job.location_id = location.location_id
 
-    if job_data.address_uuid:
-        address = db.scalar(
-            sa.select(m.Address).where(m.Address.street_id == job_data.address_uuid),
-        )
-        if not address:
-            log(log.ERROR, "Address [%s] not found", job.address_uuid)
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Selected address not found")
+    if job_data.address_uuid is not None:
+        if not job_data.address_uuid:
+            job.address_id = None
+        else:
+            address = db.scalar(
+                sa.select(m.Address).where(m.Address.street_id == job_data.address_uuid),
+            )
+            if not address:
+                log(log.ERROR, "Address [%s] not found", job.address_uuid)
+                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Selected address not found")
 
-        job.address_id = address.id
+            job.address_id = address.id
 
     db.commit()
     db.refresh(job)
