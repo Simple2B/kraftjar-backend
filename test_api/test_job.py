@@ -16,28 +16,6 @@ from config import config
 CFG = config()
 
 
-# TODO: must be refactoring like search users
-# @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-# def test_get_jobs(client: TestClient, full_db: Session, auth_header: dict[str, str]):
-#     db = full_db
-#     job = db.scalar(sa.select(m.Job))
-#     assert job
-
-#     job.worker_id = None  # type: ignore
-#     job.status = s.JobStatus.PENDING  # type: ignore
-#     job.is_public = True
-#     db.commit()
-
-#     query = s.JobHomePage(
-#         lang=CFG.UA,
-#         location_uuid=job.location.uuid,
-#     )
-#     response = client.post("/api/jobs/home", headers=auth_header, json=query.model_dump())
-#     assert response.status_code == status.HTTP_200_OK
-#     jobs = s.JobsCardList.model_validate(response.json())
-#     assert len(jobs.recommended_jobs) > 0
-
-
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_create_job(client: TestClient, db: Session, auth_header: dict[str, str], s3_client: S3Client):
     with open("test_api/test_data/image_1.jpg", "rb") as image:

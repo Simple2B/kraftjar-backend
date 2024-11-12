@@ -118,14 +118,6 @@ class JobInfo(BaseModel):
     is_cancel_request: bool = False
 
 
-class JobOutList(BaseModel):
-    jobs: list[JobOut]
-
-    model_config = ConfigDict(
-        from_attributes=True,
-    )
-
-
 # create job schema
 class JobIn(BaseModel):
     lang: str = CFG.UA
@@ -186,57 +178,6 @@ class JobPutOut(BaseModel):
     model_config = ConfigDict(
         from_attributes=True,
     )
-
-
-class JobSearchIn(BaseModel):
-    lang: str | None = CFG.UA
-    query: str | None = ""
-
-    selected_services: list[str] = []
-    selected_locations: list[str] = []
-
-
-class JobSearch(BaseModel):
-    id: int
-    uuid: str
-    title: str
-    description: str
-    location: LocationStrings
-    cost: int
-    is_saved: bool
-
-
-class JobsSearchOut(BaseModel):
-    lang: str | None = CFG.UA
-    query: str | None = ""
-    jobs: list[JobSearch] = []
-
-
-class JobHomePage(BaseModel):
-    lang: str | None = CFG.UA
-    location_uuid: str | None = None
-
-
-class JobCard(BaseModel):
-    id: int
-    uuid: str
-    title: str
-    description: str
-    cost: float
-    is_saved: bool
-    location: LocationStrings
-
-    model_config = ConfigDict(
-        from_attributes=True,
-    )
-
-
-class JobsCardList(BaseModel):
-    lang: str | None = CFG.UA
-
-    location_uuid: str | None = None
-    recommended_jobs: list[JobCard] = []
-    jobs_near_you: list[JobCard] = []
 
 
 # schema for created jobs test data

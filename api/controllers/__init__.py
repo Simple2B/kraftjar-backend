@@ -19,8 +19,6 @@ from .user import (
     filter_and_order_users,
 )
 from .job import (
-    search_jobs,
-    get_jobs_on_home_page,
     job_statistics,
     filter_jobs_by_locations,
     filter_and_order_jobs,
@@ -29,7 +27,6 @@ from .job import (
     get_pending_jobs,
     get_in_progress_jobs,
     get_archived_jobs,
-    get_completed_jobs_without_rate,
 )
 from .rate import update_user_average_rate, update_users_average_rate
 from .file import is_image_file, is_video_file, get_file_type, delete_file, create_file

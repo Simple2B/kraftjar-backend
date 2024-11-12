@@ -447,33 +447,6 @@ def put_job(
     )
 
 
-@job_router.post(
-    "/search",
-    status_code=status.HTTP_200_OK,
-    response_model=s.JobsSearchOut,
-    responses={
-        status.HTTP_409_CONFLICT: {"description": "Selected service not found"},
-    },
-)
-def search_jobs(
-    query: s.JobSearchIn,
-    current_user: m.User = Depends(get_current_user),
-    db: Session = Depends(get_db),
-):
-    """Returns filtered list of jobs"""
-    return c.search_jobs(query, current_user, db)
-
-
-@job_router.post("/home", status_code=status.HTTP_200_OK, response_model=s.JobsCardList)
-def get_jobs_on_home_page(
-    query: s.JobHomePage,
-    db: Session = Depends(get_db),
-    current_user: m.User = Depends(get_current_user),
-):
-    """Returns jobs for home page"""
-    return c.get_jobs_on_home_page(query, current_user, db)
-
-
 @job_router.get("/public-job-statistics/", status_code=status.HTTP_200_OK, response_model=s.PublicJobDict)
 def get_public_job_statistics(
     db: Session = Depends(get_db),
