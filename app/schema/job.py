@@ -146,8 +146,8 @@ class JobIn(BaseModel):
 
 
 class JobPut(BaseModel):
-    title: str
-    description: str
+    title: str | None = None
+    description: str | None = None
     settlement_uuid: str | None = None
     address_uuid: str | None = None
     services: list[str] | None = None
