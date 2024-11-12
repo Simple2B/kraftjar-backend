@@ -254,7 +254,7 @@ class User(db.Model, ModelMixin):
         session: orm.Session,
     ) -> Self | None:
         assert phone and password, "phone and password must be provided"
-        query = cls.select().where((sa.func.lower(cls.phone) == sa.func.lower(phone)))
+        query = cls.select().where(sa.and_(cls.is_deleted.is_(False), sa.func.lower(cls.phone) == sa.func.lower(phone)))
         user = session.scalar(query)
         if not user:
             log(log.WARNING, "user:[%s] not found", phone)
