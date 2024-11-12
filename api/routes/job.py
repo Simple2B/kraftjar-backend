@@ -380,7 +380,7 @@ def put_job(
         job.title = job_data.title
     if job_data.description:
         job.description = job_data.description
-    if job_data.cost:
+    if job_data.cost is not None:
         job.cost = job_data.cost
     if job_data.end_date:
         job.end_date = datetime.fromisoformat(job_data.end_date)
