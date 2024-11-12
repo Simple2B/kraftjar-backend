@@ -14,10 +14,7 @@ from .oauth2 import create_access_token
 from .service import get_services
 from .location import get_locations
 from .user import (
-    search_users,
     get_user_profile,
-    public_search_users,
-    get_public_user_profile,
     filter_users_by_locations,
     filter_and_order_users,
 )
