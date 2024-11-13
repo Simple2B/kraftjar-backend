@@ -24,6 +24,8 @@ from .job import (
     JobUserStatus,
     JobStatusCancelIn,
     JobPutOut,
+    JobSettlement,
+    JobAddress,
 )
 from .application import (
     ApplicationIn,

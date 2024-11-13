@@ -140,8 +140,26 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User, current_
             service_names.append(service.name_ua if lang == Language.UA else service.name_en)
 
     job_location = ALL_UKRAINE
-    if job.location:
-        job_location = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
+    if job.address:
+        job_settlement_db = db.scalar(sa.select(m.Settlement).where(m.Settlement.city_id == job.address.city_id))
+        if not job_settlement_db:
+            log(log.ERROR, "Settlement [%s] not found", job.address.city_id)
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Settlement not found")
+
+        region_name = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
+        settlement_name = job_settlement_db.name_ua if lang == Language.UA else job_settlement_db.name_en
+        location_type = "м. " if job_settlement_db.type == "CITY" else "с. "
+        job_location = f"{location_type}{settlement_name}, {region_name}"
+
+        job_settlement = s.JobSettlement(name=job_location, uuid=job.address.city_id)
+    else:
+        if job.location:
+            location_name = job.location.region[0].name_ua if lang == Language.UA else job.location.region[0].name_en
+            job_settlement = s.JobSettlement(name=location_name, uuid=job.location.uuid)
+
+        else:
+            job_settlement = None
+            location_name = ALL_UKRAINE
 
     job_address = None
     if job.address:
@@ -194,6 +212,8 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User, current_
         title=job.title,
         location=job_location,
         address=job_address,
+        settlement=job_settlement,
+        job_address=s.JobAddress(name=job_address, uuid=job.address.street_id) if job_address else None,
         services=service_names,
         owner_name=job_owner.fullname,
         owner_uuid=job_owner.uuid,
