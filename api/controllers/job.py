@@ -268,6 +268,7 @@ def get_pending_jobs(
                     required_rate_owner=job.required_rate_owner,
                     required_rate_worker=job.required_rate_worker,
                     files=[s.File.model_validate(file) for file in job.files],
+                    is_public=job.is_public,
                 ),
             )
 
@@ -300,6 +301,7 @@ def get_pending_jobs(
                     required_rate_owner=job.required_rate_owner,
                     required_rate_worker=job.required_rate_worker,
                     files=[s.File.model_validate(file) for file in job.files],
+                    is_public=job.is_public,
                 ),
             )
 
@@ -332,6 +334,7 @@ def get_in_progress_jobs(
                         required_rate_owner=job.required_rate_owner,
                         required_rate_worker=job.required_rate_worker,
                         files=[s.File.model_validate(file) for file in job.files],
+                        is_public=job.is_public,
                     )
                 )
 
@@ -353,6 +356,7 @@ def get_in_progress_jobs(
                         required_rate_owner=job.required_rate_owner,
                         required_rate_worker=job.required_rate_worker,
                         files=[s.File.model_validate(file) for file in job.files],
+                        is_public=job.is_public,
                     )
                 )
 
@@ -387,6 +391,7 @@ def get_archived_jobs(
                         required_rate_owner=job.required_rate_owner,
                         required_rate_worker=job.required_rate_worker,
                         files=[s.File.model_validate(file) for file in job.files],
+                        is_public=job.is_public,
                     )
                 )
 
@@ -410,6 +415,7 @@ def get_archived_jobs(
                         required_rate_owner=job.required_rate_owner,
                         required_rate_worker=job.required_rate_worker,
                         files=[s.File.model_validate(file) for file in job.files],
+                        is_public=job.is_public,
                     )
                 )
 

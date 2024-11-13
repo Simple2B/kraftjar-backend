@@ -287,6 +287,7 @@ class JobByStatus(BaseModel):
     end_date: datetime | None = None
     cost: float | None = None
     status: JobStatus
+    is_public: bool
 
     required_rate_owner: bool | None = None
     required_rate_worker: bool | None = None
