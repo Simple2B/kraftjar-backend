@@ -91,11 +91,23 @@ class JobRate(BaseModel):
     rates: list[RateJobOut] = []
 
 
+class JobSettlement(BaseModel):
+    name: str
+    uuid: str
+
+
+class JobAddress(BaseModel):
+    name: str
+    uuid: str
+
+
 class JobInfo(BaseModel):
     uuid: str
     title: str
     location: str
     address: str | None = None
+    settlement: JobSettlement | None = None
+    job_address: JobAddress | None = None
     services: list[str]
     owner_name: str
     owner_uuid: str
