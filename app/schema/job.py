@@ -167,6 +167,7 @@ class JobPut(BaseModel):
     is_volunteer: bool | None = None
 
     cost: int | None = None
+    start_date: str | None = None
     end_date: str | None = None
     is_negotiable: bool | None = None
 
@@ -184,6 +185,7 @@ class JobPutOut(BaseModel):
     is_public: bool
     is_volunteer: bool
     is_negotiable: bool
+    start_date: datetime
     end_date: datetime | None = None
     cost: float | None = None
 

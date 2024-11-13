@@ -6,6 +6,7 @@ from pydantic import ValidationError
 
 import app.schema as s
 from config import config
+from app.logger import log
 
 CFG = config()
 
@@ -25,6 +26,7 @@ def create_access_token(user_id: int) -> str:
         exp=datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
     ).model_dump()
 
+    log(log.INFO, "Token expires at [%s]", to_encode["exp"])
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY)
 
     return encoded_jwt

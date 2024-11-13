@@ -382,6 +382,8 @@ def put_job(
         job.description = job_data.description
     if job_data.cost is not None:
         job.cost = job_data.cost
+    if job_data.start_date:
+        job.start_date = datetime.fromisoformat(job_data.start_date)
     if job_data.end_date is not None:
         job.end_date = datetime.fromisoformat(job_data.end_date)
     if job_data.is_public is not None:
@@ -443,6 +445,7 @@ def put_job(
         address=job_address,
         services=service_names,
         cost=job.cost,
+        start_date=job.start_date if job.start_date else datetime.now(),
         end_date=job.end_date,
         is_public=job.is_public,
         is_volunteer=job.is_volunteer,

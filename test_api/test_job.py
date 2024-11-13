@@ -852,6 +852,7 @@ def test_update_job(client: TestClient, auth_header: dict[str, str], db: Session
         services=[service.uuid],
         settlement_uuid=location.city_id,
         address_uuid=address.street_id,
+        start_date="2024-09-11T15:23:20.911Z",
         end_date="2024-09-13T15:23:25.960Z",
         cost=12345,
         is_negotiable=True,
@@ -875,6 +876,9 @@ def test_update_job(client: TestClient, auth_header: dict[str, str], db: Session
     assert round(data.cost) == test_data.cost
     assert data.is_negotiable == test_data.is_negotiable
     assert data.is_public == test_data.is_public
+    assert data.start_date
+    assert test_data.start_date
+    assert data.start_date.date().isoformat() == datetime.fromisoformat(test_data.start_date).date().isoformat()
     assert data.end_date
     assert test_data.end_date
     assert data.end_date.date().isoformat() == datetime.fromisoformat(test_data.end_date).date().isoformat()
