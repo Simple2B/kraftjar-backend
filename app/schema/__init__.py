@@ -98,6 +98,7 @@ from .registration import (
     ValidatePhoneIn,
     SetPhoneOut,
     ChangePasswordIn,
+    PasswordStrength,
 )
 from .field import FieldCreate
 from .exception import NotFound

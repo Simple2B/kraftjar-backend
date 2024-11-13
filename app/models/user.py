@@ -71,6 +71,10 @@ class User(db.Model, ModelMixin):
     auth_accounts: orm.Mapped[list["AuthAccount"]] = orm.relationship("AuthAccount", backref="user")
 
     password_hash: orm.Mapped[str | None] = orm.mapped_column(sa.String(256))  # fill in registration form
+    password_strength: orm.Mapped[str] = orm.mapped_column(
+        sa.String(16), default=s.PasswordStrength.WEAK.value, server_default=s.PasswordStrength.WEAK.value
+    )
+
     created_at: orm.Mapped[datetime] = orm.mapped_column(
         sa.DateTime,
         default=datetime.now(UTC),

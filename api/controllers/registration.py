@@ -23,7 +23,8 @@ def register_user(
 ):
     try:
         # validate password
-        password = s.RegistrationIn.password_validation(user_data.password)
+        password = s.RegistrationIn.password_validation(value=user_data.password)
+        password_strength = s.RegistrationIn.password_strength_validator(value=user_data.password)
 
         # check if phone is already registered
         stmt: Executable = sa.select(m.User).where(m.User.phone == user_data.phone)
@@ -47,6 +48,7 @@ def register_user(
             phone=user_data.phone,
             auth_accounts=[m.AuthAccount(auth_type=s.AuthType.BASIC, email=user_data.email)],
             password=password,
+            password_strength=password_strength,
             is_volunteer=user_data.is_volunteer,
         )
         db.add(user)

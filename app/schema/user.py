@@ -5,6 +5,7 @@ from enum import Enum
 from app.schema.auth import AuthAccount, AuthAccountOut
 from app.schema.language import Language
 from app.schema.misc import OrderType
+from app.schema.registration import PasswordStrength
 
 from .location import LocationStrings
 from .service import Service
@@ -217,6 +218,7 @@ class UserProfileOut(User):
     avatar_url: str | None = None
     receiver_average_rate: float
     preferred_language: Language = Language.UA
+    password_strength: PasswordStrength | None = None
 
     notification_settings: UserNotificationSettingsOut
 

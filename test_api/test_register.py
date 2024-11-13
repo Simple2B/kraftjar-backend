@@ -51,7 +51,6 @@ def test_register(
     assert response.status_code == status.HTTP_200_OK
 
     # Check if user is created
-
     current_user = db.scalar(
         sa.select(m.User).where(m.User.phone == USER_PHONE),
     )
@@ -129,6 +128,22 @@ def test_register(
 
     auth_accounts = current_user.auth_accounts
     assert all(acc.is_deleted for acc in auth_accounts)
+
+    # Test weak password
+    TEST_WEAK_PASSWORD_PHONE = "1234567891"
+    user_data11 = s.RegistrationIn(
+        fullname=USER_FNAME + " " + USER_LNAME,
+        phone=TEST_WEAK_PASSWORD_PHONE,
+        email="test_weak@kraftjar.net",
+        password="1234",
+        services=[s.uuid for s in services],
+        locations=[loc.uuid for loc in locations],
+    )
+    response = client.post("/api/registration/", json=user_data11.model_dump())
+    assert response.status_code == status.HTTP_200_OK
+    user = db.scalar(sa.select(m.User).where(m.User.phone == TEST_WEAK_PASSWORD_PHONE))
+    assert user
+    assert user.password_strength == s.PasswordStrength.WEAK.value
 
     # reset user dependency
     app.dependency_overrides[get_current_user] = get_current_user
