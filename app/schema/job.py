@@ -30,6 +30,11 @@ class JobUserStatus(enum.Enum):
     WORKER = "worker"
 
 
+class JobVisibility(enum.Enum):
+    PUBLIC = "public"
+    PRIVATE = "private"
+
+
 class BaseJob(BaseModel):
     id: int
     uuid: str

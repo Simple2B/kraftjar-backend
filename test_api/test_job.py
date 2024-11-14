@@ -320,6 +320,27 @@ def test_get_jobs_by_status(client: TestClient, auth_header: dict[str, str], db:
     data = s.JobsByStatusList.model_validate(response.json())
     assert data.items
 
+    # Test private jobs with pending status
+    public_job: m.Job | None = db.scalar(
+        sa.select(m.Job).where(
+            m.Job.worker_id.is_(None), m.Job.owner_id == 1, m.Job.status == s.JobStatus.PENDING.value
+        )
+    )
+    assert public_job
+    public_job.is_public = False
+    db.commit()
+
+    response = client.get(
+        "/api/jobs/jobs-by-status/",
+        params={"is_public": s.JobVisibility.PRIVATE.value},
+        headers=auth_header,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = s.JobsByStatusList.model_validate(response.json())
+    private_jobs = data.items
+    assert private_jobs
+    assert private_jobs[0].is_public is False
+
 
 @pytest.mark.skipif(
     not CFG.IS_API,
