@@ -434,6 +434,21 @@ def put_job(
 
             job.address_id = address.id
 
+    files: list[s.FileOut] = []
+    if job_data.file_uuids:
+        # check if all files exist in db
+        db_files = db.scalars(sa.select(m.File).where(m.File.uuid.in_(job_data.file_uuids))).all()
+
+        if len(db_files) != len(job_data.file_uuids):
+            log(log.ERROR, "Not all files found")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Selected file not found")
+
+        for file in db_files:
+            job.files.append(file)
+            db.commit()
+            files.append(file)
+            log(log.INFO, "File [%s] was added to job [%s]", file.id, job.id)
+
     db.commit()
     db.refresh(job)
     log(log.INFO, "Job successfully updated [%s]", job.id)
@@ -462,6 +477,7 @@ def put_job(
         is_public=job.is_public,
         is_volunteer=job.is_volunteer,
         is_negotiable=job.is_negotiable,
+        files=[s.FileOut.model_validate(file) for file in files],
     )
 
 

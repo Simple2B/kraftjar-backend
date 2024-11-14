@@ -172,6 +172,8 @@ class JobPut(BaseModel):
     end_date: str | None = None
     is_negotiable: bool | None = None
 
+    file_uuids: list[str] = []
+
     model_config = ConfigDict(
         from_attributes=True,
     )
@@ -189,6 +191,8 @@ class JobPutOut(BaseModel):
     start_date: datetime
     end_date: datetime | None = None
     cost: float | None = None
+
+    files: list[File] = []
 
     model_config = ConfigDict(
         from_attributes=True,
