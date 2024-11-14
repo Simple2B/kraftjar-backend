@@ -11,6 +11,7 @@ class FileType(enum.Enum):
 
 
 class File(BaseModel):
+    uuid: str
     name: str
     original_name: str
     type: str = FileType.IMAGE.value
