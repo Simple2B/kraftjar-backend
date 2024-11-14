@@ -100,6 +100,17 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
         )
     )
 
+    private_jobs_count = db.scalar(
+        sa.select(sa.func.count(m.Job.id)).where(
+            sa.and_(
+                m.Job.is_deleted.is_(False),
+                m.Job.owner_id == db_user.id,
+                m.Job.is_public.is_(False),
+                m.Job.status == s.JobStatus.PENDING.value,
+            )
+        )
+    )
+
     ALL_UKRAINE = "Вся Україна" if lang == Language.UA else "All Ukraine"
 
     favorite_jobs: list[s.UserFavoriteJob] = []
@@ -201,6 +212,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
         avatar_url=db_user.avatar_url,
         completed_jobs_count=completed_jobs_count if completed_jobs_count else 0,
         announced_jobs_count=announced_jobs_count if announced_jobs_count else 0,
+        private_jobs_count=private_jobs_count if private_jobs_count else 0,
         favorite_jobs=favorite_jobs,
         favorite_experts=favorite_expert,
         notification_settings=db_user.notification_settings,

@@ -211,6 +211,7 @@ class UserProfileOut(User):
     locations: list[LocationStrings]
     completed_jobs_count: int
     announced_jobs_count: int
+    private_jobs_count: int
     favorite_jobs: list[UserFavoriteJob] = []
     favorite_experts: list[UserFavoriteExpert] = []
     created_at: datetime
