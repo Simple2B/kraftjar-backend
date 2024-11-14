@@ -17,7 +17,12 @@ CFG = config()
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_create_job(client: TestClient, db: Session, auth_header: dict[str, str], s3_client: S3Client):
+def test_create_job(
+    client: TestClient,
+    db: Session,
+    auth_header: dict[str, str],
+    s3_client: S3Client,
+):
     with open("test_api/test_data/image_1.jpg", "rb") as image:
         response = client.post(
             "/api/jobs/files",
@@ -49,11 +54,9 @@ def test_create_job(client: TestClient, db: Session, auth_header: dict[str, str]
         assert response.status_code == 201
         assert response.json()
         files_out_3 = [uuid for uuid in response.json()]
+        assert files_out_3
 
-    # delete image_3
-    response = client.delete(f"/api/jobs/file/{files_out_3[0]}", headers=auth_header)
-    assert response.status_code == status.HTTP_204_NO_CONTENT
-
+    # create job with image_1, image_2 and image_3
     user = db.scalar(sa.select(m.User))
     assert user
 
@@ -107,6 +110,10 @@ def test_create_job(client: TestClient, db: Session, auth_header: dict[str, str]
     assert response.status_code == status.HTTP_200_OK
     data = s.JobsOut.model_validate(response.json())
     assert data.items[0].title == job.title
+
+    # delete image_3
+    response = client.delete(f"/api/jobs/file/{image_2[0]}", headers=auth_header)
+    assert response.status_code == status.HTTP_204_NO_CONTENT
 
     # reset user dependency
     app.dependency_overrides[get_current_user] = get_current_user

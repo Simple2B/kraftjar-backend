@@ -339,6 +339,16 @@ def delete_job_file(
         log(log.ERROR, "File [%s] not found", file_uuid)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not found")
 
+    # find job with file
+    job: m.Job | None = db.scalar(sa.select(m.Job).where(m.Job.files.any(m.File.uuid == file_uuid)))
+
+    if not job:
+        log(log.ERROR, "Job with file [%s] not found", file_uuid)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job with file not found")
+
+    # delete file from job
+    job.files.remove(file)
+
     # delete file from s3 because new job was not created yet
     s3_client.delete_object(Bucket=CFG.AWS_S3_BUCKET_NAME, Key=file.key)
 
