@@ -128,6 +128,7 @@ class JobInfo(BaseModel):
     applications: list[JobApplication]
     status: JobStatus
     is_cancel_request: bool = False
+    is_public: bool
 
 
 # create job schema
