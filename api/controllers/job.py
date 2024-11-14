@@ -234,6 +234,7 @@ def get_job(job: m.Job, lang: Language, db: Session, job_owner: m.User, current_
         applications=applications,
         status=s.JobStatus(job.status),
         is_cancel_request=job.is_cancel_request and job.cancel_request_by != current_user.id,
+        is_public=job.is_public,
     )
 
 

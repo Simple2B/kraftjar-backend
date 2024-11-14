@@ -384,8 +384,10 @@ def put_job(
         job.cost = job_data.cost
     if job_data.start_date:
         job.start_date = datetime.fromisoformat(job_data.start_date)
-    if job_data.end_date is not None:
+    if job_data.end_date:
         job.end_date = datetime.fromisoformat(job_data.end_date)
+    else:
+        job.end_date = None
     if job_data.is_public is not None:
         job.is_public = job_data.is_public
     if job_data.is_volunteer is not None:
