@@ -26,6 +26,7 @@ from .job import (
     JobPutOut,
     JobSettlement,
     JobAddress,
+    JobVisibility,
 )
 from .application import (
     ApplicationIn,

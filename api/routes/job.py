@@ -120,6 +120,7 @@ def get_jobs(
 def get_jobs_by_status(
     job_status: s.JobStatus = s.JobStatus.PENDING,
     job_user_status: s.JobUserStatus = s.JobUserStatus.OWNER,
+    is_public: s.JobVisibility = s.JobVisibility.PUBLIC,
     lang: Language = Language.UA,
     db: Session = Depends(get_db),
     current_user: m.User = Depends(get_current_user),
@@ -127,13 +128,17 @@ def get_jobs_by_status(
     """Get jobs by status"""
     # TODO: add search by query
 
-    db_jobs = db.scalars(
-        sa.select(m.Job)
-        .where(
+    db_filter = sa.and_(
+        m.Job.is_deleted.is_(False),
+    )
+
+    if is_public == s.JobVisibility.PRIVATE:
+        db_filter = sa.and_(
             m.Job.is_deleted.is_(False),
+            m.Job.is_public.is_(False),
         )
-        .order_by(m.Job.updated_at.desc())
-    ).all()
+
+    db_jobs = db.scalars(sa.select(m.Job).where(db_filter).order_by(m.Job.updated_at.desc())).all()
 
     if not db_jobs:
         log(log.ERROR, "Jobs not found")
