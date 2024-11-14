@@ -69,15 +69,16 @@ from .user import (
     UserFavoriteJob,
     UserShortInfo,
     UserFavoriteExpert,
-    UserRateOut,
+    # UserRateOut,
     UserNotificationSettingsIn,
     UserNotificationSettingsOut,
     UserJobStatusesNotificationSettings,
     UserApplicationStatusesNotificationSettings,
     UserApplicationTypesNotificationSettings,
+    UserRecentShowcase,
 )
 from .whoami import WhoAmI
-from .rate import RateIn, RateOut, RateOutList, RateUserOutList, RateJobOut, RateUserOut
+from .rate import RateIn, RateOut, RateOutList, RateUserOutList, RateJobOut, RateUserOut, UserRateOut
 from .auth import (
     Auth,
     GoogleAuthIn,

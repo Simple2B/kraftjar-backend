@@ -54,7 +54,7 @@ def get_users(
     selected_locations: Annotated[list[str] | None, Query()] = None,
     order_by: s.UsersOrderBy = s.UsersOrderBy.AVERAGE_RATE,
     order_type: s.OrderType = s.OrderType.DESC,
-    current_user_uuid: str = Query(None),
+    current_user_uuid: str | None = Query(None),
     db: Session = Depends(get_db),
 ):
     """Get users by query params (without current_user_uuid api is considered as public)"""
@@ -73,6 +73,7 @@ def get_users(
         users = c.filter_and_order_users(query, lang, db, current_user.locations, db_users, order_by)
     else:
         # For website
+        current_user = None
         db_users = sa.select(m.User).where(m.User.is_deleted.is_(False))
         users = c.filter_and_order_users(query, lang, db, None, db_users, order_by)
 
@@ -82,7 +83,7 @@ def get_users(
     if order_type == s.OrderType.ASC:
         users = users[::-1]
 
-    users_out = create_out_search_users(users, lang, db)
+    users_out = create_out_search_users(users, lang, db, current_user)
 
     return paginate(users_out)
 

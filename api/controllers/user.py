@@ -159,6 +159,38 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
             )
         )
 
+    recent_showcases = []
+    if db_user.jobs:
+        JOBS_LIMIT = 3
+        completed_jobs = [job for job in db_user.jobs if job.status == s.JobStatus.PAYMENT_CONFIRMED.value][:JOBS_LIMIT]
+
+        if completed_jobs:
+            completed_jobs = sorted(completed_jobs, key=lambda job: job.updated_at, reverse=True)
+
+            for job in completed_jobs:
+                recent_showcases.append(
+                    s.UserRecentShowcase(
+                        title=job.title,
+                        description=job.description,
+                        rates=[
+                            s.RateUserOut(
+                                uuid=rate.uuid,
+                                receiver_uuid=rate.receiver.uuid,
+                                rate=rate.rate,
+                                review=rate.review,
+                                created_at=rate.created_at,
+                                gives=s.UserRateOut(
+                                    uuid=rate.giver.uuid,
+                                    fullname=rate.giver.fullname,
+                                ),
+                                avatar_url=rate.giver.avatar_url,
+                            )
+                            for rate in job.rates
+                            if rate.receiver_id == db_user.id
+                        ],
+                    )
+                )
+
     return s.UserProfileOut(
         # TODO: remove  user.__dict__ add like property in User model and use s.UserProfileOut.model_validate
         **pop_keys(db_user.__dict__, ["favorite_jobs", "favorite_experts", "services", "locations", "auth_accounts"]),
@@ -173,6 +205,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
         favorite_experts=favorite_expert,
         notification_settings=db_user.notification_settings,
         receiver_average_rate=db_user.receiver_average_rate,
+        recent_showcases=recent_showcases,
     )
 
 

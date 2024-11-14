@@ -1,6 +1,5 @@
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict
-from app.schema.user import UserRateOut
 
 
 class Rate(BaseModel):
@@ -15,6 +14,17 @@ class Rate(BaseModel):
 class RateIn(Rate):
     job_uuid: str
     receiver_uuid: str
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
+class UserRateOut(BaseModel):
+    uuid: str
+    fullname: str
+
+    __hash__ = object.__hash__
 
     model_config = ConfigDict(
         from_attributes=True,

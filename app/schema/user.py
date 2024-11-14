@@ -5,6 +5,7 @@ from enum import Enum
 from app.schema.auth import AuthAccount, AuthAccountOut
 from app.schema.language import Language
 from app.schema.misc import OrderType
+from app.schema.rate import RateUserOut
 from app.schema.registration import PasswordStrength
 
 from .location import LocationStrings
@@ -60,14 +61,6 @@ class UserSearchOut(BaseModel):
     receiver_average_rate: float
     created_at: datetime
     lang: Language = Language.UA
-
-    __hash__ = object.__hash__
-
-
-class UserRateOut(BaseModel):
-    uuid: str
-    fullname: str
-    # TODO: must be add avatar field here later
 
     __hash__ = object.__hash__
 
@@ -204,6 +197,12 @@ class UserNotificationSettingsOut(BaseModel):
     )
 
 
+class UserRecentShowcase(BaseModel):
+    title: str
+    description: str
+    rates: list[RateUserOut] = []
+
+
 class UserProfileOut(User):
     auth_accounts: list[AuthAccountOut] = []
     owned_rates_count: int
@@ -219,6 +218,7 @@ class UserProfileOut(User):
     receiver_average_rate: float
     preferred_language: Language = Language.UA
     password_strength: PasswordStrength | None = None
+    recent_showcases: list[UserRecentShowcase] = []
 
     notification_settings: UserNotificationSettingsOut
 
