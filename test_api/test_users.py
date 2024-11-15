@@ -379,19 +379,26 @@ def test_user_education(client: TestClient, auth_header: dict[str, str], db: Ses
     education_to_upd = current_user.educations[0]
 
     response = client.put(
-        "/api/users/education",
+        f"/api/users/education/{education_to_upd.uuid}",
         headers=auth_header,
-        params={"education_uuid": education_to_upd.uuid},
         json=data_to_upd.model_dump(),
     )
-    assert response.status_code == status.HTTP_200_OK
+    assert response.status_code == status.HTTP_204_NO_CONTENT
     assert education_to_upd.institution == data_to_upd.institution
 
     # Test not found
+    bad_uuid = "cf69783e-d2a0-4217-aebf-caa47e092c12"
     response = client.put(
-        "/api/users/education",
+        f"/api/users/education/{bad_uuid}",
         headers=auth_header,
-        params={"education_uuid": "cf69783e-d2a0-4217-aebf-caa47e092c12"},
         json=data_to_upd.model_dump(),
     )
     assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    # Test delete
+    response = client.delete(
+        f"/api/users/education/{education_to_upd.uuid}",
+        headers=auth_header,
+    )
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    assert education_to_upd.is_deleted is True

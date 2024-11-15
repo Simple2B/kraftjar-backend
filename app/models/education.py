@@ -46,5 +46,7 @@ class Education(db.Model, ModelMixin):
         onupdate=sa.func.now(),
     )
 
+    is_deleted: orm.Mapped[bool] = orm.mapped_column(default=False)
+
     def __str__(self) -> str:
         return f"<Education: {self.id}>"

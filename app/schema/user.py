@@ -3,6 +3,7 @@ from pydantic import BaseModel, ConfigDict, EmailStr
 from enum import Enum
 
 from app.schema.auth import AuthAccount, AuthAccountOut
+from app.schema.file import File
 from app.schema.language import Language
 from app.schema.misc import OrderType
 from app.schema.rate import RateUserOut
@@ -210,6 +211,7 @@ class UserEducation(BaseModel):
     specialization: str
     start_date: datetime
     end_date: datetime | None = None
+    files: list[File] = []
 
     model_config = ConfigDict(
         use_enum_values=True,
@@ -265,6 +267,7 @@ class UserEducationIn(BaseModel):
     specialization: str
     start_date: str
     end_date: str | None = None
+    file_uuids: list[str] = []
 
     model_config = ConfigDict(
         use_enum_values=True,
@@ -277,6 +280,7 @@ class UserEducationPut(BaseModel):
     specialization: str | None = None
     start_date: str | None = None
     end_date: str | None = None
+    file_uuids: list[str] | None = None
 
     model_config = ConfigDict(
         use_enum_values=True,

@@ -627,7 +627,9 @@ def add_education(
     """Add education"""
 
     db_education = [
-        education for education in current_user.educations if education.institution == education_data.institution
+        education
+        for education in current_user.educations
+        if education.is_deleted is False and education.institution == education_data.institution
     ]
     if db_education:
         log(log.ERROR, "Education [%s] already exists", education_data.institution)
@@ -648,10 +650,10 @@ def add_education(
 
 
 @user_router.put(
-    "/education",
-    status_code=status.HTTP_200_OK,
+    "/education/{education_uuid}",
+    status_code=status.HTTP_204_NO_CONTENT,
     responses={
-        status.HTTP_400_BAD_REQUEST: {"description": "Invalid education data"},
+        status.HTTP_404_NOT_FOUND: {"description": "Educations not found"},
     },
 )
 def update_education(
@@ -660,8 +662,13 @@ def update_education(
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """Add education for user"""
-    user_educations = [education for education in current_user.educations if education.uuid == education_uuid]
+    """Update education"""
+
+    user_educations = [
+        education
+        for education in current_user.educations
+        if education.is_deleted is False and education.uuid == education_uuid
+    ]
 
     if not user_educations:
         log(log.ERROR, "Educations [%s] not found", education_uuid)
@@ -683,3 +690,39 @@ def update_education(
     db.commit()
 
     log(log.INFO, "User [%s] successfully updated education", current_user.fullname)
+
+
+@user_router.delete(
+    "/education/{education_uuid}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Educations not found"},
+    },
+)
+def delete_education(
+    education_uuid: str,
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Delete education"""
+
+    user_educations = [
+        education
+        for education in current_user.educations
+        if education.is_deleted is False and education.uuid == education_uuid
+    ]
+
+    if not user_educations:
+        log(log.ERROR, "Educations [%s] not found", education_uuid)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Educations not found")
+
+    education = user_educations[0]
+
+    education.institution = mark_as_deleted()
+    education.specialization = mark_as_deleted()
+    education.is_deleted = True
+
+    db.commit()
+    db.refresh(current_user)
+
+    log(log.INFO, "User [%s] successfully deleted education [%s]", current_user.fullname, education_uuid)
