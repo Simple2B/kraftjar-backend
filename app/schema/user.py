@@ -203,6 +203,19 @@ class UserRecentShowcase(BaseModel):
     rates: list[RateUserOut] = []
 
 
+class UserEducation(BaseModel):
+    uuid: str
+    institution: str
+    degree: str | None = None
+    specialization: str
+    start_date: datetime
+    end_date: datetime | None = None
+
+    model_config = ConfigDict(
+        use_enum_values=True,
+    )
+
+
 class UserProfileOut(User):
     auth_accounts: list[AuthAccountOut] = []
     owned_rates_count: int
@@ -223,6 +236,8 @@ class UserProfileOut(User):
 
     notification_settings: UserNotificationSettingsOut
 
+    educations: list[UserEducation] = []
+
     __hash__ = object.__hash__
 
     model_config = ConfigDict(
@@ -238,6 +253,30 @@ class UserPut(BaseModel):
     services: list[str] = []
     avatar_url: str | None = None
     preferred_language: Language = Language.UA
+
+    model_config = ConfigDict(
+        use_enum_values=True,
+    )
+
+
+class UserEducationIn(BaseModel):
+    institution: str
+    degree: str | None = None
+    specialization: str
+    start_date: str
+    end_date: str | None = None
+
+    model_config = ConfigDict(
+        use_enum_values=True,
+    )
+
+
+class UserEducationPut(BaseModel):
+    institution: str | None = None
+    degree: str | None = None
+    specialization: str | None = None
+    start_date: str | None = None
+    end_date: str | None = None
 
     model_config = ConfigDict(
         use_enum_values=True,

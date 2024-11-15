@@ -344,3 +344,54 @@ def test_preferred_language_update(client: TestClient, auth_header: dict[str, st
 
     response = client.put("/api/users/language", headers=auth_header, json={"preferred_language": "fr"})
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+
+@pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
+def test_user_education(client: TestClient, auth_header: dict[str, str], db: Session):
+    current_user = db.scalar(sa.select(m.User).where(m.User.id == 1))
+    assert current_user
+    assert not current_user.educations
+
+    # Test create
+    data = s.UserEducationIn(
+        institution="Test institution",
+        degree="Test degree",
+        specialization="Test specialization",
+        start_date="2019-09-13T15:23:20.911Z",
+        end_date="2024-09-13T15:23:20.911Z",
+    )
+
+    response = client.post("/api/users/education", headers=auth_header, json=data.model_dump())
+    assert response.status_code == status.HTTP_201_CREATED
+
+    # Test get
+    assert current_user.educations
+
+    # Try to add the same education
+    response = client.post("/api/users/education", headers=auth_header, json=data.model_dump())
+    assert response.status_code == status.HTTP_409_CONFLICT
+
+    # Test update
+    data_to_upd = s.UserEducationPut(
+        institution="Test institution Second",
+    )
+
+    education_to_upd = current_user.educations[0]
+
+    response = client.put(
+        "/api/users/education",
+        headers=auth_header,
+        params={"education_uuid": education_to_upd.uuid},
+        json=data_to_upd.model_dump(),
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert education_to_upd.institution == data_to_upd.institution
+
+    # Test not found
+    response = client.put(
+        "/api/users/education",
+        headers=auth_header,
+        params={"education_uuid": "cf69783e-d2a0-4217-aebf-caa47e092c12"},
+        json=data_to_upd.model_dump(),
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND

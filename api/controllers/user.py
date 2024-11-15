@@ -202,9 +202,24 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
                     )
                 )
 
+    educations = [
+        s.UserEducation(
+            uuid=education.uuid,
+            institution=education.institution,
+            degree=education.degree,
+            specialization=education.specialization,
+            start_date=education.start_date,
+            end_date=education.end_date,
+        )
+        for education in db_user.educations
+    ]
+
     return s.UserProfileOut(
         # TODO: remove  user.__dict__ add like property in User model and use s.UserProfileOut.model_validate
-        **pop_keys(db_user.__dict__, ["favorite_jobs", "favorite_experts", "services", "locations", "auth_accounts"]),
+        **pop_keys(
+            db_user.__dict__,
+            ["favorite_jobs", "favorite_experts", "services", "locations", "auth_accounts", "educations"],
+        ),
         auth_accounts=auth_accounts,
         services=services,
         locations=locations,
@@ -218,6 +233,7 @@ def get_user_profile(user_uuid: str, lang: Language, db: Session) -> s.UserProfi
         notification_settings=db_user.notification_settings,
         receiver_average_rate=db_user.receiver_average_rate,
         recent_showcases=recent_showcases,
+        educations=educations,
     )
 
 

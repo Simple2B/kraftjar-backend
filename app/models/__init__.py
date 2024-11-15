@@ -26,3 +26,5 @@ from .device import Device
 from .notification_devices import notification_devices
 from .notification_users import notification_users
 from .push_notification import PushNotification
+from .education import Education
+from .files_education import files_education

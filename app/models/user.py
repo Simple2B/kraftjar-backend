@@ -30,6 +30,7 @@ if TYPE_CHECKING:
     from .job import Job
     from .device import Device
     from .file import File
+    from .education import Education
 
 
 class User(db.Model, ModelMixin):
@@ -109,6 +110,8 @@ class User(db.Model, ModelMixin):
         secondaryjoin=id == favorite_experts.c.expert_id,
         backref="expert_of",
     )
+
+    educations: orm.Mapped[list["Education"]] = orm.relationship("Education", backref="user")
 
     # PENDING = "pending"
     # APPROVED = "approved"
