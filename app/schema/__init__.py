@@ -70,13 +70,15 @@ from .user import (
     UserFavoriteJob,
     UserShortInfo,
     UserFavoriteExpert,
-    # UserRateOut,
     UserNotificationSettingsIn,
     UserNotificationSettingsOut,
     UserJobStatusesNotificationSettings,
     UserApplicationStatusesNotificationSettings,
     UserApplicationTypesNotificationSettings,
     UserRecentShowcase,
+    UserEducation,
+    UserEducationIn,
+    UserEducationPut,
 )
 from .whoami import WhoAmI
 from .rate import RateIn, RateOut, RateOutList, RateUserOutList, RateJobOut, RateUserOut, UserRateOut

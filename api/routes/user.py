@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Annotated
 from fastapi import APIRouter, Depends, Query, UploadFile, status, HTTPException
 
@@ -609,3 +610,119 @@ def update_language(
         avatar_url=current_user.avatar_url,
         preferred_language=preferred_language,
     )
+
+
+@user_router.post(
+    "/education",
+    status_code=status.HTTP_201_CREATED,
+    responses={
+        status.HTTP_409_CONFLICT: {"description": "Education already exists"},
+    },
+)
+def add_education(
+    education_data: s.UserEducationIn,
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Add education"""
+
+    db_education = [
+        education
+        for education in current_user.educations
+        if education.is_deleted is False and education.institution == education_data.institution
+    ]
+    if db_education:
+        log(log.ERROR, "Education [%s] already exists", education_data.institution)
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Education already exists")
+
+    education = m.Education(
+        user_id=current_user.id,
+        institution=education_data.institution,
+        degree=education_data.degree,
+        specialization=education_data.specialization,
+        start_date=datetime.fromisoformat(education_data.start_date),
+        end_date=datetime.fromisoformat(education_data.end_date) if education_data.end_date else None,
+    )
+    db.add(education)
+    db.commit()
+
+    log(log.INFO, "User [%s] successfully added education", current_user.fullname)
+
+
+@user_router.put(
+    "/education/{education_uuid}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Educations not found"},
+    },
+)
+def update_education(
+    education_uuid: str,
+    education_data: s.UserEducationPut,
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Update education"""
+
+    user_educations = [
+        education
+        for education in current_user.educations
+        if education.is_deleted is False and education.uuid == education_uuid
+    ]
+
+    if not user_educations:
+        log(log.ERROR, "Educations [%s] not found", education_uuid)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Educations not found")
+
+    education = user_educations[0]
+
+    if education_data.institution:
+        education.institution = education_data.institution
+    if education_data.degree is not None:
+        education.degree = education_data.degree
+    if education_data.specialization:
+        education.specialization = education_data.specialization
+    if education_data.start_date is not None:
+        education.start_date = datetime.fromisoformat(education_data.start_date)
+    if education_data.end_date is not None:
+        education.end_date = datetime.fromisoformat(education_data.end_date)
+
+    db.commit()
+
+    log(log.INFO, "User [%s] successfully updated education", current_user.fullname)
+
+
+@user_router.delete(
+    "/education/{education_uuid}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Educations not found"},
+    },
+)
+def delete_education(
+    education_uuid: str,
+    current_user: m.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Delete education"""
+
+    user_educations = [
+        education
+        for education in current_user.educations
+        if education.is_deleted is False and education.uuid == education_uuid
+    ]
+
+    if not user_educations:
+        log(log.ERROR, "Educations [%s] not found", education_uuid)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Educations not found")
+
+    education = user_educations[0]
+
+    education.institution = mark_as_deleted()
+    education.specialization = mark_as_deleted()
+    education.is_deleted = True
+
+    db.commit()
+    db.refresh(current_user)
+
+    log(log.INFO, "User [%s] successfully deleted education [%s]", current_user.fullname, education_uuid)
