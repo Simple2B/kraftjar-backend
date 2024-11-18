@@ -23,6 +23,8 @@ class AuthAccount(db.Model, ModelMixin):
     # Services have their own ID
     oauth_id: orm.Mapped[str] = orm.mapped_column(sa.String(128), default="")
 
+    avatar_url: orm.Mapped[str | None] = orm.mapped_column(sa.String(512), default="", nullable=True)
+
     created_at: orm.Mapped[datetime] = orm.mapped_column(default=datetime.now(UTC))
     updated_at: orm.Mapped[datetime] = orm.mapped_column(default=sa.func.now(), onupdate=sa.func.now())
     is_deleted: orm.Mapped[bool] = orm.mapped_column(default=False)

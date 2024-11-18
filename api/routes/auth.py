@@ -308,8 +308,14 @@ def finish_google_registration(
     user: m.User = m.User(
         fullname=auth_data.fullname,
         phone=auth_data.phone,
-        auth_accounts=[m.AuthAccount(auth_type=s.AuthType.GOOGLE, email=auth_data.email, oauth_id=auth_data.oauth_id)],
-        # avatar_url=avatar,
+        auth_accounts=[
+            m.AuthAccount(
+                auth_type=s.AuthType.GOOGLE,
+                email=auth_data.email,
+                oauth_id=auth_data.oauth_id,
+                avatar_url=auth_data.avatar_url,
+            )
+        ],
     )
     db.add(user)
     db.commit()
