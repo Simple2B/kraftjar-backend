@@ -30,9 +30,12 @@ class GoogleTokenVerification(BaseModel):
     # These seven fields are only included when the user has granted the "profile" and "email" OAuth scopes to the application.
     email: str
     email_verified: bool
+    # Full name
     name: str | None = None
     picture: str | None = None
+    # First name
     given_name: str | None = None
+    # Last name
     family_name: str | None = None
     locale: str | None = None
 
@@ -91,3 +94,14 @@ class AuthAccountOut(BaseModel):
 class PasswordAuthIn(BaseModel):
     old_password: str
     new_password: str
+
+
+class GoogleAuthOut(BaseModel):
+    email: str
+    fullname: str
+    avatar_url: str | None = None
+    oauth_id: str
+
+
+class GoogleFinishAuthIn(GoogleAuthOut):
+    phone: str

@@ -10,6 +10,7 @@ import sqlalchemy as sa
 from google.oauth2 import id_token
 from google.auth.transport import requests
 
+from api.controllers.user import get_user_auth_account
 from api.dependency.sns_client import get_sns_connect
 import app.models as m
 from api.dependency import get_db, get_current_user
@@ -229,3 +230,93 @@ def apple_auth(
 
     log(log.INFO, "User [%s] found. Apple Auth succeeded", email)
     return s.Token(access_token=create_access_token(user.id))
+
+
+@router.post(
+    "/register-google-account",
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=s.GoogleAuthOut,
+    responses={
+        status.HTTP_409_CONFLICT: {"description": "This Google account is already exists"},
+    },
+)
+def register_google_account_second(
+    auth_data: s.GoogleAuthIn,
+    db: Session = Depends(get_db),
+):
+    """Register Google account for user"""
+
+    try:
+        id_info_res: s.GoogleTokenVerification = id_token.verify_oauth2_token(
+            auth_data.id_token,
+            requests.Request(),
+            CFG.GOOGLE_CLIENT_ID,
+        )
+
+        log(log.INFO, "id_info_res: [%s]", id_info_res)
+
+        id_info = s.GoogleTokenVerification.model_validate(id_info_res)
+
+        email = id_info.email
+        oauth_id = id_info.sub
+        fullname = id_info.name
+        avatar = id_info.picture
+
+        google_account = get_user_auth_account(email, oauth_id, db, s.AuthType.GOOGLE)
+
+        log(log.INFO, "google_account: [%s]", google_account)
+
+        if google_account:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This Google account is already exists")
+
+    except HTTPException as e:
+        log(log.ERROR, "Google auth failed: %s", e)
+        raise e
+
+    except ValueError as e:
+        log(log.ERROR, "Invalid token: %s", e)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid token")
+
+    log(log.INFO, "Google account [%s] successfully verified", email)
+
+    return s.GoogleAuthOut(
+        email=email,
+        fullname=fullname if fullname else email,
+        avatar_url=avatar,
+        oauth_id=oauth_id,
+    )
+
+
+@router.post(
+    "/finish-google-registration",
+    status_code=status.HTTP_201_CREATED,
+    responses={
+        status.HTTP_409_CONFLICT: {"description": "This Google account is already in use"},
+    },
+)
+def finish_google_registration(
+    auth_data: s.GoogleFinishAuthIn,
+    db: Session = Depends(get_db),
+):
+    """Finish Google registration for user"""
+
+    google_account = get_user_auth_account(auth_data.email, auth_data.oauth_id, db, s.AuthType.GOOGLE)
+
+    if google_account:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This Google account is already in use")
+
+    user: m.User = m.User(
+        fullname=auth_data.fullname,
+        phone=auth_data.phone,
+        auth_accounts=[m.AuthAccount(auth_type=s.AuthType.GOOGLE, email=auth_data.email, oauth_id=auth_data.oauth_id)],
+        # avatar_url=avatar,
+    )
+    db.add(user)
+    db.commit()
+
+    log(
+        log.INFO,
+        "User [%s] successfully finished Google registration, email: [%s]",
+        auth_data.fullname,
+        auth_data.email,
+    )

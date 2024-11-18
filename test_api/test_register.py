@@ -58,23 +58,22 @@ def test_register(
     # Check if user is created with correct data
     assert current_user.fullname == user_data.fullname
     assert current_user.phone == user_data.phone
-    # check verification status
-    assert not current_user.phone_verified
 
+    # NOTE: For now we don't have SMS verification
     # verify phone
-    otp_code = current_user.otp_code
-    assert otp_code
-    data = s.PhoneVerificationIn(phone=USER_PHONE, otp_code=otp_code)
-    response = client.post(
-        "/api/registration/phone_verification",
-        json=data.model_dump(),
-    )
-    assert response.status_code == status.HTTP_200_OK
-    assert s.Token.model_validate(response.json())
-    # check if phone is verified
-    db_user = db.scalar(sa.select(m.User).where(m.User.phone == USER_PHONE))
-    assert db_user
-    assert db_user.phone_verified
+    # otp_code = current_user.otp_code
+    # assert otp_code
+    # data = s.PhoneVerificationIn(phone=USER_PHONE, otp_code=otp_code)
+    # response = client.post(
+    #     "/api/registration/phone_verification",
+    #     json=data.model_dump(),
+    # )
+    # assert response.status_code == status.HTTP_200_OK
+    # assert s.Token.model_validate(response.json())
+    # # check if phone is verified
+    # db_user = db.scalar(sa.select(m.User).where(m.User.phone == USER_PHONE))
+    # assert db_user
+    # assert db_user.phone_verified
 
     # Try to register again with the same email
     USER_PHONE2 = "999999999"

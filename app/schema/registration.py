@@ -30,7 +30,7 @@ weakest_passwords = [
 
 
 class RegistrationIn(BaseModel):
-    email: EmailStr
+    email: EmailStr | None = None
     password: str
     password_strength: PasswordStrength | None = None
     fullname: str

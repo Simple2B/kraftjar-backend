@@ -46,6 +46,7 @@ def register_user(
         user: m.User = m.User(
             fullname=user_data.fullname,
             phone=user_data.phone,
+            phone_verified=True,
             auth_accounts=[m.AuthAccount(auth_type=s.AuthType.BASIC, email=user_data.email)],
             password=password,
             password_strength=password_strength,
@@ -72,7 +73,8 @@ def register_user(
 
         log(log.INFO, "User [%s] was created", user.fullname)
 
-        send_sms_to_user(user, sns_client, db)
+        # NOTE: For now we are not sending SMS
+        # send_sms_to_user(user, sns_client, db)
 
     except ClientError as e:
         log(log.ERROR, "Error sending SMS - [%s]", e)

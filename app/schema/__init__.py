@@ -94,6 +94,8 @@ from .auth import (
     AuthAccount,
     AuthAccountOut,
     PasswordAuthIn,
+    GoogleAuthOut,
+    GoogleFinishAuthIn,
 )
 from .registration import (
     RegistrationIn,
