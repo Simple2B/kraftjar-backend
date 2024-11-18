@@ -277,20 +277,38 @@ def filter_and_order_users(
     """Filters and orders users by query params"""
 
     query = query.strip()
+    all_users: Sequence[m.User] = []
+    name_ua = m.Service.name_ua.ilike(f"%{query}%")
+    name_en = m.Service.name_en.ilike(f"%{query}%")
 
     if query:
-        if lang == Language.UA:
-            name_lang_query = m.Service.name_ua.ilike(f"%{query}%")
-        else:
-            name_lang_query = m.Service.name_en.ilike(f"%{query}%")
-
+        name_lang_query = name_ua if lang == Language.UA else name_en
         services = db.execute(sa.select(m.Service).where(name_lang_query)).scalars().all()
-        if services:
-            db_users = db_users.where(m.User.services.any(m.Service.id.in_([s.id for s in services])))
-        else:
-            db_users = db_users.where(m.User.fullname.ilike(f"%{query}%"))
 
-    all_users = db.execute(db_users).scalars().all()
+        if services:
+            filtered_users = db_users.where(m.User.services.any(m.Service.id.in_([s.id for s in services])))
+        else:
+            filtered_users = db_users.where(m.User.fullname.ilike(f"%{query}%"))
+
+        all_users = db.execute(filtered_users).scalars().all()
+
+    # For cases when the frontend is in one language, and queries are in another
+    # (and if you switch the language in the search results page)
+    if not all_users and lang == Language.UA:
+        services = db.execute(sa.select(m.Service).where(name_en)).scalars().all()
+        if services:
+            eng_filters = db_users.where(m.User.services.any(m.Service.id.in_([s.id for s in services])))
+        else:
+            eng_filters = db_users.where(m.User.fullname.ilike(f"%{query}%"))
+        all_users = db.execute(eng_filters).scalars().all()
+
+    if not all_users and lang == Language.EN:
+        services = db.execute(sa.select(m.Service).where(name_ua)).scalars().all()
+        if services:
+            ua_filters = db_users.where(m.User.services.any(m.Service.id.in_([s.id for s in services])))
+        else:
+            ua_filters = db_users.where(m.User.fullname.ilike(f"%{query}%"))
+        all_users = db.execute(ua_filters).scalars().all()
 
     if order_by == s.UsersOrderBy.AVERAGE_RATE:
         users = all_users
