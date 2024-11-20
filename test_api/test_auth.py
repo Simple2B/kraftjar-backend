@@ -96,6 +96,9 @@ def test_register_google_account(monkeypatch, client: TestClient, auth_header: d
     )
     assert user
 
+    token = s.Token.model_validate(response.json())
+    assert len(token.access_token) > 0
+
     mock_verify_oauth2_token.assert_called_once_with(
         "test_token",
         mock.ANY,

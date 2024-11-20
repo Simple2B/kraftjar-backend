@@ -157,6 +157,7 @@ def apple_auth(
 @router.post(
     "/register-google-account",
     status_code=status.HTTP_201_CREATED,
+    response_model=s.Token,
     responses={
         status.HTTP_409_CONFLICT: {"description": "This Google account is already exists"},
     },
@@ -203,6 +204,16 @@ def register_google_account(
         )
         db.add(user)
         db.commit()
+        db.refresh(user)
+
+        log(
+            log.INFO,
+            "User [%s] successfully registered with Google, email: [%s]",
+            fullname,
+            email,
+        )
+
+        return s.Token(access_token=create_access_token(user.id))
 
     except HTTPException as e:
         log(log.ERROR, "Google auth failed: %s", e)
@@ -211,13 +222,6 @@ def register_google_account(
     except ValueError as e:
         log(log.ERROR, "Invalid token: %s", e)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid token")
-
-    log(
-        log.INFO,
-        "User [%s] successfully registered with Google, email: [%s]",
-        fullname,
-        email,
-    )
 
 
 #############################################################################
