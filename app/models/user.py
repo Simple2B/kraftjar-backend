@@ -63,18 +63,11 @@ class User(db.Model, ModelMixin):
     last_name: orm.Mapped[str] = orm.mapped_column(sa.String(64), default="")
     description: orm.Mapped[str] = orm.mapped_column(sa.String(512), default="", server_default="")
 
-    phone: orm.Mapped[str] = orm.mapped_column(sa.String(32), unique=True)  # fill in registration form
-
-    otp_code: orm.Mapped[str | None] = orm.mapped_column(sa.String(6), default=None, server_default=None)
-
-    phone_verified: orm.Mapped[bool] = orm.mapped_column(default=False)
+    phone: orm.Mapped[str | None] = orm.mapped_column(sa.String(32), nullable=True)
 
     auth_accounts: orm.Mapped[list["AuthAccount"]] = orm.relationship("AuthAccount", backref="user")
 
     password_hash: orm.Mapped[str | None] = orm.mapped_column(sa.String(256))  # fill in registration form
-    password_strength: orm.Mapped[str] = orm.mapped_column(
-        sa.String(16), default=s.PasswordStrength.WEAK.value, server_default=s.PasswordStrength.WEAK.value
-    )
 
     created_at: orm.Mapped[datetime] = orm.mapped_column(
         sa.DateTime,
@@ -143,6 +136,16 @@ class User(db.Model, ModelMixin):
     is_invite_application_type: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
     is_apply_application_type: orm.Mapped[bool] = orm.mapped_column(default=True, server_default="true")
     # =================================
+
+    #############################################################################
+    # NOTE: We currently don't use manual registration and verification by phone.
+    # Perhaps it will be useful in the future.
+    #############################################################################
+    otp_code: orm.Mapped[str | None] = orm.mapped_column(sa.String(6), default=None, server_default=None)
+    phone_verified: orm.Mapped[bool] = orm.mapped_column(default=False)
+    password_strength: orm.Mapped[str] = orm.mapped_column(
+        sa.String(16), default=s.PasswordStrength.WEAK.value, server_default=s.PasswordStrength.WEAK.value
+    )
 
     @property
     def is_job_statuses_notification_settings(self):
@@ -256,15 +259,17 @@ class User(db.Model, ModelMixin):
     @classmethod
     def authenticate(
         cls,
-        phone: str,
+        fullname: str,
         password: str,
         session: orm.Session,
     ) -> Self | None:
-        assert phone and password, "phone and password must be provided"
-        query = cls.select().where(sa.and_(cls.is_deleted.is_(False), sa.func.lower(cls.phone) == sa.func.lower(phone)))
+        assert fullname and password, "fullname and password must be provided"
+        query = cls.select().where(
+            sa.and_(cls.is_deleted.is_(False), sa.func.lower(cls.fullname) == sa.func.lower(fullname))
+        )
         user = session.scalar(query)
         if not user:
-            log(log.WARNING, "user:[%s] not found", phone)
+            log(log.WARNING, "user:[%s] not found", fullname)
         elif check_password_hash(user.password_hash, password):
             return user
         return None

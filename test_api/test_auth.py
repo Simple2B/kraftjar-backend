@@ -3,7 +3,7 @@ import sqlalchemy as sa
 from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
-from werkzeug.security import check_password_hash
+
 from unittest import mock
 from api import app
 from api.dependency.user import get_current_user
@@ -69,9 +69,9 @@ DUMMY_IOS_VALIDATION = AppleTokenVerification(
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
 def test_auth(db: Session, client: TestClient):
-    USER_PHONE = db.scalar(sa.select(m.User.phone).order_by(m.User.id))
-    assert USER_PHONE
-    user_auth = s.Auth(phone=USER_PHONE, password=USER_PASSWORD)
+    USER_NAME = db.scalar(sa.select(m.User.fullname).order_by(m.User.id))
+    assert USER_NAME
+    user_auth = s.Auth(fullname=USER_NAME, password=USER_PASSWORD)
     response = client.post("/api/auth/token", json=user_auth.model_dump())
     assert response.status_code == status.HTTP_200_OK
     token = s.Token.model_validate(response.json())
@@ -79,31 +79,6 @@ def test_auth(db: Session, client: TestClient):
     header = dict(Authorization=f"Bearer {token.access_token}")
     res = client.get("api/users/me", headers=header)
     assert res.status_code == status.HTTP_200_OK
-
-    old_password = "Kraftjar2024"
-    new_password = "New_password1"
-
-    # change password
-    data_change_password: s.PasswordAuthIn = s.PasswordAuthIn(
-        old_password=old_password,
-        new_password=new_password,
-    )
-    response = client.post(
-        "/api/auth/change-password",
-        json=data_change_password.model_dump(),
-        headers=header,
-    )
-    assert response.status_code == status.HTTP_200_OK
-    user_db = db.scalar(sa.select(m.User).where(m.User.phone == USER_PHONE))
-    assert user_db
-    assert check_password_hash(user_db.password, new_password)
-
-    # auth with new password
-    user_auth = s.Auth(phone=USER_PHONE, password=new_password)
-    response = client.post("/api/auth/token", json=user_auth.model_dump())
-    assert response.status_code == status.HTTP_200_OK
-    token = s.Token.model_validate(response.json())
-    assert token.access_token and token.token_type == "bearer"
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
@@ -115,9 +90,11 @@ def test_register_google_account(monkeypatch, client: TestClient, auth_header: d
 
     # Start registration
     response = client.post("/api/auth/register-google-account", json=data.model_dump())
-    assert response.status_code == status.HTTP_202_ACCEPTED
-    result = s.GoogleAuthOut.model_validate(response.json())
-    assert result.email == DUMMY_GOOGLE_VALIDATION.email
+    assert response.status_code == status.HTTP_201_CREATED
+    user = db.scalar(
+        sa.select(m.User).where(m.User.auth_accounts.any(m.AuthAccount.email == DUMMY_GOOGLE_VALIDATION.email))
+    )
+    assert user
 
     mock_verify_oauth2_token.assert_called_once_with(
         "test_token",
@@ -125,30 +102,12 @@ def test_register_google_account(monkeypatch, client: TestClient, auth_header: d
         CFG.GOOGLE_CLIENT_ID,
     )
 
-    # Finish registration with adding phone
-    mock_verify_oauth2_token = mock.Mock(return_value=DUMMY_GOOGLE_VALIDATION)
-    monkeypatch.setattr("api.routes.user.id_token.verify_oauth2_token", mock_verify_oauth2_token)
-    finish_data = s.GoogleFinishAuthIn(
-        phone="381123156719",
-        email=result.email,
-        fullname=result.fullname,
-        avatar_url=result.avatar_url,
-        oauth_id=result.oauth_id,
-    )
-    response = client.post("/api/auth/finish-google-registration", json=finish_data.model_dump())
-    assert response.status_code == status.HTTP_201_CREATED
-
-    # Check that the user was created
-    account = db.scalars(sa.select(m.User).where(m.User.phone == finish_data.phone)).first()
-    assert account
-    assert account.auth_accounts[0].email == finish_data.email
-
     # Test register same google account
     mock_verify_oauth2_token = mock.Mock(return_value=DUMMY_GOOGLE_VALIDATION)
     monkeypatch.setattr("api.routes.user.id_token.verify_oauth2_token", mock_verify_oauth2_token)
 
     # (new registered user)
-    mock_current_user = db.scalar(sa.select(m.User).where(m.User.id == account.id))
+    mock_current_user = db.scalar(sa.select(m.User).where(m.User.id == user.id))
     assert mock_current_user
     app.dependency_overrides[get_current_user] = lambda: mock_current_user
 
@@ -173,7 +132,7 @@ def test_register_google_account(monkeypatch, client: TestClient, auth_header: d
     assert response
 
     # User can't delete his last auth account
-    response = client.delete(f"/api/users/auth-account/{account.id}", headers=auth_header)
+    response = client.delete(f"/api/users/auth-account/{user.id}", headers=auth_header)
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
     # Add additional auth account
@@ -185,7 +144,7 @@ def test_register_google_account(monkeypatch, client: TestClient, auth_header: d
     assert response.status_code == status.HTTP_201_CREATED
 
     # Delete auth account when there are multiple auth accounts
-    response = client.delete(f"/api/users/auth-account/{account.id}", headers=auth_header)
+    response = client.delete(f"/api/users/auth-account/{user.id}", headers=auth_header)
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
     # reset user dependency

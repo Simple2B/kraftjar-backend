@@ -4,7 +4,7 @@ from enum import Enum
 
 
 class Auth(BaseModel):
-    phone: str
+    fullname: str
     password: str
 
 

@@ -20,11 +20,11 @@ CFG = config()
 def test_get_user(client: TestClient, auth_header: dict[str, str], full_db: Session):
     db: Session = full_db
 
-    USER_PHONE = db.scalar(sa.select(m.User.phone).where(m.User.id == 1))
+    USER_NAME = db.scalar(sa.select(m.User.fullname).where(m.User.id == 1))
     response = client.get("/api/users/me", headers=auth_header)
     assert response.status_code == status.HTTP_200_OK
     me_user: s.User = s.User.model_validate(response.json())
-    assert me_user.phone == USER_PHONE
+    assert me_user.fullname == USER_NAME
 
     search_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == 1))
     assert search_user

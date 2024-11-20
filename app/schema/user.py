@@ -7,7 +7,6 @@ from app.schema.file import File
 from app.schema.language import Language
 from app.schema.misc import OrderType
 from app.schema.rate import RateUserOut
-from app.schema.registration import PasswordStrength
 
 from .location import LocationStrings
 from .service import Service
@@ -19,9 +18,8 @@ class User(BaseModel):
     fullname: str
     first_name: str
     last_name: str
-    phone: str
+    phone: str | None = None
     is_deleted: bool
-    phone_verified: bool
     description: str
     avatar_url: str | None = None
 
@@ -36,7 +34,6 @@ class UserFile(BaseModel):
     fullname: str
     first_name: str = ""
     last_name: str = ""
-    phone: str
     auth_accounts: list[AuthAccount] = []
     password: str
     location_ids: list[int] = []
@@ -233,7 +230,6 @@ class UserProfileOut(User):
     avatar_url: str | None = None
     receiver_average_rate: float
     preferred_language: Language = Language.UA
-    password_strength: PasswordStrength | None = None
     recent_showcases: list[UserRecentShowcase] = []
 
     notification_settings: UserNotificationSettingsOut
