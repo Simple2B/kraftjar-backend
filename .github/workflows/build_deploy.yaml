@@ -13,6 +13,7 @@ env:
   DEPLOY_SSH_KEY: ${{ secrets.SSH_KEY }}
   DEPLOY_SSH_PORT: ${{ secrets.SSH_PORT }}
   DOCKER_ACCESS_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  CREDS_BASE_64: ${{ secrets.CREDS_BASE_64 }}
 
   GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
   FCM_ADMIN_KEY_BASE64: ${{ secrets.FCM_ADMIN_KEY }}
@@ -129,7 +130,8 @@ jobs:
             export GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
             cd ~/kraftjar
             echo ${{env.FCM_ADMIN_KEY_BASE64}} | base64 --decode > admin_key.json
+            echo ${{ env.CREDS_BASE_64 }} | base64 --decode > credentials.json
             mv docker-compose.staging.yaml docker-compose.yaml
             docker login -u ${{ env.DOCKER_LOGIN }} -p ${{ env.DOCKER_ACCESS_TOKEN }} &&
-            docker compose pull &&
-            docker compose up -d
+            docker-compose pull &&
+            docker-compose up -d
