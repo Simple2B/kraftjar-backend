@@ -2,7 +2,8 @@ from fastapi import APIRouter, Request
 
 from .user import user_router
 from .auth import router as auth_router
-from .registration import router as registration_router
+
+# from .registration import router as registration_router
 from .job import job_router
 from .whoami import whoami_router
 from .application import application_router
@@ -19,7 +20,7 @@ router = APIRouter(prefix="/api", tags=["API"])
 
 router.include_router(user_router)
 router.include_router(auth_router)
-router.include_router(registration_router)
+# router.include_router(registration_router)
 router.include_router(job_router)
 router.include_router(whoami_router)
 router.include_router(application_router)

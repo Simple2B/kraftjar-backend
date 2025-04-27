@@ -44,9 +44,11 @@ def write_users_in_db(users: list[s.UserFile], with_print: bool = True):
         assert session.scalar(sa.select(m.Service)), "Services table is empty. Please run `flask export-services` first"
 
         for user in users:
-            user_db: m.User | None = session.scalar(sa.select(m.User).where(m.User.phone == user.phone))
+            user_db: m.User | None = session.scalar(
+                sa.select(m.User).where(m.User.auth_accounts.any(email=user.auth_accounts[0].email))
+            )
             if user_db:
-                log(log.DEBUG, "User with phone [%s] already exists", user.phone)
+                log(log.DEBUG, "User [%s] already exists", user.fullname)
                 continue
 
             auth_accounts = [
@@ -63,11 +65,9 @@ def write_users_in_db(users: list[s.UserFile], with_print: bool = True):
                 fullname=user.fullname,
                 first_name=user.first_name,
                 last_name=user.last_name,
-                phone=user.phone,
                 auth_accounts=auth_accounts,
                 password=user.password,
                 is_volunteer=user.is_volunteer,
-                phone_verified=True,
             )
 
             for location_id in user.location_ids:
@@ -82,7 +82,7 @@ def write_users_in_db(users: list[s.UserFile], with_print: bool = True):
             session.add(new_user)
             session.flush()
             if with_print:
-                log(log.INFO, f"Created user {user.fullname} ======> {user.phone}")
+                log(log.INFO, f"Created user {user.fullname}")
 
 
 # a function for filling the table with phones for users who do not have a phone number. Used only once
@@ -228,7 +228,6 @@ def export_users_from_google_spreadsheets(with_print: bool = True, in_json: bool
         users.append(
             s.UserFile(
                 fullname=fullname,
-                phone="+" + phone,
                 auth_accounts=[m.AuthAccount(email=email, auth_type=s.AuthType.BASIC)],
                 first_name=row[FIRST_NAME_INDEX],
                 last_name=row[LAST_NAME_INDEX],

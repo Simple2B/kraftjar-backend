@@ -20,11 +20,11 @@ CFG = config()
 def test_get_user(client: TestClient, auth_header: dict[str, str], full_db: Session):
     db: Session = full_db
 
-    USER_PHONE = db.scalar(sa.select(m.User.phone).where(m.User.id == 1))
+    USER_NAME = db.scalar(sa.select(m.User.fullname).where(m.User.id == 1))
     response = client.get("/api/users/me", headers=auth_header)
     assert response.status_code == status.HTTP_200_OK
     me_user: s.User = s.User.model_validate(response.json())
-    assert me_user.phone == USER_PHONE
+    assert me_user.fullname == USER_NAME
 
     search_user: m.User | None = db.scalar(sa.select(m.User).where(m.User.id == 1))
     assert search_user
@@ -164,13 +164,13 @@ def test_get_users_by_query_params(client: TestClient, auth_header: dict[str, st
 
 
 @pytest.mark.skipif(not CFG.IS_API, reason="API is not enabled")
-def test_google_account(monkeypatch, client: TestClient, auth_header: dict[str, str], db: Session):
+def test_add_google_account(monkeypatch, client: TestClient, auth_header: dict[str, str], db: Session):
     mock_verify_oauth2_token = mock.Mock(return_value=DUMMY_GOOGLE_VALIDATION)
     monkeypatch.setattr("api.routes.user.id_token.verify_oauth2_token", mock_verify_oauth2_token)
 
     data = s.GoogleAuthIn(id_token="test_token")
 
-    response = client.post("/api/users/register-google-account", headers=auth_header, json=data.model_dump())
+    response = client.post("/api/users/add-google-account", headers=auth_header, json=data.model_dump())
     assert response.status_code == status.HTTP_201_CREATED
 
     account = db.scalars(sa.select(m.AuthAccount).where(m.AuthAccount.email == DUMMY_GOOGLE_VALIDATION.email)).first()
@@ -184,11 +184,11 @@ def test_google_account(monkeypatch, client: TestClient, auth_header: dict[str, 
 
     data = s.GoogleAuthIn(id_token="test_token")
 
-    # Test register same google account
+    # Test add same google account
     mock_verify_oauth2_token = mock.Mock(return_value=DUMMY_GOOGLE_VALIDATION)
     monkeypatch.setattr("api.routes.user.id_token.verify_oauth2_token", mock_verify_oauth2_token)
 
-    response = client.post("/api/users/register-google-account", headers=auth_header, json=data.model_dump())
+    response = client.post("/api/users/add-google-account", headers=auth_header, json=data.model_dump())
     assert response.status_code == status.HTTP_409_CONFLICT
 
     mock_verify_oauth2_token.assert_called_once_with(
@@ -238,7 +238,7 @@ def test_delete_auth_account(monkeypatch, client: TestClient, auth_header: dict[
 
     data = s.GoogleAuthIn(id_token="test_token")
 
-    response = client.post("/api/users/register-google-account", headers=auth_header, json=data.model_dump())
+    response = client.post("/api/users/add-google-account", headers=auth_header, json=data.model_dump())
 
     assert response.status_code == status.HTTP_201_CREATED
 

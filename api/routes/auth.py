@@ -1,16 +1,13 @@
 from typing import Annotated
 
-from botocore.exceptions import ClientError
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from mypy_boto3_sns import SNSClient
-from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 import sqlalchemy as sa
 from google.oauth2 import id_token
 from google.auth.transport import requests
 
-from api.dependency.sns_client import get_sns_connect
+from api.controllers.user import get_user_auth_account
 import app.models as m
 from api.dependency import get_db, get_current_user
 from api.controllers.oauth2 import create_access_token
@@ -33,7 +30,7 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db=Depends
     if not user:
         log(log.ERROR, "User [%s] wrong username or password", form_data.username)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid credentials")
-    log(log.INFO, "User [%s] logged in", user.phone)
+    log(log.INFO, "User [%s] logged in", user.fullname)
     return s.Token(access_token=create_access_token(user.id))
 
 
@@ -61,9 +58,9 @@ def logout(device_id: str, db=Depends(get_db), current_user: m.User = Depends(ge
 )
 def get_token(auth_data: s.Auth, db=Depends(get_db)):
     """Logs in a user"""
-    user = m.User.authenticate(auth_data.phone, auth_data.password, session=db)
+    user = m.User.authenticate(auth_data.fullname, auth_data.password, session=db)
     if not user:
-        log(log.ERROR, "User [%s] wrong phone or password", auth_data.phone)
+        log(log.ERROR, "User [%s] wrong fullname or password", auth_data.fullname)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid credentials")
     return s.Token(access_token=create_access_token(user.id))
 
@@ -112,7 +109,7 @@ def google_auth(auth_data: s.GoogleAuthIn, db: Session = Depends(get_db)):
         if not user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User not found: {email}")
 
-        log(log.INFO, "User [%s] found. Google Auth succeeded", user.phone)
+        log(log.INFO, "User [%s] found. Google Auth succeeded", user.fullname)
 
         return s.Token(access_token=create_access_token(user.id))
 
@@ -123,80 +120,6 @@ def google_auth(auth_data: s.GoogleAuthIn, db: Session = Depends(get_db)):
     except ValueError as e:
         log(log.ERROR, "Invalid token: %s", e)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid token")
-
-
-# change password
-@router.post(
-    "/change-password",
-    status_code=status.HTTP_200_OK,
-    responses={status.HTTP_403_FORBIDDEN: {"description": "Invalid old password"}},
-)
-def change_password(
-    data: s.PasswordAuthIn,
-    db: Session = Depends(get_db),
-    current_user: m.User = Depends(get_current_user),
-):
-    """Changes user password"""
-
-    if not current_user.authenticate(current_user.phone, data.old_password, session=db):
-        log(log.ERROR, "User [%s] wrong old password", current_user.phone)
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid old password")
-
-    new_password = s.RegistrationIn.password_validation(data.new_password)
-
-    current_user.password = new_password
-    db.commit()
-    db.refresh(current_user)
-
-    log(log.INFO, "User [%s] changed password", current_user.phone)
-
-
-# save phone for user and send sms with code
-@router.post(
-    "/phone",
-    status_code=status.HTTP_200_OK,
-    response_model=s.Token,
-    responses={status.HTTP_409_CONFLICT: {"description": "Phone is already in use"}},
-)
-def save_phone(
-    data: s.PhoneAuthIn,
-    db: Session = Depends(get_db),
-    current_user: m.User = Depends(get_current_user),
-    sns_client: SNSClient = Depends(get_sns_connect),
-):
-    """Saves phone for a user and sends an SMS with a code"""
-
-    # check if phone is already in use
-    if db.scalar(sa.select(m.User).where(m.User.phone == data.phone)):
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Phone is already in use")
-
-    if current_user.phone_verified:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User phone is validated already")
-
-    current_user.phone = data.phone
-
-    # TODO: send sms with code to the phone. Creating a code and save it to the database, add field verification code to the user model
-
-    db.commit()
-    db.refresh(current_user)
-
-    try:
-        c.send_sms_to_user(current_user, sns_client, db)
-
-    except ClientError as e:
-        log(log.ERROR, "Error sending SMS - [%s]", e)
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Error while sending SMS",
-        )
-    except SQLAlchemyError as e:
-        log(log.ERROR, "Error while creating user - [%s]", e)
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Error while creating user",
-        )
-
-    return s.Token(access_token=create_access_token(current_user.id))
 
 
 @router.post("/apple", status_code=status.HTTP_200_OK, response_model=s.Token)
@@ -229,3 +152,177 @@ def apple_auth(
 
     log(log.INFO, "User [%s] found. Apple Auth succeeded", email)
     return s.Token(access_token=create_access_token(user.id))
+
+
+@router.post(
+    "/register-google-account",
+    status_code=status.HTTP_201_CREATED,
+    response_model=s.Token,
+    responses={
+        status.HTTP_409_CONFLICT: {"description": "This Google account is already exists"},
+    },
+)
+def register_google_account(
+    auth_data: s.GoogleAuthIn,
+    db: Session = Depends(get_db),
+):
+    """Register Google account for user"""
+
+    try:
+        id_info_res: s.GoogleTokenVerification = id_token.verify_oauth2_token(
+            auth_data.id_token,
+            requests.Request(),
+            CFG.GOOGLE_CLIENT_ID,
+        )
+
+        log(log.INFO, "id_info_res: [%s]", id_info_res)
+
+        id_info = s.GoogleTokenVerification.model_validate(id_info_res)
+
+        email = id_info.email
+        oauth_id = id_info.sub
+        fullname = id_info.name
+        avatar = id_info.picture
+
+        google_account = get_user_auth_account(email, oauth_id, db, s.AuthType.GOOGLE)
+
+        log(log.INFO, "google_account: [%s]", google_account)
+
+        if google_account:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This Google account is already exists")
+
+        user: m.User = m.User(
+            fullname=fullname,
+            auth_accounts=[
+                m.AuthAccount(
+                    auth_type=s.AuthType.GOOGLE,
+                    email=email,
+                    oauth_id=oauth_id,
+                    avatar_url=avatar,
+                )
+            ],
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+
+        log(
+            log.INFO,
+            "User [%s] successfully registered with Google, email: [%s]",
+            fullname,
+            email,
+        )
+
+        return s.Token(access_token=create_access_token(user.id))
+
+    except HTTPException as e:
+        log(log.ERROR, "Google auth failed: %s", e)
+        raise e
+
+    except ValueError as e:
+        log(log.ERROR, "Invalid token: %s", e)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid token")
+
+
+#############################################################################
+# NOTE: We currently don't use manual registration and verification by phone.
+# Perhaps it will be useful in the future.
+#############################################################################
+
+# @router.post(
+#     "/change-password",
+#     status_code=status.HTTP_200_OK,
+#     responses={status.HTTP_403_FORBIDDEN: {"description": "Invalid old password"}},
+# )
+# def change_password(
+#     data: s.PasswordAuthIn,
+#     db: Session = Depends(get_db),
+#     current_user: m.User = Depends(get_current_user),
+# ):
+#     """Changes user password"""
+
+#     if not current_user.authenticate(current_user.phone, data.old_password, session=db):
+#         log(log.ERROR, "User [%s] wrong old password", current_user.phone)
+#         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid old password")
+
+#     new_password = s.RegistrationIn.password_validation(data.new_password)
+
+#     current_user.password = new_password
+#     db.commit()
+#     db.refresh(current_user)
+
+#     log(log.INFO, "User [%s] changed password", current_user.phone)
+
+
+# # change password
+# @router.post(
+#     "/change-password",
+#     status_code=status.HTTP_200_OK,
+#     responses={status.HTTP_403_FORBIDDEN: {"description": "Invalid old password"}},
+# )
+# def change_password(
+#     data: s.PasswordAuthIn,
+#     db: Session = Depends(get_db),
+#     current_user: m.User = Depends(get_current_user),
+# ):
+#     """Changes user password"""
+
+#     if not current_user.authenticate(current_user.phone, data.old_password, session=db):
+#         log(log.ERROR, "User [%s] wrong old password", current_user.phone)
+#         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid old password")
+
+#     new_password = s.RegistrationIn.password_validation(data.new_password)
+
+#     current_user.password = new_password
+#     db.commit()
+#     db.refresh(current_user)
+
+#     log(log.INFO, "User [%s] changed password", current_user.phone)
+
+
+# # save phone for user and send sms with code
+# @router.post(
+#     "/phone",
+#     status_code=status.HTTP_200_OK,
+#     response_model=s.Token,
+#     responses={status.HTTP_409_CONFLICT: {"description": "Phone is already in use"}},
+# )
+# def save_phone(
+#     data: s.PhoneAuthIn,
+#     db: Session = Depends(get_db),
+#     current_user: m.User = Depends(get_current_user),
+#     sns_client: SNSClient = Depends(get_sns_connect),
+# ):
+#     """Saves phone for a user and sends an SMS with a code"""
+
+#     # check if phone is already in use
+#     if db.scalar(sa.select(m.User).where(m.User.phone == data.phone)):
+#         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Phone is already in use")
+
+#     if current_user.phone_verified:
+#         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User phone is validated already")
+
+#     current_user.phone = data.phone
+
+#     # TODO: send sms with code to the phone. Creating a code and save it to the database, add field verification code to the user model
+
+#     db.commit()
+#     db.refresh(current_user)
+
+#     try:
+#         c.send_sms_to_user(current_user, sns_client, db)
+
+#     except ClientError as e:
+#         log(log.ERROR, "Error sending SMS - [%s]", e)
+#         raise HTTPException(
+#             status_code=status.HTTP_409_CONFLICT,
+#             detail="Error while sending SMS",
+#         )
+#     except SQLAlchemyError as e:
+#         log(log.ERROR, "Error while creating user - [%s]", e)
+#         raise HTTPException(
+#             status_code=status.HTTP_409_CONFLICT,
+#             detail="Error while creating user",
+#         )
+
+#     return s.Token(access_token=create_access_token(current_user.id))

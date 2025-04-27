@@ -122,7 +122,7 @@ def auth_header(
     response = client.post(
         "/api/auth/login",
         data={
-            "username": user.phone,
+            "username": user.fullname,
             "password": CFG.TEST_USER_PASSWORD,
         },
     )
@@ -146,7 +146,7 @@ def worker_header(
     response = client.post(
         "/api/auth/login",
         data={
-            "username": user.phone,
+            "username": user.fullname,
             "password": CFG.TEST_USER_PASSWORD,
         },
     )

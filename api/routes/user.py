@@ -107,18 +107,18 @@ def get_user_profile(
 
 
 @user_router.post(
-    "/register-google-account",
+    "/add-google-account",
     status_code=status.HTTP_201_CREATED,
     responses={
         status.HTTP_409_CONFLICT: {"description": "This Google account is already in use"},
     },
 )
-def register_google_account(
+def add_google_account(
     auth_data: s.GoogleAuthIn,
     current_user: m.User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """Register Google account for user"""
+    """Add additional Google account for user"""
 
     try:
         id_info_res: s.GoogleTokenVerification = id_token.verify_oauth2_token(
@@ -290,7 +290,6 @@ def delete_user(
     deleted_mark = mark_as_deleted()
 
     current_user.is_deleted = True
-    current_user.phone = deleted_mark
     current_user.fullname = deleted_mark
 
     for auth_account in current_user.auth_accounts:
@@ -323,8 +322,11 @@ def delete_auth_account(
     if not auth_account:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Auth account not found")
 
-    if auth_account.auth_type == s.AuthType.BASIC:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="You can't delete basic account")
+    if len(current_user.auth_accounts) == 1:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You can't delete last auth account. You should add another auth account",
+        )
 
     deleted_mark = mark_as_deleted()
 
@@ -335,10 +337,9 @@ def delete_auth_account(
 
     log(
         log.INFO,
-        "User [%s] successfully deleted auth account: [%s], phone: [%s]",
+        "User [%s] successfully deleted auth account: [%s]",
         current_user.fullname,
         auth_account.auth_type,
-        current_user.phone,
     )
 
 

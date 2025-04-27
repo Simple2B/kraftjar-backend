@@ -58,7 +58,7 @@ def test_create_rate(client: TestClient, auth_header: dict[str, str], full_db: S
     response = client.post(
         "/api/auth/login",
         data={
-            "username": job_worker.phone,
+            "username": job_worker.fullname,
             "password": CFG.TEST_USER_PASSWORD,
         },
     )
