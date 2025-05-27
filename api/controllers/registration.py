@@ -90,7 +90,8 @@ def register_user(
 
 def send_sms_to_user(user: m.User, sns_client: SNSClient, db: Session) -> None:
     # generate otp code
-    otp_code = random.randint(100000, 999999)
+    # otp_code = random.randint(100000, 999999)
+    otp_code = 777777  # For testing purposes, use a fixed code
 
     user.otp_code = str(otp_code)
     db.commit()
