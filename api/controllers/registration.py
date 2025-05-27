@@ -1,4 +1,4 @@
-import random
+# import random
 import sqlalchemy as sa
 from fastapi import HTTPException, status
 from api.controllers.oauth2 import create_access_token
